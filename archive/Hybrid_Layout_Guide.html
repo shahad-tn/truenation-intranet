@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TNIC — Hybrid Layout Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:ital,wght@0,400;0,500;0,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --wine: #7C1316;
+    --gold: #C9972C;
+    --snow: #FAF8F4;
+    --cream: #F2EDE4;
+    --brown: #130D0A;
+    --brown-mid: #3D2E28;
+    --native-color: #1a3a5c;
+    --native-bg: #E3F2FD;
+    --native-border: #90CAF9;
+    --embed-color: #6a1a6a;
+    --embed-bg: #F3E5F5;
+    --embed-border: #CE93D8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f0f0f0;
+    color: var(--brown);
+    padding: 24px;
+  }
+
+  /* ── Page header ── */
+  .page-header {
+    background: var(--wine);
+    color: var(--cream);
+    padding: 32px;
+    border-radius: 12px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+  .page-header h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .page-header p { font-size: 0.9375rem; margin-top: 8px; opacity: 0.9; }
+  .gold-rule { width: 48px; height: 3px; background: var(--gold); margin: 12px auto; }
+
+  /* ── Legend ── */
+  .legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+    padding: 16px 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  .legend-dot {
+    width: 16px; height: 16px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .dot-native { background: var(--native-color); }
+  .dot-embed  { background: var(--embed-color); }
+  .dot-builtin { background: #2E7D32; }
+
+  /* ── Main layout ── */
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 24px;
+    align-items: start;
+  }
+
+  /* ── Mockup column ── */
+  .mockup {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  }
+
+  .mockup-nav {
+    background: #1a1a1a;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .nav-logo {
+    width: 28px; height: 28px;
+    background: var(--gold);
+    border-radius: 50%;
+  }
+  .nav-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.875rem;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    flex: 1;
+  }
+  .nav-links {
+    display: flex;
+    gap: 16px;
+    font-size: 0.75rem;
+    color: #ccc;
+  }
+
+  /* Sections */
+  .section-block {
+    position: relative;
+    cursor: pointer;
+    transition: filter 0.2s;
+  }
+  .section-block:hover { filter: brightness(0.95); }
+  .section-block.active-native { outline: 3px solid var(--native-color); }
+  .section-block.active-embed  { outline: 3px solid var(--embed-color); }
+
+  .section-tag {
+    position: absolute;
+    top: 6px; right: 6px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 8px;
+    border-radius: 100px;
+    z-index: 2;
+  }
+  .tag-native  { background: var(--native-color); color: white; }
+  .tag-embed   { background: var(--embed-color); color: white; }
+  .tag-builtin { background: #2E7D32; color: white; }
+
+  /* Section: Banner */
+  .s-banner {
+    background: var(--wine);
+    padding: 36px 24px;
+    text-align: center;
+  }
+  .s-banner h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    color: var(--cream);
+    line-height: 1.2;
+  }
+  .s-banner .gold-bar { width: 32px; height: 2px; background: var(--gold); margin: 10px auto; }
+  .s-banner p { font-size: 0.75rem; color: var(--cream); opacity: 0.85; }
+
+  /* Section: heading band */
+  .s-band {
+    padding: 18px 24px;
+  }
+  .s-band.dark-bg { background: #1a1a1a; }
+  .s-band h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .s-band.dark-bg h3 { color: white; }
+  .s-band.dark-bg p  { color: #aaa; font-size: 0.7rem; margin-top: 4px; }
+  .s-band.light-bg { background: white; border-bottom: 1px solid #eee; }
+  .s-band.light-bg h3 { color: var(--wine); }
+  .s-band.light-bg p  { color: var(--brown-mid); font-size: 0.7rem; margin-top: 4px; }
+
+  /* Section: embed area */
+  .s-embed {
+    background: var(--embed-bg);
+    border: 2px dashed var(--embed-border);
+    padding: 16px 20px;
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--embed-color);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .s-embed .embed-icon { font-size: 1.25rem; display: block; margin-bottom: 4px; }
+
+  /* quick links mini-preview */
+  .ql-mini {
+    background: white;
+    padding: 16px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .ql-tile {
+    background: var(--embed-bg);
+    border: 1px dashed var(--embed-border);
+    border-radius: 4px;
+    padding: 10px 4px;
+    text-align: center;
+    font-size: 0.55rem;
+    color: var(--embed-color);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .ql-tile .ti { font-size: 1rem; display: block; margin-bottom: 3px; }
+
+  /* calendar mini-preview */
+  .s-cal {
+    background: #E8F5E9;
+    border: 2px dashed #81C784;
+    padding: 14px 20px;
+    text-align: center;
+    font-size: 0.7rem;
+    color: #2E7D32;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* announcement mini-preview */
+  .s-ann {
+    background: white;
+    padding: 0 16px 12px;
+  }
+  .ann-item {
+    border-left: 3px solid var(--embed-border);
+    background: var(--embed-bg);
+    padding: 8px 10px;
+    margin-bottom: 6px;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.65rem;
+    color: var(--embed-color);
+  }
+  .ann-date { font-size: 0.55rem; font-weight: 700; text-transform: uppercase; color: var(--gold); }
+
+  /* Separator line */
+  .s-sep { height: 1px; background: #eee; }
+
+  /* ── Steps column ── */
+  .steps { display: flex; flex-direction: column; gap: 20px; }
+  .step-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    transition: box-shadow 0.2s;
+  }
+  .step-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+  .step-card-header {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .step-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.8125rem;
+    flex-shrink: 0;
+    color: white;
+  }
+  .num-native  { background: var(--native-color); }
+  .num-embed   { background: var(--embed-color); }
+  .num-builtin { background: #2E7D32; }
+
+  .step-card-title { font-weight: 700; font-size: 0.9375rem; }
+  .step-type-badge {
+    margin-left: auto;
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 8px;
+    border-radius: 100px;
+  }
+  .badge-native  { background: var(--native-bg); color: var(--native-color); }
+  .badge-embed   { background: var(--embed-bg);  color: var(--embed-color); }
+  .badge-builtin { background: #E8F5E9; color: #2E7D32; }
+
+  .step-body { padding: 4px 16px 16px; border-top: 1px solid #f0f0f0; }
+  .step-body ol { padding-left: 20px; margin-top: 8px; }
+  .step-body li { font-size: 0.8125rem; line-height: 1.6; color: var(--brown-mid); margin-bottom: 4px; }
+  .step-body li strong { color: var(--brown); }
+
+  .code-pill {
+    display: inline-block;
+    background: #f0f0f0;
+    font-family: monospace;
+    font-size: 0.75rem;
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--brown);
+  }
+
+  .file-tag {
+    display: inline-block;
+    background: var(--embed-bg);
+    color: var(--embed-color);
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-top: 8px;
+    font-family: monospace;
+  }
+
+  .tip {
+    background: #FFF8E1;
+    border-left: 3px solid var(--gold);
+    padding: 8px 12px;
+    font-size: 0.75rem;
+    color: var(--brown-mid);
+    border-radius: 0 4px 4px 0;
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+
+  /* ── Section notes below ── */
+  .notes-section {
+    margin-top: 32px;
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .notes-section h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.125rem;
+    text-transform: uppercase;
+    color: var(--wine);
+    margin-bottom: 12px;
+  }
+  .font-note {
+    background: #FFF3E0;
+    border-left: 4px solid #FFA000;
+    padding: 12px 16px;
+    font-size: 0.8125rem;
+    color: var(--brown-mid);
+    border-radius: 0 8px 8px 0;
+    line-height: 1.6;
+  }
+  .font-note strong { color: var(--brown); }
+
+  @media (max-width: 800px) {
+    .layout { grid-template-columns: 1fr; }
+    .ql-mini { grid-template-columns: repeat(2,1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>Hybrid Layout Guide — Home Page</h1>
+  <div class="gold-rule"></div>
+  <p>Which parts are native Google Sites vs. custom HTML embeds</p>
+</div>
+
+<!-- Legend -->
+<div class="legend">
+  <div class="legend-item">
+    <div class="legend-dot dot-native"></div>
+    <span><strong>Native Sites</strong> — built directly in Sites editor. Full-width, correct scale.</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot dot-embed"></div>
+    <span><strong>Custom Embed</strong> — HTML file inserted via Insert → Embed. Brand-styled components.</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot dot-builtin"></div>
+    <span><strong>Built-in Embed</strong> — Sites' own Calendar / Drive embed widget.</span>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- ── LEFT: Page Mockup ── -->
+  <div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;color:#666;margin-bottom:8px;">PAGE MOCKUP (click a section to highlight its instructions →)</div>
+    <div class="mockup">
+
+      <!-- Navbar -->
+      <div class="mockup-nav">
+        <div class="nav-logo"></div>
+        <div class="nav-title">True Nation Portal</div>
+        <div class="nav-links"><span>Home</span><span>Departments</span><span>IT/Info Tech</span></div>
+      </div>
+
+      <!-- SECTION 1: Banner -->
+      <div class="section-block" id="block-1" onclick="activate(1,'native')">
+        <span class="section-tag tag-native">① Native Sites</span>
+        <div class="s-banner">
+          <h2>TRUE NATION<br>ISRAELITE CONGREGATION</h2>
+          <div class="gold-bar"></div>
+          <p>Our people. Our purpose. One community.</p>
+        </div>
+      </div>
+
+      <!-- SECTION 2: Announcements heading band -->
+      <div class="section-block" id="block-2" onclick="activate(2,'native')">
+        <span class="section-tag tag-native">② Native Sites</span>
+        <div class="s-band light-bg" style="padding:14px 16px 6px;">
+          <h3>ANNOUNCEMENTS</h3>
+        </div>
+      </div>
+
+      <!-- SECTION 3: Announcements embed -->
+      <div class="section-block" id="block-3" onclick="activate(3,'embed')">
+        <span class="section-tag tag-embed">③ Embed</span>
+        <div class="s-ann">
+          <div class="ann-item"><div class="ann-date">March 27, 2026</div>Welcome to the New True Nation Intranet</div>
+          <div class="ann-item"><div class="ann-date">Coming Soon</div>Submit Announcements via Form</div>
+        </div>
+      </div>
+
+      <div class="s-sep"></div>
+
+      <!-- SECTION 4: Quick Links heading band -->
+      <div class="section-block" id="block-4" onclick="activate(4,'native')">
+        <span class="section-tag tag-native">④ Native Sites</span>
+        <div class="s-band light-bg" style="padding:14px 16px 6px;">
+          <h3>QUICK LINKS</h3>
+        </div>
+      </div>
+
+      <!-- SECTION 5: Quick Links embed -->
+      <div class="section-block" id="block-5" onclick="activate(5,'embed')">
+        <span class="section-tag tag-embed">⑤ Embed</span>
+        <div class="ql-mini">
+          <div class="ql-tile"><span class="ti">👥</span>Our People</div>
+          <div class="ql-tile"><span class="ti">🏢</span>Departments</div>
+          <div class="ql-tile"><span class="ti">📚</span>T.E.L.A.</div>
+          <div class="ql-tile"><span class="ti">🌍</span>Locations</div>
+          <div class="ql-tile"><span class="ti">📅</span>Calendar</div>
+          <div class="ql-tile"><span class="ti">📚</span>Resources</div>
+          <div class="ql-tile"><span class="ti">👑</span>Leadership</div>
+          <div class="ql-tile"><span class="ti">💬</span>Chat</div>
+        </div>
+      </div>
+
+      <div class="s-sep"></div>
+
+      <!-- SECTION 6: Upcoming Events heading band -->
+      <div class="section-block" id="block-6" onclick="activate(6,'native')">
+        <span class="section-tag tag-native">⑥ Native Sites</span>
+        <div class="s-band light-bg" style="padding:14px 16px 6px;">
+          <h3>UPCOMING EVENTS</h3>
+        </div>
+      </div>
+
+      <!-- SECTION 7: Calendar embed -->
+      <div class="section-block" id="block-7" onclick="activate(7,'builtin')">
+        <span class="section-tag tag-builtin">⑦ Built-in</span>
+        <div class="s-cal">📅 &nbsp; Google Calendar Embed<br><span style="font-weight:400;font-size:0.65rem;text-transform:none;">Insert → Calendar</span></div>
+      </div>
+
+    </div><!-- /mockup -->
+
+    <!-- Font note -->
+    <div style="margin-top:16px;" class="font-note">
+      <strong>Font note:</strong> Native Sites text blocks will use Sites' available fonts — not Barlow Condensed. To get the right heading style, choose the closest available bold condensed font in Sites, or use <strong>all-caps</strong> styling. The custom embeds (③ and ⑤) will still use the correct Barlow Condensed + DM Sans fonts.
+    </div>
+  </div>
+
+  <!-- ── RIGHT: Step-by-step instructions ── -->
+  <div class="steps">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;color:#666;margin-bottom:4px;">STEP-BY-STEP INSTRUCTIONS</div>
+
+    <!-- Step 1 -->
+    <div class="step-card" id="step-1">
+      <div class="step-card-header">
+        <div class="step-num num-native">1</div>
+        <div class="step-card-title">Welcome Banner</div>
+        <span class="step-type-badge badge-native">Native Sites</span>
+      </div>
+      <div class="step-body">
+        <ol>
+          <li>In Sites editor, click the <strong>Header</strong> section at the top of the page</li>
+          <li>Click <strong>"Header type"</strong> → choose <strong>"Banner"</strong> or <strong>"Cover"</strong></li>
+          <li>Click <strong>Background → Custom color</strong> → enter <code class="code-pill">#7C1316</code></li>
+          <li>Type your heading: <strong>TRUE NATION ISRAELITE CONGREGATION</strong></li>
+          <li>Set text color to <code class="code-pill">#F2EDE4</code> (cream)</li>
+          <li>Add subtitle text below: <em>Our people. Our purpose. One community.</em></li>
+        </ol>
+        <div class="tip">💡 The Header section in Sites auto-spans full width — no embed needed. This is what gives you the full-bleed Wine background.</div>
+      </div>
+    </div>
+
+    <!-- Step 2+3 -->
+    <div class="step-card" id="step-2">
+      <div class="step-card-header">
+        <div class="step-num num-native">2</div>
+        <div class="step-card-title">Announcements Section</div>
+        <span class="step-type-badge badge-native">Native + Embed</span>
+      </div>
+      <div class="step-body">
+        <ol>
+          <li>Click <strong>Insert → Section</strong> to add a new content section</li>
+          <li>Add a <strong>Text block</strong> → type <strong>ANNOUNCEMENTS</strong> → set style to <strong>Heading 2</strong></li>
+          <li>Set text color to <code class="code-pill">#7C1316</code></li>
+          <li>Below the heading, click <strong>Insert → Embed → Embed code</strong></li>
+          <li>Paste the contents of <span class="file-tag">home-announcements.html</span></li>
+          <li>Resize the embed height to fit the content</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Step 4+5 -->
+    <div class="step-card" id="step-5">
+      <div class="step-card-header">
+        <div class="step-num num-embed">3</div>
+        <div class="step-card-title">Quick Links Grid</div>
+        <span class="step-type-badge badge-native">Native + Embed</span>
+      </div>
+      <div class="step-body">
+        <ol>
+          <li>Add a new section (click the <strong>+</strong> between sections)</li>
+          <li>Add a <strong>Heading 2</strong> text block → type <strong>QUICK LINKS</strong></li>
+          <li>Set color to <code class="code-pill">#7C1316</code></li>
+          <li>Below the heading, click <strong>Insert → Embed → Embed code</strong></li>
+          <li>Paste the contents of <span class="file-tag">home-quick-links.html</span></li>
+          <li>Update each tile's <code class="code-pill">href="#..."</code> with real page URLs</li>
+        </ol>
+        <div class="tip">💡 The quick links embed has NO outer padding or max-width — it fills the full section width automatically.</div>
+      </div>
+    </div>
+
+    <!-- Step 7 -->
+    <div class="step-card" id="step-7">
+      <div class="step-card-header">
+        <div class="step-num num-builtin">4</div>
+        <div class="step-card-title">Upcoming Events Calendar</div>
+        <span class="step-type-badge badge-builtin">Built-in Sites</span>
+      </div>
+      <div class="step-body">
+        <ol>
+          <li>Add a <strong>Heading 2</strong> → type <strong>UPCOMING EVENTS</strong></li>
+          <li>Click <strong>Insert → Calendar</strong> (Sites has a built-in Calendar widget)</li>
+          <li>Select your <strong>TNIC All-Org Events</strong> calendar</li>
+          <li>Set display to <strong>Agenda</strong> view for best mobile experience</li>
+          <li>The Sites calendar embed resizes natively — no custom code needed</li>
+        </ol>
+        <div class="tip">💡 Use Sites' built-in calendar embed here rather than a custom iframe — it handles auth, mobile, and width automatically.</div>
+      </div>
+    </div>
+
+  </div><!-- /steps -->
+</div><!-- /layout -->
+
+<!-- Notes section -->
+<div class="notes-section">
+  <h2>Department Pages — Same Pattern</h2>
+  <p style="font-size:0.875rem;color:var(--brown-mid);line-height:1.6;margin-bottom:12px;">
+    Each of the 20 department pages follows the same hybrid principle. Native Sites handles the banner, section headings, and lead info as text blocks. Custom embeds handle the sub-group card grid and the quick action buttons (Chat/Drive).
+  </p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:0.8125rem;">
+    <div style="background:var(--native-bg);border-radius:6px;padding:12px 14px;">
+      <div style="font-weight:700;color:var(--native-color);margin-bottom:6px;text-transform:uppercase;font-size:0.75rem;letter-spacing:0.05em;">Native Sites</div>
+      <div style="color:var(--brown-mid);line-height:1.6;">
+        Department header with Wine background<br>
+        Department lead name and title<br>
+        "Sub-groups" and "Quick Actions" headings<br>
+        Drive folder embed (built-in)<br>
+        Calendar embed (built-in)
+      </div>
+    </div>
+    <div style="background:var(--embed-bg);border-radius:6px;padding:12px 14px;">
+      <div style="font-weight:700;color:var(--embed-color);margin-bottom:6px;text-transform:uppercase;font-size:0.75rem;letter-spacing:0.05em;">Custom Embeds</div>
+      <div style="color:var(--brown-mid);line-height:1.6;">
+        Sub-group card grid<br>
+        Chat Space + Drive + Email action buttons<br>
+        Week 3: Announcement / request form
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function activate(num, type) {
+  // Remove all active highlights
+  document.querySelectorAll('.section-block').forEach(el => {
+    el.classList.remove('active-native','active-embed');
+  });
+  // Add to clicked block
+  const block = document.getElementById('block-' + num);
+  if (block) block.classList.add('active-' + type);
+}
+</script>
+</body>
+</html>

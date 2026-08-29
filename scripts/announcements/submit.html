@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{--wine:#7C1316;--wine-dk:#5E0E10;--gold:#C9972C;--gold-text:#785710;--gold-on-wine:#D4A94D;--page:#E8E8EC;--surface:#D8D8DE;
+    --line:#BFBFC7;--line-strong:#86868F;--onwine:#F2F2F3;--ink:#26262A;--ink-dk:#131316;--muted:#56565E;
+    --ok:#2F6B3F;--ok-bg:#E4EFE7;--err:#8A1F16;--err-bg:#F6E3E1;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--page);color:var(--ink);
+    font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+    font-size:16px;line-height:1.55;}
+  h1,h2,h3{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;margin:0;}
+  :focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+  .sb-top{background:var(--wine);color:var(--onwine);padding:22px;}
+  .sb-top-inner{max-width:1080px;margin:0 auto;}
+  .sb-kicker{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:12px;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--gold-on-wine);margin:0 0 3px;}
+  .sb-h1{font-weight:700;font-size:31px;letter-spacing:.03em;line-height:1.1;margin-bottom:8px;}
+  .sb-lede{font-size:14.5px;margin:0;max-width:58ch;opacity:.93;}
+  .sb-wrap{max-width:1080px;margin:0 auto;padding:24px 22px 70px;
+    display:grid;grid-template-columns:1fr 380px;gap:24px;align-items:start;}
+  @media (max-width:900px){.sb-wrap{grid-template-columns:1fr;}.sb-side{position:static !important;}}
+  .sb-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;margin:0 0 16px;}
+  .sb-card h2{font-size:19px;letter-spacing:.07em;color:var(--wine);margin-bottom:3px;}
+  .sb-card .sb-hint{font-size:13px;color:var(--muted);margin:0 0 18px;}
+  .sb-field{margin:0 0 20px;}.sb-field:last-child{margin-bottom:0;}
+  .sb-label{display:block;font-size:14.5px;font-weight:700;margin:0 0 3px;}
+  .sb-req{color:var(--wine);}
+  .sb-help{display:block;font-size:12.5px;color:var(--muted);margin:0 0 7px;}
+  .sb-in,.sb-sel,.sb-ta{width:100%;font-family:'DM Sans',sans-serif;font-size:15.5px;color:var(--ink);
+    padding:11px 12px;border:2px solid var(--line-strong);border-radius:7px;background:#fff;}
+  .sb-in:focus,.sb-sel:focus,.sb-ta:focus{border-color:var(--wine);outline:none;box-shadow:0 0 0 3px rgba(124,19,22,.14);}
+  .sb-ta{min-height:120px;resize:vertical;line-height:1.55;}
+  .sb-count{font-size:12px;color:var(--muted);text-align:right;margin:5px 0 0;}
+  .sb-count.over{color:var(--err);font-weight:700;}
+  .sb-radios{display:flex;flex-direction:column;gap:8px;}
+  .sb-radio{display:flex;gap:11px;align-items:flex-start;border:2px solid var(--line-strong);
+    border-radius:8px;padding:12px 14px;cursor:pointer;background:#fff;}
+  .sb-radio:hover{border-color:var(--gold);}
+  .sb-radio input{margin-top:4px;width:18px;height:18px;accent-color:var(--wine);flex:0 0 auto;}
+  .sb-radio:has(input:checked){border-color:var(--wine);background:#FDF7F7;}
+  .sb-radio-txt strong{display:block;font-size:14.5px;}
+  .sb-radio-txt span{display:block;font-size:12.5px;color:var(--muted);}
+  .sb-row{display:flex;gap:14px;flex-wrap:wrap;}.sb-row > *{flex:1 1 200px;}
+  .sb-you{background:var(--surface);border-radius:8px;padding:13px 15px;font-size:13.5px;}
+  .sb-you b{color:var(--wine);}
+  .sb-err{background:var(--err-bg);border-left:5px solid var(--err);border-radius:6px;
+    padding:11px 14px;margin:0 0 16px;font-size:13.5px;color:var(--err);font-weight:500;}
+  .sb-field.bad .sb-in,.sb-field.bad .sb-ta,.sb-field.bad .sb-sel{border-color:var(--err);}
+  .sb-submit{background:var(--wine);color:var(--onwine);border:2px solid var(--wine);
+    font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;padding:14px 30px;
+    border-radius:8px;cursor:pointer;width:100%;}
+  .sb-submit:hover{background:var(--wine-dk);border-color:var(--wine-dk);}
+  .sb-submit[disabled]{opacity:.6;cursor:default;}
+  .sb-side{position:sticky;top:20px;}
+  .sb-prev-head{background:var(--wine);color:var(--onwine);border-radius:10px 10px 0 0;padding:13px 18px;}
+  .sb-prev-head h3{font-size:15px;letter-spacing:.13em;}
+  .sb-prev-head p{margin:2px 0 0;font-size:12px;opacity:.9;}
+  .sb-prev-body{background:#fff;border:1px solid var(--line);border-top:none;
+    border-radius:0 0 10px 10px;padding:20px 18px;}
+  .sb-prev-sec{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--wine);
+    padding-bottom:7px;border-bottom:2px solid var(--surface);margin:0 0 12px;}
+  .sb-prev-line{display:flex;gap:11px;align-items:flex-start;}
+  .sb-prev-box{width:24px;height:24px;flex:0 0 auto;margin-top:2px;border:2px solid var(--gold);border-radius:6px;}
+  .sb-prev-text{margin:0;font-size:17px;line-height:1.5;}
+  .sb-prev-text.empty{color:var(--muted);font-style:italic;}
+  .sb-prev-attrib{display:block;margin-top:6px;font-size:11.5px;color:var(--muted);}
+  .sb-prev-attrib b{color:var(--wine);}
+  .sb-prev-foot{margin:16px 0 0;padding-top:12px;border-top:1px solid var(--surface);font-size:12px;color:var(--muted);}
+  .sb-tips{background:#fff;border:1px solid var(--line);border-left:6px solid var(--gold);
+    border-radius:10px;padding:16px 18px;margin:16px 0 0;}
+  .sb-tips h3{font-size:15px;letter-spacing:.09em;color:var(--wine);margin-bottom:9px;}
+  .sb-tips ul{margin:0;padding-left:19px;font-size:13.5px;}
+  .sb-tips li{margin-bottom:6px;}
+  .sb-done{max-width:660px;margin:0 auto;text-align:center;background:#fff;
+    border:1px solid var(--line);border-radius:12px;padding:44px 30px;}
+  .sb-done .tick{width:62px;height:62px;border-radius:50%;background:var(--ok-bg);color:var(--ok);
+    display:flex;align-items:center;justify-content:center;font-size:31px;margin:0 auto 18px;}
+  .sb-done h2{font-size:26px;letter-spacing:.05em;color:var(--wine);margin-bottom:10px;}
+  .sb-steps{text-align:left;background:var(--surface);border-radius:9px;padding:18px 20px;margin:22px 0;}
+  .sb-steps ol{margin:0;padding-left:20px;font-size:14.5px;}
+  .sb-steps li{margin-bottom:8px;}.sb-steps li:last-child{margin-bottom:0;}
+  .sb-load{max-width:600px;margin:60px auto;text-align:center;color:var(--muted);font-size:15px;}
+</style>
+</head>
+<body>
+
+<header class="sb-top">
+  <div class="sb-top-inner">
+    <p class="sb-kicker">True Nation &middot; Intranet</p>
+    <h1 class="sb-h1">Submit an Announcement</h1>
+    <p class="sb-lede">Anything you would like read aloud after class, or posted on the intranet home page. The announcements team reviews every submission before a service.</p>
+  </div>
+</header>
+
+<main>
+<p class="sb-load" id="loading">Loading the service calendar&hellip;</p>
+
+<div class="sb-wrap" id="formView" hidden>
+  <form id="theForm" novalidate>
+    <div id="errBox" hidden></div>
+
+    <section class="sb-card">
+      <h2>The announcement</h2>
+      <p class="sb-hint">Write it the way you would want it said out loud.</p>
+      <div class="sb-field" id="f-title">
+        <label class="sb-label" for="inTitle">Short title <span class="sb-req">*</span></label>
+        <span class="sb-help">Just for the review team &mdash; this is not read aloud.</span>
+        <input class="sb-in" id="inTitle" type="text" maxlength="80" placeholder="e.g. Choir rehearsal Sunday">
+      </div>
+      <div class="sb-field" id="f-body">
+        <label class="sb-label" for="inBody">What should be said <span class="sb-req">*</span></label>
+        <span class="sb-help">Full sentences. Include <strong>when</strong>, <strong>where</strong>, and <strong>who to ask</strong> &mdash; those three are why most submissions get sent back.</span>
+        <textarea class="sb-ta" id="inBody" placeholder="Choir rehearsal is tomorrow at 11:00 AM in the sanctuary. See Yaqataza with any questions."></textarea>
+        <p class="sb-count" id="count">0 / 300 characters</p>
+      </div>
+    </section>
+
+    <section class="sb-card">
+      <h2>When &amp; where it runs</h2>
+      <p class="sb-hint">Which service, and which part of the announcements it belongs in.</p>
+      <div class="sb-row">
+        <div class="sb-field" id="f-date">
+          <label class="sb-label" for="inDate">Which service <span class="sb-req">*</span></label>
+          <select class="sb-sel" id="inDate"><option value="">Choose a service&hellip;</option></select>
+        </div>
+        <div class="sb-field" id="f-sec">
+          <label class="sb-label" for="inSec">Where it belongs <span class="sb-req">*</span></label>
+          <select class="sb-sel" id="inSec"><option value="">Choose a section&hellip;</option></select>
+        </div>
+      </div>
+      <div class="sb-field">
+        <span class="sb-label">Where should it appear? <span class="sb-req">*</span></span>
+        <span class="sb-help">Read aloud is for the moment. The home page is for the days around it.</span>
+        <div class="sb-radios">
+          <label class="sb-radio"><input type="radio" name="chan" value="Read aloud" checked>
+            <span class="sb-radio-txt"><strong>Read aloud only</strong><span>Said after class. Nothing posted online.</span></span></label>
+          <label class="sb-radio"><input type="radio" name="chan" value="Read aloud + Home page">
+            <span class="sb-radio-txt"><strong>Read aloud and posted to the home page</strong><span>Said after class, and visible on the intranet until it expires.</span></span></label>
+          <label class="sb-radio"><input type="radio" name="chan" value="Home page">
+            <span class="sb-radio-txt"><strong>Home page only</strong><span>Posted on the intranet, not read from the podium.</span></span></label>
+        </div>
+      </div>
+      <div class="sb-field">
+        <label class="sb-label" for="inExp">Stop showing it after</label>
+        <span class="sb-help">Defaults to the day after the service. Only matters for home page posts.</span>
+        <input class="sb-in" id="inExp" type="date">
+      </div>
+    </section>
+
+    <section class="sb-card">
+      <h2>Who to ask</h2>
+      <p class="sb-hint">So people know where to go with questions.</p>
+      <div class="sb-field">
+        <label class="sb-label" for="inContact">Contact person</label>
+        <span class="sb-help">Leave blank and we will use your name.</span>
+        <input class="sb-in" id="inContact" type="text">
+      </div>
+      <div class="sb-you" id="youBox"></div>
+    </section>
+
+    <button class="sb-submit" type="submit" id="btnSubmit">Submit for review</button>
+  </form>
+
+  <aside class="sb-side">
+    <div class="sb-prev-head">
+      <h3>Live preview</h3>
+      <p>How the reader will see it on their phone.</p>
+    </div>
+    <div class="sb-prev-body">
+      <p class="sb-prev-sec" id="pvSec">Announcements</p>
+      <div class="sb-prev-line">
+        <span class="sb-prev-box" aria-hidden="true"></span>
+        <p class="sb-prev-text empty" id="pvText">Your announcement will appear here as you type.</p>
+      </div>
+      <p class="sb-prev-foot" id="pvFoot">Choose a service to see where this lands.</p>
+    </div>
+    <div class="sb-tips">
+      <h3>What gets approved</h3>
+      <ul>
+        <li>A specific day, time, and place.</li>
+        <li>A name people can go to afterward.</li>
+        <li>Something the whole congregation needs, not a small group.</li>
+        <li>Sent in <strong>before Friday</strong> for a Sabbath service.</li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<div class="sb-wrap" id="doneView" hidden style="display:block;">
+  <div class="sb-done">
+    <div class="tick" aria-hidden="true">&#10003;</div>
+    <h2>Submitted for review</h2>
+    <p style="margin:0;color:var(--muted);font-size:15px;">
+      Your announcement went to the announcements team. You will get an email either way.</p>
+    <div class="sb-steps">
+      <ol>
+        <li><strong>Now</strong> — the review team is notified.</li>
+        <li><strong>Before the service</strong> — they approve it, edit the wording, ask you for more detail, or let you know it is not a fit.</li>
+        <li><strong>If approved</strong> — it goes into the reader's script for <span id="doneDate">that service</span>, and onto the home page if you chose that.</li>
+      </ol>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin:0 0 20px;">Reference: <b id="doneId"></b></p>
+    <button class="sb-submit" type="button" id="btnAgain" style="max-width:280px;">Submit another</button>
+  </div>
+</div>
+</main>
+
+<script>
+var CTX = null, MAX = 300;
+var $ = function(id){ return document.getElementById(id); };
+function esc(s){return String(s).replace(/&(?!#?\w+;)/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+google.script.run
+  .withSuccessHandler(boot)
+  .withFailureHandler(function(err){
+    $('loading').innerHTML = '<b>Could not load the form.</b><br>' + esc(err.message);
+  })
+  .getSubmitContext();
+
+function boot(ctx){
+  CTX = ctx;
+  var d = $('inDate');
+  ctx.services.forEach(function(s){
+    var o = document.createElement('option');
+    o.value = s.iso; o.textContent = s.label;
+    o.setAttribute('data-exp', s.expiresDefault);
+    d.appendChild(o);
+  });
+  var sec = $('inSec');
+  ctx.sections.forEach(function(s){
+    var o = document.createElement('option'); o.value = s; o.textContent = s; sec.appendChild(o);
+  });
+  var other = document.createElement('option');
+  other.value = 'Not sure'; other.textContent = 'Not sure — let the team decide';
+  sec.appendChild(other);
+
+  $('inContact').placeholder = ctx.name;
+  $('youBox').innerHTML = 'Submitting as <b>' + esc(ctx.email) + '</b> &middot; This is filled in from your intranet sign-in.';
+
+  if(!ctx.services.length){
+    $('loading').innerHTML = '<b>No upcoming services are on the calendar yet.</b><br>Ask the announcements team to add some before submitting.';
+    return;
+  }
+  $('loading').hidden = true;
+  $('formView').hidden = false;
+  updatePreview();
+}
+
+function chan(){ var r = document.querySelector('input[name="chan"]:checked'); return r ? r.value : 'Read aloud'; }
+
+function updatePreview(){
+  var b = $('inBody').value.trim(), n = $('inBody').value.length;
+  $('count').textContent = n + ' / ' + MAX + ' characters';
+  $('count').classList.toggle('over', n > MAX);
+
+  if(b){
+    var who = $('inContact').value.trim() || (CTX ? CTX.name : '');
+    $('pvText').className = 'sb-prev-text';
+    $('pvText').innerHTML = esc(b) +
+      '<span class="sb-prev-attrib">Submitted by <b>' + esc(who) + '</b> &middot; pending approval</span>';
+  } else {
+    $('pvText').className = 'sb-prev-text empty';
+    $('pvText').textContent = 'Your announcement will appear here as you type.';
+  }
+
+  var s = $('inSec').value;
+  $('pvSec').textContent = (!s || s === 'Not sure') ? 'Announcements' : s;
+
+  var c = chan(), dsel = $('inDate');
+  if(dsel.value){
+    var extra = c === 'Home page' ? 'Home page only — it will not be read aloud.'
+      : (c === 'Read aloud + Home page' ? 'Read aloud at this service, and posted on the home page.'
+      : 'Read aloud at this service only.');
+    $('pvFoot').textContent = dsel.options[dsel.selectedIndex].text + ' · ' + extra;
+  } else {
+    $('pvFoot').textContent = 'Choose a service to see where this lands.';
+  }
+}
+
+['input','change'].forEach(function(ev){
+  ['inBody','inSec','inDate','inContact'].forEach(function(id){ $(id).addEventListener(ev, updatePreview); });
+});
+document.querySelectorAll('input[name="chan"]').forEach(function(r){ r.addEventListener('change', updatePreview); });
+
+$('inDate').addEventListener('change', function(){
+  var o = this.options[this.selectedIndex];
+  if(o && o.getAttribute('data-exp')) $('inExp').value = o.getAttribute('data-exp');
+  updatePreview();
+});
+
+$('theForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  var problems = [];
+  ['f-title','f-body','f-date','f-sec'].forEach(function(id){ $(id).classList.remove('bad'); });
+
+  if(!$('inTitle').value.trim()){ problems.push('Add a short title.'); $('f-title').classList.add('bad'); }
+  if(!$('inBody').value.trim()){ problems.push('Write what should be said.'); $('f-body').classList.add('bad'); }
+  else if($('inBody').value.length > 600){ problems.push('Shorten the announcement.'); $('f-body').classList.add('bad'); }
+  if(!$('inDate').value){ problems.push('Choose which service this is for.'); $('f-date').classList.add('bad'); }
+  if(!$('inSec').value){ problems.push('Choose where it belongs.'); $('f-sec').classList.add('bad'); }
+
+  if(problems.length){ return showErr('Before this can be submitted:<br>&bull; ' + problems.join('<br>&bull; ')); }
+
+  $('btnSubmit').disabled = true;
+  $('btnSubmit').textContent = 'Sending…';
+  $('errBox').hidden = true;
+
+  google.script.run
+    .withSuccessHandler(function(res){
+      $('doneDate').textContent = res.service;
+      $('doneId').textContent = res.id;
+      $('formView').hidden = true; $('formView').style.display = 'none';
+      $('doneView').hidden = false;
+      window.scrollTo({top:0,behavior:'smooth'});
+    })
+    .withFailureHandler(function(err){
+      $('btnSubmit').disabled = false;
+      $('btnSubmit').textContent = 'Submit for review';
+      showErr(esc(err.message));
+    })
+    .submitAnnouncement({
+      title: $('inTitle').value, body: $('inBody').value,
+      serviceIso: $('inDate').value, section: $('inSec').value,
+      channel: chan(), contact: $('inContact').value, expiresOn: $('inExp').value
+    });
+});
+
+function showErr(html){
+  var b = $('errBox');
+  b.hidden = false; b.className = 'sb-err'; b.setAttribute('role','alert'); b.innerHTML = html;
+  b.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+$('btnAgain').addEventListener('click', function(){
+  $('theForm').reset(); $('errBox').hidden = true;
+  $('btnSubmit').disabled = false; $('btnSubmit').textContent = 'Submit for review';
+  updatePreview();
+  $('doneView').hidden = true; $('formView').hidden = false; $('formView').style.display = 'grid';
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+</script>
+</body>
+</html>

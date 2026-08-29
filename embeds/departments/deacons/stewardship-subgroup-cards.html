@@ -1,0 +1,146 @@
+<!--
+  TRUE NATION INTRANET — STEWARDSHIP SUB-GROUP CARDS
+  ─────────────────────────────
+  Embed on the Stewardship department page under Deacons Branch.
+  Native Sites heading: "Teams & Sub-Groups"
+
+  SUB-GROUPS (4):
+    Fundraising, Travel Committee, Tribal Exchange, Bookkeeping
+
+  [REPLACE] Lead names, descriptions, and card href links with real values.
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { margin: 0; padding: 0; background: transparent; }
+
+  .dept-wrap {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    background: #E8E8EC;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+  }
+
+  .sg-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .sg-card {
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(19,13,10,0.06);
+    transition: box-shadow 0.2s, transform 0.15s;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .sg-card:hover {
+    box-shadow: 0 4px 14px rgba(19,13,10,0.11);
+    transform: translateY(-2px);
+    border-color: #785710;
+  }
+
+  .sg-icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+
+  .sg-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #7C1316;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .sg-desc {
+    font-size: 14px;
+    color: #56565E;
+    line-height: 1.6;
+    flex: 1;
+    margin-bottom: 10px;
+  }
+
+  .sg-arrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #785710;
+    margin-top: 12px;
+  }
+
+  @media (max-width: 500px) {
+    .sg-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="dept-wrap">
+
+<!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: Deacons
+     Page description:  Manages the congregation's financial operations including budgeting, bookkeeping, fundraising, travel coordination, and tribal exchange programs.
+     Lead:              Marayam / Shanan
+-->
+
+  <div class="sg-grid">
+
+    <!-- [REPLACE] href with actual Fundraising sub-group page URL -->
+    <a class="sg-card" href="#">
+      <div class="sg-icon">💰</div>
+      <div class="sg-name">Fundraising</div>
+      <div class="sg-desc">Organizes fundraising initiatives and campaigns to support congregation programs and outreach.</div>
+      <div class="sg-arrow">View sub-group →</div>
+    </a>
+
+    <!-- [REPLACE] href with actual Travel Committee sub-group page URL -->
+    <a class="sg-card" href="#">
+      <div class="sg-icon">✈️</div>
+      <div class="sg-name">Travel Committee</div>
+      <div class="sg-desc">Coordinates travel logistics for congregation events, conferences, and ministry trips.</div>
+      <div class="sg-arrow">View sub-group →</div>
+    </a>
+
+    <!-- [REPLACE] href with actual Tribal Exchange sub-group page URL -->
+    <a class="sg-card" href="#">
+      <div class="sg-icon">🤝</div>
+      <div class="sg-name">Tribal Exchange</div>
+      <div class="sg-desc">Facilitates inter-congregational trade, commerce, and economic development programs.</div>
+      <div class="sg-arrow">View sub-group →</div>
+    </a>
+
+    <!-- [REPLACE] href with actual Bookkeeping sub-group page URL -->
+    <a class="sg-card" href="#">
+      <div class="sg-icon">📒</div>
+      <div class="sg-name">Bookkeeping</div>
+      <div class="sg-desc">Maintains financial records, processes transactions, and ensures accurate accounting for all departments.</div>
+      <div class="sg-arrow">View sub-group →</div>
+    </a>
+
+  </div>
+</div>
+
+<script>
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:'tnic-height',height:h,id:'finance-subgroup-cards'}, '*');
+    }
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sendHeight);}
+    else{sendHeight();}
+    window.addEventListener('resize',sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+</script>

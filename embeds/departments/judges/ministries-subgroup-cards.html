@@ -1,0 +1,149 @@
+<!--
+  TRUE NATION INTRANET — MINISTRIES SUB-GROUP CARDS
+  ─────────────────────────────
+  Embed on the Ministries department page under Judges Branch.
+  Native Sites heading: "Teams & Sub-Groups"
+
+  SUB-GROUPS (4):
+    Elders Ministry, Prayer Ministry, Prison Ministry, SOV (Sisters of Virtue)
+    NOTE: Sanhedrin moved from Ministries → Counseling dept (Calendar Committee).
+    NOTE: SOV full name is "Sisters of Virtue" — "Sword of the Word" is outdated.
+    Lead: Bishop Banayah (previously listed as "Bishops + Apostles oversight")
+
+  [REPLACE] Lead names, descriptions, and card href links with real values.
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { margin: 0; padding: 0; background: transparent; }
+
+  .dept-wrap {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    background: #E8E8EC;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+  }
+
+  .sg-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .sg-card {
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(19,13,10,0.06);
+    transition: box-shadow 0.2s, transform 0.15s;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .sg-card:hover {
+    box-shadow: 0 4px 14px rgba(19,13,10,0.11);
+    transform: translateY(-2px);
+    border-color: #785710;
+  }
+
+  .sg-icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+
+  .sg-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #7C1316;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .sg-desc {
+    font-size: 14px;
+    color: #56565E;
+    line-height: 1.6;
+    flex: 1;
+    margin-bottom: 10px;
+  }
+
+  .sg-arrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #785710;
+    margin-top: 12px;
+  }
+
+  @media (max-width: 500px) {
+    .sg-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="dept-wrap">
+
+<!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: Judges
+     Page description:  Specialized ministries delivering pastoral care, intercession, outreach, and spiritual service across the congregation.
+     Lead:              Bishop Banayah
+-->
+
+  <div class="sg-grid">
+
+    <!-- [REPLACE] href with actual Elders Ministry sub-group page URL -->
+    <a class="sg-card" href="#">
+      <div class="sg-icon">👴</div>
+      <div class="sg-name">Elders Ministry</div>
+      <div class="sg-desc">Mentorship and pastoral care delivered through senior elders to members across all branches.</div>
+      <div class="sg-arrow">View sub-group →</div>
+    </a>
+
+    <!-- [REPLACE] href with actual Prayer Ministry sub-group page URL -->
+    <a class="sg-card" href="#">
+      <div class="sg-icon">🙏</div>
+      <div class="sg-name">Prayer Ministry</div>
+      <div class="sg-desc">Coordinates intercessory prayer, prayer requests, and corporate prayer initiatives across the congregation.</div>
+      <div class="sg-arrow">View sub-group →</div>
+    </a>
+
+    <!-- [REPLACE] href with actual Prison Ministry sub-group page URL -->
+    <a class="sg-card" href="#">
+      <div class="sg-icon">⛓️</div>
+      <div class="sg-name">Prison Ministry</div>
+      <div class="sg-desc">Outreach, correspondence, and pastoral support to incarcerated members and prospective converts.</div>
+      <div class="sg-arrow">View sub-group →</div>
+    </a>
+
+    <!-- [REPLACE] href with actual SOV sub-group page URL -->
+    <a class="sg-card" href="#">
+      <div class="sg-icon">🎶</div>
+      <div class="sg-name">SOV — Sisters of Virtue</div>
+      <div class="sg-desc">Vocal ministry led by Achwath Marayam, serving the congregation through song, worship, and spiritual expression.</div>
+      <div class="sg-arrow">View sub-group →</div>
+    </a>
+
+  </div>
+</div>
+
+<script>
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:'tnic-height',height:h,id:'ministries-subgroup-cards'}, '*');
+    }
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sendHeight);}
+    else{sendHeight();}
+    window.addEventListener('resize',sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+</script>

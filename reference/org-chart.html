@@ -1,0 +1,390 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>TNIC Organizational Chart</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap');
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; font-family: 'DM Sans', sans-serif; color: #1A1A1A; background: #E4E4E4; }
+.page {
+  width: 11in; height: 8.5in;
+  background: white;
+  margin: 12px auto;
+  padding: 40px 50px;
+  position: relative;
+  page-break-after: always;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.page:last-child { page-break-after: auto; }
+h1.title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 84px;
+  margin: 0;
+  line-height: 1;
+}
+h1.title .tnic { color: #7C1316; display: block; margin-bottom: 8px; }
+h1.title .sub { color: #1A1A1A; display: block; font-weight: 400; }
+.title-accent { height: 4px; width: 80px; background: #C9972C; margin: 18px 0 28px; }
+.scripture { font-weight: 700; font-size: 14px; }
+.scripture-ref { font-size: 13px; color: #555; margin-top: 4px; }
+.date-vertical {
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  transform-origin: right center;
+  letter-spacing: 0.4em;
+  color: #888;
+  font-size: 12px;
+}
+h2.page-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 30px;
+  text-align: center;
+  margin: 0 0 6px;
+  letter-spacing: 0.03em;
+}
+.accent-line { height: 3px; width: 120px; margin: 0 auto 10px; }
+.page-subtitle { font-size: 11px; color: #777; text-align: center; margin-bottom: 6px; }
+.branch-members { font-weight: 700; font-size: 13px; text-align: center; margin-bottom: 18px; }
+
+.pill {
+  display: flex; align-items: center;
+  border-radius: 24px;
+  padding: 6px 14px 6px 6px;
+  margin-bottom: 6px;
+  min-height: 36px;
+  position: relative;
+}
+.pill .badge {
+  flex: 0 0 38px;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: #EFEEED;
+  display: flex; align-items: center; justify-content: center;
+  margin-right: 12px;
+  border: 1.5px solid currentColor;
+}
+.pill .badge::before {
+  content: '+';
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+}
+.pill .label { flex: 1; min-width: 0; }
+.pill .label .name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.pill .label .sub {
+  font-size: 10px;
+  opacity: 0.85;
+  margin-top: 1px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.pill.header { min-height: 44px; }
+.pill.header .label .name { font-size: 17px; }
+.pill.header .label .sub { font-size: 12px; }
+.pill.sub-pill {
+  margin-left: 28px;
+  min-height: 26px;
+  padding: 3px 12px 3px 4px;
+  border-radius: 20px;
+}
+.pill.sub-pill .badge { width: 26px; height: 26px; flex: 0 0 26px; margin-right: 8px; }
+.pill.sub-pill .badge::before { font-size: 12px; }
+.pill.sub-pill .label .name { font-size: 11px; }
+.pill.sub-pill .label .sub { font-size: 9px; }
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 18px;
+}
+.branch-col h3 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  margin: 12px 0 6px;
+  text-transform: uppercase;
+}
+.center-pill-row { display: flex; justify-content: center; margin-bottom: 14px; }
+.center-pill-row .pill { width: 380px; }
+.three-branch-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.bishop-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 18px; }
+.bishop-col h3 {
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+  font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.bishop-col .sub-label { font-size: 11px; color: #777; margin-bottom: 14px; }
+.bishop-footer {
+  position: absolute;
+  bottom: 36px; left: 50px; right: 50px;
+  border-top: 1px solid #DDD;
+  padding-top: 16px;
+}
+.bishop-footer h3 {
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+  font-size: 14px; letter-spacing: 0.06em; margin: 0 0 6px;
+}
+.bishop-footer .names { font-size: 11px; }
+.bishop-footer .note { font-size: 10px; color: #888; font-style: italic; margin-top: 4px; }
+
+.branch-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 8px;
+}
+.dept-group { break-inside: avoid; margin-bottom: 8px; }
+
+.scica-footnote {
+  position: absolute;
+  bottom: 22px; left: 50px; right: 50px;
+  text-align: center;
+  font-size: 10px;
+  color: #888;
+  font-style: italic;
+}
+
+@media print {
+  body { background: white; }
+  .page { margin: 0; box-shadow: none; }
+}
+</style>
+
+</head><body>
+<div class="page">
+<h1 class="title"><span class="tnic">TNIC</span><span class="sub">Organizational<br>Chart</span></h1>
+<div class="title-accent"></div>
+<div class="scripture">"Let all things be done decently and in order."</div>
+<div class="scripture-ref">1 Corinthians 14:40</div>
+<div class="date-vertical">M A Y &nbsp; 2 0 2 6</div>
+</div>
+<div class="page">
+<h2 class="page-title">TRUE NATION ORGANIZATION OVERVIEW</h2>
+<div class="accent-line" style="background:#7C1316;"></div>
+<div class="center-pill-row">
+<div class="pill header" style="background:#7C1316;color:#F2F2F3;"><div class="badge" style="color:#7C1316;"></div><div class="label"><div class="name">TOP LEVEL LEADERSHIP</div><div class="sub">Bishops</div></div></div>
+</div>
+<div class="three-branch-row">
+<div class="branch-col">
+<div class="pill header" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">APOSTLES</div><div class="sub">Doctrine</div></div></div>
+<div class="pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">Disciples</div><div class="sub">Ash Napash / Yashami</div></div></div>
+<div class="pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">Marketing</div><div class="sub">Department</div></div></div>
+<div class="pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">Production</div><div class="sub">Yashan</div></div></div>
+<div class="pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">Publication</div><div class="sub">Deacon Shamar</div></div></div>
+<div class="pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">Youth Development</div><div class="sub">Bishop Tazayawan</div></div></div>
+</div>
+<div class="branch-col">
+<div class="pill header" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">DEACONS</div><div class="sub">Resources &amp; Admin</div></div></div>
+<div class="pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">CBD — Community Building</div><div class="sub">Bishop Tazayawan</div></div></div>
+<div class="pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Clerical</div><div class="sub">Deacon Kabash</div></div></div>
+<div class="pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Custodial</div><div class="sub">Kawan</div></div></div>
+<div class="pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">E.R.T. Emergency Response</div><div class="sub">Deacon Kanash</div></div></div>
+<div class="pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Fellowship &amp; Service</div><div class="sub">Deacons Kabash / Kahan</div></div></div>
+<div class="pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Finance</div><div class="sub">[Lead TBD]</div></div></div>
+<div class="pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Holistic Health &amp; Healing</div><div class="sub">Deacon Kanash</div></div></div>
+<div class="pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">IT / Information Technology</div><div class="sub">Shahad · Sarah Haynes · Yedayah</div></div></div>
+<div class="pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Maintenance</div><div class="sub">Rakab / Bishop Izar</div></div></div>
+<div class="pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Performing Arts</div><div class="sub">Deacon Kabash</div></div></div>
+<div class="pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Security</div><div class="sub">Deacon Ahman / Chaanak</div></div></div>
+<div class="pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Textiles &amp; Attire</div><div class="sub">Deacon Kanash</div></div></div>
+</div>
+<div class="branch-col">
+<div class="pill header" style="background:#C9972C;color:#56565E;"><div class="badge" style="color:#C9972C;"></div><div class="label"><div class="name">JUDGES</div><div class="sub">Righteousness</div></div></div>
+<div class="pill" style="background:#C9972C;color:#56565E;"><div class="badge" style="color:#C9972C;"></div><div class="label"><div class="name">Counseling</div><div class="sub">Bishop Tazayawan / Apostle Yashami</div></div></div>
+<div class="pill" style="background:#C9972C;color:#56565E;"><div class="badge" style="color:#C9972C;"></div><div class="label"><div class="name">Ministries</div><div class="sub">Bishop Banayah · Oversight: Bishops + Apostles</div></div></div>
+</div>
+</div>
+<div class="scica-footnote">Joint committee: SCICA Summit — Apostles + Bishops · Leads: Tazayawan, Yashami</div>
+</div>
+<div class="page">
+<h2 class="page-title">BISHOPS — TOP LEVEL LEADERSHIP</h2>
+<div class="accent-line" style="background:#7C1316;"></div>
+<div class="page-subtitle">Government Branch · Oversight of all branches</div>
+<div class="bishop-cols">
+<div class="bishop-col">
+<h3 style="color:#7C1316;">TRUE NATION DOMESTIC</h3>
+<div class="sub-label">US Schools</div>
+<div class="pill" style="background:#7C1316;color:#F2F2F3;"><div class="badge" style="color:#7C1316;"></div><div class="label"><div class="name">LOS ANGELES, CA</div><div class="sub">Tazayawan</div></div></div>
+<div class="pill" style="background:#7C1316;color:#F2F2F3;"><div class="badge" style="color:#7C1316;"></div><div class="label"><div class="name">DETROIT, MI</div><div class="sub">Yahzeqel</div></div></div>
+<div class="pill" style="background:#7C1316;color:#F2F2F3;"><div class="badge" style="color:#7C1316;"></div><div class="label"><div class="name">MACON, GA</div><div class="sub">Yahzeqel / Tazayawan</div></div></div>
+</div>
+<div class="bishop-col">
+<h3 style="color:#7C1316;">TRUE NATION INTERNATIONAL</h3>
+<div class="sub-label">International Schools</div>
+<div class="pill" style="background:#7C1316;color:#F2F2F3;"><div class="badge" style="color:#7C1316;"></div><div class="label"><div class="name">GHANA (Kumasi, Accra)</div><div class="sub">Izar</div></div></div>
+<div class="pill" style="background:#7C1316;color:#F2F2F3;"><div class="badge" style="color:#7C1316;"></div><div class="label"><div class="name">PHILIPPINES (Manila, Cebu)</div><div class="sub">Banayah</div></div></div>
+</div>
+</div>
+<div class="bishop-footer">
+<h3 style="color:#7C1316;">BISHOPS</h3>
+<div class="names">TAZAYAWAN  ·  YAHZEQEL  ·  BANAYAH  ·  IZAR</div>
+<div class="note">Council (cross-branch governance): Bishops + Apostles · Government Branch</div>
+</div>
+</div>
+<div class="page">
+<h2 class="page-title">APOSTLES BRANCH</h2>
+<div class="accent-line" style="background:#1E2A6B;"></div>
+<div class="page-subtitle">Doctrine Branch · Teaching · Education · Research · Voice</div>
+<div class="branch-members" style="color:#1E2A6B;">Apostles: ASH NAPASH · YASHAMI</div>
+<div class="branch-grid">
+<div>
+<div class="dept-group">
+<div class="pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">Disciples</div><div class="sub">Ash Napash / Yashami</div></div></div>
+</div>
+<div class="dept-group">
+<div class="pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">Publication</div><div class="sub">Deacon Shamar</div></div></div>
+<div class="pill sub-pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">Quarterly Brew</div><div class="sub">Shamar</div></div></div>
+<div class="pill sub-pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">Newsletter</div><div class="sub">Shamar</div></div></div>
+</div>
+</div>
+<div>
+<div class="dept-group">
+<div class="pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">Marketing</div><div class="sub">Department</div></div></div>
+<div class="pill sub-pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">Graphic Design</div><div class="sub">Ratazah</div></div></div>
+<div class="pill sub-pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">Social Media</div><div class="sub">Yaqataza</div></div></div>
+</div>
+<div class="dept-group">
+<div class="pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">Youth Development</div><div class="sub">Bishop Tazayawan</div></div></div>
+<div class="pill sub-pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">TELA (Committee)</div><div class="sub">Bishop Tazayawan</div></div></div>
+<div class="pill sub-pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">Jr Disciples</div><div class="sub">Apostle Ash Napash</div></div></div>
+<div class="pill sub-pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">Little Lions</div><div class="sub">[Lead TBD]</div></div></div>
+<div class="pill sub-pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">Maiden Ewe Academy</div><div class="sub">Shawashan</div></div></div>
+<div class="pill sub-pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">Naqam Fresh</div><div class="sub">Bishop Tazayawan</div></div></div>
+<div class="pill sub-pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">Naqam Varsity</div><div class="sub">Bishop Tazayawan</div></div></div>
+</div>
+</div>
+<div>
+<div class="dept-group">
+<div class="pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">Production</div><div class="sub">Yashan</div></div></div>
+<div class="pill sub-pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">Sound</div><div class="sub">Apostle Yashami</div></div></div>
+<div class="pill sub-pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">Videography</div><div class="sub">Yashan</div></div></div>
+<div class="pill sub-pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">Photography</div><div class="sub">[TBD]</div></div></div>
+<div class="pill sub-pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">Camera &amp; Lights</div><div class="sub">Yashan</div></div></div>
+<div class="pill sub-pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">A/V Audio/Visual</div><div class="sub">Deacon Shamar</div></div></div>
+<div class="pill sub-pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">Stage Production</div><div class="sub">[TBD]</div></div></div>
+<div class="pill sub-pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">Art</div><div class="sub">Ahmaryah / Karamyah</div></div></div>
+<div class="pill sub-pill" style="background:#1E2A6B;color:#FFFFFF;"><div class="badge" style="color:#1E2A6B;"></div><div class="label"><div class="name">PARADOX</div><div class="sub">Bishop Tazayawan</div></div></div>
+</div>
+</div>
+</div>
+<div class="scica-footnote">SCICA Summit — joint committee with Bishops · Leads: Tazayawan, Yashami</div>
+</div>
+<div class="page">
+<h2 class="page-title">DEACONS BRANCH</h2>
+<div class="accent-line" style="background:#1E7A3B;"></div>
+<div class="page-subtitle">Administration &amp; Resources · Business · Finances · Records</div>
+<div class="branch-members" style="color:#1E7A3B;">Deacons: KAHAN · KABASH · KANASH · AHMAN · RAKAB · SHAMAR</div>
+<div class="branch-grid">
+<div>
+<div class="dept-group">
+<div class="pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">CBD — Community Building</div><div class="sub">Bishop Tazayawan</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Camp Tazarah / CoT Lancaster</div><div class="sub">Ash Napash, Malaakaya, Kanash</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">City of Truth Ghana</div><div class="sub">Bishop Izar</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">City of Truth Macon</div><div class="sub">Bishop Yahzeqel</div></div></div>
+</div>
+<div class="dept-group">
+<div class="pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">E.R.T. Emergency Response</div><div class="sub">Deacon Kanash</div></div></div>
+</div>
+<div class="dept-group">
+<div class="pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Holistic Health &amp; Healing</div><div class="sub">Deacon Kanash</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Grow With Us</div><div class="sub">Bayanah</div></div></div>
+</div>
+<div class="dept-group">
+<div class="pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Performing Arts</div><div class="sub">Deacon Kabash</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Music</div><div class="sub">Kabash · Qawalyah, Sagalah</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Acting</div><div class="sub">Bishop Tazayawan</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Dance</div><div class="sub">[Lead TBD]</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Poetry</div><div class="sub">[Lead TBD]</div></div></div>
+</div>
+</div>
+<div>
+<div class="dept-group">
+<div class="pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Clerical</div><div class="sub">Deacon Kabash</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Administration Committee</div><div class="sub">[Lead TBD]</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">The People (Committee)</div><div class="sub">Kabash, Shahad, Nayah, Sarah Haynes</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Logistics</div><div class="sub">Shawashan / Shahad</div></div></div>
+</div>
+<div class="dept-group">
+<div class="pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Fellowship &amp; Service</div><div class="sub">Deacons Kabash / Kahan</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Feast Committee</div><div class="sub">Kabash / Kahan</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Hospitality</div><div class="sub">Shawashan</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Beverage</div><div class="sub">Kabash</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Culinary</div><div class="sub">Kanash</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Decor</div><div class="sub">Adah</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Desserts</div><div class="sub">Shalawa</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Sacrificial</div><div class="sub">Kahan</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Serving / Catering</div><div class="sub">Lawah</div></div></div>
+</div>
+<div class="dept-group">
+<div class="pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">IT / Information Technology</div><div class="sub">Shahad · Sarah Haynes · Yedayah</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Infrastructure</div><div class="sub">[Lead TBD]</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Website</div><div class="sub">[Lead TBD]</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Applications</div><div class="sub">Shahad / Sarah Haynes · Ratazah</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Logistics</div><div class="sub">[Lead TBD]</div></div></div>
+</div>
+<div class="dept-group">
+<div class="pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Security</div><div class="sub">Deacon Ahman / Chaanak</div></div></div>
+</div>
+</div>
+<div>
+<div class="dept-group">
+<div class="pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Custodial</div><div class="sub">Kawan</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Cleaning</div><div class="sub">[Lead TBD]</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Detailing</div><div class="sub">Ahwath Lawah</div></div></div>
+</div>
+<div class="dept-group">
+<div class="pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Finance</div><div class="sub">[Lead TBD]</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Bookkeeping</div><div class="sub">Marayam / Shanan</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Fundraising</div><div class="sub">Ahabiyah</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Travel Committee</div><div class="sub">Marayam / Shabiyah</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Tribal Exchange</div><div class="sub">BanaYah / Shawashan</div></div></div>
+</div>
+<div class="dept-group">
+<div class="pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Maintenance</div><div class="sub">Rakab / Bishop Izar</div></div></div>
+</div>
+<div class="dept-group">
+<div class="pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Textiles &amp; Attire</div><div class="sub">Deacon Kanash</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Apparel</div><div class="sub">Kanash / Karamyah</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Seamstress (Faithful Seams)</div><div class="sub">Deacon Kanash</div></div></div>
+<div class="pill sub-pill" style="background:#1E7A3B;color:#FFFFFF;"><div class="badge" style="color:#1E7A3B;"></div><div class="label"><div class="name">Uniform</div><div class="sub">Qawalyah</div></div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="page">
+<h2 class="page-title">JUDGES BRANCH</h2>
+<div class="accent-line" style="background:#C9972C;"></div>
+<div class="page-subtitle">Council / Judging / Righteousness · Repentance</div>
+<div class="branch-members" style="color:#C9972C;">Council: TAZAYAWAN · BANAYAH · IZAR · ASH NAPASH · YASHAMI</div>
+<div class="branch-grid">
+<div>
+<div class="dept-group">
+<div class="pill" style="background:#C9972C;color:#56565E;"><div class="badge" style="color:#C9972C;"></div><div class="label"><div class="name">Counseling</div><div class="sub">Bishop Tazayawan / Apostle Yashami</div></div></div>
+<div class="pill sub-pill" style="background:#C9972C;color:#56565E;"><div class="badge" style="color:#C9972C;"></div><div class="label"><div class="name">Council Members</div><div class="sub">Tazayawan, Yahzeqel, BanaYah, Izar, Ash Napash, Yashami</div></div></div>
+</div>
+</div>
+<div>
+<div class="dept-group">
+<div class="pill" style="background:#C9972C;color:#56565E;"><div class="badge" style="color:#C9972C;"></div><div class="label"><div class="name">Ministries</div><div class="sub">Bishop Banayah · Oversight: Bishops + Apostles</div></div></div>
+<div class="pill sub-pill" style="background:#C9972C;color:#56565E;"><div class="badge" style="color:#C9972C;"></div><div class="label"><div class="name">Sanhedrin (Committee)</div><div class="sub">[Lead TBD]</div></div></div>
+<div class="pill sub-pill" style="background:#C9972C;color:#56565E;"><div class="badge" style="color:#C9972C;"></div><div class="label"><div class="name">Elders Ministry</div><div class="sub">BanaYah / Apostles</div></div></div>
+<div class="pill sub-pill" style="background:#C9972C;color:#56565E;"><div class="badge" style="color:#C9972C;"></div><div class="label"><div class="name">Prayer Ministry</div><div class="sub">BanaYah / Apostles</div></div></div>
+<div class="pill sub-pill" style="background:#C9972C;color:#56565E;"><div class="badge" style="color:#C9972C;"></div><div class="label"><div class="name">Prison Ministry</div><div class="sub">BanaYah / Apostles</div></div></div>
+<div class="pill sub-pill" style="background:#C9972C;color:#56565E;"><div class="badge" style="color:#C9972C;"></div><div class="label"><div class="name">SOV (Sword of the Word)</div><div class="sub">Marayam · Qawalyah / Shawashan</div></div></div>
+</div>
+</div>
+<div>
+</div>
+</div>
+</div>
+</body></html>

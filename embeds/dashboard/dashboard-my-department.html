@@ -1,0 +1,74 @@
+<!--
+  TRUE NATION INTRANET — DASHBOARD: MY DEPARTMENT
+  ────────────────────────────────────────────────
+  Embed via Insert → Embed → Embed Code in Google Sites.
+  Place BELOW the Quick Actions embed on the My Dashboard page.
+  Add a native Sites heading "MY DEPARTMENT" above this embed.
+
+  LIVE DATA: This embed wraps the department widget served by profile-editor.gs.
+  It shows the logged-in user's real department name, title/role, and branch
+  from the Staff Directory sheet. Department icon is mapped automatically by name.
+
+  WIDGET URL:
+    [deployment URL]?widget=department
+  Replace [deployment URL] with the profile editor deployment URL:
+    https://script.google.com/a/macros/truenation.org/s/AKfycbzvYnsSNAUzqif4FLxGa00w7T5FEQaF7lXY5hOMPbDmLPvluaGzg5KX5LF6f5Y3-1tK/exec
+
+  HEIGHT:
+    Desktop: 165px   (dept card with icon, name, role, branch badge, 2 buttons)
+    Mobile (≤480px):  215px  (buttons stack vertically)
+    Increase if role or dept name wraps.
+
+  PLACEHOLDER BUTTONS:
+    "Department Page" and "Chat Space" buttons currently link to "#".
+    [REPLACE] the href values inside profile-editor.gs → buildDepartmentHtml_()
+    when the Google Sites department page URLs and Chat space URLs are confirmed.
+
+  DEPLOYMENT NOTE:
+    When profile-editor.gs is updated, Deploy → Manage Deployments → New version.
+    The URL and widget parameter do not change.
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: transparent; }
+
+  .dept-outer-wrap {
+    background: #E8E8EC;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .dept-outer-wrap iframe {
+    width: 100%;
+    height: 165px;
+    border: none;
+    display: block;
+  }
+
+  @media (max-width: 480px) {
+    .dept-outer-wrap iframe { height: 215px; }
+  }
+</style>
+
+<div class="dept-outer-wrap">
+  <iframe
+    src="https://script.google.com/a/macros/truenation.org/s/AKfycbzvYnsSNAUzqif4FLxGa00w7T5FEQaF7lXY5hOMPbDmLPvluaGzg5KX5LF6f5Y3-1tK/exec?widget=department"
+    title="My Department"
+    allowfullscreen>
+  </iframe>
+</div>
+
+<script>
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:'tnic-height',height:h,id:'dashboard_my_department'},'*');
+    }
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sendHeight);}
+    else{sendHeight();}
+    window.addEventListener('resize',sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+</script>

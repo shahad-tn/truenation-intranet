@@ -1,0 +1,186 @@
+<!--
+  TRUE NATION INTRANET — CALENDAR: UPCOMING EVENTS
+  ─────────────────────────────────────────────────
+  Embed this on the Calendar & Events page.
+  Add a native Sites heading "Upcoming Events" above this embed.
+  [REPLACE] all event data with real content.
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .cal-wrap {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    background: #E8E8EC;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+    box-sizing: border-box;
+  }
+
+  .cal-module {
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(19,13,10,0.05);
+    padding: 16px 18px;
+  }
+
+  .ev-badge {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 2px 8px;
+    border-radius: 100px;
+  }
+  .ev-sabbath   { background: #E8F5E9; color: #2E7D32; }
+  .ev-feast     { background: #FFF3E0; color: #E65100; }
+  .ev-study     { background: #E3F2FD; color: #1565C0; }
+  .ev-community { background: #F3E5F5; color: #6A1B9A; }
+  .ev-youth     { background: #FCE4EC; color: #880E4F; }
+  .ev-special   { background: #FFF8E1; color: #F57F17; }
+  .ev-all       { background: #D8D8DE; color: #56565E; }
+
+  .ev-list { display: flex; flex-direction: column; gap: 10px; }
+
+  .ev-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px;
+    background: #E8E8EC;
+    border-radius: 6px;
+    border-left: 3px solid #C9972C;
+  }
+
+  .ev-date { text-align: center; min-width: 44px; flex-shrink: 0; }
+
+  .ev-date-day {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #7C1316;
+    line-height: 1;
+  }
+
+  .ev-date-mon {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #785710;
+  }
+
+  .ev-info { flex: 1; }
+
+  .ev-title {
+    font-weight: 600;
+    font-size: 15px;
+    color: #26262A;
+    margin-bottom: 4px;
+  }
+
+  .ev-meta { font-size: 12px; color: #888; margin-top: 3px; }
+
+  .ev-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 6px;
+    align-items: center;
+  }
+
+  @media (max-width: 500px) {
+    .ev-item { flex-wrap: wrap; }
+  }
+</style>
+
+<div class="cal-wrap">
+  <div class="cal-module">
+    <div class="ev-list">
+
+      <!-- [REPLACE] with real upcoming events -->
+      <div class="ev-item">
+        <div class="ev-date">
+          <div class="ev-date-day">29</div>
+          <div class="ev-date-mon">Mar</div>
+        </div>
+        <div class="ev-info">
+          <div class="ev-title">Sabbath Service</div>
+          <div class="ev-meta-row">
+            <span class="ev-badge ev-sabbath">Sabbath</span>
+            <span class="ev-meta">📍 Los Angeles (HQ) · All Campuses</span>
+          </div>
+          <div class="ev-meta">🕐 [REPLACE time] · All members</div>
+        </div>
+      </div>
+
+      <div class="ev-item">
+        <div class="ev-date">
+          <div class="ev-date-day">05</div>
+          <div class="ev-date-mon">Apr</div>
+        </div>
+        <div class="ev-info">
+          <div class="ev-title">Feast Preparation Day</div>
+          <div class="ev-meta-row">
+            <span class="ev-badge ev-feast">Feast</span>
+            <span class="ev-meta">📍 Fellowship Hall · HQ</span>
+          </div>
+          <div class="ev-meta">🕐 All day · Fellowship & Services + Logistics</div>
+        </div>
+      </div>
+
+      <div class="ev-item">
+        <div class="ev-date">
+          <div class="ev-date-day">12</div>
+          <div class="ev-date-mon">Apr</div>
+        </div>
+        <div class="ev-info">
+          <div class="ev-title">Sabbath Service</div>
+          <div class="ev-meta-row">
+            <span class="ev-badge ev-sabbath">Sabbath</span>
+            <span class="ev-meta">📍 All Campuses</span>
+          </div>
+          <div class="ev-meta">🕐 [REPLACE time]</div>
+        </div>
+      </div>
+
+      <div class="ev-item">
+        <div class="ev-date">
+          <div class="ev-date-day">19</div>
+          <div class="ev-date-mon">Apr</div>
+        </div>
+        <div class="ev-info">
+          <div class="ev-title">T.E.L.A. Youth Event</div>
+          <div class="ev-meta-row">
+            <span class="ev-badge ev-youth">Youth</span>
+            <span class="ev-meta">📍 [REPLACE location]</span>
+          </div>
+          <div class="ev-meta">🕐 [REPLACE time] · Youth members</div>
+        </div>
+      </div>
+
+      <div class="ev-item">
+        <div class="ev-date">
+          <div class="ev-date-day">26</div>
+          <div class="ev-date-mon">Apr</div>
+        </div>
+        <div class="ev-info">
+          <div class="ev-title">Community Building Event</div>
+          <div class="ev-meta-row">
+            <span class="ev-badge ev-community">Community</span>
+            <span class="ev-meta">📍 [REPLACE location]</span>
+          </div>
+          <div class="ev-meta">🕐 [REPLACE time] · Open to all</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

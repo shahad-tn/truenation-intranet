@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<!--
+  TNIC ANNOUNCEMENTS — READER SCRIPT VIEW (MOCK)
+  ==============================================
+  What this is: the per-service script the announcement reader opens on their
+  phone or prints. It assembles STANDING BLOCKS (from the `blocks` tab) with
+  APPROVED ITEMS (from the `items` tab) in running order.
+
+  Purpose of this mock: validate the data model before building the Apps Script.
+  Content is real, pulled from "True Nation Announcements.docx" (typos cleaned).
+
+  In production this becomes: ?page=script&date=YYYY-MM-DD
+  Data is hardcoded here in SCRIPT_DATA to stand in for the Sheet.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Announcements — Reader Script</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --wine:#7C1316;
+    --gold:#C9972C;
+    --snow:#E8E8EC;   /* page ground - real gray, so white cards separate */
+    --cream:#D8D8DE;  /* inset fills + badges */
+    --line:#BFBFC7;   /* borders - dark enough to read as an edge */
+    --onwine:#F2F2F3; /* text on wine */
+    --bark:#26262A;   /* body text */
+    --ink:#131316;
+    --base:20px;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--snow);
+    color:var(--bark);
+    font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+    font-size:var(--base);
+    line-height:1.55;
+  }
+
+  /* ---------- Top bar ---------- */
+  .rs-top{
+    background:var(--wine);
+    color:var(--onwine);
+    padding:20px 20px 18px;
+  }
+  .rs-top-inner{max-width:820px;margin:0 auto;}
+  .rs-kicker{
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:600;
+    font-size:.72em;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin:0 0 4px;
+  }
+  .rs-title{
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:700;
+    font-size:1.9em;
+    line-height:1.1;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    margin:0 0 8px;
+  }
+  .rs-meta{
+    font-size:.8em;
+    margin:0;
+    color:var(--onwine);
+    opacity:.92;
+  }
+  .rs-meta strong{font-weight:700;}
+
+  /* ---------- Service switcher (mock only) ---------- */
+  .rs-switch{
+    max-width:820px;
+    margin:0 auto;
+    padding:14px 20px 0;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    align-items:center;
+  }
+  .rs-switch-label{
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:600;
+    font-size:.72em;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--bark);
+    margin-right:4px;
+  }
+  .rs-tab{
+    font-family:'DM Sans',sans-serif;
+    font-size:.78em;
+    font-weight:500;
+    padding:8px 14px;
+    border:2px solid var(--line);
+    background:#fff;
+    color:var(--bark);
+    border-radius:999px;
+    cursor:pointer;
+  }
+  .rs-tab:hover{border-color:var(--gold);}
+  .rs-tab[aria-selected="true"]{
+    background:var(--wine);
+    border-color:var(--wine);
+    color:var(--onwine);
+    font-weight:700;
+  }
+  .rs-tab:focus-visible,.rs-btn:focus-visible,.rs-check:focus-visible{
+    outline:3px solid var(--gold);
+    outline-offset:2px;
+  }
+
+  /* ---------- Toolbar ---------- */
+  .rs-tools{
+    max-width:820px;
+    margin:0 auto;
+    padding:14px 20px 0;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    align-items:center;
+  }
+  .rs-btn{
+    font-family:'DM Sans',sans-serif;
+    font-size:.78em;
+    font-weight:500;
+    padding:8px 14px;
+    border:2px solid var(--line);
+    background:#fff;
+    color:var(--bark);
+    border-radius:6px;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  .rs-btn:hover{border-color:var(--gold);}
+  .rs-progress-wrap{
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:.75em;
+    color:var(--bark);
+  }
+  .rs-bar{
+    width:110px;
+    height:8px;
+    background:var(--cream);
+    border-radius:999px;
+    overflow:hidden;
+  }
+  .rs-bar-fill{
+    height:100%;
+    width:0%;
+    background:var(--wine);
+    transition:width .2s ease;
+  }
+
+  /* ---------- Script body ---------- */
+  .rs-wrap{max-width:820px;margin:0 auto;padding:22px 20px 60px;}
+
+  .rs-part{
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:700;
+    font-size:1.05em;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--wine);
+    text-align:center;
+    margin:34px 0 18px;
+    padding:10px 0;
+    border-top:3px solid var(--gold);
+    border-bottom:3px solid var(--gold);
+  }
+  .rs-part:first-of-type{margin-top:8px;}
+
+  .rs-sec{
+    background:#fff;
+    border:1px solid var(--line);
+    border-left:6px solid var(--wine);
+    border-radius:8px;
+    padding:18px 20px;
+    margin:0 0 16px;
+  }
+  .rs-sec-head{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    flex-wrap:wrap;
+    margin:0 0 12px;
+  }
+  .rs-sec-name{
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:700;
+    font-size:1.25em;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--wine);
+    margin:0;
+  }
+  .rs-tag{
+    font-family:'DM Sans',sans-serif;
+    font-size:.62em;
+    font-weight:700;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    padding:3px 9px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
+  .rs-tag-standing{background:var(--cream);color:var(--bark);}
+  .rs-tag-new{background:var(--gold);color:var(--ink);}
+
+  .rs-line{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    padding:9px 0;
+    border-top:1px solid var(--cream);
+  }
+  .rs-line:first-of-type{border-top:none;padding-top:0;}
+  .rs-check{
+    flex:0 0 auto;
+    width:26px;height:26px;
+    margin-top:2px;
+    border:2px solid var(--gold);
+    border-radius:6px;
+    background:#fff;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    font-size:15px;
+    line-height:1;
+    color:var(--wine);
+    padding:0;
+  }
+  .rs-check[aria-pressed="true"]{background:var(--wine);border-color:var(--wine);color:var(--onwine);}
+  .rs-text{flex:1 1 auto;margin:0;}
+  .rs-line[data-read="true"] .rs-text{opacity:.42;text-decoration:line-through;text-decoration-thickness:1px;}
+
+  .rs-attrib{
+    display:block;
+    margin-top:5px;
+    font-size:.68em;
+    color:var(--bark);
+    opacity:.85;
+  }
+  .rs-attrib b{color:var(--wine);}
+
+  .rs-note{
+    background:var(--cream);
+    border-left:6px solid var(--gold);
+    border-radius:8px;
+    padding:14px 18px;
+    margin:0 0 16px;
+    font-size:.85em;
+  }
+  .rs-note-title{
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:700;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--wine);
+    display:block;
+    margin-bottom:4px;
+  }
+
+  .rs-end{
+    text-align:center;
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:700;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--wine);
+    margin:34px 0 0;
+    padding-top:18px;
+    border-top:3px solid var(--gold);
+    font-size:.95em;
+  }
+
+  .rs-legend{
+    max-width:820px;
+    margin:0 auto;
+    padding:0 20px 26px;
+    font-size:.72em;
+    color:var(--bark);
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+  .rs-legend span.rs-tag{font-size:.85em;}
+
+  @media (max-width:520px){
+    :root{--base:19px;}
+    .rs-title{font-size:1.6em;}
+    .rs-progress-wrap{margin-left:0;width:100%;}
+  }
+
+  @media print{
+    .rs-switch,.rs-tools,.rs-legend{display:none !important;}
+    body{background:#fff;font-size:13pt;}
+    .rs-top{background:#fff;color:var(--ink);border-bottom:4px solid var(--wine);}
+    .rs-kicker{color:var(--wine);}
+    .rs-meta{color:var(--ink);}
+    .rs-sec{break-inside:avoid;border-color:#ccc;}
+    .rs-check{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<header class="rs-top">
+  <div class="rs-top-inner">
+    <p class="rs-kicker">True Nation &middot; Announcements</p>
+    <h1 class="rs-title" id="svcTitle">Sabbath Class</h1>
+    <p class="rs-meta" id="svcMeta">Saturday, September 5, 2026 &nbsp;&middot;&nbsp; Los Angeles, CA &nbsp;&middot;&nbsp; Reader: <strong>Lawah</strong></p>
+  </div>
+</header>
+
+<!-- Mock-only: in production the date is passed in the URL, not switched here -->
+<div class="rs-switch" role="tablist" aria-label="Service type (mock preview)">
+  <span class="rs-switch-label">Preview service:</span>
+  <button class="rs-tab" role="tab" aria-selected="true" data-svc="sabbath">Sabbath</button>
+  <button class="rs-tab" role="tab" aria-selected="false" data-svc="newmoon">New Moon</button>
+  <button class="rs-tab" role="tab" aria-selected="false" data-svc="feast">Feast Day</button>
+</div>
+
+<div class="rs-tools">
+  <button class="rs-btn" id="btnSmaller" type="button">A&minus; &nbsp;Smaller</button>
+  <button class="rs-btn" id="btnBigger" type="button">A+ &nbsp;Larger</button>
+  <button class="rs-btn" id="btnPrint" type="button">Print</button>
+  <button class="rs-btn" id="btnReset" type="button">Reset checkmarks</button>
+  <div class="rs-progress-wrap">
+    <span id="progText">0 of 0 read</span>
+    <div class="rs-bar" aria-hidden="true"><div class="rs-bar-fill" id="progFill"></div></div>
+  </div>
+</div>
+
+<div class="rs-legend">
+  <span class="rs-tag rs-tag-standing">Standing</span> <span>Evergreen text — edited in the dashboard, read every service.</span>
+  <span class="rs-tag rs-tag-new">Submitted</span> <span>Approved one-off item for this date only.</span>
+</div>
+
+<main class="rs-wrap" id="scriptBody"></main>
+
+<script>
+/* ============================================================
+   SCRIPT_DATA — stands in for the Google Sheet.
+   `blocks` = standing text (service_type, section, order)
+   `items`  = approved submissions (service_date, section, order)
+   The renderer merges them by section, then by order.
+   ============================================================ */
+var SCRIPT_DATA = {
+  sabbath: {
+    title:"Sabbath Class",
+    meta:"Saturday, September 5, 2026 &nbsp;&middot;&nbsp; Los Angeles, CA &nbsp;&middot;&nbsp; Reader: <strong>Lawah</strong>",
+    parts:[
+      { part:"Before Class", sections:[
+        { name:"Shalam & Welcome", kind:"standing", lines:[
+          {t:"Shalam everyone, and welcome to all guests and visitors."},
+          {t:"Before we begin class, we would like to go over a few class rules."}
+        ]},
+        { name:"Class Rules", kind:"standing", lines:[
+          {t:"There is no eating or drinking in the sanctuary or T.E.L.A. rooms. Closed bottles of water and items like peppermints or cough drops are acceptable."},
+          {t:"Once class starts, let's minimize walking back and forth and getting out of our seats."},
+          {t:"Parents, please make sure your children do not have iPads or toys out during class."},
+          {t:"If you are caught sleeping or sleepy in class, you will be told to stand in the back — ages 8 and up. No one is exempt."},
+          {t:"Let's take pride in our chairs. They are fabric, so please keep them clean, and do not let the babies walk on them."},
+          {t:"Class will be streamed online on YouTube. Please be sure to like, subscribe, and share the video."}
+        ]}
+      ]},
+      { part:"After Class", sections:[
+        { name:"Shalam & Welcome", kind:"standing", lines:[
+          {t:"Shalam everyone, and welcome to all guests and visitors."}
+        ]},
+        { name:"Guests & Visitors", kind:"standing", lines:[
+          {t:"To all our guests and visitors — if you have an interest in becoming a member of True Nation, you may speak with one of our deacons, Kahan or Shahad."}
+        ]},
+        { name:"Housekeeping", kind:"standing", lines:[
+          {t:"All congregants are responsible for reading and checking your email."},
+          {t:"Please, no parking in the parking lot at all on Sundays. Thank you."},
+          {t:"When leaving Sabbath class, please take all your belongings with you. Please do not leave anything behind."}
+        ]},
+        { name:"Dues & Contributions", kind:"standing", lines:[
+          {t:"True Nation Alms."},
+          {t:"Passover Garment Dues — $50 monthly."},
+          {t:"If you would like to order True Nation shirts or sweatshirts, please order through TrueNation.org/store."},
+          {t:"If you have any questions regarding alms or feast fees — anything to do with money — please contact Marayam or Shanan on the finance team."}
+        ]},
+        { name:"Announcements", kind:"mixed", lines:[
+          {t:"Please keep an eye out for upcoming events in your emails. The events team has been doing a great job keeping us all informed. Thank you.", standing:true},
+          {t:"T.E.L.A. Intramural Sports sign-ups close this Wednesday. See Bishop Tazayawan or scan the QR code posted in the hallway.", by:"Ashley", dept:"T.E.L.A."},
+          {t:"Uniform fittings for Passover garments will be held next Sabbath after class in the back room. Sisters first, then brothers.", by:"Qawalyah", dept:"Textiles & Attire"}
+        ]},
+        { name:"Prayer Request List", kind:"placeholder", lines:[
+          {t:"Please keep the following people in your prayers for healing, protection, and blessing."},
+          {t:"All of True Nation."},
+          {t:"All of those who died in the faith — pray for their souls."},
+          {t:"Please utilize the prayer line."}
+        ]},
+        { name:"Closing", kind:"standing", lines:[
+          {t:"Refreshments to follow. We have food and drinks available for everyone in the Rec room after we send up our closing prayers. Please allow guests and elders to eat first."},
+          {t:"Remember that some of our children have severe food allergies. Do not feed any child without the parent's permission."},
+          {t:"On behalf of Hospitality, thank you all for your contributions — we could not do this without you. Please be sure to check your emails and contribute on the days you are assigned."}
+        ]}
+      ]}
+    ]
+  },
+
+  feast: {
+    title:"Feast Day",
+    meta:"Wednesday, September 23, 2026 &nbsp;&middot;&nbsp; Los Angeles, CA &nbsp;&middot;&nbsp; Reader: <strong>Lawah</strong>",
+    parts:[
+      { part:"After Class", sections:[
+        { name:"Shalam & Welcome", kind:"standing", lines:[
+          {t:"Shalam everyone, and welcome to all guests and visitors!"},
+          {t:"Announce the feast we are celebrating today. Give praises to YHWH!"}
+        ]},
+        { name:"Guests & Visitors", kind:"standing", lines:[
+          {t:"To all our guests and visitors — if you have an interest in becoming a member of True Nation, you may speak with one of our deacons: Kahan or Shahad."}
+        ]},
+        { name:"Feast Etiquette", kind:"standing", lines:[
+          {t:"If you arrive late with your dish, please drop it off quietly and avoid lingering, as others are watching the lesson."},
+          {t:"We will be lining up outside, so please keep an ear out for instructions."},
+          {t:"Members, please allow our guests and elders to eat first."},
+          {t:"Please wait to get your dessert until after everyone has gotten their food, and be mindful of the desserts — let's make sure there is enough for everyone."},
+          {t:"Wellness and immunity shots are in the back, along with shot glasses. Please save your shot glass — one shot only. Once everyone has had a shot, you are welcome to a second."},
+          {t:"To all adults, please be conscious of your alcohol consumption and drink responsibly."},
+          {t:"Parents, let's do a better job keeping up with our little ones. With that being said, no children are allowed in the T.E.L.A. room, because they leave a mess behind."},
+          {t:"To everyone, make sure that you clean up after yourselves and your children."}
+        ]},
+        { name:"Announcements", kind:"mixed", lines:[
+          {t:"Please keep an eye out for upcoming events in your emails. The events team has been doing a great job keeping us all informed. Thank you.", standing:true},
+          {t:"Please get some photos at our photo booth — it is beautiful. It will be open 45 minutes after class.", by:"Ahmaryah", dept:"Everyday Sheeple"},
+          {t:"Choir rehearsal tomorrow at 11:00 AM.", by:"Yaqataza", dept:"Performing Arts"},
+          {t:"Soccer practice tomorrow at 1:00 PM at Freeman Park.", by:"Tazayawan", dept:"T.E.L.A."},
+          {t:"There is no Marriage Circle tomorrow.", by:"Mathathyah", dept:"Fellowship & Service"},
+          {t:"If you ordered art from the gallery, please pick it up in the deacons' office.", by:"Ahmaryah", dept:"Everyday Sheeple"},
+          {t:"If you decide to come to the school tomorrow — no parking in the lot.", by:"Rakab", dept:"Maintenance"}
+        ]},
+        { name:"Prayer Request List", kind:"placeholder", lines:[
+          {t:"Please keep the following people in your prayers for healing, protection, and blessing."},
+          {t:"All of those who died in the faith — pray for their souls."}
+        ]},
+        { name:"Closing", kind:"standing", lines:[
+          {t:"Give thanks to everyone that contributed to the feast today."},
+          {t:"Encourage everyone to be festive and in good spirits."}
+        ]}
+      ]}
+    ]
+  },
+
+  newmoon: {
+    title:"New Moon",
+    meta:"Thursday, October 1, 2026 &nbsp;&middot;&nbsp; Los Angeles, CA &nbsp;&middot;&nbsp; Reader: <strong>Lawah</strong>",
+    parts:[
+      { part:"After Class", sections:[
+        { name:"Shalam & Welcome", kind:"standing", lines:[
+          {t:"Shalam everyone, and welcome to all guests and visitors."}
+        ]},
+        { name:"Guests & Visitors", kind:"standing", lines:[
+          {t:"To all our guests and visitors — if you have an interest in becoming a member of True Nation, you may speak with one of our deacons, Kahan or Shahad."}
+        ]},
+        { name:"Announcements", kind:"mixed", lines:[
+          {t:"All congregants are responsible for reading and checking your email.", standing:true},
+          {t:"No submitted announcements have been approved for this service yet.", empty:true}
+        ]},
+        { name:"Prayer Request List", kind:"placeholder", lines:[
+          {t:"Please keep the following people in your prayers for healing, protection, and blessing."},
+          {t:"All of True Nation."}
+        ]},
+        { name:"Closing", kind:"standing", lines:[
+          {t:"Refreshments to follow. Please allow guests and elders to eat first."}
+        ]}
+      ]}
+    ]
+  }
+};
+
+/* ---------- Render ---------- */
+var lineCounter = 0;
+
+function esc(s){return String(s).replace(/&(?!#?\w+;)/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function renderService(key){
+  var d = SCRIPT_DATA[key];
+  document.getElementById('svcTitle').innerHTML = esc(d.title);
+  document.getElementById('svcMeta').innerHTML = d.meta;
+
+  lineCounter = 0;
+  var html = '';
+
+  d.parts.forEach(function(p){
+    html += '<h2 class="rs-part">' + esc(p.part) + '</h2>';
+
+    p.sections.forEach(function(sec){
+      if(sec.kind === 'placeholder'){
+        html += '<div class="rs-sec">';
+        html += '<div class="rs-sec-head"><h3 class="rs-sec-name">' + esc(sec.name) + '</h3>';
+        html += '<span class="rs-tag rs-tag-standing">Separate feed</span></div>';
+        sec.lines.forEach(function(l){ html += lineHTML(l); });
+        html += '<div class="rs-note" style="margin:14px 0 0;"><span class="rs-note-title">Not built yet</span>'
+             +  'The prayer list is out of scope for phase one. It would feed in here from its own private list — never onto the home page.</div>';
+        html += '</div>';
+        return;
+      }
+
+      var tag = sec.kind === 'mixed'
+        ? '<span class="rs-tag rs-tag-standing">Standing</span> <span class="rs-tag rs-tag-new">+ Submitted</span>'
+        : '<span class="rs-tag rs-tag-standing">Standing</span>';
+
+      html += '<div class="rs-sec">';
+      html += '<div class="rs-sec-head"><h3 class="rs-sec-name">' + esc(sec.name) + '</h3>' + tag + '</div>';
+      sec.lines.forEach(function(l){ html += lineHTML(l); });
+      html += '</div>';
+    });
+  });
+
+  html += '<p class="rs-end">End of announcements</p>';
+
+  document.getElementById('scriptBody').innerHTML = html;
+  wireChecks();
+  updateProgress();
+}
+
+function lineHTML(l){
+  var id = 'ln' + (++lineCounter);
+  var attrib = '';
+  if(l.by){
+    attrib = '<span class="rs-attrib">Submitted by <b>' + esc(l.by) + '</b> &middot; ' + esc(l.dept) + ' &middot; approved</span>';
+  }
+  if(l.empty){
+    return '<div class="rs-line" data-read="false" style="opacity:.6;font-style:italic;">'
+         + '<p class="rs-text">' + esc(l.t) + '</p></div>';
+  }
+  return '<div class="rs-line" data-read="false">'
+       + '<button class="rs-check" type="button" aria-pressed="false" aria-label="Mark this line as read" data-line="' + id + '"></button>'
+       + '<p class="rs-text" id="' + id + '">' + esc(l.t) + attrib + '</p>'
+       + '</div>';
+}
+
+function wireChecks(){
+  var checks = document.querySelectorAll('.rs-check');
+  for(var i=0;i<checks.length;i++){
+    checks[i].addEventListener('click', function(){
+      var pressed = this.getAttribute('aria-pressed') === 'true';
+      this.setAttribute('aria-pressed', pressed ? 'false' : 'true');
+      this.innerHTML = pressed ? '' : '&#10003;';
+      this.closest('.rs-line').setAttribute('data-read', pressed ? 'false' : 'true');
+      updateProgress();
+    });
+  }
+}
+
+function updateProgress(){
+  var all = document.querySelectorAll('.rs-check');
+  var done = document.querySelectorAll('.rs-check[aria-pressed="true"]');
+  var pct = all.length ? Math.round(done.length / all.length * 100) : 0;
+  document.getElementById('progText').textContent = done.length + ' of ' + all.length + ' read';
+  document.getElementById('progFill').style.width = pct + '%';
+}
+
+/* ---------- Controls ---------- */
+var sizes = [17,19,21,23,26,29];
+var sizeIdx = 1;
+function applySize(){
+  document.documentElement.style.setProperty('--base', sizes[sizeIdx] + 'px');
+}
+document.getElementById('btnBigger').addEventListener('click', function(){
+  if(sizeIdx < sizes.length-1){ sizeIdx++; applySize(); }
+});
+document.getElementById('btnSmaller').addEventListener('click', function(){
+  if(sizeIdx > 0){ sizeIdx--; applySize(); }
+});
+document.getElementById('btnPrint').addEventListener('click', function(){ window.print(); });
+document.getElementById('btnReset').addEventListener('click', function(){
+  var checks = document.querySelectorAll('.rs-check');
+  for(var i=0;i<checks.length;i++){
+    checks[i].setAttribute('aria-pressed','false');
+    checks[i].innerHTML = '';
+    checks[i].closest('.rs-line').setAttribute('data-read','false');
+  }
+  updateProgress();
+});
+
+var tabs = document.querySelectorAll('.rs-tab');
+for(var i=0;i<tabs.length;i++){
+  tabs[i].addEventListener('click', function(){
+    for(var j=0;j<tabs.length;j++){ tabs[j].setAttribute('aria-selected','false'); }
+    this.setAttribute('aria-selected','true');
+    renderService(this.getAttribute('data-svc'));
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+}
+
+renderService('sabbath');
+applySize();
+
+/* ---------- Height reporter (TNIC convention) ---------- */
+(function(){
+  function sendHeight(){
+    var h=document.body?document.body.scrollHeight:0;
+    window.parent.postMessage({type:'tnic-height',height:h,id:'announcements-reader-script'},'*');
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sendHeight);}
+  else{sendHeight();}
+  window.addEventListener('resize',sendHeight);
+  if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+})();
+</script>
+</body>
+</html>

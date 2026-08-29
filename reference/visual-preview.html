@@ -1,0 +1,1737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TNIC Intranet — Visual Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --wine: #7C1316;
+    --gold: #C9972C;
+    --cream: #F2EDE4;
+    --snow: #FAF8F4;
+    --brown: #130D0A;
+    --wine-light: #9e2a2d;
+    --gold-light: #d4ac5a;
+    --gray-border: #d0ccc7;
+    --gray-text: #666;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: #f0ece8; color: var(--brown); }
+
+  /* ── TOP BAR ────────────────────────────────────────────────────────── */
+  .topbar {
+    background: var(--wine); color: var(--cream); padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,.2);
+  }
+  .topbar h1 { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; text-transform: uppercase; letter-spacing: 1px; }
+  .topbar .badge { background: var(--gold); color: var(--brown); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 12px; }
+
+  /* ── NAV TABS ───────────────────────────────────────────────────────── */
+  .nav-tabs {
+    display: flex; flex-wrap: wrap; gap: 0; background: var(--brown);
+    padding: 0 16px; overflow-x: auto;
+  }
+  .nav-tabs button {
+    background: none; border: none; color: var(--cream); font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 500; padding: 12px 16px; cursor: pointer;
+    border-bottom: 3px solid transparent; white-space: nowrap; transition: all .2s;
+  }
+  .nav-tabs button:hover { background: rgba(255,255,255,.08); }
+  .nav-tabs button.active { border-bottom-color: var(--gold); color: var(--gold); font-weight: 700; }
+
+  /* ── MOCKUP CONTAINER ───────────────────────────────────────────────── */
+  .mockup-area { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
+  .mockup-frame {
+    background: var(--snow); border: 1px solid var(--gray-border);
+    border-radius: 12px; overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,.08);
+  }
+  .mockup-label {
+    background: var(--cream); padding: 12px 24px; font-size: 12px; color: var(--gray-text);
+    border-bottom: 1px solid var(--gray-border); display: flex; align-items: center; gap: 8px;
+  }
+  .mockup-label .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .mockup-label .dot.r { background: #e74c3c; }
+  .mockup-label .dot.y { background: #f39c12; }
+  .mockup-label .dot.g { background: #27ae60; }
+  .mockup-content { padding: 0; }
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ── SITE NAV MOCK ─────────────────────────────────────────────────── */
+  .site-nav {
+    background: var(--wine); display: flex; gap: 0; padding: 0 16px; overflow-x: auto;
+  }
+  .site-nav a {
+    color: var(--cream); font-family: 'Barlow Condensed', sans-serif; font-size: 14px;
+    text-transform: uppercase; padding: 10px 14px; text-decoration: none;
+    border-bottom: 3px solid transparent; white-space: nowrap; letter-spacing: .5px;
+  }
+  .site-nav a.active-nav { border-bottom-color: var(--gold); color: var(--gold); }
+
+  /* ── PAGE CONTENT ───────────────────────────────────────────────────── */
+  .page-inner { padding: 32px; }
+  .page-inner h2 {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 28px; text-transform: uppercase;
+    color: var(--wine); margin-bottom: 16px; letter-spacing: .5px;
+    border-bottom: 3px solid var(--gold); padding-bottom: 8px; display: inline-block;
+  }
+  .page-inner h3 {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 20px; text-transform: uppercase;
+    color: var(--wine); margin: 24px 0 12px;
+  }
+  .page-inner p { color: var(--brown); line-height: 1.65; margin-bottom: 12px; font-size: 15px; }
+
+  /* ── HERO ────────────────────────────────────────────────────────────── */
+  .hero {
+    background: linear-gradient(135deg, var(--wine) 0%, #4a0b0d 100%);
+    color: var(--cream); padding: 48px 32px; text-align: center;
+  }
+  .hero h2 { color: var(--cream); font-size: 36px; border: none; display: block; padding: 0; margin-bottom: 8px; }
+  .hero p { color: rgba(242,237,228,.8); font-size: 16px; }
+  .hero .verse { font-style: italic; margin-top: 16px; font-size: 14px; color: var(--gold-light); }
+
+  /* ── CARDS ───────────────────────────────────────────────────────────── */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin: 20px 0; }
+  .card {
+    background: white; border: 1px solid var(--gray-border); border-radius: 8px;
+    padding: 20px; transition: box-shadow .2s; cursor: default;
+  }
+  .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,.1); }
+  .card-icon { font-size: 28px; margin-bottom: 8px; }
+  .card h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; color: var(--wine); text-transform: uppercase; margin-bottom: 4px; }
+  .card p { font-size: 13px; color: var(--gray-text); margin: 0; line-height: 1.4; }
+  .card .tag { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px; margin-top: 8px; }
+  .tag-apostles { background: #e8eaf6; color: #283593; }
+  .tag-deacons { background: #e8f5e9; color: #2e7d32; }
+  .tag-judges { background: #fff8e1; color: #8d6e00; }
+
+  /* ── QUICK LINKS ─────────────────────────────────────────────────────── */
+  .quick-links { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 20px 0; }
+  .ql-btn {
+    background: white; border: 2px solid var(--gold); border-radius: 8px;
+    padding: 16px 12px; text-align: center; cursor: pointer; transition: all .2s;
+  }
+  .ql-btn:hover { background: var(--gold); color: white; }
+  .ql-btn .ql-icon { font-size: 24px; display: block; margin-bottom: 6px; }
+  .ql-btn span { font-size: 13px; font-weight: 600; color: var(--brown); }
+
+  /* ── ANNOUNCEMENTS ───────────────────────────────────────────────────── */
+  .announcements {
+    background: white; border: 1px solid var(--gray-border); border-radius: 8px;
+    padding: 20px; margin: 20px 0;
+  }
+  .ann-item { padding: 12px 0; border-bottom: 1px solid #eee; }
+  .ann-item:last-child { border-bottom: none; }
+  .ann-item .ann-date { font-size: 12px; color: var(--gold); font-weight: 700; }
+  .ann-item .ann-title { font-weight: 600; font-size: 15px; margin-top: 2px; }
+  .ann-item .ann-dept { font-size: 12px; color: var(--gray-text); margin-top: 2px; }
+
+  /* ── CALENDAR MOCK ───────────────────────────────────────────────────── */
+  .cal-embed {
+    background: white; border: 1px solid var(--gray-border); border-radius: 8px;
+    overflow: hidden; margin: 20px 0;
+  }
+  .cal-header {
+    background: var(--wine); color: var(--cream); padding: 12px 16px;
+    font-family: 'Barlow Condensed', sans-serif; font-size: 16px; text-transform: uppercase;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); font-size: 13px; text-align: center; }
+  .cal-grid .day-label { font-weight: 700; padding: 8px 4px; background: var(--cream); color: var(--brown); font-size: 11px; }
+  .cal-grid .day-cell { padding: 8px 4px; border: 1px solid #f0f0f0; min-height: 48px; position: relative; }
+  .cal-grid .day-cell.today { background: #fff3e0; }
+  .cal-grid .day-cell .num { font-weight: 600; font-size: 12px; }
+  .cal-grid .day-cell .event { font-size: 9px; padding: 2px 4px; border-radius: 3px; margin-top: 2px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .event-feast { background: var(--gold); color: white; }
+  .event-org { background: var(--wine); color: white; }
+  .event-dept { background: #2e7d32; color: white; }
+  .event-tela { background: #283593; color: white; }
+
+  /* ── SITE MAP ────────────────────────────────────────────────────────── */
+  .sitemap { text-align: center; padding: 32px; }
+  .sm-root {
+    background: var(--wine); color: var(--cream); display: inline-block;
+    padding: 14px 32px; border-radius: 8px; font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px; text-transform: uppercase; letter-spacing: 1px;
+    box-shadow: 0 3px 10px rgba(124,19,22,.3);
+  }
+  .sm-connector { width: 2px; height: 24px; background: var(--gold); margin: 0 auto; }
+  .sm-branches { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+  .sm-branch {
+    background: white; border: 2px solid var(--gold); border-radius: 8px;
+    padding: 12px 16px; min-width: 140px; text-align: center;
+  }
+  .sm-branch h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; color: var(--wine); text-transform: uppercase; margin-bottom: 8px; }
+  .sm-branch .sm-sub {
+    font-size: 11px; color: var(--gray-text); padding: 3px 0;
+    border-top: 1px solid #eee; text-align: left;
+  }
+  .sm-branch .sm-sub:first-of-type { border-top: none; }
+
+  /* ── DIRECTORY MOCK ─────────────────────────────────────────────────── */
+  .dir-search {
+    display: flex; gap: 12px; margin: 20px 0; flex-wrap: wrap;
+  }
+  .dir-search input {
+    flex: 1; min-width: 200px; padding: 10px 16px; border: 2px solid var(--gray-border);
+    border-radius: 8px; font-size: 15px; font-family: 'DM Sans', sans-serif;
+  }
+  .dir-search input:focus { outline: none; border-color: var(--gold); }
+  .dir-search select {
+    padding: 10px 16px; border: 2px solid var(--gray-border); border-radius: 8px;
+    font-size: 14px; font-family: 'DM Sans', sans-serif; background: white;
+  }
+  .dir-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin: 16px 0; }
+  .dir-card {
+    background: white; border: 1px solid var(--gray-border); border-radius: 8px;
+    padding: 16px; display: flex; gap: 12px; align-items: flex-start;
+  }
+  .dir-avatar {
+    width: 48px; height: 48px; border-radius: 50%; background: var(--cream);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 700; color: var(--wine); flex-shrink: 0;
+  }
+  .dir-info h4 { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+  .dir-info .dir-role { font-size: 12px; color: var(--gray-text); }
+  .dir-info .dir-dept { font-size: 12px; color: var(--wine); font-weight: 600; }
+  .dir-actions { margin-top: 8px; display: flex; gap: 8px; }
+  .dir-actions a {
+    font-size: 11px; padding: 4px 10px; border-radius: 4px;
+    text-decoration: none; background: var(--cream); color: var(--wine); font-weight: 600;
+  }
+
+  /* ── DEPARTMENT PAGE ─────────────────────────────────────────────────── */
+  .dept-header {
+    background: linear-gradient(135deg, var(--wine) 0%, #4a0b0d 100%);
+    color: var(--cream); padding: 32px; display: flex; justify-content: space-between; align-items: flex-end;
+  }
+  .dept-header h2 { color: var(--cream); border: none; font-size: 32px; display: block; padding: 0; margin: 0; }
+  .dept-header .dept-branch { font-size: 13px; color: var(--gold-light); margin-top: 4px; }
+  .dept-header .dept-lead { text-align: right; }
+  .dept-header .dept-lead .label { font-size: 11px; color: var(--gold-light); text-transform: uppercase; }
+  .dept-header .dept-lead .name { font-size: 18px; font-weight: 600; }
+
+  .dept-links { display: flex; gap: 12px; margin: 20px 0; flex-wrap: wrap; }
+  .dept-link {
+    display: flex; align-items: center; gap: 8px; padding: 10px 16px;
+    background: white; border: 2px solid var(--gold); border-radius: 8px;
+    font-size: 14px; font-weight: 600; color: var(--wine); cursor: pointer;
+  }
+
+  .dept-section {
+    background: white; border: 1px solid var(--gray-border); border-radius: 8px;
+    padding: 20px; margin: 16px 0;
+  }
+  .dept-section h3 { margin-top: 0; }
+
+  /* ── DASHBOARD MOCK ─────────────────────────────────────────────────── */
+  .dash-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 20px 0; }
+  .dash-stat {
+    background: white; border: 1px solid var(--gray-border); border-radius: 8px;
+    padding: 20px; text-align: center;
+  }
+  .dash-stat .stat-num { font-size: 36px; font-weight: 700; color: var(--wine); }
+  .dash-stat .stat-label { font-size: 13px; color: var(--gray-text); margin-top: 4px; }
+  .dash-stat .stat-change { font-size: 12px; margin-top: 4px; }
+  .dash-stat .stat-change.up { color: #27ae60; }
+
+  .dash-chart {
+    background: white; border: 1px solid var(--gray-border); border-radius: 8px;
+    padding: 20px; margin: 16px 0;
+  }
+  .bar-chart { display: flex; align-items: flex-end; gap: 8px; height: 160px; margin-top: 16px; }
+  .bar-col { display: flex; flex-direction: column; align-items: center; flex: 1; }
+  .bar { width: 100%; border-radius: 4px 4px 0 0; transition: height .3s; }
+  .bar-label { font-size: 10px; color: var(--gray-text); margin-top: 6px; text-align: center; }
+  .bar-value { font-size: 11px; font-weight: 700; color: var(--brown); margin-bottom: 4px; }
+
+  /* ── LEADERSHIP ──────────────────────────────────────────────────────── */
+  .restricted-badge {
+    display: inline-flex; align-items: center; gap: 6px; background: #fce4e4;
+    color: var(--wine); font-size: 12px; font-weight: 700; padding: 6px 14px;
+    border-radius: 16px; margin-bottom: 16px;
+  }
+  .branch-card {
+    background: white; border-left: 4px solid; border-radius: 8px; padding: 20px; margin: 12px 0;
+    border-color: var(--gold);
+  }
+  .branch-card h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; text-transform: uppercase; color: var(--wine); margin-bottom: 8px; }
+  .branch-card .bc-desc { font-size: 14px; color: var(--gray-text); margin-bottom: 8px; }
+  .branch-card .bc-members { font-size: 13px; }
+
+  /* ── LIBRARY ─────────────────────────────────────────────────────────── */
+  .lib-section { margin: 16px 0; }
+  .lib-folder {
+    display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+    background: white; border: 1px solid var(--gray-border); border-radius: 6px;
+    margin: 8px 0; cursor: pointer; transition: background .2s;
+  }
+  .lib-folder:hover { background: var(--cream); }
+  .lib-folder .folder-icon { font-size: 22px; }
+  .lib-folder .folder-name { font-weight: 600; font-size: 14px; }
+  .lib-folder .folder-count { font-size: 12px; color: var(--gray-text); margin-left: auto; }
+
+  /* ── SUBSCRIBE BUTTONS ─────────────────────────────────────────────── */
+  .sub-list { margin: 16px 0; }
+  .sub-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 16px; background: white; border: 1px solid var(--gray-border);
+    border-radius: 6px; margin: 8px 0;
+  }
+  .sub-item .sub-name { font-weight: 600; font-size: 14px; }
+  .sub-item .sub-desc { font-size: 12px; color: var(--gray-text); }
+  .sub-btn {
+    background: var(--wine); color: var(--cream); border: none; padding: 6px 14px;
+    border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;
+  }
+
+  /* ── TELA ────────────────────────────────────────────────────────────── */
+  .tela-hero {
+    background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+    color: white; padding: 32px; text-align: center;
+  }
+  .tela-hero h2 { color: white; border: none; font-size: 32px; display: block; padding: 0; margin-bottom: 8px; }
+  .tela-hero p { color: rgba(255,255,255,.7); font-size: 15px; }
+  .program-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 20px 0; }
+  .program-card {
+    background: white; border: 1px solid var(--gray-border); border-radius: 8px;
+    padding: 20px; text-align: center;
+  }
+  .program-card .prog-icon { font-size: 32px; margin-bottom: 8px; }
+  .program-card h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; color: #283593; text-transform: uppercase; }
+  .program-card p { font-size: 12px; color: var(--gray-text); margin-top: 4px; }
+
+  /* ══════════════════════════════════════════════════════════════════
+     OUR PEOPLE — userdirectory.html integration
+  ══════════════════════════════════════════════════════════════════ */
+  .ppl-toolbar {
+    background: #fff; border-bottom: 1px solid var(--gray-border);
+    padding: 12px 28px; display: flex; align-items: center;
+    gap: 12px; flex-wrap: wrap; position: sticky; top: 58px; z-index: 99;
+  }
+  .ppl-search-wrap {
+    position: relative; display: flex; align-items: center;
+    flex: 1; min-width: 240px; max-width: 480px;
+  }
+  .ppl-search {
+    width: 100%; padding: 9px 105px 9px 14px;
+    border: 1.5px solid var(--gray-border); border-radius: 8px;
+    font-family: 'DM Sans', sans-serif; font-size: 13.5px;
+    color: var(--brown); background: #f8f4ef; outline: none;
+  }
+  .ppl-search:focus { border-color: var(--wine); background: #fff; box-shadow: 0 0 0 3px rgba(124,19,22,.08); }
+  .ppl-filter-btn {
+    position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+    display: flex; align-items: center; gap: 5px; padding: 5px 11px;
+    border-radius: 6px; border: 1px solid var(--gray-border);
+    background: #fff; font-family: 'DM Sans', sans-serif;
+    font-size: 12px; font-weight: 600; color: #7a7068; cursor: pointer;
+  }
+  .ppl-filter-btn.active { background: var(--wine); color: #F2F2F3; border-color: var(--wine); }
+  .ppl-count { font-size: 12px; color: #7a7068; white-space: nowrap; margin-left: auto; }
+  .ppl-select-btn {
+    padding: 6px 14px; border-radius: 7px; border: 1.5px solid var(--gray-border);
+    background: #fff; font-family: 'DM Sans', sans-serif;
+    font-size: 12px; font-weight: 600; color: #7a7068; cursor: pointer;
+  }
+  .ppl-filter-panel {
+    background: #fff; border-bottom: 1.5px solid var(--gray-border);
+    padding: 14px 28px; display: none;
+  }
+  .ppl-filter-panel.open { display: block; }
+  .ppl-filter-inner { display: flex; gap: 28px; flex-wrap: wrap; align-items: flex-start; }
+  .ppl-filter-group { display: flex; flex-direction: column; gap: 7px; }
+  .ppl-filter-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #7a7068; }
+  .ppl-branch-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+  .ppl-fpill {
+    padding: 5px 13px; border-radius: 6px; border: 1.5px solid var(--gray-border);
+    background: #f8f4ef; font-family: 'DM Sans', sans-serif;
+    font-size: 12px; font-weight: 500; color: #7a7068; cursor: pointer;
+    transition: all .15s;
+  }
+  .ppl-fpill:hover { border-color: var(--wine); color: var(--wine); }
+  .ppl-fpill.active { background: var(--wine); border-color: var(--wine); color: #F2F2F3; font-weight: 600; }
+  .ppl-filter-select {
+    height: 34px; padding: 5px 10px; border: 1.5px solid var(--gray-border);
+    border-radius: 7px; font-family: 'DM Sans', sans-serif; font-size: 12.5px;
+    color: var(--brown); background: #f8f4ef; outline: none; min-width: 160px;
+  }
+  .ppl-main { max-width: 1180px; margin: 0 auto; padding: 28px 28px 60px; }
+  .ppl-dept-section { margin-bottom: 40px; }
+  .ppl-dept-header {
+    display: flex; align-items: baseline; gap: 10px;
+    margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid #e4dbd1;
+  }
+  .ppl-dept-name {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 21px; font-weight: 700;
+    color: var(--wine); text-transform: uppercase; letter-spacing: .04em; margin: 0;
+  }
+  .ppl-dept-count {
+    font-size: 12px; color: #7a7068; background: #f0ebe2;
+    padding: 2px 9px; border-radius: 12px; font-weight: 500;
+  }
+  .ppl-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px; }
+  .ppl-card {
+    background: #fff; border: 1.5px solid var(--gray-border); border-radius: 10px;
+    padding: 20px; position: relative; overflow: hidden; display: flex;
+    flex-direction: column; cursor: pointer;
+    transition: box-shadow .18s, border-color .18s, transform .18s;
+  }
+  .ppl-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--wine), var(--gold)); opacity: 0; transition: opacity .18s;
+  }
+  .ppl-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,.12); border-color: #e4dbd1; transform: translateY(-2px); }
+  .ppl-card:hover::before { opacity: 1; }
+  .ppl-card.is-self::before { opacity: 1; background: linear-gradient(90deg, var(--gold), var(--wine)); }
+  .ppl-avatar-wrap { display: flex; justify-content: center; margin-bottom: 14px; }
+  .ppl-avatar {
+    width: 66px; height: 66px; border-radius: 50%;
+    background: #C8BEB4; color: #5a4f48;
+    font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    border: 2.5px solid #e4dbd1; flex-shrink: 0;
+  }
+  .ppl-card-name {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700;
+    color: #2c2523; text-align: center; margin-bottom: 3px;
+    text-transform: uppercase; letter-spacing: .03em;
+  }
+  .ppl-card-title { font-size: 12.5px; color: #7a7068; text-align: center; margin-bottom: 4px; min-height: 18px; }
+  .ppl-card-email {
+    display: block; font-size: 12px; color: var(--wine); text-align: center;
+    text-decoration: none; margin-bottom: 12px; word-break: break-all;
+  }
+  .ppl-card-email:hover { text-decoration: underline; }
+  .ppl-card-tags { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-bottom: 10px; }
+  .ppl-tag {
+    font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px;
+    text-transform: uppercase; letter-spacing: .04em;
+  }
+  .ppl-tag-branch { background: rgba(124,19,22,.08); color: #7C1316; }
+  .ppl-tag-type { background: #f0ebe2; color: #7a7068; }
+  .ppl-tag-bishop { background: rgba(201,151,44,.14); color: #7a5500; }
+  .ppl-completeness { display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: 12px; }
+  .ppl-ring-track { fill: none; stroke: #e4dbd1; stroke-width: 3; }
+  .ppl-ring-fill { fill: none; stroke-width: 3; stroke-linecap: round; }
+  .ppl-ring-pct { font-size: 10px; font-weight: 700; color: #2c2523; }
+  .ppl-ring-label { font-size: 10px; color: #7a7068; }
+  .ppl-card-actions { display: flex; gap: 6px; margin-top: auto; padding-top: 12px; justify-content: center; }
+  .ppl-edit-btn {
+    flex: 1; text-align: center; font-size: 12px; font-weight: 600; padding: 6px 10px;
+    border-radius: 6px; background: #f0ebe2; color: var(--wine);
+    cursor: pointer; border: none; font-family: 'DM Sans', sans-serif; transition: background .15s;
+  }
+  .ppl-edit-btn:hover { background: rgba(124,19,22,.1); }
+  .ppl-edit-btn.self { color: #7a5500; background: rgba(201,151,44,.1); }
+  .ppl-edit-btn.self:hover { background: rgba(201,151,44,.18); }
+
+  /* People Modal */
+  .ppl-modal-overlay {
+    position: fixed; inset: 0; background: rgba(30,20,10,.6);
+    backdrop-filter: blur(3px); z-index: 500;
+    display: none; align-items: flex-start; justify-content: center;
+    padding: 24px 16px; overflow-y: auto;
+  }
+  .ppl-modal-overlay.active { display: flex; }
+  .ppl-modal {
+    background: #fff; border-radius: 14px; width: 100%; max-width: 680px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.3); margin: auto; overflow: hidden;
+    animation: pplModalIn .2s ease;
+  }
+  @keyframes pplModalIn {
+    from { opacity:0; transform:translateY(-14px) scale(.98); }
+    to   { opacity:1; transform:translateY(0) scale(1); }
+  }
+  .ppl-modal-header {
+    background: linear-gradient(135deg, #4a0b0d 0%, var(--wine) 100%);
+    padding: 20px 24px; display: flex; align-items: center; gap: 16px;
+  }
+  .ppl-modal-avatar {
+    width: 54px; height: 54px; border-radius: 50%;
+    background: #C8BEB4; color: #5a4f48;
+    font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    border: 2.5px solid rgba(255,255,255,.3); flex-shrink: 0;
+  }
+  .ppl-modal-title { flex: 1; }
+  .ppl-modal-name {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700;
+    color: #F2F2F3; text-transform: uppercase; letter-spacing: .03em; line-height: 1.2;
+  }
+  .ppl-modal-sub { font-size: 12.5px; color: rgba(242,237,228,.7); margin-top: 3px; }
+  .ppl-modal-close {
+    background: rgba(255,255,255,.15); border: none; color: rgba(255,255,255,.8);
+    width: 30px; height: 30px; border-radius: 50%; font-size: 16px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .ppl-modal-close:hover { background: rgba(255,255,255,.25); color: #fff; }
+  .ppl-modal-tabs {
+    display: flex; background: #fff; border-bottom: 1.5px solid var(--gray-border); overflow-x: auto;
+  }
+  .ppl-tab-btn {
+    padding: 11px 18px; font-family: 'DM Sans', sans-serif; font-size: 11px;
+    font-weight: 700; color: #7a7068; border: none; background: none; cursor: pointer;
+    border-bottom: 2.5px solid transparent; margin-bottom: -1.5px;
+    text-transform: uppercase; letter-spacing: .07em; white-space: nowrap; transition: color .15s;
+  }
+  .ppl-tab-btn:hover { color: var(--brown); }
+  .ppl-tab-btn.active { color: var(--wine); border-bottom-color: var(--wine); }
+  .ppl-tab-panel { display: none; padding: 22px 24px; background: #E8E8EC; }
+  .ppl-tab-panel.active { display: block; }
+  .ppl-field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .ppl-field-group { display: flex; flex-direction: column; gap: 4px; }
+  .ppl-field-group.span2 { grid-column: span 2; }
+  .ppl-field-label { font-size: 11.5px; font-weight: 600; color: #7a7068; text-transform: uppercase; letter-spacing: .05em; }
+  .ppl-field-input {
+    padding: 8px 11px; border: 1.5px solid var(--gray-border); border-radius: 7px;
+    font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: #2c2523;
+    background: #fff; outline: none; width: 100%;
+  }
+  .ppl-field-input:focus { border-color: var(--wine); box-shadow: 0 0 0 3px rgba(124,19,22,.08); }
+  .ppl-field-select {
+    padding: 8px 11px; border: 1.5px solid var(--gray-border); border-radius: 7px;
+    font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: #2c2523;
+    background: #fff; height: 38px; width: 100%; outline: none;
+  }
+  .ppl-section-divider {
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em;
+    color: #7a5500; background: #fff; padding: 7px 10px; border-radius: 5px;
+    border-left: 3px solid var(--gold); margin: 18px 0 14px; grid-column: span 2;
+  }
+  .ppl-modal-footer {
+    padding: 14px 24px; background: #E8DDD0;
+    border-top: 1.5px solid var(--gray-border); display: flex; gap: 10px; align-items: center;
+  }
+  .ppl-save-btn {
+    padding: 8px 22px; border-radius: 8px; border: none; background: var(--wine);
+    color: #F2F2F3; font-family: 'DM Sans', sans-serif; font-size: 13px;
+    font-weight: 700; cursor: pointer; letter-spacing: .04em; text-transform: uppercase;
+  }
+  .ppl-save-btn:hover { background: #4a0b0d; }
+  .ppl-cancel-btn {
+    padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--gray-border);
+    background: #fff; color: #2c2523; font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+  }
+  .ppl-danger-btn {
+    padding: 8px 14px; border-radius: 8px; border: none;
+    background: rgba(192,57,43,.1); color: #c0392b;
+    font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600;
+    cursor: pointer; margin-right: auto;
+  }
+  .ppl-audit-log {
+    max-height: 280px; overflow-y: auto; border: 1px solid var(--gray-border);
+    border-radius: 8px; background: #f8f4ef;
+  }
+  .ppl-audit-entry { padding: 10px 14px; border-bottom: 1px solid var(--gray-border); font-size: 12.5px; line-height: 1.5; }
+  .ppl-audit-entry:last-child { border-bottom: none; }
+  .ppl-audit-time { font-size: 11px; color: #7a7068; margin-bottom: 2px; }
+  .ppl-audit-actor { font-weight: 600; color: var(--wine); }
+  .ppl-group-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #f0ebe2; border: 1px solid var(--gray-border);
+    border-radius: 20px; padding: 4px 12px; font-size: 12.5px;
+    color: #2c2523; margin: 4px 4px 4px 0;
+  }
+  .ppl-id-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 4px; }
+  .ppl-id-box { border: 1.5px solid var(--gray-border); border-radius: 8px; overflow: hidden; background: #f8f4ef; }
+  .ppl-id-label { background: #f0ebe2; border-bottom: 1px solid var(--gray-border); padding: 8px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #7a7068; }
+  .ppl-id-empty { font-size: 12px; color: #7a7068; text-align: center; padding: 28px 10px; }
+
+  @media (max-width: 768px) {
+    .quick-links { grid-template-columns: repeat(2, 1fr); }
+    .card-grid { grid-template-columns: 1fr; }
+    .dash-grid { grid-template-columns: repeat(2, 1fr); }
+    .program-grid { grid-template-columns: 1fr; }
+    .dept-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .sm-branches { flex-direction: column; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <h1>True Nation Intranet — Visual Preview</h1>
+  <span class="badge">PRE-BUILD v3.0</span>
+</div>
+
+<!-- NAV TABS -->
+<div class="nav-tabs" id="nav">
+  <button class="active" onclick="show('sitemap')">Site Map</button>
+  <button onclick="show('home')">Home Page</button>
+  <button onclick="show('directory')">Our People</button>
+  <button onclick="show('dept')">Department Template</button>
+  <button onclick="show('calendar')">Calendar & Events</button>
+  <button onclick="show('library')">The Library</button>
+  <button onclick="show('leadership')">Leadership Hub</button>
+  <button onclick="show('tela')">T.E.L.A.</button>
+  <button onclick="show('dashboard')">Looker Studio</button>
+  <button onclick="show('location')">Location Page</button>
+</div>
+
+<div class="mockup-area">
+<div class="mockup-frame">
+<div class="mockup-label">
+  <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+  <span style="margin-left:8px" id="url-bar">truenation.org/intranet</span>
+</div>
+
+<!-- SITE NAV -->
+<div class="site-nav" id="site-nav-bar">
+  <a href="#" class="active-nav">Home</a>
+  <a href="#">Our People</a>
+  <a href="#">Departments</a>
+  <a href="#">T.E.L.A.</a>
+  <a href="#">Locations</a>
+  <a href="#">Calendar & Events</a>
+  <a href="#">The Library</a>
+  <a href="#">Leadership Hub</a>
+</div>
+
+<div class="mockup-content">
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SITE MAP -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page active" id="page-sitemap">
+  <div class="sitemap">
+    <div class="sm-root">True Nation Intranet</div>
+    <div class="sm-connector"></div>
+    <div class="sm-branches">
+
+      <div class="sm-branch">
+        <h4>Home</h4>
+        <div class="sm-sub">Welcome Banner</div>
+        <div class="sm-sub">Announcements Feed</div>
+        <div class="sm-sub">All-Org Calendar</div>
+        <div class="sm-sub">Quick Links Grid</div>
+      </div>
+
+      <div class="sm-branch">
+        <h4>Our People</h4>
+        <div class="sm-sub">Staff Directory (AppSheet)</div>
+        <div class="sm-sub">Search / Filter</div>
+        <div class="sm-sub">Tap-to-Call / Email</div>
+      </div>
+
+      <div class="sm-branch">
+        <h4>Departments</h4>
+        <div class="sm-sub" style="font-weight:600;color:#283593">Apostles (5 depts)</div>
+        <div class="sm-sub">T.E.L.A. · Disciples · Marketing</div>
+        <div class="sm-sub">PARADOX · Production</div>
+        <div class="sm-sub" style="font-weight:600;color:#2e7d32">Deacons (13 depts)</div>
+        <div class="sm-sub">CBD · Clerical · Custodial</div>
+        <div class="sm-sub">E.R.T. · Fellowship · Finance</div>
+        <div class="sm-sub">Health · IT · Maintenance</div>
+        <div class="sm-sub">Perf. Arts · Publications</div>
+        <div class="sm-sub">Security · Textiles</div>
+        <div class="sm-sub" style="font-weight:600;color:#8d6e00">Judges (2 depts)</div>
+        <div class="sm-sub">Counseling · Ministries</div>
+      </div>
+
+      <div class="sm-branch">
+        <h4>T.E.L.A.</h4>
+        <div class="sm-sub">6 Programs</div>
+        <div class="sm-sub">Academic Calendar</div>
+        <div class="sm-sub">Faculty Directory</div>
+        <div class="sm-sub">Disciples Program</div>
+      </div>
+
+      <div class="sm-branch">
+        <h4>Locations</h4>
+        <div class="sm-sub" style="font-weight:600">Los Angeles (HQ)</div>
+        <div class="sm-sub">Detroit, MI</div>
+        <div class="sm-sub">Macon, GA</div>
+        <div class="sm-sub">Philippines</div>
+        <div class="sm-sub">Ghana</div>
+      </div>
+
+      <div class="sm-branch">
+        <h4>Calendar & Events</h4>
+        <div class="sm-sub">All-Org Events</div>
+        <div class="sm-sub">Feast Days</div>
+        <div class="sm-sub">Dept Calendars</div>
+        <div class="sm-sub">Subscribe Links</div>
+      </div>
+
+      <div class="sm-branch">
+        <h4>The Library</h4>
+        <div class="sm-sub">Policies</div>
+        <div class="sm-sub">Forms Archive</div>
+        <div class="sm-sub">Training Materials</div>
+        <div class="sm-sub">Publications Archive</div>
+      </div>
+
+      <div class="sm-branch" style="border-color: var(--wine);">
+        <h4 style="color:var(--wine)">Leadership Hub 🔒</h4>
+        <div class="sm-sub">Branch Overview</div>
+        <div class="sm-sub">Org Chart</div>
+        <div class="sm-sub">Strategic Docs</div>
+        <div class="sm-sub">Looker Dashboard</div>
+      </div>
+
+    </div>
+    <p style="margin-top:32px; color: var(--gray-text); font-size:13px;">8 top-level sections · 20 department pages · 5 location pages · Phase 1 builds Home + Our People + Departments first</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- HOME PAGE -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-home">
+  <div class="hero">
+    <h2>True Nation Israelite Congregation</h2>
+    <p>Welcome to the congregation intranet — your hub for everything True Nation</p>
+    <div class="verse">"Let all things be done decently and in order." — 1 Corinthians 14:40</div>
+  </div>
+  <div class="page-inner">
+    <h3>Quick Links</h3>
+    <div class="quick-links">
+      <div class="ql-btn"><span class="ql-icon">👥</span><span>Staff Directory</span></div>
+      <div class="ql-btn"><span class="ql-icon">📅</span><span>Calendar</span></div>
+      <div class="ql-btn"><span class="ql-icon">📚</span><span>The Library</span></div>
+      <div class="ql-btn"><span class="ql-icon">📝</span><span>Submit Announcement</span></div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px;">
+      <div>
+        <h3>Announcements</h3>
+        <div class="announcements">
+          <div class="ann-item">
+            <span class="ann-date">MAR 27, 2026</span>
+            <div class="ann-title">Passover Feast Preparation — Volunteer Sign-Up Open</div>
+            <div class="ann-dept">Fellowship & Services</div>
+          </div>
+          <div class="ann-item">
+            <span class="ann-date">MAR 25, 2026</span>
+            <div class="ann-title">T.E.L.A. Spring Quarter Schedule Released</div>
+            <div class="ann-dept">T.E.L.A.</div>
+          </div>
+          <div class="ann-item">
+            <span class="ann-date">MAR 22, 2026</span>
+            <div class="ann-title">New Quarterly Brew Issue Now Available</div>
+            <div class="ann-dept">Publications</div>
+          </div>
+          <div class="ann-item">
+            <span class="ann-date">MAR 20, 2026</span>
+            <div class="ann-title">IT Infrastructure Maintenance — March 28 Overnight</div>
+            <div class="ann-dept">IT / Information Technology</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3>Upcoming Events</h3>
+        <div class="cal-embed">
+          <div class="cal-header">
+            <span>March 2026</span>
+            <span style="font-size:12px">All-Org + Feasts</span>
+          </div>
+          <div class="cal-grid">
+            <div class="day-label">SUN</div><div class="day-label">MON</div><div class="day-label">TUE</div><div class="day-label">WED</div><div class="day-label">THU</div><div class="day-label">FRI</div><div class="day-label">SAB</div>
+            <div class="day-cell"><span class="num">22</span></div>
+            <div class="day-cell"><span class="num">23</span></div>
+            <div class="day-cell"><span class="num">24</span></div>
+            <div class="day-cell"><span class="num">25</span></div>
+            <div class="day-cell"><span class="num">26</span></div>
+            <div class="day-cell today"><span class="num">27</span><span class="event event-org">Staff Meeting</span></div>
+            <div class="day-cell"><span class="num">28</span><span class="event event-feast">Sabbath</span></div>
+            <div class="day-cell"><span class="num">29</span></div>
+            <div class="day-cell"><span class="num">30</span><span class="event event-dept">T.E.L.A. Start</span></div>
+            <div class="day-cell"><span class="num">31</span></div>
+            <div class="day-cell"><span class="num">1</span></div>
+            <div class="day-cell"><span class="num">2</span></div>
+            <div class="day-cell"><span class="num">3</span></div>
+            <div class="day-cell"><span class="num">4</span><span class="event event-feast">Sabbath</span></div>
+          </div>
+        </div>
+        <div style="display:flex; gap:8px; font-size:11px; margin-top:8px; flex-wrap:wrap;">
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:var(--gold);display:inline-block"></span> Feasts</span>
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:var(--wine);display:inline-block"></span> All-Org</span>
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#2e7d32;display:inline-block"></span> Department</span>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:24px">Recent Publications</h3>
+    <div style="display:flex;gap:16px;margin:12px 0;">
+      <div style="background:white;border:1px solid var(--gray-border);border-radius:8px;padding:16px;flex:1;">
+        <div style="font-size:12px;color:var(--gold);font-weight:700">NEWSLETTER</div>
+        <div style="font-weight:600;margin-top:4px;">March 2026 Newsletter</div>
+        <div style="font-size:12px;color:var(--gray-text);margin-top:4px;">Publications Dept · Deacon Shamar</div>
+      </div>
+      <div style="background:white;border:1px solid var(--gray-border);border-radius:8px;padding:16px;flex:1;">
+        <div style="font-size:12px;color:var(--gold);font-weight:700">QUARTERLY BREW</div>
+        <div style="font-weight:600;margin-top:4px;">Q1 2026 — Spring Issue</div>
+        <div style="font-size:12px;color:var(--gray-text);margin-top:4px;">Publications Dept · Deacon Shamar</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- OUR PEOPLE — userdirectory.html integration -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-directory">
+
+  <!-- Sticky Toolbar -->
+  <div class="ppl-toolbar">
+    <div class="ppl-search-wrap">
+      <input type="text" class="ppl-search" id="ppl-search" placeholder="Search staff…" autocomplete="off">
+      <svg style="position:absolute;right:94px;top:50%;transform:translateY(-50%);color:#7a7068;pointer-events:none" width="15" height="15" viewBox="0 0 20 20" fill="none"><circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.7"/><path d="M12.5 12.5L16 16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      <button class="ppl-filter-btn" id="ppl-filter-btn" onclick="togglePplFilter()">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M4 8h8M6 12h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        Filters
+      </button>
+    </div>
+    <span class="ppl-count">Showing 18 of 124 staff</span>
+    <button class="ppl-select-btn">Select</button>
+  </div>
+
+  <!-- Filter Panel (toggled) -->
+  <div class="ppl-filter-panel" id="ppl-filter-panel">
+    <div class="ppl-filter-inner">
+      <div class="ppl-filter-group">
+        <div class="ppl-filter-label">Branch</div>
+        <div class="ppl-branch-pills">
+          <button class="ppl-fpill active" onclick="setPplBranch(this)">All</button>
+          <button class="ppl-fpill" onclick="setPplBranch(this)">Congregant</button>
+          <button class="ppl-fpill" onclick="setPplBranch(this)">Deacon</button>
+          <button class="ppl-fpill" onclick="setPplBranch(this)">Apostle</button>
+          <button class="ppl-fpill" onclick="setPplBranch(this)">Judge</button>
+          <button class="ppl-fpill" onclick="setPplBranch(this)">Bishop</button>
+        </div>
+      </div>
+      <div class="ppl-filter-group">
+        <div class="ppl-filter-label">Location</div>
+        <select class="ppl-filter-select">
+          <option>All Locations</option>
+          <option>Los Angeles (HQ)</option>
+          <option>Detroit, MI</option>
+          <option>Macon, GA</option>
+          <option>Ghana</option>
+          <option>Philippines</option>
+        </select>
+      </div>
+      <div class="ppl-filter-group">
+        <div class="ppl-filter-label">Employment</div>
+        <select class="ppl-filter-select">
+          <option>All Types</option>
+          <option>Full-Time</option>
+          <option>Part-Time</option>
+          <option>Volunteer</option>
+          <option>Contractor</option>
+          <option>Intern</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Directory Content -->
+  <div class="ppl-main">
+
+    <!-- ── Bishops ─────────────────────────────────────────────────── -->
+    <div class="ppl-dept-section">
+      <div class="ppl-dept-header">
+        <span class="ppl-dept-name">Bishops</span>
+        <span class="ppl-dept-count">3</span>
+      </div>
+      <div class="ppl-cards">
+
+        <div class="ppl-card" onclick="openPplModal('Bishop Tazayawan','TZ','tazayawan@truenation.org','HQ Bishop · T.E.L.A. · Counseling','Bishop','Full-Time',100,'bishop')">
+          <div class="ppl-avatar-wrap"><div class="ppl-avatar" style="background:#8d6500;color:#F2F2F3">TZ</div></div>
+          <div class="ppl-card-name">Bishop Tazayawan</div>
+          <div class="ppl-card-title">HQ Bishop · T.E.L.A. · Counseling</div>
+          <a class="ppl-card-email" href="#" onclick="return false">tazayawan@truenation.org</a>
+          <div class="ppl-card-tags"><span class="ppl-tag ppl-tag-bishop">Bishop</span><span class="ppl-tag ppl-tag-type">Full-Time</span></div>
+          <div class="ppl-completeness">
+            <svg width="22" height="22" viewBox="0 0 22 22"><circle class="ppl-ring-track" cx="11" cy="11" r="9"/><circle class="ppl-ring-fill" cx="11" cy="11" r="9" stroke="#22c55e" stroke-dasharray="56.5" stroke-dashoffset="0" transform="rotate(-90 11 11)"/></svg>
+            <span class="ppl-ring-pct">100%</span><span class="ppl-ring-label">profile</span>
+          </div>
+          <div class="ppl-card-actions"><button class="ppl-edit-btn">Edit</button></div>
+        </div>
+
+        <div class="ppl-card" onclick="openPplModal('Bishop Banayah','BN','banayah@truenation.org','Ministries · Intl. Comms Liaison','Bishop','Full-Time',95,'bishop')">
+          <div class="ppl-avatar-wrap"><div class="ppl-avatar" style="background:#8d6500;color:#F2F2F3">BN</div></div>
+          <div class="ppl-card-name">Bishop Banayah</div>
+          <div class="ppl-card-title">Ministries · Intl. Comms Liaison</div>
+          <a class="ppl-card-email" href="#" onclick="return false">banayah@truenation.org</a>
+          <div class="ppl-card-tags"><span class="ppl-tag ppl-tag-bishop">Bishop</span><span class="ppl-tag ppl-tag-type">Full-Time</span></div>
+          <div class="ppl-completeness">
+            <svg width="22" height="22" viewBox="0 0 22 22"><circle class="ppl-ring-track" cx="11" cy="11" r="9"/><circle class="ppl-ring-fill" cx="11" cy="11" r="9" stroke="#22c55e" stroke-dasharray="56.5" stroke-dashoffset="2.8" transform="rotate(-90 11 11)"/></svg>
+            <span class="ppl-ring-pct">95%</span><span class="ppl-ring-label">profile</span>
+          </div>
+          <div class="ppl-card-actions"><button class="ppl-edit-btn">Edit</button></div>
+        </div>
+
+        <div class="ppl-card" onclick="openPplModal('Bishop Izar','IZ','izar@truenation.org','Maintenance · Ghana Liaison','Bishop','Full-Time',90,'bishop')">
+          <div class="ppl-avatar-wrap"><div class="ppl-avatar" style="background:#8d6500;color:#F2F2F3">IZ</div></div>
+          <div class="ppl-card-name">Bishop Izar</div>
+          <div class="ppl-card-title">Maintenance · Ghana Liaison</div>
+          <a class="ppl-card-email" href="#" onclick="return false">izar@truenation.org</a>
+          <div class="ppl-card-tags"><span class="ppl-tag ppl-tag-bishop">Bishop</span><span class="ppl-tag ppl-tag-type">Full-Time</span></div>
+          <div class="ppl-completeness">
+            <svg width="22" height="22" viewBox="0 0 22 22"><circle class="ppl-ring-track" cx="11" cy="11" r="9"/><circle class="ppl-ring-fill" cx="11" cy="11" r="9" stroke="#22c55e" stroke-dasharray="56.5" stroke-dashoffset="5.7" transform="rotate(-90 11 11)"/></svg>
+            <span class="ppl-ring-pct">90%</span><span class="ppl-ring-label">profile</span>
+          </div>
+          <div class="ppl-card-actions"><button class="ppl-edit-btn">Edit</button></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── IT / Information Technology ────────────────────────────── -->
+    <div class="ppl-dept-section">
+      <div class="ppl-dept-header">
+        <span class="ppl-dept-name">IT / Information Technology</span>
+        <span class="ppl-dept-count">4</span>
+      </div>
+      <div class="ppl-cards">
+
+        <!-- Shahad — marked as self -->
+        <div class="ppl-card is-self" onclick="openPplModal('Shahad','SH','shahad@truenation.org','IT / Information Technology','Deacon','Full-Time',95,'self')">
+          <div class="ppl-avatar-wrap"><div class="ppl-avatar">SH</div></div>
+          <div class="ppl-card-name">Shahad</div>
+          <div class="ppl-card-title">IT / Information Technology</div>
+          <a class="ppl-card-email" href="#" onclick="return false">shahad@truenation.org</a>
+          <div class="ppl-card-tags"><span class="ppl-tag ppl-tag-branch">Deacon</span><span class="ppl-tag ppl-tag-type">Full-Time</span></div>
+          <div class="ppl-completeness">
+            <svg width="22" height="22" viewBox="0 0 22 22"><circle class="ppl-ring-track" cx="11" cy="11" r="9"/><circle class="ppl-ring-fill" cx="11" cy="11" r="9" stroke="#22c55e" stroke-dasharray="56.5" stroke-dashoffset="2.8" transform="rotate(-90 11 11)"/></svg>
+            <span class="ppl-ring-pct">95%</span><span class="ppl-ring-label">profile</span>
+          </div>
+          <div class="ppl-card-actions">
+            <button class="ppl-edit-btn">Edit</button>
+            <button class="ppl-edit-btn self">Edit My Profile</button>
+          </div>
+        </div>
+
+        <div class="ppl-card" onclick="openPplModal('Kawan','KW','kawan@truenation.org','Infrastructure','Deacon','Full-Time',80,'deacon')">
+          <div class="ppl-avatar-wrap"><div class="ppl-avatar">KW</div></div>
+          <div class="ppl-card-name">Kawan</div>
+          <div class="ppl-card-title">Infrastructure</div>
+          <a class="ppl-card-email" href="#" onclick="return false">kawan@truenation.org</a>
+          <div class="ppl-card-tags"><span class="ppl-tag ppl-tag-branch">Deacon</span><span class="ppl-tag ppl-tag-type">Full-Time</span></div>
+          <div class="ppl-completeness">
+            <svg width="22" height="22" viewBox="0 0 22 22"><circle class="ppl-ring-track" cx="11" cy="11" r="9"/><circle class="ppl-ring-fill" cx="11" cy="11" r="9" stroke="#C9972C" stroke-dasharray="56.5" stroke-dashoffset="11.3" transform="rotate(-90 11 11)"/></svg>
+            <span class="ppl-ring-pct">80%</span><span class="ppl-ring-label">profile</span>
+          </div>
+          <div class="ppl-card-actions"><button class="ppl-edit-btn">Edit</button></div>
+        </div>
+
+        <div class="ppl-card" onclick="openPplModal('Natanah','NT','natanah@truenation.org','Website','Deacon','Part-Time',65,'deacon')">
+          <div class="ppl-avatar-wrap"><div class="ppl-avatar">NT</div></div>
+          <div class="ppl-card-name">Natanah</div>
+          <div class="ppl-card-title">Website</div>
+          <a class="ppl-card-email" href="#" onclick="return false">natanah@truenation.org</a>
+          <div class="ppl-card-tags"><span class="ppl-tag ppl-tag-branch">Deacon</span><span class="ppl-tag ppl-tag-type">Part-Time</span></div>
+          <div class="ppl-completeness">
+            <svg width="22" height="22" viewBox="0 0 22 22"><circle class="ppl-ring-track" cx="11" cy="11" r="9"/><circle class="ppl-ring-fill" cx="11" cy="11" r="9" stroke="#f97316" stroke-dasharray="56.5" stroke-dashoffset="19.8" transform="rotate(-90 11 11)"/></svg>
+            <span class="ppl-ring-pct">65%</span><span class="ppl-ring-label">profile</span>
+          </div>
+          <div class="ppl-card-actions"><button class="ppl-edit-btn">Edit</button></div>
+        </div>
+
+        <div class="ppl-card" onclick="openPplModal('Aharon','AR','aharon@truenation.org','Logistics','Deacon','Volunteer',42,'deacon')">
+          <div class="ppl-avatar-wrap"><div class="ppl-avatar">AR</div></div>
+          <div class="ppl-card-name">Aharon</div>
+          <div class="ppl-card-title">Logistics</div>
+          <a class="ppl-card-email" href="#" onclick="return false">aharon@truenation.org</a>
+          <div class="ppl-card-tags"><span class="ppl-tag ppl-tag-branch">Deacon</span><span class="ppl-tag ppl-tag-type">Volunteer</span></div>
+          <div class="ppl-completeness">
+            <svg width="22" height="22" viewBox="0 0 22 22"><circle class="ppl-ring-track" cx="11" cy="11" r="9"/><circle class="ppl-ring-fill" cx="11" cy="11" r="9" stroke="#ef4444" stroke-dasharray="56.5" stroke-dashoffset="32.8" transform="rotate(-90 11 11)"/></svg>
+            <span class="ppl-ring-pct">42%</span><span class="ppl-ring-label">profile</span>
+          </div>
+          <div class="ppl-card-actions"><button class="ppl-edit-btn">Edit</button></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── Production / PARADOX ───────────────────────────────────── -->
+    <div class="ppl-dept-section">
+      <div class="ppl-dept-header">
+        <span class="ppl-dept-name">Production / PARADOX</span>
+        <span class="ppl-dept-count">5</span>
+      </div>
+      <div class="ppl-cards">
+
+        <div class="ppl-card" onclick="openPplModal('Deacon Shamar','SM','shamar@truenation.org','A/V Lead · Publications','Deacon','Full-Time',92,'deacon')">
+          <div class="ppl-avatar-wrap"><div class="ppl-avatar">SM</div></div>
+          <div class="ppl-card-name">Deacon Shamar</div>
+          <div class="ppl-card-title">A/V Lead · Publications</div>
+          <a class="ppl-card-email" href="#" onclick="return false">shamar@truenation.org</a>
+          <div class="ppl-card-tags"><span class="ppl-tag ppl-tag-branch">Deacon</span><span class="ppl-tag ppl-tag-type">Full-Time</span></div>
+          <div class="ppl-completeness">
+            <svg width="22" height="22" viewBox="0 0 22 22"><circle class="ppl-ring-track" cx="11" cy="11" r="9"/><circle class="ppl-ring-fill" cx="11" cy="11" r="9" stroke="#22c55e" stroke-dasharray="56.5" stroke-dashoffset="4.5" transform="rotate(-90 11 11)"/></svg>
+            <span class="ppl-ring-pct">92%</span><span class="ppl-ring-label">profile</span>
+          </div>
+          <div class="ppl-card-actions"><button class="ppl-edit-btn">Edit</button></div>
+        </div>
+
+        <div class="ppl-card" onclick="openPplModal('Yashan','YN','yashan@truenation.org','Videography · Camera &amp; Lights','Apostle','Full-Time',88,'apostle')">
+          <div class="ppl-avatar-wrap"><div class="ppl-avatar">YN</div></div>
+          <div class="ppl-card-name">Yashan</div>
+          <div class="ppl-card-title">Videography · Camera &amp; Lights</div>
+          <a class="ppl-card-email" href="#" onclick="return false">yashan@truenation.org</a>
+          <div class="ppl-card-tags"><span class="ppl-tag ppl-tag-branch">Apostle</span><span class="ppl-tag ppl-tag-type">Full-Time</span></div>
+          <div class="ppl-completeness">
+            <svg width="22" height="22" viewBox="0 0 22 22"><circle class="ppl-ring-track" cx="11" cy="11" r="9"/><circle class="ppl-ring-fill" cx="11" cy="11" r="9" stroke="#22c55e" stroke-dasharray="56.5" stroke-dashoffset="6.8" transform="rotate(-90 11 11)"/></svg>
+            <span class="ppl-ring-pct">88%</span><span class="ppl-ring-label">profile</span>
+          </div>
+          <div class="ppl-card-actions"><button class="ppl-edit-btn">Edit</button></div>
+        </div>
+
+        <div class="ppl-card" onclick="openPplModal('Yaqataza','YQ','yaqataza@truenation.org','Photography','Apostle','Full-Time',85,'apostle')">
+          <div class="ppl-avatar-wrap"><div class="ppl-avatar">YQ</div></div>
+          <div class="ppl-card-name">Yaqataza</div>
+          <div class="ppl-card-title">Photography</div>
+          <a class="ppl-card-email" href="#" onclick="return false">yaqataza@truenation.org</a>
+          <div class="ppl-card-tags"><span class="ppl-tag ppl-tag-branch">Apostle</span><span class="ppl-tag ppl-tag-type">Full-Time</span></div>
+          <div class="ppl-completeness">
+            <svg width="22" height="22" viewBox="0 0 22 22"><circle class="ppl-ring-track" cx="11" cy="11" r="9"/><circle class="ppl-ring-fill" cx="11" cy="11" r="9" stroke="#22c55e" stroke-dasharray="56.5" stroke-dashoffset="8.5" transform="rotate(-90 11 11)"/></svg>
+            <span class="ppl-ring-pct">85%</span><span class="ppl-ring-label">profile</span>
+          </div>
+          <div class="ppl-card-actions"><button class="ppl-edit-btn">Edit</button></div>
+        </div>
+
+        <div class="ppl-card" onclick="openPplModal('Yashami','YM','yashami@truenation.org','Sound / Audio','Apostle','Full-Time',78,'apostle')">
+          <div class="ppl-avatar-wrap"><div class="ppl-avatar">YM</div></div>
+          <div class="ppl-card-name">Yashami</div>
+          <div class="ppl-card-title">Sound / Audio</div>
+          <a class="ppl-card-email" href="#" onclick="return false">yashami@truenation.org</a>
+          <div class="ppl-card-tags"><span class="ppl-tag ppl-tag-branch">Apostle</span><span class="ppl-tag ppl-tag-type">Full-Time</span></div>
+          <div class="ppl-completeness">
+            <svg width="22" height="22" viewBox="0 0 22 22"><circle class="ppl-ring-track" cx="11" cy="11" r="9"/><circle class="ppl-ring-fill" cx="11" cy="11" r="9" stroke="#C9972C" stroke-dasharray="56.5" stroke-dashoffset="12.4" transform="rotate(-90 11 11)"/></svg>
+            <span class="ppl-ring-pct">78%</span><span class="ppl-ring-label">profile</span>
+          </div>
+          <div class="ppl-card-actions"><button class="ppl-edit-btn">Edit</button></div>
+        </div>
+
+        <div class="ppl-card" onclick="openPplModal('Acharya','AC','acharya@truenation.org','Stage Crew','Congregant','Volunteer',50,'congregant')">
+          <div class="ppl-avatar-wrap"><div class="ppl-avatar">AC</div></div>
+          <div class="ppl-card-name">Acharya</div>
+          <div class="ppl-card-title">Stage Crew</div>
+          <a class="ppl-card-email" href="#" onclick="return false">acharya@truenation.org</a>
+          <div class="ppl-card-tags"><span class="ppl-tag ppl-tag-branch">Congregant</span><span class="ppl-tag ppl-tag-type">Volunteer</span></div>
+          <div class="ppl-completeness">
+            <svg width="22" height="22" viewBox="0 0 22 22"><circle class="ppl-ring-track" cx="11" cy="11" r="9"/><circle class="ppl-ring-fill" cx="11" cy="11" r="9" stroke="#f97316" stroke-dasharray="56.5" stroke-dashoffset="28.3" transform="rotate(-90 11 11)"/></svg>
+            <span class="ppl-ring-pct">50%</span><span class="ppl-ring-label">profile</span>
+          </div>
+          <div class="ppl-card-actions"><button class="ppl-edit-btn">Edit</button></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── Fellowship & Services ──────────────────────────────────── -->
+    <div class="ppl-dept-section">
+      <div class="ppl-dept-header">
+        <span class="ppl-dept-name">Fellowship &amp; Services</span>
+        <span class="ppl-dept-count">6</span>
+      </div>
+      <div class="ppl-cards">
+
+        <div class="ppl-card" onclick="openPplModal('Deacon Kabash','KB','kabash@truenation.org','Fellowship Lead · Performing Arts','Deacon','Full-Time',96,'deacon')">
+          <div class="ppl-avatar-wrap"><div class="ppl-avatar">KB</div></div>
+          <div class="ppl-card-name">Deacon Kabash</div>
+          <div class="ppl-card-title">Fellowship Lead · Performing Arts</div>
+          <a class="ppl-card-email" href="#" onclick="return false">kabash@truenation.org</a>
+          <div class="ppl-card-tags"><span class="ppl-tag ppl-tag-branch">Deacon</span><span class="ppl-tag ppl-tag-type">Full-Time</span></div>
+          <div class="ppl-completeness">
+            <svg width="22" height="22" viewBox="0 0 22 22"><circle class="ppl-ring-track" cx="11" cy="11" r="9"/><circle class="ppl-ring-fill" cx="11" cy="11" r="9" stroke="#22c55e" stroke-dasharray="56.5" stroke-dashoffset="2.3" transform="rotate(-90 11 11)"/></svg>
+            <span class="ppl-ring-pct">96%</span><span class="ppl-ring-label">profile</span>
+          </div>
+          <div class="ppl-card-actions"><button class="ppl-edit-btn">Edit</button></div>
+        </div>
+
+        <div class="ppl-card" onclick="openPplModal('Deacon Kahan','KH','kahan@truenation.org','Hospitality Lead','Deacon','Full-Time',87,'deacon')">
+          <div class="ppl-avatar-wrap"><div class="ppl-avatar">KH</div></div>
+          <div class="ppl-card-name">Deacon Kahan</div>
+          <div class="ppl-card-title">Hospitality Lead</div>
+          <a class="ppl-card-email" href="#" onclick="return false">kahan@truenation.org</a>
+          <div class="ppl-card-tags"><span class="ppl-tag ppl-tag-branch">Deacon</span><span class="ppl-tag ppl-tag-type">Full-Time</span></div>
+          <div class="ppl-completeness">
+            <svg width="22" height="22" viewBox="0 0 22 22"><circle class="ppl-ring-track" cx="11" cy="11" r="9"/><circle class="ppl-ring-fill" cx="11" cy="11" r="9" stroke="#22c55e" stroke-dasharray="56.5" stroke-dashoffset="7.4" transform="rotate(-90 11 11)"/></svg>
+            <span class="ppl-ring-pct">87%</span><span class="ppl-ring-label">profile</span>
+          </div>
+          <div class="ppl-card-actions"><button class="ppl-edit-btn">Edit</button></div>
+        </div>
+
+        <div class="ppl-card" onclick="openPplModal('Deacon Ahman','DA','ahman@truenation.org','Security Lead','Deacon','Full-Time',83,'deacon')">
+          <div class="ppl-avatar-wrap"><div class="ppl-avatar">DA</div></div>
+          <div class="ppl-card-name">Deacon Ahman</div>
+          <div class="ppl-card-title">Security Lead</div>
+          <a class="ppl-card-email" href="#" onclick="return false">ahman@truenation.org</a>
+          <div class="ppl-card-tags"><span class="ppl-tag ppl-tag-branch">Deacon</span><span class="ppl-tag ppl-tag-type">Full-Time</span></div>
+          <div class="ppl-completeness">
+            <svg width="22" height="22" viewBox="0 0 22 22"><circle class="ppl-ring-track" cx="11" cy="11" r="9"/><circle class="ppl-ring-fill" cx="11" cy="11" r="9" stroke="#22c55e" stroke-dasharray="56.5" stroke-dashoffset="9.6" transform="rotate(-90 11 11)"/></svg>
+            <span class="ppl-ring-pct">83%</span><span class="ppl-ring-label">profile</span>
+          </div>
+          <div class="ppl-card-actions"><button class="ppl-edit-btn">Edit</button></div>
+        </div>
+
+        <div class="ppl-card" onclick="openPplModal('Miriyam','MI','miriyam@truenation.org','Culinary Committee','Congregant','Volunteer',60,'congregant')">
+          <div class="ppl-avatar-wrap"><div class="ppl-avatar">MI</div></div>
+          <div class="ppl-card-name">Miriyam</div>
+          <div class="ppl-card-title">Culinary Committee</div>
+          <a class="ppl-card-email" href="#" onclick="return false">miriyam@truenation.org</a>
+          <div class="ppl-card-tags"><span class="ppl-tag ppl-tag-branch">Congregant</span><span class="ppl-tag ppl-tag-type">Volunteer</span></div>
+          <div class="ppl-completeness">
+            <svg width="22" height="22" viewBox="0 0 22 22"><circle class="ppl-ring-track" cx="11" cy="11" r="9"/><circle class="ppl-ring-fill" cx="11" cy="11" r="9" stroke="#f97316" stroke-dasharray="56.5" stroke-dashoffset="22.6" transform="rotate(-90 11 11)"/></svg>
+            <span class="ppl-ring-pct">60%</span><span class="ppl-ring-label">profile</span>
+          </div>
+          <div class="ppl-card-actions"><button class="ppl-edit-btn">Edit</button></div>
+        </div>
+
+        <div class="ppl-card" onclick="openPplModal('Deacon Kanash','DK','kanash@truenation.org','E.R.T. · Holistic Health · Textiles','Deacon','Full-Time',91,'deacon')">
+          <div class="ppl-avatar-wrap"><div class="ppl-avatar">DK</div></div>
+          <div class="ppl-card-name">Deacon Kanash</div>
+          <div class="ppl-card-title">E.R.T. · Holistic Health · Textiles</div>
+          <a class="ppl-card-email" href="#" onclick="return false">kanash@truenation.org</a>
+          <div class="ppl-card-tags"><span class="ppl-tag ppl-tag-branch">Deacon</span><span class="ppl-tag ppl-tag-type">Full-Time</span></div>
+          <div class="ppl-completeness">
+            <svg width="22" height="22" viewBox="0 0 22 22"><circle class="ppl-ring-track" cx="11" cy="11" r="9"/><circle class="ppl-ring-fill" cx="11" cy="11" r="9" stroke="#22c55e" stroke-dasharray="56.5" stroke-dashoffset="5.1" transform="rotate(-90 11 11)"/></svg>
+            <span class="ppl-ring-pct">91%</span><span class="ppl-ring-label">profile</span>
+          </div>
+          <div class="ppl-card-actions"><button class="ppl-edit-btn">Edit</button></div>
+        </div>
+
+        <div class="ppl-card" onclick="openPplModal('Deacon Rakab','RK','rakab@truenation.org','Finance · Travel Committee','Deacon','Full-Time',76,'deacon')">
+          <div class="ppl-avatar-wrap"><div class="ppl-avatar">RK</div></div>
+          <div class="ppl-card-name">Deacon Rakab</div>
+          <div class="ppl-card-title">Finance · Travel Committee</div>
+          <a class="ppl-card-email" href="#" onclick="return false">rakab@truenation.org</a>
+          <div class="ppl-card-tags"><span class="ppl-tag ppl-tag-branch">Deacon</span><span class="ppl-tag ppl-tag-type">Full-Time</span></div>
+          <div class="ppl-completeness">
+            <svg width="22" height="22" viewBox="0 0 22 22"><circle class="ppl-ring-track" cx="11" cy="11" r="9"/><circle class="ppl-ring-fill" cx="11" cy="11" r="9" stroke="#C9972C" stroke-dasharray="56.5" stroke-dashoffset="13.6" transform="rotate(-90 11 11)"/></svg>
+            <span class="ppl-ring-pct">76%</span><span class="ppl-ring-label">profile</span>
+          </div>
+          <div class="ppl-card-actions"><button class="ppl-edit-btn">Edit</button></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Footer note -->
+    <div style="text-align:center;padding:24px 0;color:#7a7068;font-size:13px;border-top:1px solid #e4dbd1;margin-top:8px;">
+      Showing 18 of 124 staff · 20 departments · <strong style="color:var(--wine)">Click any card</strong> to open the edit modal · powered by Google Apps Script
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- DEPARTMENT TEMPLATE -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-dept">
+  <div class="dept-header">
+    <div>
+      <h2>Production</h2>
+      <div class="dept-branch">Apostles Branch · Doctrine</div>
+    </div>
+    <div class="dept-lead">
+      <div class="label">Department Lead</div>
+      <div class="name">—</div>
+    </div>
+  </div>
+  <div class="page-inner">
+    <p>The Production department manages all technical production and audio-visual operations for TNIC events, Sabbath services, and media output. All production teams and AV roles are consolidated here.</p>
+
+    <div class="dept-links">
+      <div class="dept-link">💬 Chat Space</div>
+      <div class="dept-link">📁 Drive Folder</div>
+      <div class="dept-link">📅 Calendar</div>
+      <div class="dept-link">📝 Request Form</div>
+    </div>
+
+    <h3>Teams</h3>
+    <div class="card-grid">
+      <div class="card"><div class="card-icon">🎙️</div><h4>A/V</h4><p>Audio and visual operations</p><p style="font-size:12px;color:var(--wine);font-weight:600;margin-top:4px">Lead: Shamar</p></div>
+      <div class="card"><div class="card-icon">🔊</div><h4>Sound / Audio</h4><p>Live and recorded audio engineering</p><p style="font-size:12px;color:var(--wine);font-weight:600;margin-top:4px">Lead: Yashami</p></div>
+      <div class="card"><div class="card-icon">📸</div><h4>Photography</h4><p>Event and content photography</p><p style="font-size:12px;color:var(--wine);font-weight:600;margin-top:4px">Lead: Yaqataza</p></div>
+      <div class="card"><div class="card-icon">🎬</div><h4>Videography</h4><p>Video production and editing</p><p style="font-size:12px;color:var(--wine);font-weight:600;margin-top:4px">Lead: Yashan</p></div>
+      <div class="card"><div class="card-icon">💡</div><h4>Camera & Lights</h4><p>Lighting design and camera operations</p><p style="font-size:12px;color:var(--wine);font-weight:600;margin-top:4px">Lead: Yashan</p></div>
+      <div class="card"><div class="card-icon">🎭</div><h4>Stage Crew</h4><p>Stage setup, breakdown, and event support</p><p style="font-size:12px;color:var(--wine);font-weight:600;margin-top:4px">Lead: Ahman</p></div>
+    </div>
+
+    <div class="dept-section">
+      <h3>Shared Documents</h3>
+      <p style="color:var(--gray-text);font-size:13px;">📁 Embedded Google Drive folder — production@truenation.org shared folder</p>
+      <div style="background:var(--cream);border-radius:6px;padding:16px;margin-top:8px;">
+        <div style="font-size:13px;color:var(--gray-text);">
+          📄 Production Schedule — March 2026.xlsx<br>
+          📄 AV Equipment Inventory.sheets<br>
+          📄 Event Setup Checklist.docx<br>
+          📁 Training Videos/<br>
+          📁 Templates/
+        </div>
+      </div>
+    </div>
+
+    <div class="dept-section">
+      <h3>Department Calendar</h3>
+      <div class="cal-embed">
+        <div class="cal-header"><span>Production Calendar — April 2026</span></div>
+        <div style="padding:16px;text-align:center;color:var(--gray-text);font-size:14px;">
+          Google Calendar embed showing Production team events, rehearsals, and setup schedules
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- CALENDAR & EVENTS -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-calendar">
+  <div class="page-inner">
+    <h2>Calendar & Events</h2>
+    <p>All congregation calendars in one place. Subscribe to the ones relevant to your department and location — they'll sync to your phone automatically.</p>
+
+    <h3>Master Calendar</h3>
+    <div class="cal-embed">
+      <div class="cal-header">
+        <span>April 2026</span>
+        <div style="display:flex;gap:8px;font-size:11px;">
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:2px;background:var(--gold);display:inline-block"></span> Feasts</span>
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:2px;background:var(--wine);display:inline-block"></span> All-Org</span>
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:2px;background:#2e7d32;display:inline-block"></span> Dept</span>
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:2px;background:#283593;display:inline-block"></span> T.E.L.A.</span>
+        </div>
+      </div>
+      <div class="cal-grid">
+        <div class="day-label">SUN</div><div class="day-label">MON</div><div class="day-label">TUE</div><div class="day-label">WED</div><div class="day-label">THU</div><div class="day-label">FRI</div><div class="day-label">SAB</div>
+        <div class="day-cell"></div><div class="day-cell"></div><div class="day-cell"></div><div class="day-cell"><span class="num">1</span></div><div class="day-cell"><span class="num">2</span><span class="event event-tela">TELA Session</span></div><div class="day-cell"><span class="num">3</span></div><div class="day-cell"><span class="num">4</span><span class="event event-feast">Sabbath</span></div>
+        <div class="day-cell"><span class="num">5</span></div><div class="day-cell"><span class="num">6</span></div><div class="day-cell"><span class="num">7</span><span class="event event-dept">Finance Mtg</span></div><div class="day-cell"><span class="num">8</span></div><div class="day-cell"><span class="num">9</span><span class="event event-tela">TELA Session</span></div><div class="day-cell"><span class="num">10</span></div><div class="day-cell"><span class="num">11</span><span class="event event-feast">Sabbath</span></div>
+        <div class="day-cell"><span class="num">12</span><span class="event event-feast">Passover</span></div><div class="day-cell"><span class="num">13</span><span class="event event-feast">Unleavened</span></div><div class="day-cell"><span class="num">14</span><span class="event event-org">Staff Meeting</span></div><div class="day-cell"><span class="num">15</span></div><div class="day-cell"><span class="num">16</span></div><div class="day-cell"><span class="num">17</span></div><div class="day-cell"><span class="num">18</span><span class="event event-feast">Sabbath</span></div>
+        <div class="day-cell"><span class="num">19</span></div><div class="day-cell"><span class="num">20</span></div><div class="day-cell"><span class="num">21</span></div><div class="day-cell"><span class="num">22</span></div><div class="day-cell"><span class="num">23</span><span class="event event-dept">Prod Rehearsal</span></div><div class="day-cell"><span class="num">24</span></div><div class="day-cell"><span class="num">25</span><span class="event event-feast">Sabbath</span></div>
+      </div>
+    </div>
+
+    <h3>Subscribe to Calendars</h3>
+    <p>Click "Subscribe" to add a calendar to your personal Google Calendar. It will automatically appear on your phone.</p>
+    <div class="sub-list">
+      <div class="sub-item"><div><div class="sub-name">All-Org Events</div><div class="sub-desc">Congregation-wide meetings, events, and milestones</div></div><button class="sub-btn">Subscribe</button></div>
+      <div class="sub-item"><div><div class="sub-name">Feast Days</div><div class="sub-desc">All biblical feast days and holy convocations</div></div><button class="sub-btn">Subscribe</button></div>
+      <div class="sub-item"><div><div class="sub-name">T.E.L.A. Academic</div><div class="sub-desc">School sessions, exams, and academic deadlines</div></div><button class="sub-btn">Subscribe</button></div>
+      <div class="sub-item"><div><div class="sub-name">Fellowship & Services</div><div class="sub-desc">Feast committee prep, hospitality events, meals</div></div><button class="sub-btn">Subscribe</button></div>
+      <div class="sub-item"><div><div class="sub-name">Production</div><div class="sub-desc">Rehearsals, setup calls, equipment maintenance</div></div><button class="sub-btn">Subscribe</button></div>
+      <div class="sub-item"><div><div class="sub-name">IT / Info Tech</div><div class="sub-desc">Maintenance windows, infrastructure updates</div></div><button class="sub-btn">Subscribe</button></div>
+      <div class="sub-item"><div><div class="sub-name">HQ Campus (Los Angeles)</div><div class="sub-desc">Local events and campus-specific scheduling</div></div><button class="sub-btn">Subscribe</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- THE LIBRARY -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-library">
+  <div class="page-inner">
+    <h2>The Library</h2>
+    <p>Shared documents, policies, forms, and training materials for all True Nation staff.</p>
+
+    <h3>Policies & Guidelines</h3>
+    <div class="lib-section">
+      <div class="lib-folder"><span class="folder-icon">📋</span><span class="folder-name">Code of Conduct</span><span class="folder-count">3 files</span></div>
+      <div class="lib-folder"><span class="folder-icon">📋</span><span class="folder-name">Volunteer Agreement</span><span class="folder-count">2 files</span></div>
+      <div class="lib-folder"><span class="folder-icon">📋</span><span class="folder-name">Security Protocols</span><span class="folder-count">4 files</span></div>
+      <div class="lib-folder"><span class="folder-icon">📋</span><span class="folder-name">Communication Guidelines</span><span class="folder-count">1 file</span></div>
+    </div>
+
+    <h3>Forms & Templates</h3>
+    <div class="lib-section">
+      <div class="lib-folder"><span class="folder-icon">📝</span><span class="folder-name">Announcement Submission Form</span><span class="folder-count">Google Form</span></div>
+      <div class="lib-folder"><span class="folder-icon">📝</span><span class="folder-name">Resource Request Form</span><span class="folder-count">Google Form</span></div>
+      <div class="lib-folder"><span class="folder-icon">📝</span><span class="folder-name">Event RSVP Template</span><span class="folder-count">Google Form</span></div>
+      <div class="lib-folder"><span class="folder-icon">📝</span><span class="folder-name">Department Page Template</span><span class="folder-count">Google Doc</span></div>
+    </div>
+
+    <h3>Training Materials</h3>
+    <div class="lib-section">
+      <div class="lib-folder"><span class="folder-icon">🎓</span><span class="folder-name">Intranet Onboarding Guide</span><span class="folder-count">PDF</span></div>
+      <div class="lib-folder"><span class="folder-icon">🎓</span><span class="folder-name">Google Chat Best Practices</span><span class="folder-count">Google Doc</span></div>
+      <div class="lib-folder"><span class="folder-icon">🎓</span><span class="folder-name">AppSheet Directory Tutorial</span><span class="folder-count">Video</span></div>
+    </div>
+
+    <h3>Publications Archive</h3>
+    <div class="lib-section">
+      <div class="lib-folder"><span class="folder-icon">📰</span><span class="folder-name">Newsletter Archive</span><span class="folder-count">12 issues</span></div>
+      <div class="lib-folder"><span class="folder-icon">📰</span><span class="folder-name">Quarterly Brew Archive</span><span class="folder-count">4 issues</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- LEADERSHIP HUB -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-leadership">
+  <div class="page-inner">
+    <div class="restricted-badge">🔒 Restricted — leadership@truenation.org only</div>
+    <h2>Leadership Hub</h2>
+    <p>Strategic resources, branch overview, and organizational governance for True Nation leadership.</p>
+
+    <h3>Governance Hierarchy</h3>
+    <div style="display:flex;gap:8px;margin:16px 0;flex-wrap:wrap;">
+      <div style="background:var(--wine);color:var(--cream);padding:12px 24px;border-radius:8px;text-align:center;font-weight:700;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;font-size:16px;flex:1;">Bishops<br><span style="font-size:11px;font-weight:400;opacity:.8">Top Level</span></div>
+      <div style="background:white;border:2px solid var(--gold);padding:12px 24px;border-radius:8px;text-align:center;font-weight:700;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;font-size:16px;flex:1;">Deacons · Apostles · Judges<br><span style="font-size:11px;font-weight:400;color:var(--gray-text)">Level 2 — Branch Leadership</span></div>
+      <div style="background:var(--cream);padding:12px 24px;border-radius:8px;text-align:center;font-weight:700;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;font-size:16px;flex:1;">Congregant<br><span style="font-size:11px;font-weight:400;color:var(--gray-text)">Level 3 — Membership</span></div>
+    </div>
+
+    <h3>Branch Overview</h3>
+    <div class="branch-card" style="border-color:#2e7d32">
+      <h4 style="color:#2e7d32">Deacons Branch — Administration & Resources</h4>
+      <div class="bc-desc">Business, Finances, Records. 13 departments.</div>
+      <div class="bc-members"><strong>Deacons:</strong> Kahan, Kabash, Kanash, Ahman, Rakab, Shamar</div>
+    </div>
+    <div class="branch-card" style="border-color:#283593">
+      <h4 style="color:#283593">Apostles Branch — Doctrine</h4>
+      <div class="bc-desc">Teaching, Education, Research, Voice, Disciples. 5 departments.</div>
+      <div class="bc-members"><strong>Apostles:</strong> Ash, Yashami</div>
+    </div>
+    <div class="branch-card">
+      <h4>Judges Branch — Righteousness</h4>
+      <div class="bc-desc">Council, Judging, Repentance. 2 departments.</div>
+      <div class="bc-members"><strong>Council:</strong> Tazayawan, Banayah, Izar, Ash, Yashami</div>
+    </div>
+
+    <h3>Strategic Documents</h3>
+    <div class="lib-section">
+      <div class="lib-folder"><span class="folder-icon">📊</span><span class="folder-name">Org Chart — February 2026</span><span class="folder-count">PDF</span></div>
+      <div class="lib-folder"><span class="folder-icon">📊</span><span class="folder-name">Looker Studio Dashboard</span><span class="folder-count">Embed</span></div>
+      <div class="lib-folder"><span class="folder-icon">📊</span><span class="folder-name">Budget Overview — FY 2026</span><span class="folder-count">Sheets</span></div>
+      <div class="lib-folder"><span class="folder-icon">📊</span><span class="folder-name">Leadership Meeting Notes</span><span class="folder-count">Drive Folder</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- T.E.L.A. -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-tela">
+  <div class="tela-hero">
+    <h2>T.E.L.A.</h2>
+    <p>Youth Department — Education, Mentorship, and Disciple Development</p>
+  </div>
+  <div class="page-inner">
+    <h3>Programs</h3>
+    <div class="program-grid">
+      <div class="program-card"><div class="prog-icon">🏀</div><h4>Intramural Sports</h4><p>Athletic programs and team building</p></div>
+      <div class="program-card"><div class="prog-icon">📖</div><h4>Jr. Disciples</h4><p>Foundation-level youth education</p></div>
+      <div class="program-card"><div class="prog-icon">🦁</div><h4>Little Lions</h4><p>Early childhood program</p></div>
+      <div class="program-card"><div class="prog-icon">🐑</div><h4>Maiden Ewe's</h4><p>Young women's development</p></div>
+      <div class="program-card"><div class="prog-icon">⚔️</div><h4>Naqam Freshman</h4><p>Entry-level warrior training</p></div>
+      <div class="program-card"><div class="prog-icon">🛡️</div><h4>Naqam Varsity</h4><p>Advanced warrior program</p></div>
+    </div>
+
+    <h3>Academic Calendar</h3>
+    <div class="cal-embed">
+      <div class="cal-header" style="background:#283593"><span>T.E.L.A. Academic Calendar</span></div>
+      <div style="padding:16px;text-align:center;color:var(--gray-text);font-size:14px;">
+        Google Calendar embed — Spring 2026 quarter sessions, exams, and events
+      </div>
+    </div>
+
+    <h3>Faculty & Moreh</h3>
+    <p>Filtered staff directory view showing moreh@truenation.org members with their teaching assignments.</p>
+    <div style="background:var(--cream);border-radius:8px;padding:16px;text-align:center;color:var(--gray-text);font-size:14px;margin:12px 0;">
+      AppSheet embed — filtered to moreh@ group
+    </div>
+
+    <h3>Disciples Program</h3>
+    <div style="background:white;border:1px solid var(--gray-border);border-radius:8px;padding:20px;margin:12px 0;">
+      <p><strong>Led by:</strong> Ash Napash / Yashami</p>
+      <p>Advanced disciple development and mentorship program for members progressing in their spiritual journey.</p>
+      <div class="dept-links" style="margin-top:12px">
+        <div class="dept-link">💬 Chat Space</div>
+        <div class="dept-link">📁 Drive Folder</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- LOOKER STUDIO DASHBOARD -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-dashboard">
+  <div class="page-inner">
+    <div class="restricted-badge">🔒 Full dashboard on Leadership Hub — summary widget on Home</div>
+    <h2>Looker Studio Dashboard</h2>
+    <p>Organization analytics embedded via Looker Studio. Data sourced from the Staff Sheet and Google Calendar.</p>
+
+    <div class="dash-grid">
+      <div class="dash-stat"><div class="stat-num">124</div><div class="stat-label">Total Staff</div><div class="stat-change up">+6 this quarter</div></div>
+      <div class="dash-stat"><div class="stat-num">20</div><div class="stat-label">Departments</div><div class="stat-change up">All active</div></div>
+      <div class="dash-stat"><div class="stat-num">5</div><div class="stat-label">Campuses</div><div class="stat-change">3 domestic · 2 int'l</div></div>
+      <div class="dash-stat"><div class="stat-num">14</div><div class="stat-label">Events This Month</div><div class="stat-change up">+3 vs last month</div></div>
+    </div>
+
+    <div class="dash-chart">
+      <h3>Staff by Department</h3>
+      <div class="bar-chart">
+        <div class="bar-col"><div class="bar-value">22</div><div class="bar" style="height:110px;background:var(--wine)"></div><div class="bar-label">Fellowship</div></div>
+        <div class="bar-col"><div class="bar-value">18</div><div class="bar" style="height:90px;background:#283593"></div><div class="bar-label">T.E.L.A.</div></div>
+        <div class="bar-col"><div class="bar-value">15</div><div class="bar" style="height:75px;background:#283593"></div><div class="bar-label">Production</div></div>
+        <div class="bar-col"><div class="bar-value">12</div><div class="bar" style="height:60px;background:#2e7d32"></div><div class="bar-label">Finance</div></div>
+        <div class="bar-col"><div class="bar-value">10</div><div class="bar" style="height:50px;background:#2e7d32"></div><div class="bar-label">Security</div></div>
+        <div class="bar-col"><div class="bar-value">9</div><div class="bar" style="height:45px;background:#2e7d32"></div><div class="bar-label">Custodial</div></div>
+        <div class="bar-col"><div class="bar-value">8</div><div class="bar" style="height:40px;background:#283593"></div><div class="bar-label">Marketing</div></div>
+        <div class="bar-col"><div class="bar-value">7</div><div class="bar" style="height:35px;background:#2e7d32"></div><div class="bar-label">IT</div></div>
+        <div class="bar-col"><div class="bar-value">6</div><div class="bar" style="height:30px;background:var(--gold)"></div><div class="bar-label">Counseling</div></div>
+        <div class="bar-col"><div class="bar-value">17</div><div class="bar" style="height:85px;background:var(--gray-border)"></div><div class="bar-label">Other</div></div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;">
+      <div class="dash-chart">
+        <h3>Staff by Location</h3>
+        <div class="bar-chart" style="height:120px;">
+          <div class="bar-col"><div class="bar-value">82</div><div class="bar" style="height:110px;background:var(--wine)"></div><div class="bar-label">Los Angeles</div></div>
+          <div class="bar-col"><div class="bar-value">16</div><div class="bar" style="height:22px;background:var(--wine-light)"></div><div class="bar-label">Detroit</div></div>
+          <div class="bar-col"><div class="bar-value">10</div><div class="bar" style="height:14px;background:var(--wine-light)"></div><div class="bar-label">Macon</div></div>
+          <div class="bar-col"><div class="bar-value">9</div><div class="bar" style="height:12px;background:var(--gold)"></div><div class="bar-label">Ghana</div></div>
+          <div class="bar-col"><div class="bar-value">7</div><div class="bar" style="height:10px;background:var(--gold)"></div><div class="bar-label">Philippines</div></div>
+        </div>
+      </div>
+      <div class="dash-chart">
+        <h3>New Members (2026)</h3>
+        <div class="bar-chart" style="height:120px;">
+          <div class="bar-col"><div class="bar-value">2</div><div class="bar" style="height:40px;background:#2e7d32"></div><div class="bar-label">Jan</div></div>
+          <div class="bar-col"><div class="bar-value">3</div><div class="bar" style="height:60px;background:#2e7d32"></div><div class="bar-label">Feb</div></div>
+          <div class="bar-col"><div class="bar-value">1</div><div class="bar" style="height:20px;background:#2e7d32"></div><div class="bar-label">Mar</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- LOCATION PAGE -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-location">
+  <div class="dept-header" style="background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);">
+    <div>
+      <h2>Los Angeles, CA — HQ</h2>
+      <div class="dept-branch" style="color:#81c784">True Nation Domestic · Headquarters</div>
+    </div>
+    <div class="dept-lead">
+      <div class="label" style="color:#81c784">Bishop</div>
+      <div class="name">Tazayawan</div>
+    </div>
+  </div>
+  <div class="page-inner">
+    <p>Los Angeles is the headquarters campus of True Nation Israelite Congregation. All HQ departments, programs, and leadership are based here.</p>
+
+    <div class="dept-links">
+      <div class="dept-link">👥 HQ Staff Directory</div>
+      <div class="dept-link">📅 HQ Calendar</div>
+      <div class="dept-link">💬 HQ Chat Space</div>
+    </div>
+
+    <h3>HQ Calendar</h3>
+    <div class="cal-embed">
+      <div class="cal-header" style="background:#2e7d32"><span>Los Angeles Campus Calendar</span></div>
+      <div style="padding:16px;text-align:center;color:var(--gray-text);font-size:14px;">
+        Google Calendar embed — HQ campus events, local meetings, and campus-specific scheduling
+      </div>
+    </div>
+
+    <h3>HQ Staff Directory</h3>
+    <div style="background:var(--cream);border-radius:8px;padding:16px;text-align:center;color:var(--gray-text);font-size:14px;">
+      AppSheet embed — filtered to Location = "Los Angeles"
+    </div>
+
+    <h3>Local Announcements</h3>
+    <div class="announcements">
+      <div class="ann-item">
+        <span class="ann-date">MAR 27, 2026</span>
+        <div class="ann-title">Parking Lot Resurfacing — April 5–6</div>
+        <div class="ann-dept">Maintenance · HQ Only</div>
+      </div>
+      <div class="ann-item">
+        <span class="ann-date">MAR 24, 2026</span>
+        <div class="ann-title">HQ Building Hours — Spring Schedule</div>
+        <div class="ann-dept">Clerical · HQ Only</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</div><!-- /mockup-content -->
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- STAFF PROFILE MODAL (Our People — userdirectory.html)             -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="ppl-modal-overlay" id="ppl-modal-overlay" onclick="closePplModal()">
+  <div class="ppl-modal" onclick="event.stopPropagation()">
+
+    <!-- Header -->
+    <div class="ppl-modal-header">
+      <div class="ppl-modal-avatar" id="ppl-modal-avatar">SH</div>
+      <div class="ppl-modal-title">
+        <div class="ppl-modal-name" id="ppl-modal-name">Shahad</div>
+        <div class="ppl-modal-sub" id="ppl-modal-sub">shahad@truenation.org</div>
+      </div>
+      <button class="ppl-modal-close" onclick="closePplModal()">✕</button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="ppl-modal-tabs">
+      <button class="ppl-tab-btn active" onclick="pplSwitchTab(this,'ppl-tab-profile')">Profile</button>
+      <button class="ppl-tab-btn" onclick="pplSwitchTab(this,'ppl-tab-iddocs')">ID Docs</button>
+      <button class="ppl-tab-btn" onclick="pplSwitchTab(this,'ppl-tab-groups')">Groups</button>
+      <button class="ppl-tab-btn" onclick="pplSwitchTab(this,'ppl-tab-audit')">Audit Log</button>
+    </div>
+
+    <!-- Tab: Profile -->
+    <div class="ppl-tab-panel active" id="ppl-tab-profile">
+      <div class="ppl-field-grid">
+
+        <div class="ppl-section-divider">Admin / Role</div>
+
+        <div class="ppl-field-group">
+          <label class="ppl-field-label">Branch</label>
+          <select class="ppl-field-select" id="ppl-f-branch">
+            <option>Congregant</option><option>Deacon</option><option selected>Deacon</option><option>Apostle</option><option>Judge</option><option>Bishop</option>
+          </select>
+        </div>
+        <div class="ppl-field-group">
+          <label class="ppl-field-label">Employment Type</label>
+          <select class="ppl-field-select">
+            <option>Volunteer</option><option>Part-Time</option><option selected>Full-Time</option><option>Contractor</option><option>Intern</option>
+          </select>
+        </div>
+        <div class="ppl-field-group">
+          <label class="ppl-field-label">Cost Center / Dept</label>
+          <input type="text" class="ppl-field-input" value="IT / Information Technology">
+        </div>
+        <div class="ppl-field-group">
+          <label class="ppl-field-label">Start Date</label>
+          <input type="date" class="ppl-field-input" value="2023-09-01">
+        </div>
+        <div class="ppl-field-group span2">
+          <label class="ppl-field-label">Location</label>
+          <select class="ppl-field-select">
+            <option selected>Los Angeles (HQ)</option><option>Detroit, MI</option><option>Macon, GA</option><option>Ghana</option><option>Philippines</option>
+          </select>
+        </div>
+
+        <div class="ppl-section-divider">Legal Identity</div>
+
+        <div class="ppl-field-group">
+          <label class="ppl-field-label">Legal First Name</label>
+          <input type="text" class="ppl-field-input" id="ppl-f-legal-first" value="Shahad">
+        </div>
+        <div class="ppl-field-group">
+          <label class="ppl-field-label">Legal Last Name</label>
+          <input type="text" class="ppl-field-input" value="">
+        </div>
+        <div class="ppl-field-group">
+          <label class="ppl-field-label">Hebrew First</label>
+          <input type="text" class="ppl-field-input" value="">
+        </div>
+        <div class="ppl-field-group">
+          <label class="ppl-field-label">Gender</label>
+          <select class="ppl-field-select"><option>Male</option><option>Female</option></select>
+        </div>
+
+        <div class="ppl-section-divider">Contact</div>
+
+        <div class="ppl-field-group">
+          <label class="ppl-field-label">Phone</label>
+          <input type="tel" class="ppl-field-input" value="">
+        </div>
+        <div class="ppl-field-group">
+          <label class="ppl-field-label">Personal Email</label>
+          <input type="email" class="ppl-field-input" id="ppl-f-personal-email" value="shahad.ahmath@gmail.com">
+        </div>
+        <div class="ppl-field-group span2">
+          <label class="ppl-field-label">Home Address</label>
+          <input type="text" class="ppl-field-input" placeholder="Street address…">
+        </div>
+        <div class="ppl-field-group">
+          <label class="ppl-field-label">Date of Birth</label>
+          <input type="date" class="ppl-field-input">
+        </div>
+
+        <div class="ppl-section-divider">Emergency Contact</div>
+
+        <div class="ppl-field-group">
+          <label class="ppl-field-label">EC Name</label>
+          <input type="text" class="ppl-field-input" placeholder="Full name">
+        </div>
+        <div class="ppl-field-group">
+          <label class="ppl-field-label">EC Phone</label>
+          <input type="tel" class="ppl-field-input" placeholder="(555) 000-0000">
+        </div>
+        <div class="ppl-field-group">
+          <label class="ppl-field-label">Relationship</label>
+          <input type="text" class="ppl-field-input" placeholder="e.g. Spouse">
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Tab: ID Docs -->
+    <div class="ppl-tab-panel" id="ppl-tab-iddocs">
+      <p style="font-size:13px;color:#7a7068;margin-bottom:16px;">Government-issued ID documents — stored in the secure Drive folder. Accessible to admin only.</p>
+      <div class="ppl-id-grid">
+        <div class="ppl-id-box">
+          <div class="ppl-id-label">ID — Front</div>
+          <div class="ppl-id-empty">No document uploaded</div>
+        </div>
+        <div class="ppl-id-box">
+          <div class="ppl-id-label">ID — Back</div>
+          <div class="ppl-id-empty">No document uploaded</div>
+        </div>
+      </div>
+      <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;">
+        <button style="padding:7px 16px;border-radius:7px;border:1.5px solid var(--gray-border);background:#fff;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--wine);cursor:pointer">Upload Front</button>
+        <button style="padding:7px 16px;border-radius:7px;border:1.5px solid var(--gray-border);background:#fff;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--wine);cursor:pointer">Upload Back</button>
+      </div>
+    </div>
+
+    <!-- Tab: Groups -->
+    <div class="ppl-tab-panel" id="ppl-tab-groups">
+      <p style="font-size:13px;color:#7a7068;margin-bottom:12px;">Google Group memberships — controls Drive access and email distribution.</p>
+      <div style="margin-bottom:16px">
+        <span class="ppl-group-tag">tn-all@truenation.org <span style="color:#7a7068;cursor:pointer;margin-left:4px">✕</span></span>
+        <span class="ppl-group-tag">tn-it@truenation.org <span style="color:#7a7068;cursor:pointer;margin-left:4px">✕</span></span>
+        <span class="ppl-group-tag">tn-admin@truenation.org <span style="color:#7a7068;cursor:pointer;margin-left:4px">✕</span></span>
+        <span class="ppl-group-tag">tn-hq@truenation.org <span style="color:#7a7068;cursor:pointer;margin-left:4px">✕</span></span>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px;align-items:center;">
+        <input type="text" class="ppl-field-input" placeholder="group@truenation.org" style="flex:1">
+        <button style="padding:8px 16px;border-radius:7px;border:none;background:var(--wine);color:#F2F2F3;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">Add to Group</button>
+      </div>
+    </div>
+
+    <!-- Tab: Audit Log -->
+    <div class="ppl-tab-panel" id="ppl-tab-audit">
+      <div class="ppl-audit-log">
+        <div class="ppl-audit-entry">
+          <div class="ppl-audit-time">Mar 27, 2026 · 9:14 AM</div>
+          <div><span class="ppl-audit-actor">shahad@truenation.org</span> updated <em style="color:#7a7068">personal_email</em> → shahad.ahmath@gmail.com</div>
+        </div>
+        <div class="ppl-audit-entry">
+          <div class="ppl-audit-time">Mar 15, 2026 · 11:02 AM</div>
+          <div><span class="ppl-audit-actor">tn-admin@truenation.org</span> updated <em style="color:#7a7068">branch</em> → Deacon</div>
+        </div>
+        <div class="ppl-audit-entry">
+          <div class="ppl-audit-time">Feb 10, 2026 · 3:45 PM</div>
+          <div><span class="ppl-audit-actor">tn-admin@truenation.org</span> updated <em style="color:#7a7068">cost_center</em> → IT / Information Technology</div>
+        </div>
+        <div class="ppl-audit-entry">
+          <div class="ppl-audit-time">Sep 1, 2023 · 8:00 AM</div>
+          <div><span class="ppl-audit-actor">system</span> — account created via onboarding form</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="ppl-modal-footer">
+      <button class="ppl-danger-btn" id="ppl-suspend-btn">Suspend User</button>
+      <button class="ppl-cancel-btn" onclick="closePplModal()">Cancel</button>
+      <button class="ppl-save-btn">Save Changes</button>
+    </div>
+
+  </div>
+</div>
+</div><!-- /mockup-frame -->
+</div><!-- /mockup-area -->
+
+<script>
+/* ── Our People — directory interactions ─────────────────────────── */
+function togglePplFilter() {
+  var panel = document.getElementById('ppl-filter-panel');
+  var btn   = document.getElementById('ppl-filter-btn');
+  panel.classList.toggle('open');
+  btn.classList.toggle('active');
+}
+
+function setPplBranch(btn) {
+  document.querySelectorAll('.ppl-fpill').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+}
+
+function openPplModal(name, initials, email, title, branch, emptype, pct, type) {
+  // Update header
+  var av = document.getElementById('ppl-modal-avatar');
+  av.textContent = initials;
+  av.style.background = type === 'bishop' ? '#8d6500' : '#C8BEB4';
+  av.style.color       = type === 'bishop' ? '#F2EDE4' : '#5a4f48';
+  document.getElementById('ppl-modal-name').textContent = name;
+  document.getElementById('ppl-modal-sub').textContent  = email + ' · ' + branch + ' · ' + emptype;
+
+  // Update branch select in Profile tab
+  var branchSel = document.getElementById('ppl-f-branch');
+  if (branchSel) {
+    for (var i = 0; i < branchSel.options.length; i++) {
+      if (branchSel.options[i].value === branch || branchSel.options[i].text === branch) {
+        branchSel.selectedIndex = i; break;
+      }
+    }
+  }
+
+  // Reset to Profile tab
+  document.querySelectorAll('.ppl-tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.querySelectorAll('.ppl-tab-panel').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelector('.ppl-tab-btn').classList.add('active');
+  document.getElementById('ppl-tab-profile').classList.add('active');
+
+  // Adjust suspend button label
+  document.getElementById('ppl-suspend-btn').textContent = 'Suspend User';
+
+  document.getElementById('ppl-modal-overlay').classList.add('active');
+}
+
+function closePplModal() {
+  document.getElementById('ppl-modal-overlay').classList.remove('active');
+}
+
+function pplSwitchTab(btn, panelId) {
+  document.querySelectorAll('.ppl-tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.querySelectorAll('.ppl-tab-panel').forEach(function(p){ p.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+
+/* ── Main tab switcher ───────────────────────────────────────────── */
+function show(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  event.target.classList.add('active');
+
+  const urls = {
+    sitemap: 'truenation.org/intranet — Site Map',
+    home: 'truenation.org/intranet/home',
+    directory: 'truenation.org/intranet/our-people',
+    dept: 'truenation.org/intranet/departments/production',
+    calendar: 'truenation.org/intranet/calendar-events',
+    library: 'truenation.org/intranet/the-library',
+    leadership: 'truenation.org/intranet/leadership-hub',
+    tela: 'truenation.org/intranet/tela',
+    dashboard: 'truenation.org/intranet/leadership-hub/dashboard',
+    location: 'truenation.org/intranet/locations/los-angeles'
+  };
+  document.getElementById('url-bar').textContent = urls[id] || '';
+
+  // Update site nav highlight
+  const navMap = { home:0, directory:1, dept:2, tela:3, location:4, calendar:5, library:6, leadership:7 };
+  document.querySelectorAll('.site-nav a').forEach((a, i) => {
+    a.classList.toggle('active-nav', i === navMap[id]);
+  });
+}
+</script>
+
+</body>
+</html>

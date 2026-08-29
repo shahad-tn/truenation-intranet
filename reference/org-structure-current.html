@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>True Nation — Current Org Structure (June 2026)</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif; background: #E8E8EC; color: #56565E; font-size: 13px; }
+
+.wrap { padding: 20px 16px 40px; max-width: 900px; margin: 0 auto; }
+
+/* Page header */
+.page-header { margin-bottom: 24px; }
+.page-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: #7C1316;
+  margin-bottom: 4px;
+}
+.page-sub {
+  font-size: 12px;
+  color: #9a8e87;
+}
+.page-note {
+  margin-top: 10px;
+  font-size: 12px;
+  padding: 8px 12px;
+  background: #fff;
+  border-left: 3px solid #C9972C;
+  color: #56565E;
+}
+
+/* Legend */
+.legend { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #7A6F6A; }
+.leg-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+/* Branch blocks */
+.branch-block { margin-bottom: 16px; }
+
+.branch-header {
+  padding: 10px 16px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 6px 6px 0 0;
+}
+.branch-header.bishops  { background: #8C1C1C; color: #F2F2F3; }
+.branch-header.apostles { background: #1E3A8A; color: #F2F2F3; }
+.branch-header.deacons  { background: #1A5C2A; color: #F2F2F3; }
+.branch-header.judges   { background: #8B6200; color: #F2F2F3; }
+.branch-header.tela     { background: #130D0A; color: #F2F2F3; }
+
+.branch-members {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  opacity: .75;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.dept-rows {
+  background: #fff;
+  border: 1px solid #E0D8CF;
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+}
+
+.dept-row {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  border-bottom: 1px solid #BFBFC7;
+}
+.dept-row:last-child { border-bottom: none; }
+
+.dept-name {
+  padding: 9px 14px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 12.5px;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  color: #26262A;
+  background: #E8E8EC;
+  border-right: 1px solid #E0D8CF;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.dept-subs {
+  padding: 9px 14px;
+  color: #56565E;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.dept-lead {
+  display: block;
+  font-weight: 700;
+  color: #7C1316;
+  margin-bottom: 2px;
+}
+
+.dept-sg-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: #C9972C;
+  display: block;
+  margin-bottom: 3px;
+}
+
+/* Tags */
+.tag {
+  display: inline-block;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+.tag-tbd    { background: #FFF0D0; color: #8B6914; border: 1px solid #E8C870; }
+.tag-new    { background: #C9972C; color: #fff; }
+.tag-moved  { background: #5B8DB8; color: #fff; }
+.tag-cross  { background: #2E5B2E; color: #fff; }
+
+/* TELA note */
+.tela-note {
+  font-size: 11px;
+  color: #5B6B5B;
+  background: #F0F7F0;
+  border: 1px solid #C0D8C0;
+  border-radius: 4px;
+  padding: 6px 10px;
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+/* Sub-group list inside dept-subs */
+.sg-list { margin-top: 3px; }
+
+@media (max-width: 600px) {
+  .dept-row { grid-template-columns: 1fr; }
+  .dept-name { border-right: none; border-bottom: 1px solid #E0D8CF; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="page-header">
+    <div class="page-title">True Nation Israelite Congregation — Org Structure</div>
+    <div class="page-sub">As of June 2026 — reflects all structural changes confirmed by IT/Shahad</div>
+    <div class="page-note">
+      <strong>Changes from prior structure:</strong> Performing Arts moved Deacons → Apostles · Logistics moved IT → Clerical · T.E.L.A. cross-functional model adopted · PARADOX App now IT/Applications · Youth Development renamed T.E.L.A. · Production renamed Everyday Sheeple · Finance renamed Stewardship
+    </div>
+  </div>
+
+  <!-- BISHOPS -->
+  <div class="branch-block">
+    <div class="branch-header bishops">
+      Bishops — Top Leadership &amp; Campus Oversight
+    </div>
+    <div class="dept-rows">
+
+      <div class="dept-row">
+        <div class="dept-name">Bishop Tazayawan</div>
+        <div class="dept-subs">
+          <span class="dept-lead">Los Angeles, CA — HQ</span>
+          <span class="dept-sg-label">Roles</span>
+          Youth Director (T.E.L.A.) · CBD Overseer
+
+        </div>
+      </div>
+
+      <div class="dept-row">
+        <div class="dept-name">Bishop Yahzeqel</div>
+        <div class="dept-subs">
+          <span class="dept-lead">Detroit, MI · Macon, GA — Satellite</span>
+          <span class="dept-sg-label">Role</span>
+          CoT Macon Overseer
+        </div>
+      </div>
+
+      <div class="dept-row">
+        <div class="dept-name">Bishop Banayah</div>
+        <div class="dept-subs">
+          <span class="dept-lead">Manila, Philippines · Cebu, Philippines — International</span>
+          <span class="dept-sg-label">Roles</span>
+          Ministries Lead · Tribal Exchange Oversight
+        </div>
+      </div>
+
+      <div class="dept-row">
+        <div class="dept-name">Bishop Izar</div>
+        <div class="dept-subs">
+          <span class="dept-lead">Kumasi, Ghana · Accra, Ghana — International</span>
+          <span class="dept-sg-label">Roles</span>
+          CoT Kumasi Overseer · Maintenance Overseer
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- APOSTLES -->
+  <div class="branch-block">
+    <div class="branch-header apostles">
+      Apostles Branch — Doctrine &amp; Ministry Arts
+      <span class="branch-members">Apostles: Ash Napash, Yashami</span>
+    </div>
+    <div class="dept-rows">
+
+      <div class="dept-row">
+        <div class="dept-name">Disciples</div>
+        <div class="dept-subs">
+          <span class="dept-lead">Ash Napash · Yashami</span>
+          No sub-groups
+        </div>
+      </div>
+
+      <div class="dept-row">
+        <div class="dept-name">Marketing</div>
+        <div class="dept-subs">
+          <span class="dept-lead">Lead: <span class="tag tag-tbd">TBD</span></span>
+          <span class="dept-sg-label">Sub-Groups (2)</span>
+          Graphic Design (Ratazah) · Social Media (Yaqataza)
+        </div>
+      </div>
+
+      <div class="dept-row">
+        <div class="dept-name">Performing Arts <span class="tag tag-moved">Moved from Deacons</span></div>
+        <div class="dept-subs">
+          <span class="dept-lead">Deacon Kabash</span>
+          <span class="dept-sg-label">Programs (4)</span>
+          Acting (Tazayawan) · Dance (<span class="tag tag-tbd">TBD</span>) · Music (Kabash) · Poetry (Kabash)
+        </div>
+      </div>
+
+      <div class="dept-row">
+        <div class="dept-name">Everyday Sheeple</div>
+        <div class="dept-subs">
+          <span class="dept-lead">Yashan</span>
+          <span class="dept-sg-label">Sub-Groups (8)</span>
+          Sound (Yashami) · Videography (Yashan) · Photography (Yaqataza) · Camera &amp; Lights (Yashan) · A/V Audio-Visual (Shamar) · Stage Production (Ahman) · Visual Art (Ahmaryah/Karamyah) · PARADOX — media content (Tazayawan)
+          <br><span style="font-size:11px;color:#9a8e87;margin-top:3px;display:block;">PARADOX App (software) lives under IT / Applications.</span>
+        </div>
+      </div>
+
+      <div class="dept-row">
+        <div class="dept-name">Publication</div>
+        <div class="dept-subs">
+          <span class="dept-lead">Shamar</span>
+          <span class="dept-sg-label">Sub-Groups (2)</span>
+          Newsletter · Quarterly Brew
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- T.E.L.A. -->
+  <div class="branch-block">
+    <div class="branch-header tela">
+      T.E.L.A. — Youth Development <span class="tag tag-cross" style="font-size:10px;padding:3px 7px;">Cross-Functional Program</span>
+    </div>
+    <div class="dept-rows">
+
+      <div class="dept-row">
+        <div class="dept-name">Youth Director</div>
+        <div class="dept-subs">
+          <span class="dept-lead">Bishop Tazayawan</span>
+          <span class="dept-sg-label">Events Coordinator (TELA-specific)</span>
+          Ashley
+          <div class="tela-note">
+            <strong>Cross-functional model:</strong> TELA support roles are joint appointments from parent departments — no duplicate titles. Mathathyah (Fellowship &amp; Service) · Qawalyah (Holistic Health / C.A.R.E.) · Sarah (Clerical / Admin) · Ahhabyah (Finance / Fundraising) · Shawashan (Clerical / Logistics) · Kabash (Performing Arts) · Yashami (Disciples) all serve TELA as an extension of their existing department roles.
+          </div>
+        </div>
+      </div>
+
+      <div class="dept-row">
+        <div class="dept-name">Programs</div>
+        <div class="dept-subs">
+          <span class="dept-sg-label">Active Programs (6)</span>
+          Intramural Sports (Tazayawan) · Jr. Disciples (Ash Napash) · Little Lions (Tazayawan) · Maiden Ewe's (Shawashan) · Naqam Freshman (Tazayawan) · Naqam Varsity (Tazayawan)
+        </div>
+      </div>
+
+      <div class="dept-row">
+        <div class="dept-name">Youth Council</div>
+        <div class="dept-subs">
+          Separate governing body for TELA — distinct from the Judges Council.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DEACONS -->
+  <div class="branch-block">
+    <div class="branch-header deacons">
+      Deacons Branch — Administration &amp; Resources
+      <span class="branch-members">Deacons: Kahan, Kabash, Kanash, Ahman, Rakab, Shamar</span>
+    </div>
+    <div class="dept-rows">
+
+      <div class="dept-row">
+        <div class="dept-name">CBD — Community Building</div>
+        <div class="dept-subs">
+          <span class="dept-lead">Ops Lead: <span class="tag tag-tbd">TBD</span> · Overseer: Bishop Tazayawan</span>
+          <span class="dept-sg-label">Sub-Groups (3)</span>
+          Camp Tazarah (Ash Napash) · CoT Kumasi, Ghana (Izar) · CoT Macon, GA (Yahzeqel)
+        </div>
+      </div>
+
+      <div class="dept-row">
+        <div class="dept-name">Clerical</div>
+        <div class="dept-subs">
+          <span class="dept-lead">Deacon Kabash</span>
+          <span class="dept-sg-label">Sub-Groups (2)</span>
+          Administration Committee (Sarah) · Logistics (Shawashan) <span class="tag tag-moved">Gained from IT</span>
+        </div>
+      </div>
+
+      <div class="dept-row">
+        <div class="dept-name">Custodial</div>
+        <div class="dept-subs">
+          <span class="dept-lead">Kawan</span>
+          <span class="dept-sg-label">Sub-Groups (2)</span>
+          Cleaning Crew · Detailing (Lawah)
+        </div>
+      </div>
+
+      <div class="dept-row">
+        <div class="dept-name">Fellowship &amp; Service</div>
+        <div class="dept-subs">
+          <span class="dept-lead">Kahan · Kabash</span>
+          <span class="dept-sg-label">Fellowship</span>
+          Mathathyah — org-wide, including T.E.L.A.
+          <span class="dept-sg-label" style="margin-top:5px;">Hospitality</span>
+          Shawashan
+          <span class="dept-sg-label" style="margin-top:5px;">Feast Committee Sub-Groups (6)</span>
+          Beverages (Kabash) · Ceremonial (<span class="tag tag-tbd">TBD</span>) · Culinary (Kanash) · Decor (Adah) · Desserts (Shalawa) · Sacrificial Cooking (Kahan) · Serving &amp; Catering (Lawah)
+        </div>
+      </div>
+
+      <div class="dept-row">
+        <div class="dept-name">Stewardship</div>
+        <div class="dept-subs">
+          <span class="dept-lead">Lead: <span class="tag tag-tbd">TBD</span></span>
+          <span class="dept-sg-label">Sub-Groups (4)</span>
+          Bookkeeping (Marayam) · Fundraising (Ahhabyah) · Travel (Shabayah) · Tribal Exchange / Marketplace (Banayah)
+        </div>
+      </div>
+
+      <div class="dept-row">
+        <div class="dept-name">Holistic Health &amp; Healing</div>
+        <div class="dept-subs">
+          <span class="dept-lead">Deacon Kanash</span>
+          <span class="dept-sg-label">Sub-Groups (2)</span>
+          C.A.R.E. — Committed to Aid, Restore &amp; Encourage (Qawalyah; team: Shalawa, Ahmanah, Kasaya, Ishan, Kani — serves org-wide incl. T.E.L.A.)
+          <br>G.R.O.W. With Us (Bayanah)
+        </div>
+      </div>
+
+      <div class="dept-row">
+        <div class="dept-name">IT — Information Technology</div>
+        <div class="dept-subs">
+          <span class="dept-lead">Shahad · Asst: Sarah, Yedayah</span>
+          <span class="dept-sg-label">Sub-Groups (3)</span>
+          Infrastructure · Website · Applications — incl. PARADOX App software (Shahad)
+          <br><span style="font-size:11px;color:#9a8e87;margin-top:3px;display:block;">Logistics removed from IT → now in Clerical.</span>
+        </div>
+      </div>
+
+      <div class="dept-row">
+        <div class="dept-name">Maintenance</div>
+        <div class="dept-subs">
+          <span class="dept-lead">Ops Lead: Deacon Rakab · Overseer: Bishop Izar</span>
+          No sub-groups
+        </div>
+      </div>
+
+      <div class="dept-row">
+        <div class="dept-name">Safety &amp; Facilities</div>
+        <div class="dept-subs">
+          <span class="dept-lead">Lead: <span class="tag tag-tbd">TBD</span></span>
+          <span class="dept-sg-label">Sub-Groups (2)</span>
+          E.R.T. — Emergency Response Team (Kanash &amp; Shamar; members: Shamar, Yashan, Malaakaya)
+          <br>Security (Ahman; Asst: Chaanak)
+        </div>
+      </div>
+
+      <div class="dept-row">
+        <div class="dept-name">Textiles &amp; Attire</div>
+        <div class="dept-subs">
+          <span class="dept-lead">Deacon Kanash</span>
+          <span class="dept-sg-label">Sub-Groups (3)</span>
+          Apparel (Kanash; Asst: Karamyah) · Faithful Seams (Kanash) · Uniform (Qawalyah)
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- JUDGES -->
+  <div class="branch-block">
+    <div class="branch-header judges">
+      Judges Branch — Righteousness &amp; Governance
+      <span class="branch-members">Council: Tazayawan, Banayah, Izar, Yahzeqel, Ash Napash, Yashami</span>
+    </div>
+    <div class="dept-rows">
+
+      <div class="dept-row">
+        <div class="dept-name">Counseling</div>
+        <div class="dept-subs">
+          <span class="dept-lead">Lead: Bishop Tazayawan · Coordinator: Apostle Yashami</span>
+          <span class="dept-sg-label">Members</span>
+          Tazayawan, Yahzeqel, BanaYah, Izar, Ash Napash, Yashami
+          <span class="dept-sg-label" style="margin-top:5px;">Sub-Group (1)</span>
+          Sanhedrin / Calendar Committee
+        </div>
+      </div>
+
+      <div class="dept-row">
+        <div class="dept-name">Ministries</div>
+        <div class="dept-subs">
+          <span class="dept-lead">Bishop Banayah</span>
+          <span class="dept-sg-label">Sub-Groups (4)</span>
+          Elders Ministry (Banayah) · Prayer Ministry (Banayah) · Prison Ministry (Banayah) · SOV — Sisters of Virtue (Marayam)
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer note -->
+  <div style="margin-top:20px;font-size:11px;color:#9a8e87;text-align:center;padding-top:16px;border-top:1px solid #E0D8CF;">
+    True Nation Israelite Congregation · Internal Reference · June 2026 · IT Dept (Shahad)
+  </div>
+
+</div>
+</body>
+</html>

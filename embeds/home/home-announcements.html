@@ -1,0 +1,123 @@
+<!--
+  TRUE NATION INTRANET — ANNOUNCEMENTS COMPONENT
+  ────────────────────────────────────────────────
+  Embed this via Insert → Embed → Embed Code in Google Sites.
+  Place BELOW a native Sites "ANNOUNCEMENTS" heading.
+  No outer wrapper — fills the full section width.
+
+  WEEK 3: This placeholder will be replaced by a Google Sheets
+  embed connected to the Announcement Submission Form.
+  For now, update announcement items manually below.
+
+  TO ADD/EDIT AN ANNOUNCEMENT:
+  - Copy one .ann-item block
+  - Update the date, title, and body text
+  - Remove [PLACEHOLDER] items when real content is ready
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  .ann-wrap {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    background: #E8E8EC;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+    box-sizing: border-box;
+  }
+
+  .ann-item {
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-left: 5px solid #C9972C;
+    border-radius: 0 8px 8px 0;
+    padding: 20px 24px;
+    margin-bottom: 12px;
+    transition: box-shadow 0.2s;
+  }
+
+  .ann-item:hover {
+    box-shadow: 0 2px 10px rgba(19,13,10,0.08);
+  }
+
+  .ann-item:last-child { margin-bottom: 0; }
+
+  .ann-date {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #785710;
+    margin-bottom: 6px;
+  }
+
+  .ann-title {
+    font-weight: 700;
+    font-size: 20px;
+    color: #26262A;
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .ann-body {
+    font-size: 15px;
+    color: #56565E;
+    line-height: 1.6;
+  }
+
+  .ann-tag {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 3px 10px;
+    border-radius: 100px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  .tag-all     { background: #E3F2FD; color: #1565C0; }
+  .tag-urgent  { background: #FFEBEE; color: #C62828; }
+  .tag-it      { background: #F3E5F5; color: #7B1FA2; }
+</style>
+
+<div class="ann-wrap">
+
+  <!-- ── ANNOUNCEMENT 1 ── [REPLACE with real content when ready] -->
+  <div class="ann-item">
+    <div class="ann-date">June 2026 <span class="ann-tag tag-all">All Staff</span></div>
+    <div class="ann-title">True Nation Intranet Is Live</div>
+    <div class="ann-body">
+      Shalawam family. The new True Nation staff portal is now live. Use the Quick Links above to find your department, look up a team member in the directory, check the calendar, or access shared resources. If you have questions or need help navigating the site, contact IT.
+    </div>
+  </div>
+
+  <!-- ── ANNOUNCEMENT 2 ── [REPLACE with real content when ready] -->
+  <div class="ann-item">
+    <div class="ann-date">June 2026 <span class="ann-tag tag-it">IT</span></div>
+    <div class="ann-title">Complete Your Staff Profile</div>
+    <div class="ann-body">
+      All staff are asked to verify their profile in the directory — confirm your department, role, and contact info are correct. If anything is missing or incorrect, reach out to IT so we can update the record. Keeping the directory accurate helps the whole congregation stay connected.
+    </div>
+  </div>
+
+  <!--
+    ── ADD NEW ANNOUNCEMENTS HERE ──
+    Copy the block below and fill in your content:
+
+  <div class="ann-item">
+    <div class="ann-date">[DATE] <span class="ann-tag tag-all">[AUDIENCE]</span></div>
+    <div class="ann-title">[TITLE]</div>
+    <div class="ann-body">[BODY TEXT]</div>
+  </div>
+
+  Tag options:
+    <span class="ann-tag tag-all">All Staff</span>
+    <span class="ann-tag tag-urgent">Urgent</span>
+    <span class="ann-tag tag-it">IT</span>
+  -->
+
+</div>

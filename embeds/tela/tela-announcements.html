@@ -1,0 +1,217 @@
+<!--
+  TRUE NATION INTRANET — T.E.L.A.: ANNOUNCEMENTS
+  ─────────────────────────────────────────────────
+  Native Sites heading: "Announcements"
+  Scoped announcements for T.E.L.A. members and leads.
+  [REPLACE] All announcement content, dates, and badge labels.
+  Add/remove .ann-item blocks as needed.
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .tela-wrap {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    background: #E8E8EC;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+    box-sizing: border-box;
+  }
+
+  .ann-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .ann-item {
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-left: 4px solid #7C1316;
+    border-radius: 8px;
+    padding: 14px 16px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    box-shadow: 0 1px 4px rgba(19,13,10,0.05);
+    transition: box-shadow 0.2s;
+  }
+
+  .ann-item:hover { box-shadow: 0 3px 10px rgba(19,13,10,0.09); }
+
+  /* Date tile */
+  .ann-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 40px;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+
+  .ann-date__day {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #7C1316;
+    line-height: 1;
+  }
+
+  .ann-date__month {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #785710;
+    margin-top: 2px;
+  }
+
+  /* Content */
+  .ann-content { flex: 1; }
+
+  .ann-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+  }
+
+  .ann-badge {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 8px;
+    border-radius: 100px;
+  }
+
+  /* Badge color variants */
+  .badge-all    { background: #7C1316; color: #F2F2F3; }
+  .badge-sports { background: #1A6B3A; color: white; }
+  .badge-leads  { background: #C9972C; color: white; }
+  .badge-youth  { background: #4A3092; color: white; }
+  .badge-event  { background: #E05D2B; color: white; }
+
+  .ann-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: #26262A;
+    line-height: 1.2;
+    margin-bottom: 5px;
+  }
+
+  .ann-body {
+    font-size: 14px;
+    color: #56565E;
+    line-height: 1.6;
+  }
+
+  .ann-author {
+    font-size: 12px;
+    color: #888;
+    margin-top: 6px;
+  }
+
+  /* Empty state */
+  .ann-empty {
+    text-align: center;
+    padding: 32px 16px;
+    color: #888;
+    font-size: 14px;
+    border: 2px dashed #E8DDD2;
+    border-radius: 8px;
+  }
+
+  @media (max-width: 480px) {
+    .ann-item { gap: 10px; }
+    .ann-date { min-width: 34px; }
+  }
+</style>
+
+<div class="tela-wrap">
+  <div class="ann-list">
+
+    <!-- Announcement 1 — [REPLACE] all content -->
+    <div class="ann-item">
+      <div class="ann-date">
+        <div class="ann-date__day">12</div>
+        <div class="ann-date__month">Apr</div>
+      </div>
+      <div class="ann-content">
+        <div class="ann-meta">
+          <span class="ann-badge badge-all">All T.E.L.A.</span>
+        </div>
+        <div class="ann-title">[REPLACE] Announcement Title</div>
+        <div class="ann-body">[REPLACE] Announcement details. Describe what's happening, who it applies to, and any action needed from members or leads.</div>
+        <div class="ann-author">Posted by Bishop Tazayawan</div>
+      </div>
+    </div>
+
+    <!-- Announcement 2 — [REPLACE] all content -->
+    <div class="ann-item">
+      <div class="ann-date">
+        <div class="ann-date__day">05</div>
+        <div class="ann-date__month">Apr</div>
+      </div>
+      <div class="ann-content">
+        <div class="ann-meta">
+          <span class="ann-badge badge-sports">Intramural Sports</span>
+        </div>
+        <div class="ann-title">[REPLACE] Sports Schedule Update</div>
+        <div class="ann-body">[REPLACE] Details about an upcoming game, schedule change, or registration deadline for Intramural Sports participants.</div>
+        <div class="ann-author">Posted by [Lead Name]</div>
+      </div>
+    </div>
+
+    <!-- Announcement 3 — [REPLACE] all content -->
+    <div class="ann-item">
+      <div class="ann-date">
+        <div class="ann-date__day">01</div>
+        <div class="ann-date__month">Apr</div>
+      </div>
+      <div class="ann-content">
+        <div class="ann-meta">
+          <span class="ann-badge badge-leads">T.E.L.A. Leads</span>
+        </div>
+        <div class="ann-title">[REPLACE] Lead Coordination Notice</div>
+        <div class="ann-body">[REPLACE] Leadership-scoped message for sub-group leads — meeting reminder, planning note, or operational update.</div>
+        <div class="ann-author">Posted by Bishop Tazayawan</div>
+      </div>
+    </div>
+
+    <!--
+      [ADD MORE ANNOUNCEMENTS above; remove old ones as they expire]
+
+      Badge options:
+        badge-all    → All T.E.L.A. (wine)
+        badge-sports → Intramural Sports (green)
+        badge-leads  → T.E.L.A. Leads (gold)
+        badge-youth  → Youth (purple)
+        badge-event  → Event (orange)
+
+      Template:
+      <div class="ann-item">
+        <div class="ann-date">
+          <div class="ann-date__day">DD</div>
+          <div class="ann-date__month">Mon</div>
+        </div>
+        <div class="ann-content">
+          <div class="ann-meta">
+            <span class="ann-badge badge-all">[Audience]</span>
+          </div>
+          <div class="ann-title">[Title]</div>
+          <div class="ann-body">[Body]</div>
+          <div class="ann-author">Posted by [Name]</div>
+        </div>
+      </div>
+    -->
+
+  </div>
+</div>

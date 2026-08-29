@@ -1,0 +1,150 @@
+<!--
+  TRUE NATION INTRANET — OUR PEOPLE: STAFF DIRECTORY
+  ─────────────────────────────────────────────────────
+  Native Sites heading: "Staff Directory"
+  Live Google Apps Script directory embed.
+  Script URL: https://script.google.com/a/macros/truenation.org/s/AKfycbxrRxV7RHgt9m7F-y7nV9pptxf8eEvSsSEoNd45pV8zTD-ZNettg0-ZsDCZQK8YgmDO/exec
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .op-wrap {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    background: #E8E8EC;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  /* ── Directory iframe ── */
+  .dir-embed-wrap {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+    border: 1px solid #BFBFC7;
+    box-shadow: 0 2px 6px rgba(19,13,10,0.05);
+  }
+
+  .dir-embed-wrap iframe {
+    width: 100%;
+    height: 700px;
+    border: none;
+    display: block;
+  }
+
+  /* ── Open full link ── */
+  .dir-open-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-end;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #7C1316;
+    text-decoration: none;
+    padding: 8px 14px;
+    border: 2px solid #7C1316;
+    border-radius: 6px;
+    background: white;
+    transition: all 0.2s;
+  }
+  .dir-open-link:hover { background: #7C1316; color: #F2F2F3; }
+
+  /* ── Feature chips ── */
+  .dir-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 10px;
+  }
+
+  .dir-feature {
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-radius: 8px;
+    padding: 14px 16px;
+    box-shadow: 0 1px 4px rgba(19,13,10,0.05);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .dir-feature__icon { font-size: 1.375rem; flex-shrink: 0; padding-top: 1px; }
+
+  .dir-feature__title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.9375rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #7C1316;
+    margin-bottom: 4px;
+  }
+
+  .dir-feature__desc { font-size: 13px; color: #56565E; line-height: 1.5; }
+
+  @media (max-width: 500px) {
+    .dir-features { grid-template-columns: 1fr 1fr; }
+    .dir-embed-wrap iframe { height: 560px; }
+    .dir-open-link { align-self: stretch; justify-content: center; }
+  }
+</style>
+
+<div class="op-wrap">
+
+  <!-- Live directory embed -->
+  <div class="dir-embed-wrap">
+    <iframe
+      src="https://script.google.com/a/macros/truenation.org/s/AKfycbxrRxV7RHgt9m7F-y7nV9pptxf8eEvSsSEoNd45pV8zTD-ZNettg0-ZsDCZQK8YgmDO/exec?embedded=true"
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <!-- Open in new tab fallback -->
+  <a class="dir-open-link"
+     href="https://script.google.com/a/macros/truenation.org/s/AKfycbxrRxV7RHgt9m7F-y7nV9pptxf8eEvSsSEoNd45pV8zTD-ZNettg0-ZsDCZQK8YgmDO/exec"
+     target="_blank">
+    ↗ Open Full Directory
+  </a>
+
+  <!-- What the directory contains -->
+  <div class="dir-features">
+    <div class="dir-feature">
+      <div class="dir-feature__icon">🔍</div>
+      <div>
+        <div class="dir-feature__title">Search by Name</div>
+        <div class="dir-feature__desc">Find any member across all campuses by first or last name.</div>
+      </div>
+    </div>
+    <div class="dir-feature">
+      <div class="dir-feature__icon">🏢</div>
+      <div>
+        <div class="dir-feature__title">Filter by Department</div>
+        <div class="dir-feature__desc">Browse all members grouped by their department or branch.</div>
+      </div>
+    </div>
+    <div class="dir-feature">
+      <div class="dir-feature__icon">📍</div>
+      <div>
+        <div class="dir-feature__title">Filter by Campus</div>
+        <div class="dir-feature__desc">View members at HQ, Detroit, Macon, Philippines, or Ghana.</div>
+      </div>
+    </div>
+    <div class="dir-feature">
+      <div class="dir-feature__icon">✉️</div>
+      <div>
+        <div class="dir-feature__title">Contact Info</div>
+        <div class="dir-feature__desc">Access email and Chat Space links directly from each profile.</div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,53 @@
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* TNIC shared tokens — gray surfaces, wine and gold unchanged.
+     Grays supersede Warm Snow / Warm Cream for UI surfaces: stacked warm
+     neutrals gave too little separation and caused eye fatigue. */
+  :root{
+    --wine:#7C1316; --wine-dk:#5E0E10;
+    /* Gold has three jobs and they need three values. #C9972C is a FILL and
+       BORDER colour only — as text on a light ground it is 2.2:1, which fails
+       AA at any size. (The old brand guide claimed 4.6:1; that figure was
+       wrong.) Use --gold-text on light, --gold-on-wine on dark. */
+    --gold:#C9972C; --gold-text:#785710; --gold-on-wine:#D4A94D;
+    --page:#E8E8EC; --surface:#D8D8DE; --line:#BFBFC7;
+    /* Borders of interactive controls must hit 3:1 (WCAG 1.4.11), which the
+       decorative --line does not. Inputs and buttons use --line-strong. */
+    --line-strong:#86868F;
+    --onwine:#F2F2F3; --ink:#26262A; --ink-dk:#131316; --muted:#56565E;
+    --ok:#2F6B3F; --ok-bg:#E4EFE7;
+    --warn:#8A5A12; --warn-bg:#F6ECD9;
+    --no:#7A2118; --no-bg:#F3E2E0;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--page);color:var(--ink);
+    font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+    font-size:16px;line-height:1.5;}
+  h1,h2,h3,h4{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;margin:0;}
+  button{font-family:'DM Sans',sans-serif;}
+  :focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+  .tn-top{background:var(--wine);color:var(--onwine);padding:18px 22px 0;}
+  .tn-top.pad{padding-bottom:18px;}
+  .tn-in{max-width:1060px;margin:0 auto;}
+  .tn-kick{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:12px;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--gold-on-wine);margin:0 0 3px;}
+  .tn-h1{font-weight:700;font-size:30px;letter-spacing:.03em;line-height:1.1;}
+  .tn-who{font-size:13px;opacity:.9;margin:4px 0 16px;}
+  .tn-wrap{max-width:1060px;margin:0 auto;padding:22px 22px 70px;}
+  .tn-btn{font-size:13px;font-weight:600;padding:8px 14px;border-radius:6px;cursor:pointer;
+    border:2px solid var(--line-strong);background:#fff;color:var(--ink);}
+  .tn-btn:hover{border-color:var(--gold);}
+  .tn-btn[disabled]{opacity:.55;cursor:default;}
+  .tn-btn-go{background:var(--wine);border-color:var(--wine);color:var(--onwine);}
+  .tn-btn-go:hover{background:var(--wine-dk);border-color:var(--wine-dk);}
+  .tn-btn-quiet{color:var(--muted);}
+  .tn-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(140%);
+    background:var(--ink-dk);color:var(--onwine);padding:12px 22px;border-radius:8px;
+    font-size:14px;font-weight:500;box-shadow:0 6px 22px rgba(0,0,0,.28);
+    transition:transform .25s ease;z-index:60;max-width:90vw;text-align:center;}
+  .tn-toast.show{transform:translateX(-50%) translateY(0);}
+  .tn-toast.bad{background:var(--no);}
+  .tn-load{text-align:center;color:var(--muted);padding:50px 20px;font-size:15px;}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+</style>

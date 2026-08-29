@@ -1,0 +1,137 @@
+<!--
+  TRUE NATION INTRANET — T.E.L.A.: OVERVIEW + QUICK ACTIONS
+  ─────────────────────────────────────────────────────────────
+  Native Sites heading: "About T.E.L.A."
+  Dept info card + Chat / Drive / Email action buttons.
+  [REPLACE] Chat Space ID, Drive folder ID, and any description copy.
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .tela-wrap {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    background: #E8E8EC;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  /* ── Overview card ── */
+  .overview-card {
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-radius: 8px;
+    padding: 20px 22px;
+    box-shadow: 0 2px 6px rgba(19,13,10,0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .overview-desc {
+    font-size: 15px;
+    color: #56565E;
+    line-height: 1.65;
+    border-top: 1px solid #BFBFC7;
+    padding-top: 14px;
+  }
+
+  /* ── Action buttons ── */
+  .action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .act-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    min-height: 52px;
+    transition: all 0.2s;
+    flex: 1;
+    min-width: 160px;
+  }
+
+  .act-btn__icon { font-size: 1.4rem; flex-shrink: 0; }
+
+  .act-btn__text-main {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: block;
+    line-height: 1.2;
+  }
+
+  .act-btn__text-sub {
+    font-size: 11px;
+    display: block;
+    opacity: 0.75;
+    margin-top: 1px;
+  }
+
+  .btn-wine { background: #7C1316; color: #F2F2F3; }
+  .btn-wine:hover { background: #5A0E11; }
+  .btn-wine .act-btn__text-sub { color: #F2F2F3; }
+
+  .btn-outline { background: white; border: 2px solid #7C1316; color: #7C1316; }
+  .btn-outline:hover { background: #7C1316; color: #F2F2F3; }
+
+  .btn-gold { background: white; border: 2px solid #C9972C; color: #26262A; }
+  .btn-gold:hover { background: #C9972C; color: white; }
+  .btn-gold .act-btn__text-main { color: #7C1316; }
+
+  @media (max-width: 560px) {
+    .act-btn { min-width: 100%; }
+  }
+</style>
+
+<div class="tela-wrap">
+
+  <div class="overview-card">
+
+    <div class="overview-desc">
+      T.E.L.A. is the official youth department of True Nation Community, providing structured programs for young members across all campuses. Through six dedicated sub-groups — spanning early childhood, discipleship, athletics, and advanced study — T.E.L.A. equips the next generation with the values, knowledge, and leadership skills of the faith.
+      <br><br>
+      <!-- [REPLACE] with additional context, mission statement, or leadership message as desired -->
+    </div>
+
+  </div>
+
+  <div class="action-row">
+    <!-- [REPLACE] REPLACE_SPACE_ID with actual Google Chat Space ID -->
+    <a class="act-btn btn-wine" href="https://chat.google.com/room/REPLACE_SPACE_ID" target="_blank">
+      <div class="act-btn__icon">💬</div>
+      <div>
+        <span class="act-btn__text-main">Open Chat Space</span>
+        <span class="act-btn__text-sub">T.E.L.A. team communication</span>
+      </div>
+    </a>
+    <!-- [REPLACE] REPLACE_FOLDER_ID with actual Drive folder ID -->
+    <a class="act-btn btn-outline" href="https://drive.google.com/drive/folders/REPLACE_FOLDER_ID">
+      <div class="act-btn__icon">📁</div>
+      <div>
+        <span class="act-btn__text-main">Drive Folder</span>
+        <span class="act-btn__text-sub">Shared resources & documents</span>
+      </div>
+    </a>
+    <a class="act-btn btn-gold" href="mailto:tela@truenation.org" target="_blank">
+      <div class="act-btn__icon">✉️</div>
+      <div>
+        <span class="act-btn__text-main">Email T.E.L.A.</span>
+        <span class="act-btn__text-sub">tela@truenation.org</span>
+      </div>
+    </a>
+  </div>
+
+</div>

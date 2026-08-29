@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "master-reference",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "3000", "--directory", "/Users/xroscox/Documents/Claude/Projects/True Nation Intranet Project Build"],
+      "port": 3000
+    },
+    {
+      "name": "embed-deliverables",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "3001", "--directory", "/Users/xroscox/Documents/Claude/Projects/True Nation Intranet Project Build/Week1_Deliverables"],
+      "port": 3001
+    }
+  ]
+}

@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<!--
+  TNIC ANNOUNCEMENTS — MANAGER DASHBOARD (MOCK)
+  =============================================
+  Who this is for: Lawah & the announcements review team.
+  Gated in production by the announcements-admin@truenation.org Google Group.
+
+  Three tabs:
+    1. REVIEW QUEUE  — approve / deny / request info on submissions (`items` tab)
+    2. STANDING TEXT — edit the evergreen blocks per service type (`blocks` tab)
+    3. SERVICES      — the calendar of upcoming services (`services` tab)
+
+  All data below is mock data standing in for the Google Sheet.
+  In production: ?page=review
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Announcements Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --wine:#7C1316;
+    --wine-dk:#5E0E10;
+    --gold:#C9972C;
+    --page:#E8E8EC;   /* page ground - real gray, so white cards separate */
+    --surface:#D8D8DE; /* inset fills, table headers, badges */
+    --line:#BFBFC7;    /* borders - dark enough to read as an edge */
+    --onwine:#F2F2F3;
+    --ink:#26262A;
+    --ink-dk:#131316;
+    --muted:#56565E;
+    --ok:#2F6B3F;
+    --ok-bg:#E4EFE7;
+    --warn:#8A5A12;
+    --warn-bg:#F6ECD9;
+    --no:#7A2118;
+    --no-bg:#F3E2E0;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--page);
+    color:var(--ink);
+    font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+    font-size:16px;
+    line-height:1.5;
+  }
+  h1,h2,h3,h4{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;margin:0;}
+  button{font-family:'DM Sans',sans-serif;}
+  :focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+
+  /* ---------- Header ---------- */
+  .db-top{background:var(--wine);color:var(--onwine);padding:18px 22px 0;}
+  .db-top-inner{max-width:1060px;margin:0 auto;}
+  .db-kicker{
+    font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:12px;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin:0 0 3px;
+  }
+  .db-h1{font-weight:700;font-size:30px;letter-spacing:.03em;line-height:1.1;}
+  .db-who{font-size:13px;opacity:.9;margin:4px 0 16px;}
+  .db-tabs{display:flex;gap:4px;flex-wrap:wrap;}
+  .db-tab{
+    background:transparent;border:none;border-bottom:4px solid transparent;
+    color:var(--onwine);opacity:.78;
+    font-size:14px;font-weight:500;padding:10px 16px 12px;cursor:pointer;
+    border-radius:6px 6px 0 0;display:inline-flex;align-items:center;gap:8px;
+  }
+  .db-tab:hover{opacity:1;background:rgba(255,255,255,.08);}
+  .db-tab[aria-selected="true"]{opacity:1;font-weight:700;border-bottom-color:var(--gold);background:rgba(255,255,255,.10);}
+  .db-pill{
+    background:var(--gold);color:var(--ink-dk);font-size:11px;font-weight:700;
+    min-width:20px;height:20px;border-radius:999px;padding:0 6px;
+    display:inline-flex;align-items:center;justify-content:center;
+  }
+
+  .db-wrap{max-width:1060px;margin:0 auto;padding:22px 22px 70px;}
+
+  /* ---------- Filters ---------- */
+  .db-filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 18px;}
+  .db-filter{
+    background:#fff;border:2px solid var(--line);color:var(--ink);
+    font-size:13px;font-weight:500;padding:7px 13px;border-radius:999px;cursor:pointer;
+  }
+  .db-filter:hover{border-color:var(--gold);}
+  .db-filter[aria-pressed="true"]{background:var(--wine);border-color:var(--wine);color:var(--onwine);font-weight:700;}
+  .db-spacer{margin-left:auto;font-size:13px;color:var(--muted);}
+
+  /* ---------- Cards ---------- */
+  .db-card{
+    background:#fff;border:1px solid var(--line);border-left:6px solid var(--line);
+    border-radius:10px;padding:16px 18px;margin:0 0 14px;
+  }
+  .db-card[data-status="new"]{border-left-color:var(--gold);}
+  .db-card[data-status="info"]{border-left-color:var(--warn);}
+  .db-card[data-status="approved"]{border-left-color:var(--ok);}
+  .db-card[data-status="denied"]{border-left-color:var(--no);opacity:.72;}
+
+  .db-card-top{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;margin-bottom:8px;}
+  .db-card-title{font-size:19px;font-weight:700;letter-spacing:.04em;color:var(--wine);flex:1 1 260px;}
+  .db-status{
+    font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+    padding:4px 10px;border-radius:999px;white-space:nowrap;
+  }
+  .st-new{background:var(--warn-bg);color:var(--warn);}
+  .st-info{background:var(--warn-bg);color:var(--warn);}
+  .st-approved{background:var(--ok-bg);color:var(--ok);}
+  .st-denied{background:var(--no-bg);color:var(--no);}
+
+  .db-body{margin:0 0 12px;font-size:15px;}
+  .db-body[contenteditable="true"]{
+    background:#FFFDF6;border:2px dashed var(--gold);border-radius:6px;padding:8px 10px;outline:none;
+  }
+
+  .db-facts{
+    display:flex;flex-wrap:wrap;gap:6px 18px;
+    font-size:12.5px;color:var(--muted);
+    border-top:1px solid var(--line);padding-top:10px;margin-bottom:12px;
+  }
+  .db-facts b{color:var(--ink);font-weight:500;}
+  .db-chan{
+    font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    background:var(--surface);color:var(--ink);padding:3px 8px;border-radius:4px;
+  }
+
+  .db-actions{display:flex;gap:8px;flex-wrap:wrap;}
+  .db-btn{
+    font-size:13px;font-weight:600;padding:8px 14px;border-radius:6px;cursor:pointer;
+    border:2px solid var(--line);background:#fff;color:var(--ink);
+  }
+  .db-btn:hover{border-color:var(--gold);}
+  .db-btn-go{background:var(--wine);border-color:var(--wine);color:var(--onwine);}
+  .db-btn-go:hover{background:var(--wine-dk);border-color:var(--wine-dk);}
+  .db-btn-quiet{color:var(--muted);}
+
+  .db-note{
+    background:var(--warn-bg);border-left:5px solid var(--warn);border-radius:6px;
+    padding:10px 14px;margin:0 0 12px;font-size:13.5px;
+  }
+  .db-note b{color:var(--warn);}
+  .db-infobox{margin:0 0 12px;}
+  .db-infobox textarea{
+    width:100%;font-family:'DM Sans',sans-serif;font-size:14px;padding:10px;
+    border:2px solid var(--line);border-radius:6px;resize:vertical;min-height:70px;color:var(--ink);
+  }
+  .db-infobox textarea:focus{border-color:var(--gold);outline:none;}
+
+  .db-empty{
+    background:#fff;border:2px dashed var(--line);border-radius:10px;
+    padding:34px 20px;text-align:center;color:var(--muted);font-size:15px;
+  }
+
+  /* ---------- Group headings ---------- */
+  .db-group{
+    font-size:15px;font-weight:700;letter-spacing:.14em;color:var(--ink);
+    margin:26px 0 12px;padding-bottom:7px;border-bottom:2px solid var(--surface);
+    display:flex;align-items:center;gap:10px;
+  }
+  .db-group:first-child{margin-top:0;}
+  .db-group span{
+    font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;
+    letter-spacing:0;text-transform:none;color:var(--muted);
+  }
+
+  /* ---------- Standing text tab ---------- */
+  .db-svcsel{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 20px;align-items:center;}
+  .db-blockset{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:0 0 14px;}
+  .db-blockset h3{font-size:17px;letter-spacing:.07em;color:var(--wine);margin-bottom:4px;}
+  .db-blockset .db-sub{font-size:12px;color:var(--muted);margin:0 0 12px;}
+  .db-lineitem{
+    display:flex;gap:10px;align-items:flex-start;
+    padding:9px 0;border-top:1px solid var(--surface);font-size:14.5px;
+  }
+  .db-lineitem:first-of-type{border-top:none;}
+  .db-grip{color:var(--muted);cursor:grab;font-size:15px;line-height:1.4;user-select:none;}
+  .db-lineitem p{margin:0;flex:1;}
+  .db-mini{
+    background:transparent;border:1px solid var(--line);color:var(--muted);
+    font-size:11px;font-weight:600;padding:4px 9px;border-radius:5px;cursor:pointer;white-space:nowrap;
+  }
+  .db-mini:hover{border-color:var(--gold);color:var(--ink);}
+  .db-direction{font-style:italic;color:var(--muted);}
+  .db-dirtag{
+    font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    background:var(--surface);color:var(--muted);padding:2px 7px;border-radius:4px;margin-left:6px;
+  }
+
+  /* ---------- Services tab ---------- */
+  .db-table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .db-table th{
+    background:var(--surface);text-align:left;font-family:'Barlow Condensed',sans-serif;
+    font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:13px;
+    padding:11px 14px;color:var(--ink);
+  }
+  .db-table td{padding:12px 14px;border-top:1px solid var(--surface);font-size:14px;vertical-align:middle;}
+  .db-table tr:hover td{background:#F4F4F6;}
+  .db-count{font-weight:700;color:var(--wine);}
+
+  /* ---------- Toast ---------- */
+  .db-toast{
+    position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(120%);
+    background:var(--ink-dk);color:var(--onwine);padding:12px 22px;border-radius:8px;
+    font-size:14px;font-weight:500;box-shadow:0 6px 22px rgba(0,0,0,.28);
+    transition:transform .25s ease;z-index:50;max-width:90vw;text-align:center;
+  }
+  .db-toast.show{transform:translateX(-50%) translateY(0);}
+
+  .visually-hidden{
+    position:absolute;width:1px;height:1px;overflow:hidden;
+    clip:rect(0 0 0 0);white-space:nowrap;
+  }
+
+  @media (max-width:640px){
+    .db-h1{font-size:24px;}
+    .db-wrap{padding:18px 16px 60px;}
+    .db-top{padding:16px 16px 0;}
+    .db-actions .db-btn{flex:1 1 auto;text-align:center;}
+    .db-table{display:block;overflow-x:auto;}
+  }
+</style>
+</head>
+<body>
+
+<header class="db-top">
+  <div class="db-top-inner">
+    <p class="db-kicker">True Nation &middot; Intranet</p>
+    <h1 class="db-h1">Announcements Dashboard</h1>
+    <p class="db-who">Signed in as <strong>lawah@truenation.org</strong> &middot; Announcements review team</p>
+    <div class="db-tabs" role="tablist" aria-label="Dashboard sections">
+      <button class="db-tab" role="tab" aria-selected="true" data-tab="queue">
+        Review queue <span class="db-pill" id="queuePill">4</span>
+      </button>
+      <button class="db-tab" role="tab" aria-selected="false" data-tab="standing">Standing text</button>
+      <button class="db-tab" role="tab" aria-selected="false" data-tab="services">Services</button>
+    </div>
+  </div>
+</header>
+
+<main class="db-wrap">
+  <!-- ============ QUEUE ============ -->
+  <section id="tab-queue">
+    <div class="db-filters" role="group" aria-label="Filter by status">
+      <button class="db-filter" aria-pressed="true"  data-f="open">Needs action <span id="cOpen"></span></button>
+      <button class="db-filter" aria-pressed="false" data-f="approved">Approved <span id="cApp"></span></button>
+      <button class="db-filter" aria-pressed="false" data-f="denied">Denied <span id="cDen"></span></button>
+      <button class="db-filter" aria-pressed="false" data-f="all">All</button>
+      <span class="db-spacer" id="nextSvc">Next service: Sabbath &middot; Sat, Sep 5</span>
+    </div>
+    <div id="queueBody"></div>
+  </section>
+
+  <!-- ============ STANDING TEXT ============ -->
+  <section id="tab-standing" hidden>
+    <div class="db-svcsel" role="group" aria-label="Service type">
+      <span style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:.14em;text-transform:uppercase;">Service type:</span>
+      <button class="db-filter" aria-pressed="true"  data-svc="sabbath">Sabbath</button>
+      <button class="db-filter" aria-pressed="false" data-svc="newmoon">New Moon</button>
+      <button class="db-filter" aria-pressed="false" data-svc="feast">Feast Day</button>
+    </div>
+    <div id="standingBody"></div>
+  </section>
+
+  <!-- ============ SERVICES ============ -->
+  <section id="tab-services" hidden>
+    <p style="font-size:14px;color:var(--muted);margin:0 0 14px;">
+      Upcoming services. Each one is a date submitters can choose and a script the reader opens.
+    </p>
+    <table class="db-table">
+      <caption class="visually-hidden">Upcoming services with submission counts</caption>
+      <thead>
+        <tr><th scope="col">Date</th><th scope="col">Service</th><th scope="col">Reader</th><th scope="col">Approved</th><th scope="col">Pending</th><th scope="col"></th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Sat, Sep 5</td><td>Sabbath Class</td><td>Lawah</td><td class="db-count">2</td><td class="db-count">3</td><td><button class="db-mini" type="button" data-toast="Opens the reader script for Sat, Sep 5">Open script</button></td></tr>
+        <tr><td>Thu, Oct 1</td><td>New Moon</td><td>&mdash;</td><td class="db-count">0</td><td class="db-count">1</td><td><button class="db-mini" type="button" data-toast="Opens the reader script for Thu, Oct 1">Open script</button></td></tr>
+        <tr><td>Sat, Oct 3</td><td>Sabbath Class</td><td>&mdash;</td><td class="db-count">1</td><td class="db-count">0</td><td><button class="db-mini" type="button" data-toast="Opens the reader script for Sat, Oct 3">Open script</button></td></tr>
+        <tr><td>Wed, Sep 23</td><td>Feast Day</td><td>Lawah</td><td class="db-count">6</td><td class="db-count">0</td><td><button class="db-mini" type="button" data-toast="Opens the reader script for Wed, Sep 23">Open script</button></td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:13px;color:var(--muted);margin:14px 0 0;">
+      Phase two: pull these dates from the True Nation Google Calendar instead of maintaining them by hand.
+    </p>
+  </section>
+</main>
+
+<div class="db-toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ==========================================================
+   MOCK DATA — stands in for the `items` sheet tab
+   ========================================================== */
+var ITEMS = [
+  { id:1, status:"new", title:"Intramural sports sign-ups close Wednesday",
+    body:"T.E.L.A. Intramural Sports sign-ups close this Wednesday. See Bishop Tazayawan or scan the QR code posted in the hallway.",
+    by:"Ashley", dept:"T.E.L.A.", email:"ashley@truenation.org",
+    date:"Sat, Sep 5 — Sabbath", section:"Announcements", channel:"Read aloud + Home page",
+    expires:"Sep 9, 2026", submitted:"2 days ago" },
+
+  { id:2, status:"new", title:"Passover garment fittings next Sabbath",
+    body:"Uniform fittings for Passover garments will be held next Sabbath after class in the back room. Sisters first, then brothers.",
+    by:"Qawalyah", dept:"Textiles & Attire", email:"qawalyah@truenation.org",
+    date:"Sat, Sep 5 — Sabbath", section:"Announcements", channel:"Read aloud + Home page",
+    expires:"Sep 12, 2026", submitted:"2 days ago" },
+
+  { id:3, status:"new", title:"Bake sale",
+    body:"we're having a bake sale",
+    by:"Ahmaryah", dept:"Everyday Sheeple", email:"ahmaryah@truenation.org",
+    date:"Sat, Sep 5 — Sabbath", section:"Announcements", channel:"Read aloud",
+    expires:"—", submitted:"1 day ago",
+    flag:"No date, time, or location given. Good candidate for Request info." },
+
+  { id:4, status:"new", title:"Parking lot closed Sunday for resurfacing",
+    body:"The main lot will be closed all day Sunday for resurfacing. Please use street parking on Vernon.",
+    by:"Rakab", dept:"Maintenance", email:"rakab@truenation.org",
+    date:"Sat, Sep 5 — Sabbath", section:"Housekeeping", channel:"Read aloud + Home page",
+    expires:"Sep 7, 2026", submitted:"6 hours ago" },
+
+  { id:5, status:"info", title:"New Moon fellowship dinner",
+    body:"Fellowship dinner after New Moon service.",
+    by:"Mathathyah", dept:"Fellowship & Service", email:"mathathyah@truenation.org",
+    date:"Thu, Oct 1 — New Moon", section:"Announcements", channel:"Read aloud",
+    expires:"Oct 1, 2026", submitted:"4 days ago",
+    note:"Asked Mathathyah for a start time and whether members should bring a dish. — Lawah, 2 days ago" },
+
+  { id:6, status:"approved", title:"Choir rehearsal Sunday at 11",
+    body:"Choir rehearsal tomorrow at 11:00 AM.",
+    by:"Yaqataza", dept:"Performing Arts", email:"yaqataza@truenation.org",
+    date:"Wed, Sep 23 — Feast Day", section:"Announcements", channel:"Read aloud",
+    expires:"Sep 24, 2026", submitted:"5 days ago" },
+
+  { id:7, status:"approved", title:"Photo booth open after class",
+    body:"Please get some photos at our photo booth — it is beautiful. It will be open 45 minutes after class.",
+    by:"Ahmaryah", dept:"Everyday Sheeple", email:"ahmaryah@truenation.org",
+    date:"Wed, Sep 23 — Feast Day", section:"Announcements", channel:"Read aloud + Home page",
+    expires:"Sep 24, 2026", submitted:"5 days ago" },
+
+  { id:8, status:"denied", title:"Selling my car in the parking lot",
+    body:"Anybody interested in a 2014 Honda, see me after class.",
+    by:"Shanan", dept:"Finance", email:"shanan@truenation.org",
+    date:"Sat, Sep 5 — Sabbath", section:"Announcements", channel:"Read aloud",
+    expires:"—", submitted:"3 days ago",
+    note:"Personal sales aren't read from the podium. Post it to the community board instead. — Lawah, 3 days ago" }
+];
+
+var LABEL = { "new":"Needs review", "info":"Needs info", "approved":"Approved", "denied":"Denied" };
+var CLS   = { "new":"st-new", "info":"st-info", "approved":"st-approved", "denied":"st-denied" };
+var currentFilter = "open";
+
+function esc(s){return String(s).replace(/&(?!#?\w+;)/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function matches(it){
+  if(currentFilter === "all") return true;
+  if(currentFilter === "open") return it.status === "new" || it.status === "info";
+  if(currentFilter === "approved") return it.status === "approved";
+  if(currentFilter === "denied") return it.status === "denied";
+  return true;
+}
+
+function renderQueue(){
+  var shown = ITEMS.filter(matches);
+
+  // counts
+  var open = ITEMS.filter(function(i){return i.status==="new"||i.status==="info";}).length;
+  var app  = ITEMS.filter(function(i){return i.status==="approved";}).length;
+  var den  = ITEMS.filter(function(i){return i.status==="denied";}).length;
+  document.getElementById('queuePill').textContent = open;
+  document.getElementById('cOpen').textContent = '(' + open + ')';
+  document.getElementById('cApp').textContent  = '(' + app + ')';
+  document.getElementById('cDen').textContent  = '(' + den + ')';
+
+  if(!shown.length){
+    document.getElementById('queueBody').innerHTML =
+      '<div class="db-empty"><strong>Nothing here.</strong><br>All caught up for now.</div>';
+    return;
+  }
+
+  // group by service date
+  var groups = {};
+  var order = [];
+  shown.forEach(function(it){
+    if(!groups[it.date]){ groups[it.date] = []; order.push(it.date); }
+    groups[it.date].push(it);
+  });
+
+  var html = '';
+  order.forEach(function(d){
+    html += '<h2 class="db-group">' + esc(d) + ' <span>' + groups[d].length + ' item' + (groups[d].length>1?'s':'') + '</span></h2>';
+    groups[d].forEach(function(it){ html += cardHTML(it); });
+  });
+  document.getElementById('queueBody').innerHTML = html;
+}
+
+function cardHTML(it){
+  var h = '<article class="db-card" data-status="' + it.status + '" data-id="' + it.id + '">';
+  h += '<div class="db-card-top">';
+  h += '<h3 class="db-card-title">' + esc(it.title) + '</h3>';
+  h += '<span class="db-status ' + CLS[it.status] + '">' + LABEL[it.status] + '</span>';
+  h += '</div>';
+
+  h += '<p class="db-body" id="body' + it.id + '">' + esc(it.body) + '</p>';
+
+  if(it.flag){
+    h += '<div class="db-note"><b>Heads up:</b> ' + esc(it.flag) + '</div>';
+  }
+  if(it.note){
+    h += '<div class="db-note"><b>' + (it.status==='denied'?'Reason sent:':'Info requested:') + '</b> ' + esc(it.note) + '</div>';
+  }
+
+  h += '<div class="db-facts">';
+  h += '<span><b>' + esc(it.by) + '</b> &middot; ' + esc(it.dept) + '</span>';
+  h += '<span>Section: <b>' + esc(it.section) + '</b></span>';
+  h += '<span class="db-chan">' + esc(it.channel) + '</span>';
+  h += '<span>Expires: <b>' + esc(it.expires) + '</b></span>';
+  h += '<span>Submitted ' + esc(it.submitted) + '</span>';
+  h += '</div>';
+
+  h += '<div class="db-actions">';
+  if(it.status === 'approved'){
+    h += '<button class="db-btn" data-act="edit">Edit text</button>';
+    h += '<button class="db-btn" data-act="unapprove">Move back to queue</button>';
+    h += '<button class="db-btn db-btn-quiet" data-act="deny">Deny</button>';
+  } else if(it.status === 'denied'){
+    h += '<button class="db-btn" data-act="reopen">Reopen</button>';
+  } else {
+    h += '<button class="db-btn db-btn-go" data-act="approve">Approve</button>';
+    h += '<button class="db-btn" data-act="edit">Edit text</button>';
+    h += '<button class="db-btn" data-act="info">Request info</button>';
+    h += '<button class="db-btn db-btn-quiet" data-act="deny">Deny</button>';
+  }
+  h += '</div>';
+  h += '</article>';
+  return h;
+}
+
+/* ---------- Actions ---------- */
+document.getElementById('queueBody').addEventListener('click', function(e){
+  var btn = e.target.closest('button[data-act]');
+  if(!btn) return;
+  var card = btn.closest('.db-card');
+  var id = parseInt(card.getAttribute('data-id'), 10);
+  var it = ITEMS.filter(function(x){return x.id===id;})[0];
+  var act = btn.getAttribute('data-act');
+
+  if(act === 'edit'){
+    var p = document.getElementById('body' + id);
+    var editing = p.getAttribute('contenteditable') === 'true';
+    if(editing){
+      it.body = p.textContent;
+      p.setAttribute('contenteditable','false');
+      btn.textContent = 'Edit text';
+      toast('Saved. ' + it.by + ' is notified that the wording changed.');
+    } else {
+      p.setAttribute('contenteditable','true');
+      p.focus();
+      btn.textContent = 'Save edit';
+    }
+    return;
+  }
+
+  if(act === 'info'){
+    if(card.querySelector('.db-infobox')) return;
+    var box = document.createElement('div');
+    box.className = 'db-infobox';
+    box.innerHTML = '<label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px;">'
+      + 'What do you need from ' + esc(it.by) + '?</label>'
+      + '<textarea placeholder="e.g. Can you give a start time and location?"></textarea>'
+      + '<div style="margin-top:8px;display:flex;gap:8px;">'
+      + '<button class="db-btn db-btn-go" data-act="sendinfo">Send request</button>'
+      + '<button class="db-btn" data-act="cancelinfo">Cancel</button></div>';
+    card.querySelector('.db-actions').before(box);
+    box.querySelector('textarea').focus();
+    return;
+  }
+  if(act === 'cancelinfo'){ card.querySelector('.db-infobox').remove(); return; }
+  if(act === 'sendinfo'){
+    var txt = card.querySelector('.db-infobox textarea').value.trim();
+    it.status = 'info';
+    it.note = (txt || 'More detail needed.') + ' — Lawah, just now';
+    it.flag = null;
+    renderQueue();
+    toast('Emailed ' + it.by + '. Item moved to Needs info.');
+    return;
+  }
+
+  if(act === 'approve'){
+    it.status = 'approved'; it.note = null; it.flag = null;
+    renderQueue();
+    toast('Approved. It will appear in the ' + it.date.split('—')[0].trim() + ' script.');
+    return;
+  }
+  if(act === 'unapprove'){ it.status='new'; renderQueue(); toast('Moved back to the queue.'); return; }
+  if(act === 'reopen'){ it.status='new'; it.note=null; renderQueue(); toast('Reopened.'); return; }
+  if(act === 'deny'){
+    it.status = 'denied';
+    it.note = it.note || 'Not read this service. — Lawah, just now';
+    renderQueue();
+    toast('Denied. ' + it.by + ' gets an email with the reason.');
+    return;
+  }
+});
+
+/* ---------- Filters ---------- */
+var filters = document.querySelectorAll('.db-filter[data-f]');
+for(var i=0;i<filters.length;i++){
+  filters[i].addEventListener('click', function(){
+    for(var j=0;j<filters.length;j++){ filters[j].setAttribute('aria-pressed','false'); }
+    this.setAttribute('aria-pressed','true');
+    currentFilter = this.getAttribute('data-f');
+    renderQueue();
+  });
+}
+
+/* ==========================================================
+   STANDING TEXT — stands in for the `blocks` sheet tab
+   ========================================================== */
+var BLOCKS = {
+  sabbath:[
+    { part:"Before class", name:"Shalam & Welcome", lines:[
+      {t:"Shalam everyone, and welcome to all guests and visitors."},
+      {t:"Before we begin class, we would like to go over a few class rules."}
+    ]},
+    { part:"Before class", name:"Class Rules", lines:[
+      {t:"There is no eating or drinking in the sanctuary or T.E.L.A. rooms. Closed bottles of water and items like peppermints or cough drops are acceptable."},
+      {t:"Once class starts, let's minimize walking back and forth and getting out of our seats."},
+      {t:"Parents, please make sure your children do not have iPads or toys out during class."},
+      {t:"If you are caught sleeping or sleepy in class, you will be told to stand in the back — ages 8 and up. No one is exempt."},
+      {t:"Let's take pride in our chairs. They are fabric, so please keep them clean, and do not let the babies walk on them."},
+      {t:"Class will be streamed online on YouTube. Please be sure to like, subscribe, and share the video."}
+    ]},
+    { part:"After class", name:"Guests & Visitors", lines:[
+      {t:"To all our guests and visitors — if you have an interest in becoming a member of True Nation, you may speak with one of our deacons, Kahan or Shahad."}
+    ]},
+    { part:"After class", name:"Housekeeping", lines:[
+      {t:"All congregants are responsible for reading and checking your email."},
+      {t:"Please, no parking in the parking lot at all on Sundays. Thank you."},
+      {t:"When leaving Sabbath class, please take all your belongings with you."}
+    ]},
+    { part:"After class", name:"Dues & Contributions", lines:[
+      {t:"True Nation Alms."},
+      {t:"Passover Garment Dues — $50 monthly."},
+      {t:"If you would like to order True Nation shirts or sweatshirts, please order through TrueNation.org/store."},
+      {t:"If you have any questions regarding alms or feast fees, please contact Marayam or Shanan on the finance team."}
+    ]},
+    { part:"After class", name:"Closing", lines:[
+      {t:"Refreshments to follow in the Rec room after closing prayers. Please allow guests and elders to eat first."},
+      {t:"Remember that some of our children have severe food allergies. Do not feed any child without the parent's permission."},
+      {t:"On behalf of Hospitality, thank you all for your contributions."}
+    ]}
+  ],
+  newmoon:[
+    { part:"After class", name:"Shalam & Welcome", lines:[
+      {t:"Shalam everyone, and welcome to all guests and visitors."}
+    ]},
+    { part:"After class", name:"Guests & Visitors", lines:[
+      {t:"To all our guests and visitors — if you have an interest in becoming a member of True Nation, you may speak with one of our deacons, Kahan or Shahad."}
+    ]},
+    { part:"After class", name:"Closing", lines:[
+      {t:"Refreshments to follow. Please allow guests and elders to eat first."}
+    ]}
+  ],
+  feast:[
+    { part:"After class", name:"Shalam & Welcome", lines:[
+      {t:"Shalam everyone, and welcome to all guests and visitors!"},
+      {t:"Announce the feast we are celebrating today. Give praises to YHWH!", dir:true}
+    ]},
+    { part:"After class", name:"Guests & Visitors", lines:[
+      {t:"To all our guests and visitors — if you have an interest in becoming a member of True Nation, you may speak with one of our deacons: Kahan or Shahad."}
+    ]},
+    { part:"After class", name:"Feast Etiquette", lines:[
+      {t:"If you arrive late with your dish, please drop it off quietly and avoid lingering, as others are watching the lesson."},
+      {t:"We will be lining up outside, so please keep an ear out for instructions."},
+      {t:"Members, please allow our guests and elders to eat first."},
+      {t:"Please wait to get your dessert until after everyone has gotten their food, and be mindful — let's make sure there is enough for everyone."},
+      {t:"Wellness and immunity shots are in the back. Please save your shot glass — one shot only. Once everyone has had a shot, you are welcome to a second."},
+      {t:"To all adults, please be conscious of your alcohol consumption and drink responsibly."},
+      {t:"Parents, no children are allowed in the T.E.L.A. room."},
+      {t:"Make sure that you clean up after yourselves and your children."}
+    ]},
+    { part:"After class", name:"Closing", lines:[
+      {t:"Give thanks to everyone that contributed to the feast today."},
+      {t:"Encourage everyone to be festive and in good spirits.", dir:true}
+    ]}
+  ]
+};
+
+function renderStanding(svc){
+  var sets = BLOCKS[svc];
+  var html = '';
+  var lastPart = '';
+  sets.forEach(function(b){
+    if(b.part !== lastPart){
+      html += '<h2 class="db-group">' + esc(b.part) + '</h2>';
+      lastPart = b.part;
+    }
+    html += '<div class="db-blockset">';
+    html += '<h3>' + esc(b.name) + '</h3>';
+    html += '<p class="db-sub">Read every ' + (svc==='sabbath'?'Sabbath':svc==='feast'?'Feast Day':'New Moon') + ' &middot; ' + b.lines.length + ' line' + (b.lines.length>1?'s':'') + '</p>';
+    b.lines.forEach(function(l){
+      html += '<div class="db-lineitem">';
+      html += '<span class="db-grip" aria-hidden="true">&#8942;&#8942;</span>';
+      html += '<p' + (l.dir ? ' class="db-direction"' : '') + '>' + esc(l.t)
+           + (l.dir ? '<span class="db-dirtag">Stage direction</span>' : '') + '</p>';
+      html += '<button class="db-mini" type="button" data-toast="Inline editor opens here">Edit</button>';
+      html += '<button class="db-mini" type="button" data-toast="Line removed from every future service">Remove</button>';
+      html += '</div>';
+    });
+    html += '<div style="margin-top:12px;"><button class="db-btn" type="button" data-toast="Adds a new line to this section">+ Add line</button></div>';
+    html += '</div>';
+  });
+  html += '<button class="db-btn db-btn-go" type="button" data-toast="Creates a new standing section for this service type">+ Add a section</button>';
+  document.getElementById('standingBody').innerHTML = html;
+}
+
+var svcBtns = document.querySelectorAll('.db-filter[data-svc]');
+for(var k=0;k<svcBtns.length;k++){
+  svcBtns[k].addEventListener('click', function(){
+    for(var m=0;m<svcBtns.length;m++){ svcBtns[m].setAttribute('aria-pressed','false'); }
+    this.setAttribute('aria-pressed','true');
+    renderStanding(this.getAttribute('data-svc'));
+  });
+}
+
+/* ---------- Tabs ---------- */
+var tabs = document.querySelectorAll('.db-tab');
+for(var t=0;t<tabs.length;t++){
+  tabs[t].addEventListener('click', function(){
+    for(var u=0;u<tabs.length;u++){ tabs[u].setAttribute('aria-selected','false'); }
+    this.setAttribute('aria-selected','true');
+    var want = this.getAttribute('data-tab');
+    ['queue','standing','services'].forEach(function(n){
+      document.getElementById('tab-' + n).hidden = (n !== want);
+    });
+  });
+}
+
+/* ---------- Toast ---------- */
+var toastEl = document.getElementById('toast'), toastTimer;
+function toast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ toastEl.classList.remove('show'); }, 3200);
+}
+document.body.addEventListener('click', function(e){
+  var b = e.target.closest('[data-toast]');
+  if(b) toast(b.getAttribute('data-toast'));
+});
+
+renderQueue();
+renderStanding('sabbath');
+
+/* ---------- Height reporter (TNIC convention) ---------- */
+(function(){
+  function sendHeight(){
+    var h=document.body?document.body.scrollHeight:0;
+    window.parent.postMessage({type:'tnic-height',height:h,id:'announcements-dashboard'},'*');
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sendHeight);}
+  else{sendHeight();}
+  window.addEventListener('resize',sendHeight);
+  if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+})();
+</script>
+</body>
+</html>

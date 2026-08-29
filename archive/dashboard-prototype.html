@@ -1,0 +1,410 @@
+<!--
+  TRUE NATION INTRANET — HOME / MY DASHBOARD — FULL PAGE PREVIEW
+  ──────────────────────────────────────────────────────────────
+  This file previews the COMPLETE Home/Dashboard page layout
+  as it will appear in Google Sites. Each section below represents
+  a separate embed, shown here together for layout reference.
+
+  GOOGLE SITES PAGE STRUCTURE (top to bottom):
+  1. Identity Card embed (dashboard-identity.html) — no heading above
+  2. Native heading: "QUICK ACTIONS"
+  3. Quick Actions embed (dashboard-quick-actions.html)
+  4. Native heading: "QUICK LINKS"
+  5. Quick Links embed (home-quick-links.html) — existing Home embed
+  6. Native heading: "MY DEPARTMENT"
+  7. My Department embed (dashboard-my-department.html)
+  8. Native heading: "ANNOUNCEMENTS"
+  9. Announcements embed (home-announcements.html) — existing Home embed
+  10. Native heading: "UPCOMING EVENTS"
+  11. Events embed (dashboard-events.html)
+
+  NOTE: In Google Sites, each embed below is pasted separately via
+  Insert → Embed → Embed Code. Native Sites headings go between them.
+  This preview file combines everything for visual reference only.
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #FAF8F4; }
+
+  .preview {
+    font-family: 'DM Sans', sans-serif;
+    color: #130D0A;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+  }
+
+  /* Simulates native Sites headings */
+  .sites-heading {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #7C1316;
+    margin: 24px 0 8px;
+    padding-left: 2px;
+  }
+  .sites-heading:first-of-type { margin-top: 16px; }
+
+  /* Embed boundary indicator (preview only) */
+  .embed-boundary {
+    border: 2px dashed #E8DDD0;
+    border-radius: 14px;
+    padding: 0;
+    position: relative;
+    margin-bottom: 4px;
+  }
+  .embed-label {
+    position: absolute;
+    top: -10px;
+    right: 12px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #C9972C;
+    background: #FAF8F4;
+    padding: 0 6px;
+  }
+
+  /* ═══ 1. IDENTITY CARD ═══ */
+  .dash-id {
+    background: linear-gradient(135deg, #7C1316 0%, #5a0e10 100%);
+    border-radius: 14px;
+    padding: 28px 24px 24px;
+    color: #F2EDE4;
+    position: relative;
+    overflow: hidden;
+  }
+  .dash-id::after {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 120px; height: 120px;
+    background: rgba(201,151,44,0.12);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .dash-greeting { font-size: 14px; opacity: 0.8; margin-bottom: 4px; }
+  .dash-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 1.75rem;
+    text-transform: uppercase; letter-spacing: 0.03em;
+    line-height: 1.2; margin-bottom: 12px;
+  }
+  .dash-meta { display: flex; flex-wrap: wrap; gap: 8px; }
+  .dash-tag {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 12px; font-weight: 500;
+    background: rgba(255,255,255,0.15);
+    padding: 4px 12px; border-radius: 100px;
+  }
+  .dash-tag-icon { font-size: 14px; }
+
+  /* ═══ 2. QUICK ACTIONS ═══ */
+  .qa-wrap {
+    background: #FAF8F4; border-radius: 10px;
+    padding: 16px 16px 20px; width: 100%;
+  }
+  .qa-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .qa-tile {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 10px;
+    background: white; border: 1px solid #F2EDE4;
+    border-radius: 10px; padding: 22px 14px 18px;
+    text-decoration: none; color: #130D0A;
+    box-shadow: 0 2px 6px rgba(19,13,10,0.06);
+    transition: box-shadow 0.2s, transform 0.15s, border-color 0.2s;
+  }
+  .qa-tile:hover { box-shadow: 0 5px 16px rgba(19,13,10,0.12); transform: translateY(-2px); border-color: #C9972C; }
+  .qa-icon {
+    width: 48px; height: 48px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center; font-size: 24px;
+  }
+  .qa-profile .qa-icon { background: #E8F5E9; }
+  .qa-announce .qa-icon { background: #FFF3E0; }
+  .qa-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600; font-size: 12px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    color: #3D2E28; text-align: center;
+  }
+  .qa-desc { font-size: 11px; color: #9a8e87; text-align: center; }
+
+  /* ═══ 3. QUICK LINKS (existing home embed) ═══ */
+  .ql-wrap {
+    background: #FAF8F4; border-radius: 10px;
+    padding: 16px 16px 20px; width: 100%;
+  }
+  .ql-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 12px; width: 100%; font-family: 'DM Sans', sans-serif;
+  }
+  .ql-tile {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; text-align: center;
+    padding: 24px 12px 20px; background: white;
+    border: 1px solid #F2EDE4; border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(19,13,10,0.07);
+    text-decoration: none; color: #130D0A; min-height: 110px;
+    transition: box-shadow 0.2s, transform 0.15s;
+  }
+  .ql-tile:hover { box-shadow: 0 6px 18px rgba(19,13,10,0.13); transform: translateY(-3px); border-color: #C9972C; }
+  .ql-icon { font-size: 3rem; margin-bottom: 14px; line-height: 1; }
+  .ql-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 1.125rem;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    color: #7C1316; line-height: 1.2;
+  }
+
+  /* ═══ 4. MY DEPARTMENT ═══ */
+  .dept-wrap {
+    background: #FAF8F4; border-radius: 10px;
+    padding: 16px 16px 20px; width: 100%;
+  }
+  .dept-card {
+    background: white; border: 1px solid #F2EDE4;
+    border-radius: 10px; padding: 20px;
+    box-shadow: 0 2px 6px rgba(19,13,10,0.05);
+  }
+  .dept-row { display: flex; align-items: center; gap: 14px; }
+  .dept-icon {
+    width: 48px; height: 48px; background: #FAF8F4;
+    border: 1px solid #F2EDE4; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; flex-shrink: 0;
+  }
+  .dept-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 1rem;
+    text-transform: uppercase; letter-spacing: 0.03em;
+    color: #7C1316; margin-bottom: 2px;
+  }
+  .dept-lead { font-size: 13px; color: #9a8e87; }
+  .dept-lead strong { color: #3D2E28; font-weight: 500; }
+  .dept-links { display: flex; gap: 8px; margin-top: 14px; }
+  .dept-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600; font-size: 12px;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    padding: 8px 16px; border-radius: 6px;
+    text-decoration: none; transition: opacity 0.15s;
+  }
+  .dept-btn:hover { opacity: 0.85; }
+  .dept-btn-primary { background: #7C1316; color: #F2EDE4; }
+  .dept-btn-secondary { background: white; border: 1px solid #F2EDE4; color: #3D2E28; }
+
+  /* ═══ 5. ANNOUNCEMENTS (existing home embed) ═══ */
+  .ann-wrap {
+    font-family: 'DM Sans', sans-serif; width: 100%;
+    background: #FAF8F4; border-radius: 10px;
+    padding: 16px 16px 20px;
+  }
+  .ann-item {
+    background: white; border: 1px solid #F2EDE4;
+    border-left: 5px solid #C9972C;
+    border-radius: 0 8px 8px 0;
+    padding: 20px 24px; margin-bottom: 12px;
+  }
+  .ann-item:last-child { margin-bottom: 0; }
+  .ann-date {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600; font-size: 14px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: #C9972C; margin-bottom: 6px;
+  }
+  .ann-title { font-weight: 700; font-size: 20px; color: #130D0A; margin-bottom: 8px; line-height: 1.3; }
+  .ann-body { font-size: 15px; color: #3D2E28; line-height: 1.6; }
+  .ann-tag {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600; font-size: 12px;
+    text-transform: uppercase; letter-spacing: 0.07em;
+    padding: 3px 10px; border-radius: 100px;
+    margin-left: 8px; vertical-align: middle;
+  }
+  .tag-all { background: #E3F2FD; color: #1565C0; }
+  .tag-it { background: #F3E5F5; color: #7B1FA2; }
+
+  /* ═══ 6. EVENTS ═══ */
+  .events-wrap {
+    background: #FAF8F4; border-radius: 10px;
+    padding: 16px 16px 20px; width: 100%;
+  }
+  .event-item {
+    display: flex; gap: 14px; padding: 12px;
+    background: white; border: 1px solid #F2EDE4;
+    border-radius: 8px; margin-bottom: 8px;
+    transition: box-shadow 0.2s;
+  }
+  .event-item:hover { box-shadow: 0 2px 10px rgba(19,13,10,0.08); }
+  .event-date-box { width: 48px; text-align: center; flex-shrink: 0; padding-top: 2px; }
+  .event-month {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600; font-size: 10px;
+    text-transform: uppercase; letter-spacing: 0.08em; color: #C9972C;
+  }
+  .event-day {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 24px;
+    color: #7C1316; line-height: 1; margin-top: 2px;
+  }
+  .event-title { font-weight: 700; font-size: 14px; color: #130D0A; margin-bottom: 2px; }
+  .event-time { font-size: 12px; color: #9a8e87; }
+  .event-campus {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600; font-size: 10px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    color: #C9972C; background: white;
+    border: 1px solid #F2EDE4;
+    padding: 2px 8px; border-radius: 100px;
+    display: inline-block; margin-top: 4px;
+  }
+  .events-footer { text-align: center; margin-top: 12px; }
+  .events-footer a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600; font-size: 12px;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    color: #C9972C; text-decoration: none;
+  }
+
+  /* ═══ RESPONSIVE ═══ */
+  @media (max-width: 600px) {
+    .ql-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  }
+  @media (max-width: 480px) {
+    .preview { padding: 12px 10px 32px; }
+    .dash-id { padding: 22px 18px 20px; }
+    .dash-name { font-size: 1.4rem; }
+    .qa-grid { grid-template-columns: 1fr; }
+    .dept-links { flex-direction: column; }
+    .dept-btn { justify-content: center; }
+    .ql-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+
+<div class="preview">
+
+  <!-- ═══ EMBED 1: Identity Card ═══ -->
+  <div class="embed-boundary">
+    <span class="embed-label">dashboard-identity.html</span>
+    <div class="dash-id">
+      <div class="dash-greeting">Good morning, Shahad</div>
+      <div class="dash-name">Shahad</div>
+      <div class="dash-meta">
+        <span class="dash-tag"><span class="dash-tag-icon">🏢</span> IT / Information Technology</span>
+        <span class="dash-tag"><span class="dash-tag-icon">🏛</span> Deacons Branch</span>
+        <span class="dash-tag"><span class="dash-tag-icon">📍</span> Los Angeles, CA</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ EMBED 2: Quick Actions ═══ -->
+  <div class="sites-heading">Quick Actions</div>
+  <div class="embed-boundary">
+    <span class="embed-label">dashboard-quick-actions.html</span>
+    <div class="qa-wrap">
+      <div class="qa-grid">
+        <a class="qa-tile qa-profile" href="#">
+          <div class="qa-icon">👤</div>
+          <div class="qa-label">Update Profile</div>
+          <div class="qa-desc">Edit your directory info</div>
+        </a>
+        <a class="qa-tile qa-announce" href="#">
+          <div class="qa-icon">📢</div>
+          <div class="qa-label">Submit Announcement</div>
+          <div class="qa-desc">Post to the intranet feed</div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ EMBED 3: Quick Links (existing) ═══ -->
+  <div class="sites-heading">Quick Links</div>
+  <div class="embed-boundary">
+    <span class="embed-label">home-quick-links.html (existing)</span>
+    <div class="ql-wrap">
+      <div class="ql-grid">
+        <a class="ql-tile" href="#"><div class="ql-icon">👥</div><div class="ql-label">Our People</div></a>
+        <a class="ql-tile" href="#"><div class="ql-icon">🏢</div><div class="ql-label">Departments</div></a>
+        <a class="ql-tile" href="#"><div class="ql-icon">📚</div><div class="ql-label">T.E.L.A.</div></a>
+        <a class="ql-tile" href="#"><div class="ql-icon">🌍</div><div class="ql-label">Locations</div></a>
+        <a class="ql-tile" href="#"><div class="ql-icon">📅</div><div class="ql-label">Calendar</div></a>
+        <a class="ql-tile" href="#"><div class="ql-icon">🗂️</div><div class="ql-label">Resources</div></a>
+        <a class="ql-tile" href="#"><div class="ql-icon">👑</div><div class="ql-label">Leadership</div></a>
+        <a class="ql-tile" href="#"><div class="ql-icon">💬</div><div class="ql-label">Chat Spaces</div></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ EMBED 4: My Department ═══ -->
+  <div class="sites-heading">My Department</div>
+  <div class="embed-boundary">
+    <span class="embed-label">dashboard-my-department.html</span>
+    <div class="dept-wrap">
+      <div class="dept-card">
+        <div class="dept-row">
+          <div class="dept-icon">💻</div>
+          <div class="dept-info">
+            <div class="dept-name">IT / Information Technology</div>
+            <div class="dept-lead">Lead: <strong>Shahad</strong></div>
+          </div>
+        </div>
+        <div class="dept-links">
+          <a class="dept-btn dept-btn-primary" href="#">🏢 Department Page</a>
+          <a class="dept-btn dept-btn-secondary" href="#">💬 Chat Space</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ EMBED 5: Announcements (existing) ═══ -->
+  <div class="sites-heading">Announcements</div>
+  <div class="embed-boundary">
+    <span class="embed-label">home-announcements.html (existing)</span>
+    <div class="ann-wrap">
+      <div class="ann-item">
+        <div class="ann-date">March 27, 2026 <span class="ann-tag tag-all">All Staff</span></div>
+        <div class="ann-title">Welcome to the New True Nation Intranet</div>
+        <div class="ann-body">Shalawaym family. The new portal is live. Use the Quick Links above to navigate to your department, find a team member in the directory, or check the calendar.</div>
+      </div>
+      <div class="ann-item">
+        <div class="ann-date">Coming Soon — Week 3 <span class="ann-tag tag-it">IT</span></div>
+        <div class="ann-title">Submit Announcements via Form</div>
+        <div class="ann-body">Department leads will soon be able to submit announcements directly through a Google Form. Approved announcements will appear here automatically.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ EMBED 6: Upcoming Events ═══ -->
+  <div class="sites-heading">Upcoming Events</div>
+  <div class="embed-boundary">
+    <span class="embed-label">dashboard-events.html</span>
+    <div class="events-wrap">
+      <div class="event-item">
+        <div class="event-date-box"><div class="event-month">Apr</div><div class="event-day">14</div></div>
+        <div class="event-info"><div class="event-title">Monday Evening Service</div><div class="event-time">7:00 PM – 9:00 PM</div><span class="event-campus">Los Angeles, CA</span></div>
+      </div>
+      <div class="event-item">
+        <div class="event-date-box"><div class="event-month">Apr</div><div class="event-day">17</div></div>
+        <div class="event-info"><div class="event-title">IT Department Sync</div><div class="event-time">10:00 AM – 11:00 AM</div><span class="event-campus">Los Angeles, CA</span></div>
+      </div>
+      <div class="event-item">
+        <div class="event-date-box"><div class="event-month">Apr</div><div class="event-day">19</div></div>
+        <div class="event-info"><div class="event-title">Shabbat Service</div><div class="event-time">10:00 AM – 1:00 PM</div><span class="event-campus">Los Angeles, CA</span></div>
+      </div>
+      <div class="event-item">
+        <div class="event-date-box"><div class="event-month">Apr</div><div class="event-day">22</div></div>
+        <div class="event-info"><div class="event-title">All-Hands Town Hall</div><div class="event-time">6:00 PM – 7:30 PM</div><span class="event-campus">Los Angeles, CA</span></div>
+      </div>
+      <div class="events-footer"><a href="#">Full calendar →</a></div>
+    </div>
+  </div>
+
+</div>

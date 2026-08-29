@@ -1,0 +1,54 @@
+<!-- PREVIEW ONLY — shows the removed loc-header component across all 3 badge types -->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: #FAF8F4; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+
+  .loc-card { background: white; border: 1px solid #F2EDE4; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(19,13,10,0.06); }
+
+  .loc-header { display: flex; align-items: center; padding: 14px 18px 12px; border-bottom: 1px solid #F2EDE4; }
+  .loc-header-left { flex: 1; }
+
+  .loc-badge { display: inline-block; font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 9px; border-radius: 100px; margin-bottom: 5px; }
+  .badge-hq   { background: #7C1316; color: #F2EDE4; }
+  .badge-sat  { background: #F2EDE4; color: #3D2E28; }
+  .badge-intl { background: #D8DFF0; color: #2E4A6B; }
+
+  .loc-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.25rem; text-transform: uppercase; letter-spacing: 0.04em; color: #7C1316; line-height: 1.1; }
+  .loc-city { font-size: 13px; color: #888; margin-top: 3px; }
+
+  .loc-body-stub { padding: 14px 18px; font-size: 13px; color: #aaa; font-style: italic; }
+</style>
+
+<div class="loc-card">
+  <div class="loc-header">
+    <div class="loc-header-left">
+      <span class="loc-badge badge-hq">HQ</span>
+      <div class="loc-name">Los Angeles</div>
+      <div class="loc-city">Los Angeles, CA · Headquarters</div>
+    </div>
+  </div>
+  <div class="loc-body-stub">↓ address, bishop, schedule, map…</div>
+</div>
+
+<div class="loc-card">
+  <div class="loc-header">
+    <div class="loc-header-left">
+      <span class="loc-badge badge-sat">Satellite</span>
+      <div class="loc-name">Detroit</div>
+      <div class="loc-city">Detroit, MI</div>
+    </div>
+  </div>
+  <div class="loc-body-stub">↓ address, bishop, schedule, map…</div>
+</div>
+
+<div class="loc-card">
+  <div class="loc-header">
+    <div class="loc-header-left">
+      <span class="loc-badge badge-intl">International</span>
+      <div class="loc-name">Philippines</div>
+      <div class="loc-city">Philippines · City of Truth</div>
+    </div>
+  </div>
+  <div class="loc-body-stub">↓ address, liaison, schedule, map…</div>
+</div>

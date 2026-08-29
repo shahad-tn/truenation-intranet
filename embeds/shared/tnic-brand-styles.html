@@ -1,0 +1,520 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  TRUE NATION ISRAELITE CONGREGATION — BRAND CSS             ║
+  ║  Google Sites Custom HTML Embed — Global Styles             ║
+  ║  Version 1.0 · March 2026                                   ║
+  ╚══════════════════════════════════════════════════════════════╝
+
+  HOW TO USE:
+  1. In Google Sites editor, go to Insert → Embed → Embed Code
+  2. Paste this ENTIRE file into the code box
+  3. Place this embed at the TOP of every page (it will be invisible)
+  4. The styles will cascade to all content below on that page
+
+  BRAND COLORS:
+  - Dark Wine:       #7C1316  (headers, nav, key UI)
+  - Sovereign Gold:  #C9972C  (borders, accents, dividers — light BG only)
+
+  SURFACE SCALE (updated Aug 2026 — supersedes Warm Snow / Warm Cream for UI):
+  - Page ground:     #E8E8EC  (was Warm Snow #FAF8F4)
+  - Surface fill:    #D8D8DE  (was Warm Cream #F2EDE4)
+  - Border:          #BFBFC7  (edges you can actually see)
+  - Card:            #FFFFFF
+  - Body text:       #26262A  (was #130D0A)
+  - Muted text:      #56565E  (was #3D2E28)
+  - Text on Wine:    #F2F2F3  (was Warm Cream #F2EDE4)
+
+  WHY: warm neutrals stacked on each other (snow page + cream panels + white
+  cards) gave roughly a 2% luminance step between surfaces. Edges were hard to
+  find and the page read as one flat warm field, which is tiring to scan. The
+  gray scale keeps the same structure with real separation and a dimmer ground.
+  Wine and Gold are unchanged — the brand's identity colors did not move.
+
+  TYPOGRAPHY:
+  - H1/H2: Barlow Condensed Bold — ALWAYS UPPERCASE
+  - H3:    Barlow Condensed SemiBold — UPPERCASE
+  - Body:  DM Sans Regular/Medium/Bold — Sentence case
+
+  WCAG AA CONTRAST RATIOS (verified Aug 2026):
+  - #26262A on #E8E8EC → 12.6:1 ✅ (body text on page ground)
+  - #26262A on #FFFFFF → 14.5:1 ✅ (body text on cards)
+  - #56565E on #E8E8EC →  6.0:1 ✅ (muted text — passes AA normal)
+  - #F2F2F3 on #7C1316 →  8.9:1 ✅ (text on wine)
+  - #C9972C on #E8E8EC →  2.2:1 ❌ as TEXT — gold is a fill/border colour only.
+      The previous guide claimed 4.6:1 for gold on Warm Snow. That figure was
+      wrong; the real value was 2.5:1, so gold text never met AA. Use
+      --tn-gold-text (#785710, 4.3:1) on light and --tn-gold-onwine (#D4A94D,
+      4.9:1) on wine. #C9972C stays exactly as it is for borders, rules,
+      underlines and filled badges, where contrast rules do not apply the same way.
+  - #785710 on #E8E8EC →  5.4:1 ✅ (gold text on page ground)
+  - #785710 on #FFFFFF →  6.6:1 ✅ (gold text on cards)
+  - #785710 on #D8D8DE →  4.7:1 ✅ (gold text on surface fills)
+  - #D4A94D on #7C1316 →  4.9:1 ✅ (gold text on wine)
+  - Gold is never body text and never sits on Wine. Unchanged rule.
+-->
+
+<style>
+/* ═══════════════════════════════════════
+   GOOGLE FONTS IMPORT
+   ═══════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap');
+
+/* ═══════════════════════════════════════
+   CSS CUSTOM PROPERTIES (BRAND TOKENS)
+   ═══════════════════════════════════════ */
+:root {
+  /* Colors */
+  --tn-wine:        #7C1316;
+  --tn-wine-dark:   #5A0E11;
+  --tn-wine-light:  #9A1A1E;
+  --tn-gold:        #C9972C;   /* FILLS and BORDERS only — see note below */
+  --tn-gold-light:  #D4A94D;
+  --tn-gold-text:   #785710;   /* gold as TEXT on a light ground (5.4:1 on page) */
+  --tn-gold-onwine: #D4A94D;   /* gold as TEXT on wine (4.9:1) */
+  /* Surface scale — gray as of Aug 2026. Old names kept so existing
+     embeds keep working; only the values moved. */
+  --tn-snow:        #E8E8EC;   /* page ground */
+  --tn-cream:       #D8D8DE;   /* surface fill */
+  --tn-line:        #BFBFC7;   /* decorative borders */
+  --tn-line-strong: #86868F;   /* borders of inputs/controls — WCAG 1.4.11 needs 3:1 */
+  --tn-onwine:      #F2F2F3;   /* text on wine/dark — use this, not --tn-cream */
+  --tn-card:        #FFFFFF;
+  --tn-brown:       #26262A;   /* body text */
+  --tn-brown-mid:   #56565E;   /* muted text */
+
+  /* Typography */
+  --font-heading:   'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --font-body:      'DM Sans', 'Segoe UI', sans-serif;
+
+  /* Spacing */
+  --space-xs:  0.25rem;
+  --space-sm:  0.5rem;
+  --space-md:  1rem;
+  --space-lg:  1.5rem;
+  --space-xl:  2rem;
+  --space-2xl: 3rem;
+
+  /* Borders & Radius */
+  --radius-sm:  4px;
+  --radius-md:  8px;
+  --radius-lg:  12px;
+
+  /* Shadows */
+  --shadow-card: 0 2px 8px rgba(19, 13, 10, 0.08);
+  --shadow-hover: 0 4px 16px rgba(19, 13, 10, 0.12);
+
+  /* Mobile tap target minimum */
+  --tap-min: 44px;
+}
+
+/* ═══════════════════════════════════════
+   BASE TYPOGRAPHY
+   ═══════════════════════════════════════ */
+.tn-page {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--tn-brown);
+  background-color: var(--tn-snow);
+  -webkit-font-smoothing: antialiased;
+}
+
+.tn-h1, .tn-h2 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  color: var(--tn-wine);
+  margin: 0 0 var(--space-md) 0;
+}
+
+.tn-h1 { font-size: clamp(1.75rem, 4vw, 2.5rem); }
+.tn-h2 { font-size: clamp(1.25rem, 3vw, 1.75rem); }
+
+.tn-h3 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  line-height: 1.3;
+  color: var(--tn-brown);
+  margin: 0 0 var(--space-sm) 0;
+}
+
+.tn-body {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--tn-brown);
+}
+
+.tn-body-sm {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.tn-label {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--tn-brown-mid);
+}
+
+/* ═══════════════════════════════════════
+   GOLD ACCENT DIVIDER
+   ═══════════════════════════════════════ */
+.tn-divider {
+  border: none;
+  height: 2px;
+  background: linear-gradient(90deg, var(--tn-gold), transparent);
+  margin: var(--space-xl) 0;
+}
+
+.tn-divider--center {
+  background: linear-gradient(90deg, transparent, var(--tn-gold), transparent);
+}
+
+/* ═══════════════════════════════════════
+   SECTION BANNER (Wine background)
+   ═══════════════════════════════════════ */
+.tn-banner {
+  background-color: var(--tn-wine);
+  color: var(--tn-onwine);
+  padding: var(--space-2xl) var(--space-lg);
+  text-align: center;
+  border-radius: var(--radius-md);
+}
+
+.tn-banner .tn-h1,
+.tn-banner .tn-h2 {
+  color: var(--tn-onwine);
+}
+
+.tn-banner .tn-subtitle {
+  color: var(--tn-onwine);
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  opacity: 0.9;
+  margin-top: var(--space-sm);
+}
+
+.tn-banner .tn-gold-rule {
+  width: 60px;
+  height: 3px;
+  background-color: var(--tn-gold);
+  margin: var(--space-md) auto;
+  border: none;
+}
+
+/* ═══════════════════════════════════════
+   CARDS (Department tiles, quick links)
+   ═══════════════════════════════════════ */
+.tn-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-lg);
+  padding: var(--space-md) 0;
+}
+
+.tn-card {
+  background: white;
+  border: 1px solid var(--tn-cream);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  min-height: var(--tap-min);
+}
+
+.tn-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+}
+
+.tn-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.tn-card__icon {
+  width: 40px;
+  height: 40px;
+  background-color: var(--tn-wine);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--tn-onwine);
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.tn-card__title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+  color: var(--tn-wine);
+}
+
+.tn-card__body {
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  color: var(--tn-brown);
+  line-height: 1.5;
+}
+
+/* Clickable card (link wrapper) */
+a.tn-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+a.tn-card-link:hover .tn-card__title {
+  color: var(--tn-wine-light);
+}
+
+/* ═══════════════════════════════════════
+   QUICK LINKS GRID
+   ═══════════════════════════════════════ */
+.tn-quicklinks {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--space-md);
+}
+
+.tn-quicklink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-lg) var(--space-md);
+  background: white;
+  border: 1px solid var(--tn-cream);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  text-decoration: none;
+  color: var(--tn-brown);
+  min-height: var(--tap-min);
+  transition: all 0.2s ease;
+}
+
+.tn-quicklink:hover {
+  border-color: var(--tn-gold);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+}
+
+.tn-quicklink__icon {
+  font-size: 1.75rem;
+  margin-bottom: var(--space-sm);
+}
+
+.tn-quicklink__label {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tn-wine);
+}
+
+/* ═══════════════════════════════════════
+   INFO ROWS (Lead info, contact, etc.)
+   ═══════════════════════════════════════ */
+.tn-info-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md) 0;
+  border-bottom: 1px solid var(--tn-cream);
+}
+
+.tn-info-row:last-child {
+  border-bottom: none;
+}
+
+.tn-info-row__label {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--tn-brown-mid);
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+.tn-info-row__value {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--tn-brown);
+}
+
+/* ═══════════════════════════════════════
+   BUTTONS & LINKS
+   ═══════════════════════════════════════ */
+.tn-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  min-height: var(--tap-min);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.tn-btn--wine {
+  background-color: var(--tn-wine);
+  color: var(--tn-onwine);
+}
+.tn-btn--wine:hover {
+  background-color: var(--tn-wine-dark);
+}
+
+.tn-btn--outline {
+  background: transparent;
+  border-color: var(--tn-wine);
+  color: var(--tn-wine);
+}
+.tn-btn--outline:hover {
+  background-color: var(--tn-wine);
+  color: var(--tn-onwine);
+}
+
+.tn-btn--gold {
+  background-color: var(--tn-gold);
+  color: white;
+}
+.tn-btn--gold:hover {
+  background-color: var(--tn-gold-light);
+}
+
+/* ═══════════════════════════════════════
+   ANNOUNCEMENTS PLACEHOLDER
+   ═══════════════════════════════════════ */
+.tn-announcements {
+  background: white;
+  border: 1px solid var(--tn-cream);
+  border-left: 4px solid var(--tn-gold);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+}
+
+.tn-announcement-item {
+  padding: var(--space-md) 0;
+  border-bottom: 1px solid var(--tn-cream);
+}
+
+.tn-announcement-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.tn-announcement-item__date {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--tn-gold);
+}
+
+.tn-announcement-item__title {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--tn-brown);
+  margin: var(--space-xs) 0;
+}
+
+/* ═══════════════════════════════════════
+   BRANCH BADGES
+   ═══════════════════════════════════════ */
+.tn-badge {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  border-radius: 100px;
+}
+
+.tn-badge--apostles {
+  background: #F0E6D0;
+  color: #8B6914;
+}
+
+.tn-badge--deacons {
+  background: #E8D5D5;
+  color: var(--tn-wine);
+}
+
+.tn-badge--judges {
+  background: #D5DDE8;
+  color: #2E4A6B;
+}
+
+/* ═══════════════════════════════════════
+   MOBILE-FIRST RESPONSIVE
+   ═══════════════════════════════════════ */
+@media (max-width: 600px) {
+  .tn-card-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  .tn-quicklinks {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tn-banner {
+    padding: var(--space-xl) var(--space-md);
+  }
+
+  .tn-info-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-xs);
+  }
+
+  .tn-info-row__label {
+    min-width: unset;
+  }
+
+  .tn-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Tablet breakpoint */
+@media (min-width: 601px) and (max-width: 900px) {
+  .tn-card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tn-quicklinks {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+</style>

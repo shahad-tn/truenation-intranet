@@ -1,0 +1,89 @@
+<!--
+  TRUE NATION INTRANET — LOGISTICS: REQUEST TRACKER
+  ───────────────────────────────────────────────────
+  Embed on the Logistics sub-group page (IT / Information Technology).
+  [REPLACE] placeholder rows with real support requests.
+  WEEK 3: Replace this entire block with a live Google Sheets embed.
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{margin:0;padding:0;background:transparent}
+  .lg-wrap{font-family:'DM Sans',sans-serif;width:100%;padding:0 0 4px}
+  .lg-module{background:#fff;border:1px solid #BFBFC7;border-radius:8px;box-shadow:0 2px 6px rgba(19,13,10,.05)}
+  .lg-module-body{padding:14px 18px}
+  .lg-note{font-size:11px;color: #785710;background:#FFFBF0;border:1px solid #F0DFA0;border-radius:5px;padding:7px 12px;margin-bottom:12px;font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+  .status{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.07em;padding:2px 9px;border-radius:100px;white-space:nowrap}
+  .s-pending    {background:#FFF8E1;color:#F57F17}
+  .s-inprogress {background:#E3F2FD;color:#1565C0}
+  .s-complete   {background:#E8F5E9;color:#2E7D32}
+  .req-list{display:flex;flex-direction:column;gap:8px}
+  .req-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:#E8E8EC;border-radius:6px}
+  .req-id{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;color: #785710;min-width:52px;flex-shrink:0}
+  .req-body{flex:1}
+  .req-text{font-size:14px;color:#56565E}
+  .req-dept{font-size:11px;color:#888;margin-top:2px}
+  @media(max-width:500px){
+    .req-item{flex-wrap:wrap;gap:8px}
+    .req-id{min-width:unset}
+  }
+</style>
+
+<div class="lg-wrap">
+  <div class="lg-module">
+    <div class="lg-module-body">
+      <div class="lg-note">⚙ Week 3 — Replace with live Google Sheets embed</div>
+      <div class="req-list">
+        <!-- [REPLACE] with real logistics requests -->
+        <div class="req-item">
+          <div class="req-id">#LG-014</div>
+          <div class="req-body">
+            <div class="req-text">Table and chair setup — Room 3B</div>
+            <div class="req-dept">Requested by: Fellowship &amp; Services · Mar 26</div>
+          </div>
+          <span class="status s-complete">Complete</span>
+        </div>
+
+        <div class="req-item">
+          <div class="req-id">#LG-015</div>
+          <div class="req-body">
+            <div class="req-text">Projector transport to off-site venue</div>
+            <div class="req-dept">Requested by: Everyday Sheeple · Mar 27</div>
+          </div>
+          <span class="status s-inprogress">In Progress</span>
+        </div>
+
+        <div class="req-item">
+          <div class="req-id">#LG-016</div>
+          <div class="req-body">
+            <div class="req-text">Equipment inventory audit — AV Closet A</div>
+            <div class="req-dept">Requested by: IT · Mar 28</div>
+          </div>
+          <span class="status s-pending">Pending</span>
+        </div>
+
+        <div class="req-item">
+          <div class="req-id">#LG-017</div>
+          <div class="req-body">
+            <div class="req-text">Van rental coordination — Feast prep</div>
+            <div class="req-dept">Requested by: Fellowship &amp; Services · Mar 28</div>
+          </div>
+          <span class="status s-pending">Pending</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:'tnic-height',height:h,id:'logistics_requests'},'*');
+    }
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sendHeight);}
+    else{sendHeight();}
+    window.addEventListener('resize',sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+</script>

@@ -1,0 +1,162 @@
+<!--
+  TRUE NATION INTRANET — YOUTH DEVELOPMENT SUB-GROUP CARDS
+  ─────────────────────────────
+  Embed on the Youth Development department page under Apostles Branch.
+  Native Sites heading: "Teams & Sub-Groups"
+
+  SUB-GROUPS (6):
+    TELA, Jr Disciples, Little Lions, Maiden Ewe Academy, Naqam Fresh, Naqam Varsity
+
+  [REPLACE] Lead names, descriptions, and card href links with real values.
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { margin: 0; padding: 0; background: transparent; }
+
+  .dept-wrap {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    background: #FAF8F4;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+  }
+
+  .sg-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .sg-card {
+    background: white;
+    border: 1px solid #F2EDE4;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(19,13,10,0.06);
+    transition: box-shadow 0.2s, transform 0.15s;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .sg-card:hover {
+    box-shadow: 0 4px 14px rgba(19,13,10,0.11);
+    transform: translateY(-2px);
+    border-color: #C9972C;
+  }
+
+  .sg-icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+
+  .sg-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #7C1316;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .sg-desc {
+    font-size: 14px;
+    color: #3D2E28;
+    line-height: 1.6;
+    flex: 1;
+    margin-bottom: 10px;
+  }
+
+  .sg-arrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #C9972C;
+    margin-top: 12px;
+  }
+
+  @media (max-width: 500px) {
+    .sg-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="dept-wrap">
+
+<!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: Apostles
+     Page description:  Equips the next generation through discipleship, education, mentorship, and physical training programs.
+     Lead:              Tazayawan
+-->
+
+  <div class="sg-grid">
+
+    <!-- [REPLACE] href with actual TELA sub-group page URL -->
+    <a class="sg-card" href="#">
+      <div class="sg-icon">🌟</div>
+      <div class="sg-name">TELA</div>
+      <div class="sg-desc">Youth Committee umbrella — coordinates programs, intramurals, events, and youth outreach across the congregation.</div>
+      <div class="sg-arrow">View sub-group →</div>
+    </a>
+
+    <!-- [REPLACE] href with actual Jr Disciples sub-group page URL -->
+    <a class="sg-card" href="#">
+      <div class="sg-icon">📖</div>
+      <div class="sg-name">Jr Disciples</div>
+      <div class="sg-desc">Discipleship and Bible study for the next generation, building foundations of faith for young members.</div>
+      <div class="sg-arrow">View sub-group →</div>
+    </a>
+
+    <!-- [REPLACE] href with actual Little Lions sub-group page URL -->
+    <a class="sg-card" href="#">
+      <div class="sg-icon">🦁</div>
+      <div class="sg-name">Little Lions</div>
+      <div class="sg-desc">Early-childhood program nurturing young children in True Nation values through age-appropriate teaching and activities.</div>
+      <div class="sg-arrow">View sub-group →</div>
+    </a>
+
+    <!-- [REPLACE] href with actual Maiden Ewe Academy sub-group page URL -->
+    <a class="sg-card" href="#">
+      <div class="sg-icon">🌸</div>
+      <div class="sg-name">Maiden Ewe Academy</div>
+      <div class="sg-desc">Mentorship and education program for young women — character formation, modesty, and skills for womanhood.</div>
+      <div class="sg-arrow">View sub-group →</div>
+    </a>
+
+    <!-- [REPLACE] href with actual Naqam Fresh sub-group page URL -->
+    <a class="sg-card" href="#">
+      <div class="sg-icon">🏃</div>
+      <div class="sg-name">Naqam Fresh</div>
+      <div class="sg-desc">Athletic and developmental program for younger youth — discipline, teamwork, and physical training.</div>
+      <div class="sg-arrow">View sub-group →</div>
+    </a>
+
+    <!-- [REPLACE] href with actual Naqam Varsity sub-group page URL -->
+    <a class="sg-card" href="#">
+      <div class="sg-icon">🏆</div>
+      <div class="sg-name">Naqam Varsity</div>
+      <div class="sg-desc">Advanced athletic and leadership program for older youth — competition, mentorship, and ministry integration.</div>
+      <div class="sg-arrow">View sub-group →</div>
+    </a>
+
+  </div>
+</div>
+
+<script>
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:'tnic-height',height:h,id:'youth-development-subgroup-cards'}, '*');
+    }
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sendHeight);}
+    else{sendHeight();}
+    window.addEventListener('resize',sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+</script>

@@ -1,0 +1,262 @@
+<!--
+  TRUE NATION INTRANET — OUR PEOPLE: BROWSE BY CAMPUS
+  ──────────────────────────────────────────────────────
+  Native Sites heading: "Browse by Campus"
+  5 campus tiles linking to each campus sub-page or contact.
+  [REPLACE] href links, campus contact emails, and liaison info as needed.
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .campus-wrap {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    background: #E8E8EC;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .campus-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  .campus-card {
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-radius: 8px;
+    padding: 20px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 2px 6px rgba(19,13,10,0.05);
+    transition: box-shadow 0.2s, transform 0.15s;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .campus-card:hover {
+    box-shadow: 0 5px 16px rgba(19,13,10,0.1);
+    transform: translateY(-2px);
+  }
+
+  /* HQ card gets wine left border accent */
+  .campus-card--hq { border-left: 4px solid #7C1316; }
+
+  /* International cards get a subtle gold accent */
+  .campus-card--intl { border-left: 4px solid #C9972C; }
+
+  .campus-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .campus-badge {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 8px;
+    border-radius: 100px;
+  }
+
+  .badge-hq   { background: #7C1316; color: #F2F2F3; }
+  .badge-sat  { background: #D8D8DE; color: #56565E; border: 1px solid #E8DDD2; }
+  .badge-intl { background: #E8EDF2; color: #2E3D4A; border: 1px solid #D0DAE3; }
+
+  .campus-flag { font-size: 1.375rem; flex-shrink: 0; }
+
+  .campus-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #7C1316;
+    line-height: 1.15;
+  }
+
+  .campus-location {
+    font-size: 13px;
+    color: #888;
+    margin-top: -4px;
+  }
+
+  .campus-bishop {
+    font-size: 13px;
+    color: #56565E;
+    padding-top: 8px;
+    border-top: 1px solid #BFBFC7;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .campus-bishop__label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #785710;
+  }
+
+  .campus-bishop__name { font-weight: 500; color: #26262A; }
+
+  .campus-bishop__note { font-size: 12px; color: #888; font-style: italic; }
+
+  .campus-links {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding-top: 4px;
+  }
+
+  .campus-link {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 4px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  .campus-link--page {
+    background: #7C1316;
+    color: #F2F2F3;
+  }
+  .campus-link--page:hover { background: #5A0E11; }
+
+  .campus-link--email {
+    background: #D8D8DE;
+    color: #56565E;
+    border: 1px solid #E8DDD2;
+  }
+  .campus-link--email:hover { background: #E8DDD2; }
+
+  @media (max-width: 500px) {
+    .campus-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 340px) {
+    .campus-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="campus-wrap">
+  <div class="campus-grid">
+
+    <!-- Los Angeles — HQ -->
+    <div class="campus-card campus-card--hq">
+      <div class="campus-card__header">
+        <span class="campus-badge badge-hq">HQ</span>
+        <span class="campus-flag">🇺🇸</span>
+      </div>
+      <div>
+        <div class="campus-name">Los Angeles</div>
+        <div class="campus-location">Los Angeles, CA</div>
+      </div>
+      <div class="campus-bishop">
+        <span class="campus-bishop__label">Campus Bishop</span>
+        <span class="campus-bishop__name">Bishop Tazayawan</span>
+      </div>
+      <div class="campus-links">
+        <!-- [REPLACE] href with the /locations/los-angeles sub-page -->
+        <a class="campus-link campus-link--page" href="/locations/los-angeles">Campus Page</a>
+        <a class="campus-link campus-link--email" href="mailto:hq@truenation.org" target="_blank">Email HQ</a>
+      </div>
+    </div>
+
+    <!-- Detroit -->
+    <div class="campus-card">
+      <div class="campus-card__header">
+        <span class="campus-badge badge-sat">Satellite</span>
+        <span class="campus-flag">🇺🇸</span>
+      </div>
+      <div>
+        <div class="campus-name">Detroit</div>
+        <div class="campus-location">Detroit, MI</div>
+      </div>
+      <div class="campus-bishop">
+        <span class="campus-bishop__label">Campus Bishop</span>
+        <span class="campus-bishop__name">Bishop Yahzeqel</span>
+      </div>
+      <div class="campus-links">
+        <a class="campus-link campus-link--page" href="/locations/detroit">Campus Page</a>
+        <a class="campus-link campus-link--email" href="mailto:detroit@truenation.org" target="_blank">Email</a>
+      </div>
+    </div>
+
+    <!-- Macon -->
+    <div class="campus-card">
+      <div class="campus-card__header">
+        <span class="campus-badge badge-sat">Satellite</span>
+        <span class="campus-flag">🇺🇸</span>
+      </div>
+      <div>
+        <div class="campus-name">Macon</div>
+        <div class="campus-location">Macon, GA</div>
+      </div>
+      <div class="campus-bishop">
+        <span class="campus-bishop__label">Campus Bishop</span>
+        <span class="campus-bishop__name">Bishop Yahzeqel</span>
+      </div>
+      <div class="campus-links">
+        <a class="campus-link campus-link--page" href="/locations/macon">Campus Page</a>
+        <a class="campus-link campus-link--email" href="mailto:macon@truenation.org" target="_blank">Email</a>
+      </div>
+    </div>
+
+    <!-- Philippines -->
+    <div class="campus-card campus-card--intl">
+      <div class="campus-card__header">
+        <span class="campus-badge badge-intl">International</span>
+        <span class="campus-flag">🇵🇭</span>
+      </div>
+      <div>
+        <div class="campus-name">Philippines</div>
+        <div class="campus-location">Philippines</div>
+      </div>
+      <div class="campus-bishop">
+        <span class="campus-bishop__label">HQ Liaison</span>
+        <span class="campus-bishop__name">Bishop Banayah</span>
+        <span class="campus-bishop__note">Local bishop TBD</span>
+      </div>
+      <div class="campus-links">
+        <a class="campus-link campus-link--page" href="/locations/philippines">Campus Page</a>
+        <a class="campus-link campus-link--email" href="mailto:philippines@truenation.org" target="_blank">Email</a>
+      </div>
+    </div>
+
+    <!-- Ghana -->
+    <div class="campus-card campus-card--intl">
+      <div class="campus-card__header">
+        <span class="campus-badge badge-intl">International</span>
+        <span class="campus-flag">🇬🇭</span>
+      </div>
+      <div>
+        <div class="campus-name">Ghana</div>
+        <div class="campus-location">Ghana</div>
+      </div>
+      <div class="campus-bishop">
+        <span class="campus-bishop__label">HQ Liaison</span>
+        <span class="campus-bishop__name">Bishop Izar</span>
+        <span class="campus-bishop__note">Local bishop TBD</span>
+      </div>
+      <div class="campus-links">
+        <a class="campus-link campus-link--page" href="/locations/ghana">Campus Page</a>
+        <a class="campus-link campus-link--email" href="mailto:ghana@truenation.org" target="_blank">Email</a>
+      </div>
+    </div>
+
+  </div>
+</div>

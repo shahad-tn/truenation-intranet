@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<?!= include('styles') ?>
+<style>
+  .db-tabs{display:flex;gap:4px;flex-wrap:wrap;}
+  .db-tab{background:transparent;border:none;border-bottom:4px solid transparent;color:var(--onwine);
+    opacity:.78;font-size:14px;font-weight:500;padding:10px 16px 12px;cursor:pointer;
+    border-radius:6px 6px 0 0;display:inline-flex;align-items:center;gap:8px;}
+  .db-tab:hover{opacity:1;background:rgba(255,255,255,.08);}
+  .db-tab[aria-selected="true"]{opacity:1;font-weight:700;border-bottom-color:var(--gold);background:rgba(255,255,255,.10);}
+  .db-pill{background:var(--gold);color:var(--ink-dk);font-size:11px;font-weight:700;
+    min-width:20px;height:20px;border-radius:999px;padding:0 6px;
+    display:inline-flex;align-items:center;justify-content:center;}
+  .db-filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 18px;}
+  .db-filter{background:#fff;border:2px solid var(--line-strong);color:var(--ink);font-size:13px;
+    font-weight:500;padding:7px 13px;border-radius:999px;cursor:pointer;}
+  .db-filter:hover{border-color:var(--gold);}
+  .db-filter[aria-pressed="true"]{background:var(--wine);border-color:var(--wine);color:var(--onwine);font-weight:700;}
+  .db-spacer{margin-left:auto;font-size:13px;color:var(--muted);}
+  .db-card{background:#fff;border:1px solid var(--line);border-left:6px solid var(--line);
+    border-radius:10px;padding:16px 18px;margin:0 0 14px;}
+  .db-card[data-status="Submitted"]{border-left-color:var(--gold);}
+  .db-card[data-status="Needs Info"]{border-left-color:var(--warn);}
+  .db-card[data-status="Approved"]{border-left-color:var(--ok);}
+  .db-card[data-status="Read"]{border-left-color:var(--ok);opacity:.75;}
+  .db-card[data-status="Denied"]{border-left-color:var(--no);opacity:.72;}
+  .db-card-top{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;margin-bottom:8px;}
+  .db-card-title{font-size:19px;font-weight:700;letter-spacing:.04em;color:var(--wine);flex:1 1 260px;}
+  .db-status{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+    padding:4px 10px;border-radius:999px;white-space:nowrap;}
+  .st-Submitted,.st-NeedsInfo{background:var(--warn-bg);color:var(--warn);}
+  .st-Approved,.st-Read{background:var(--ok-bg);color:var(--ok);}
+  .st-Denied{background:var(--no-bg);color:var(--no);}
+  .db-body{margin:0 0 12px;font-size:15px;}
+  .db-body[contenteditable="true"]{background:#FFFDF6;border:2px dashed var(--gold);
+    border-radius:6px;padding:8px 10px;outline:none;}
+  .db-facts{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:12.5px;color:var(--muted);
+    border-top:1px solid var(--line);padding-top:10px;margin-bottom:12px;}
+  .db-facts b{color:var(--ink);font-weight:500;}
+  .db-chan{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    background:var(--surface);color:var(--ink);padding:3px 8px;border-radius:4px;}
+  .db-actions{display:flex;gap:8px;flex-wrap:wrap;}
+  .db-note{background:var(--warn-bg);border-left:5px solid var(--warn);border-radius:6px;
+    padding:10px 14px;margin:0 0 12px;font-size:13.5px;}
+  .db-note b{color:var(--warn);}
+  .db-notebox{margin:0 0 12px;}
+  .db-notebox textarea{width:100%;font-family:'DM Sans',sans-serif;font-size:14px;padding:10px;
+    border:2px solid var(--line-strong);border-radius:6px;resize:vertical;min-height:70px;color:var(--ink);}
+  .db-notebox textarea:focus{border-color:var(--gold);outline:none;}
+  .db-empty{background:#fff;border:2px dashed var(--line);border-radius:10px;
+    padding:34px 20px;text-align:center;color:var(--muted);font-size:15px;}
+  .db-group{font-size:15px;font-weight:700;letter-spacing:.14em;color:var(--ink);
+    margin:26px 0 12px;padding-bottom:7px;border-bottom:2px solid var(--surface);
+    display:flex;align-items:center;gap:10px;}
+  .db-group:first-child{margin-top:0;}
+  .db-group span{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;
+    letter-spacing:0;text-transform:none;color:var(--muted);}
+  .db-svcsel{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 20px;align-items:center;}
+  .db-blockset{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:0 0 14px;}
+  .db-blockset h3{font-size:17px;letter-spacing:.07em;color:var(--wine);margin-bottom:4px;}
+  .db-sub{font-size:12px;color:var(--muted);margin:0 0 12px;}
+  .db-lineitem{display:flex;gap:10px;align-items:flex-start;padding:9px 0;
+    border-top:1px solid var(--surface);font-size:14.5px;}
+  .db-lineitem:first-of-type{border-top:none;}
+  .db-lineitem p{margin:0;flex:1;}
+  .db-lineitem p[contenteditable="true"]{background:#FFFDF6;border:2px dashed var(--gold);
+    border-radius:6px;padding:6px 9px;outline:none;}
+  .db-mini{background:transparent;border:1px solid var(--line);color:var(--muted);font-size:11px;
+    font-weight:600;padding:4px 9px;border-radius:5px;cursor:pointer;white-space:nowrap;}
+  .db-mini:hover{border-color:var(--gold);color:var(--ink);}
+  .db-mini[disabled]{opacity:.35;cursor:default;}
+  .db-direction{font-style:italic;color:var(--muted);}
+  .db-dirtag{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    background:var(--surface);color:var(--muted);padding:2px 7px;border-radius:4px;margin-left:6px;}
+  .db-table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);
+    border-radius:10px;overflow:hidden;}
+  .db-table th{background:var(--surface);text-align:left;font-family:'Barlow Condensed',sans-serif;
+    font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:13px;padding:11px 14px;color:var(--ink);}
+  .db-table td{padding:12px 14px;border-top:1px solid var(--surface);font-size:14px;vertical-align:middle;}
+  .db-table tr:hover td{background:#F4F4F6;}
+  .db-count{font-weight:700;color:var(--wine);}
+  .hp-row{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;
+    margin:0 0 10px;display:flex;gap:13px;align-items:flex-start;}
+  .hp-row[data-pin="1"]{border-left:6px solid var(--gold);}
+  .hp-main{flex:1;min-width:0;}
+  .hp-t{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;
+    letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin:0 0 3px;}
+  .hp-b{margin:0 0 8px;font-size:14.5px;}
+  .hp-meta{display:flex;flex-wrap:wrap;gap:5px 14px;font-size:12px;color:var(--muted);}
+  .hp-badge{font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+    padding:3px 8px;border-radius:4px;background:var(--surface);color:var(--ink);}
+  .hp-badge.pin{background:var(--gold);color:var(--ink-dk);}
+  .hp-badge.both{background:var(--ok-bg);color:var(--ok);}
+  .hp-ctrls{display:flex;flex-direction:column;gap:5px;flex:0 0 auto;}
+  .db-panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:16px 0 0;}
+  .db-panel h3{font-size:16px;letter-spacing:.08em;color:var(--wine);margin-bottom:9px;}
+  .db-in{width:100%;font-family:'DM Sans',sans-serif;font-size:14.5px;color:var(--ink);
+    padding:10px 12px;border:2px solid var(--line-strong);border-radius:7px;margin-bottom:9px;}
+  .db-in:focus{border-color:var(--wine);outline:none;}
+  .db-row2{display:flex;gap:9px;flex-wrap:wrap;}
+  .db-row2 > *{flex:1 1 170px;}
+  @media (max-width:640px){
+    .tn-h1{font-size:24px;}
+    .db-actions .tn-btn{flex:1 1 auto;text-align:center;}
+    .db-table{display:block;overflow-x:auto;}
+    .hp-row{flex-wrap:wrap;} .hp-ctrls{flex-direction:row;width:100%;}
+  }
+</style>
+</head>
+<body>
+
+<header class="tn-top">
+  <div class="tn-in">
+    <p class="tn-kick">True Nation &middot; Intranet</p>
+    <h1 class="tn-h1">Announcements Dashboard</h1>
+    <p class="tn-who">Signed in as <strong><?= ctx.email ?></strong> &middot; Announcements review team</p>
+    <div class="db-tabs" role="tablist" aria-label="Dashboard sections">
+      <button class="db-tab" role="tab" aria-selected="true" data-tab="queue">
+        Review queue <span class="db-pill" id="queuePill">0</span></button>
+      <button class="db-tab" role="tab" aria-selected="false" data-tab="standing">Standing text</button>
+      <button class="db-tab" role="tab" aria-selected="false" data-tab="home">Home page</button>
+      <button class="db-tab" role="tab" aria-selected="false" data-tab="services">Services</button>
+    </div>
+  </div>
+</header>
+
+<main class="tn-wrap">
+  <div class="tn-load" id="loading">Loading announcements&hellip;</div>
+
+  <section id="tab-queue" hidden>
+    <div class="db-filters" role="group" aria-label="Filter by status">
+      <button class="db-filter" aria-pressed="true"  data-f="open">Needs action <span id="cOpen"></span></button>
+      <button class="db-filter" aria-pressed="false" data-f="approved">Approved <span id="cApp"></span></button>
+      <button class="db-filter" aria-pressed="false" data-f="denied">Denied <span id="cDen"></span></button>
+      <button class="db-filter" aria-pressed="false" data-f="all">All</button>
+      <span class="db-spacer" id="nextSvc"></span>
+    </div>
+    <div id="queueBody"></div>
+  </section>
+
+  <section id="tab-standing" hidden>
+    <div class="db-svcsel" role="group" aria-label="Service type">
+      <span style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:.14em;text-transform:uppercase;">Service type:</span>
+      <button class="db-filter" aria-pressed="true"  data-svc="sabbath">Sabbath</button>
+      <button class="db-filter" aria-pressed="false" data-svc="newmoon">New Moon</button>
+      <button class="db-filter" aria-pressed="false" data-svc="feast">Feast Day</button>
+    </div>
+    <p class="db-sub">Lines marked <b>Standing</b> are read at every service of this type. Changes here apply to every future service &mdash; they do not change a script that has already been read.</p>
+    <div id="standingBody"></div>
+  </section>
+
+  <section id="tab-home" hidden>
+    <p class="db-sub">What is on the intranet home page right now, in order. Reorder here and the home page reorders. Anything past its end date drops off on its own.</p>
+    <div id="homeBody"></div>
+    <div class="db-panel">
+      <h3>Add a home-page-only post</h3>
+      <p class="db-sub">Never read from the podium. Use it for things that need to sit on the intranet for a while.</p>
+      <input class="db-in" id="hoTitle" placeholder="Short title">
+      <textarea class="db-in" id="hoBody" rows="3" placeholder="What it says"></textarea>
+      <div class="db-row2">
+        <input class="db-in" id="hoContact" placeholder="Who to contact">
+        <input class="db-in" id="hoUntil" type="date" title="Take it down after">
+      </div>
+      <button class="tn-btn tn-btn-go" type="button" id="hoAdd">Post it</button>
+    </div>
+  </section>
+
+  <section id="tab-services" hidden>
+    <p class="db-sub">Every date submitters can choose, and the script the reader opens.</p>
+    <table class="db-table">
+      <caption class="visually-hidden">Upcoming services</caption>
+      <thead><tr><th scope="col">Date</th><th scope="col">Service</th><th scope="col">Reader</th>
+        <th scope="col">Approved</th><th scope="col">Pending</th><th scope="col"></th></tr></thead>
+      <tbody id="svcBody"></tbody>
+    </table>
+    <div class="db-panel">
+      <h3>Add a service</h3>
+      <div class="db-row2">
+        <input class="db-in" id="svDate" type="date">
+        <select class="db-in" id="svType">
+          <option value="sabbath">Sabbath Class</option>
+          <option value="newmoon">New Moon</option>
+          <option value="feast">Feast Day</option>
+        </select>
+      </div>
+      <div class="db-row2">
+        <input class="db-in" id="svLabel" placeholder="Label (optional, e.g. Feast Day — Sukkot)">
+        <input class="db-in" id="svReader" placeholder="Reader (optional)">
+      </div>
+      <button class="tn-btn tn-btn-go" type="button" id="svAdd">Add service</button>
+    </div>
+  </section>
+</main>
+
+<div class="tn-toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+var STATE = null, FILTER = 'open', SVCTYPE = 'sabbath';
+var $ = function(id){ return document.getElementById(id); };
+function esc(s){return String(s).replace(/&(?!#?\w+;)/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function stCls(s){ return 'st-' + String(s).replace(/\s+/g,''); }
+
+function load(){
+  google.script.run.withSuccessHandler(function(s){
+    STATE = s; $('loading').hidden = true; $('tab-queue').hidden = false;
+    renderQueue(); renderServices();
+    if(s.services.length) $('nextSvc').textContent = 'Next service: ' + s.services[0].label;
+  }).withFailureHandler(function(e){
+    $('loading').innerHTML = '<b>Could not load.</b><br>' + esc(e.message);
+  }).getReviewState();
+}
+
+/* ---------------- Queue ---------------- */
+function isOpen(i){ return i.status === 'Submitted' || i.status === 'Needs Info'; }
+function matches(i){
+  if(FILTER === 'all') return true;
+  if(FILTER === 'open') return isOpen(i);
+  if(FILTER === 'approved') return i.status === 'Approved' || i.status === 'Read';
+  if(FILTER === 'denied') return i.status === 'Denied';
+  return true;
+}
+
+function renderQueue(){
+  var items = STATE.items;
+  var open = items.filter(isOpen).length;
+  var app  = items.filter(function(i){return i.status==='Approved'||i.status==='Read';}).length;
+  var den  = items.filter(function(i){return i.status==='Denied';}).length;
+  $('queuePill').textContent = open;
+  $('cOpen').textContent = '(' + open + ')';
+  $('cApp').textContent  = '(' + app + ')';
+  $('cDen').textContent  = '(' + den + ')';
+
+  var shown = items.filter(matches);
+  if(!shown.length){
+    $('queueBody').innerHTML = '<div class="db-empty"><strong>Nothing here.</strong><br>All caught up for now.</div>';
+    return;
+  }
+  var groups = {}, order = [];
+  shown.forEach(function(i){
+    var k = i.serviceLabel || 'No service set';
+    if(!groups[k]){ groups[k] = []; order.push(k); }
+    groups[k].push(i);
+  });
+  var html = '';
+  order.forEach(function(k){
+    html += '<h2 class="db-group">' + esc(k) + ' <span>' + groups[k].length +
+            ' item' + (groups[k].length>1?'s':'') + '</span></h2>';
+    groups[k].forEach(function(i){ html += card(i); });
+  });
+  $('queueBody').innerHTML = html;
+}
+
+function card(i){
+  var h = '<article class="db-card" data-status="' + esc(i.status) + '" data-id="' + esc(i.id) + '">';
+  h += '<div class="db-card-top"><h3 class="db-card-title">' + esc(i.title) + '</h3>';
+  h += '<span class="db-status ' + stCls(i.status) + '">' + esc(i.status) + '</span></div>';
+  h += '<p class="db-body" id="body-' + esc(i.id) + '">' + esc(i.body) + '</p>';
+  if(i.note){
+    h += '<div class="db-note"><b>' + (i.status === 'Denied' ? 'Reason sent:' : 'Info requested:') +
+         '</b> ' + esc(i.note) + '</div>';
+  }
+  h += '<div class="db-facts">';
+  h += '<span><b>' + esc(i.by) + '</b></span>';
+  h += '<span>Section: <b>' + esc(i.section) + '</b></span>';
+  h += '<span class="db-chan">' + esc(i.channel) + '</span>';
+  if(i.expires) h += '<span>Expires: <b>' + esc(i.expires) + '</b></span>';
+  if(i.contact) h += '<span>Ask: <b>' + esc(i.contact) + '</b></span>';
+  if(i.submitted) h += '<span>Submitted ' + esc(i.submitted) + '</span>';
+  h += '</div><div class="db-actions">';
+  if(i.status === 'Approved' || i.status === 'Read'){
+    h += '<button class="tn-btn" data-act="edit">Edit text</button>';
+    h += '<button class="tn-btn" data-act="unapprove">Move back to queue</button>';
+    h += '<button class="tn-btn tn-btn-quiet" data-act="deny">Deny</button>';
+  } else if(i.status === 'Denied'){
+    h += '<button class="tn-btn" data-act="reopen">Reopen</button>';
+  } else {
+    h += '<button class="tn-btn tn-btn-go" data-act="approve">Approve</button>';
+    h += '<button class="tn-btn" data-act="edit">Edit text</button>';
+    h += '<button class="tn-btn" data-act="info">Request info</button>';
+    h += '<button class="tn-btn tn-btn-quiet" data-act="deny">Deny</button>';
+  }
+  h += '</div></article>';
+  return h;
+}
+
+function itemById(id){
+  for(var i=0;i<STATE.items.length;i++) if(STATE.items[i].id === id) return STATE.items[i];
+  return null;
+}
+
+$('queueBody').addEventListener('click', function(e){
+  var btn = e.target.closest('button[data-act]'); if(!btn) return;
+  var card = btn.closest('.db-card'), id = card.getAttribute('data-id');
+  var it = itemById(id), act = btn.getAttribute('data-act');
+
+  if(act === 'edit'){
+    var p = $('body-' + id);
+    if(p.getAttribute('contenteditable') === 'true'){
+      var text = p.textContent.trim();
+      btn.disabled = true;
+      call('updateItemText', [id, it.title, text], function(){
+        it.body = text; p.setAttribute('contenteditable','false');
+        btn.disabled = false; btn.textContent = 'Edit text';
+        toast('Saved.');
+      }, function(){ btn.disabled = false; });
+    } else {
+      p.setAttribute('contenteditable','true'); p.focus(); btn.textContent = 'Save edit';
+    }
+    return;
+  }
+
+  if(act === 'info' || act === 'deny'){
+    if(card.querySelector('.db-notebox')) return;
+    var isDeny = act === 'deny';
+    var box = document.createElement('div');
+    box.className = 'db-notebox';
+    box.innerHTML = '<label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px;">' +
+      (isDeny ? 'Why is this not being read? It gets emailed to ' + esc(it.by) + '.'
+              : 'What do you need from ' + esc(it.by) + '?') + '</label>' +
+      '<textarea placeholder="' + (isDeny ? 'e.g. Personal sales are not read from the podium — post it to the community board.'
+                                          : 'e.g. Can you give a start time and location?') + '"></textarea>' +
+      '<div style="margin-top:8px;display:flex;gap:8px;">' +
+      '<button class="tn-btn tn-btn-go" data-act="' + (isDeny ? 'sendDeny' : 'sendInfo') + '">' +
+      (isDeny ? 'Deny and send' : 'Send request') + '</button>' +
+      '<button class="tn-btn" data-act="cancelNote">Cancel</button></div>';
+    card.querySelector('.db-actions').before(box);
+    box.querySelector('textarea').focus();
+    return;
+  }
+  if(act === 'cancelNote'){ card.querySelector('.db-notebox').remove(); return; }
+
+  if(act === 'sendInfo' || act === 'sendDeny'){
+    var txt = card.querySelector('.db-notebox textarea').value.trim();
+    if(!txt){ toast(act === 'sendDeny' ? 'Add a reason first.' : 'Say what you need first.', true); return; }
+    setStatus(id, act === 'sendDeny' ? 'Denied' : 'Needs Info', txt, btn);
+    return;
+  }
+
+  if(act === 'approve')   return setStatus(id, 'Approved', '', btn);
+  if(act === 'unapprove') return setStatus(id, 'Submitted', '', btn);
+  if(act === 'reopen')    return setStatus(id, 'Submitted', '', btn);
+});
+
+function setStatus(id, status, note, btn){
+  if(btn){ btn.disabled = true; btn.textContent = 'Working…'; }
+  call('setItemStatus', [id, status, note], function(res){
+    var it = itemById(id);
+    it.status = res.status; it.note = res.note || (status === 'Approved' ? '' : it.note);
+    renderQueue();
+    toast(status === 'Approved' ? 'Approved. It is in the script for ' + it.serviceLabel + '.'
+      : status === 'Denied' ? 'Denied. ' + it.by + ' has been emailed the reason.'
+      : status === 'Needs Info' ? 'Emailed ' + it.by + '.' : 'Moved back to the queue.');
+    refreshCounts();
+  }, function(){ if(btn){ btn.disabled = false; renderQueue(); } });
+}
+
+function refreshCounts(){
+  google.script.run.withSuccessHandler(function(list){
+    STATE.services = list; renderServices();
+  }).withFailureHandler(function(){}).getServicesWithCounts();
+}
+
+/* ---------------- Standing text ---------------- */
+function loadStanding(){
+  $('standingBody').innerHTML = '<div class="tn-load">Loading&hellip;</div>';
+  call('getBlocks', [SVCTYPE], renderStanding);
+}
+
+function renderStanding(data){
+  var typeName = {sabbath:'Sabbath', newmoon:'New Moon', feast:'Feast Day'}[data.serviceType];
+  if(!data.parts.length){
+    $('standingBody').innerHTML = '<div class="db-empty">No standing text for ' + esc(typeName) +
+      ' yet. Run <b>seedBlocks()</b> in the script editor, or add a section below.</div>';
+    return;
+  }
+  var html = '';
+  data.parts.forEach(function(p){
+    html += '<h2 class="db-group">' + esc(p.part) + '</h2>';
+    p.sections.forEach(function(sec){
+      html += '<div class="db-blockset" data-section="' + esc(sec.name) + '" data-part="' + esc(p.part) + '">';
+      html += '<h3>' + esc(sec.name) + '</h3>';
+      html += '<p class="db-sub">Read every ' + esc(typeName) + ' &middot; ' + sec.lines.length +
+              ' line' + (sec.lines.length>1?'s':'') + '</p>';
+      sec.lines.forEach(function(l){
+        html += '<div class="db-lineitem" data-block="' + esc(l.id) + '">';
+        html += '<button class="db-mini" data-b="up" aria-label="Move up">&#9650;</button>';
+        html += '<button class="db-mini" data-b="down" aria-label="Move down">&#9660;</button>';
+        html += '<p class="' + (l.direction ? 'db-direction' : '') + '" id="blk-' + esc(l.id) + '">' + esc(l.text) +
+                (l.direction ? '<span class="db-dirtag">Stage direction</span>' : '') + '</p>';
+        html += '<button class="db-mini" data-b="edit">Edit</button>';
+        html += '<button class="db-mini" data-b="remove">Remove</button>';
+        html += '</div>';
+      });
+      html += '<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">' +
+              '<button class="tn-btn" data-b="addline">+ Add line</button>' +
+              '<button class="tn-btn" data-b="adddir">+ Add stage direction</button></div>';
+      html += '</div>';
+    });
+  });
+  html += '<div class="db-panel"><h3>Add a section</h3>' +
+    '<div class="db-row2"><input class="db-in" id="nsName" placeholder="Section name">' +
+    '<input class="db-in" id="nsPart" placeholder="Part (e.g. After class)" value="After class"></div>' +
+    '<textarea class="db-in" id="nsText" rows="2" placeholder="First line of the section"></textarea>' +
+    '<button class="tn-btn tn-btn-go" id="nsAdd" type="button">Add section</button></div>';
+  $('standingBody').innerHTML = html;
+}
+
+$('standingBody').addEventListener('click', function(e){
+  var b = e.target.closest('button[data-b]'); if(!b) return;
+  var what = b.getAttribute('data-b');
+  var set = b.closest('.db-blockset');
+
+  if(what === 'addline' || what === 'adddir'){
+    var text = window.prompt(what === 'adddir'
+      ? 'Stage direction (an instruction to the reader, not read aloud):'
+      : 'What should be said?');
+    if(!text) return;
+    return call('addBlockLine', [SVCTYPE, set.getAttribute('data-part'), set.getAttribute('data-section'),
+      text, what === 'adddir'], function(){ toast('Line added.'); loadStanding(); });
+  }
+
+  var row = b.closest('.db-lineitem'); if(!row) return;
+  var id = row.getAttribute('data-block');
+  var p = $('blk-' + id);
+
+  if(what === 'up' || what === 'down'){
+    return call('moveBlockLine', [id, what], function(){ loadStanding(); });
+  }
+  if(what === 'remove'){
+    if(!window.confirm('Remove this line from every future service?')) return;
+    return call('removeBlockLine', [id], function(){ toast('Removed.'); loadStanding(); });
+  }
+  if(what === 'edit'){
+    if(p.getAttribute('contenteditable') === 'true'){
+      var tag = p.querySelector('.db-dirtag');
+      var isDir = !!tag;
+      if(tag) tag.remove();
+      var txt = p.textContent.trim();
+      b.disabled = true;
+      return call('saveBlockLine', [id, txt, isDir], function(){
+        b.disabled = false; b.textContent = 'Edit';
+        p.setAttribute('contenteditable','false');
+        toast('Saved. Applies to every future service.');
+        loadStanding();
+      }, function(){ b.disabled = false; loadStanding(); });
+    }
+    p.setAttribute('contenteditable','true'); p.focus(); b.textContent = 'Save';
+  }
+});
+
+document.addEventListener('click', function(e){
+  if(e.target && e.target.id === 'nsAdd'){
+    var name = $('nsName').value.trim(), part = $('nsPart').value.trim() || 'After class', text = $('nsText').value.trim();
+    if(!name || !text){ return toast('Section name and a first line are both needed.', true); }
+    call('addBlockLine', [SVCTYPE, part, name, text, false], function(){ toast('Section added.'); loadStanding(); });
+  }
+});
+
+/* ---------------- Home page ---------------- */
+function loadHome(){
+  $('homeBody').innerHTML = '<div class="tn-load">Loading&hellip;</div>';
+  call('getHomeBoard', [], renderHome);
+}
+
+function renderHome(data){
+  var groups = { live: [], soon: [], past: [] };
+  data.rows.forEach(function(r){ groups[r.state].push(r); });
+  var titles = { live: 'Live on the home page now', soon: 'Scheduled — not visible yet', past: 'Came down automatically' };
+  var html = '';
+  ['live','soon','past'].forEach(function(st){
+    html += '<h2 class="db-group">' + titles[st] + ' <span>' + groups[st].length + '</span></h2>';
+    if(!groups[st].length){ html += '<p class="db-sub">Nothing here.</p>'; return; }
+    groups[st].forEach(function(r, i){
+      html += '<article class="hp-row" data-pin="' + (r.pin?1:0) + '" data-id="' + esc(r.id) + '"><div class="hp-main">';
+      html += '<h3 class="hp-t">' + esc(r.title) + '</h3><p class="hp-b">' + esc(r.body) + '</p>';
+      html += '<div class="hp-meta">';
+      if(r.pin) html += '<span class="hp-badge pin">Pinned</span>';
+      html += '<span class="hp-badge ' + (r.alsoRead?'both':'') + '">' + (r.alsoRead ? 'Also read aloud' : 'Home page only') + '</span>';
+      html += '<span>Up <b>' + esc(r.from||'—') + '</b> to <b>' + esc(r.until||'—') + '</b></span>';
+      html += '<span>' + esc(r.by) + '</span>';
+      if(r.alsoRead) html += '<span>In the ' + esc(r.alsoRead) + ' script</span>';
+      html += '</div></div><div class="hp-ctrls">';
+      if(st === 'live'){
+        html += '<button class="db-mini" data-h="up" ' + (i===0?'disabled':'') + '>&#9650; Up</button>';
+        html += '<button class="db-mini" data-h="down" ' + (i===groups.live.length-1?'disabled':'') + '>&#9660; Down</button>';
+        html += '<button class="db-mini" data-h="pin">' + (r.pin?'Unpin':'Pin') + '</button>';
+        html += '<button class="db-mini" data-h="off">Take down</button>';
+      } else {
+        html += '<button class="db-mini" data-h="on">' + (st==='soon'?'Publish now':'Put back up') + '</button>';
+      }
+      html += '</div></article>';
+    });
+  });
+  $('homeBody').innerHTML = html;
+}
+
+$('homeBody').addEventListener('click', function(e){
+  var b = e.target.closest('button[data-h]'); if(!b) return;
+  var id = b.closest('.hp-row').getAttribute('data-id'), what = b.getAttribute('data-h');
+  b.disabled = true;
+  if(what === 'up' || what === 'down') return call('moveHomeItem', [id, what], function(){ toast('Order saved.'); loadHome(); }, loadHome);
+  if(what === 'pin'){
+    var pinned = b.textContent.indexOf('Unpin') > -1;
+    return call('setHomePin', [id, !pinned], function(){ toast(pinned?'Unpinned.':'Pinned to the top.'); loadHome(); }, loadHome);
+  }
+  if(what === 'off') return call('setHomeState', [id, 'past'], function(){ toast('Taken down.'); loadHome(); }, loadHome);
+  if(what === 'on')  return call('setHomeState', [id, 'live'], function(){ toast('Live on the home page.'); loadHome(); }, loadHome);
+});
+
+$('hoAdd').addEventListener('click', function(){
+  var b = this; b.disabled = true;
+  call('addHomeOnlyPost', [{ title: $('hoTitle').value, body: $('hoBody').value,
+    contact: $('hoContact').value, until: $('hoUntil').value }], function(){
+    b.disabled = false; ['hoTitle','hoBody','hoContact','hoUntil'].forEach(function(i){ $(i).value=''; });
+    toast('Posted to the home page.'); loadHome();
+  }, function(){ b.disabled = false; });
+});
+
+/* ---------------- Services ---------------- */
+function renderServices(){
+  var list = STATE.services || [];
+  $('svcBody').innerHTML = list.map(function(s){
+    return '<tr><td>' + esc(s.label.split('—')[0].trim()) + '</td>' +
+      '<td>' + esc(s.label.split('—').slice(1).join('—').trim() || s.type) + '</td>' +
+      '<td data-reader="' + esc(s.iso) + '">&mdash;</td>' +
+      '<td class="db-count">' + s.approved + '</td>' +
+      '<td class="db-count">' + s.pending + '</td>' +
+      '<td><a class="db-mini" style="text-decoration:none;display:inline-block;" href="?page=script&date=' +
+        encodeURIComponent(s.iso) + '" target="_blank" rel="noopener">Open script</a></td></tr>';
+  }).join('');
+}
+
+$('svAdd').addEventListener('click', function(){
+  var b = this; b.disabled = true;
+  call('addService', [$('svDate').value, $('svType').value, $('svLabel').value, $('svReader').value], function(){
+    b.disabled = false; ['svDate','svLabel','svReader'].forEach(function(i){ $(i).value=''; });
+    toast('Service added.'); refreshCounts();
+  }, function(){ b.disabled = false; });
+});
+
+/* ---------------- Tabs, plumbing ---------------- */
+var tabs = document.querySelectorAll('.db-tab');
+for(var t=0;t<tabs.length;t++){
+  tabs[t].addEventListener('click', function(){
+    for(var u=0;u<tabs.length;u++) tabs[u].setAttribute('aria-selected','false');
+    this.setAttribute('aria-selected','true');
+    var want = this.getAttribute('data-tab');
+    ['queue','standing','home','services'].forEach(function(n){ $('tab-'+n).hidden = (n !== want); });
+    if(want === 'standing' && !$('standingBody').innerHTML) loadStanding();
+    if(want === 'home' && !$('homeBody').innerHTML) loadHome();
+  });
+}
+
+var svcBtns = document.querySelectorAll('.db-filter[data-svc]');
+for(var k=0;k<svcBtns.length;k++){
+  svcBtns[k].addEventListener('click', function(){
+    for(var m=0;m<svcBtns.length;m++) svcBtns[m].setAttribute('aria-pressed','false');
+    this.setAttribute('aria-pressed','true');
+    SVCTYPE = this.getAttribute('data-svc');
+    loadStanding();
+  });
+}
+
+var filters = document.querySelectorAll('.db-filter[data-f]');
+for(var i=0;i<filters.length;i++){
+  filters[i].addEventListener('click', function(){
+    for(var j=0;j<filters.length;j++) filters[j].setAttribute('aria-pressed','false');
+    this.setAttribute('aria-pressed','true');
+    FILTER = this.getAttribute('data-f');
+    renderQueue();
+  });
+}
+
+function call(fn, args, ok, fail){
+  var runner = google.script.run
+    .withSuccessHandler(function(r){ if(ok) ok(r); })
+    .withFailureHandler(function(err){ toast(err.message, true); if(fail) fail(err); });
+  runner[fn].apply(runner, args || []);
+}
+
+var tEl = $('toast'), tT;
+function toast(m, bad){
+  tEl.textContent = m; tEl.className = 'tn-toast show' + (bad ? ' bad' : '');
+  clearTimeout(tT); tT = setTimeout(function(){ tEl.className = 'tn-toast'; }, 4000);
+}
+
+load();
+</script>
+</body>
+</html>

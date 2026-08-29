@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TNIC Staff Directory — Migration Guide (v2)</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --wine:#7C1316; --gold:#C9972C; --snow:#FAF8F4; --cream:#F2EDE4;
+    --bark:#3D2E28; --ink:#130D0A; --white:#fff;
+    --muted:#9a8e87;
+    --good:#2E7D32; --warn:#E8A317; --bad:#B3261E;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; background:var(--snow); color:var(--bark); font-family:'DM Sans',sans-serif; }
+  .wrap { max-width:1000px; margin:0 auto; padding:32px 24px 80px; }
+  h1 {
+    font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:40px;
+    color:var(--wine); text-transform:uppercase; letter-spacing:0.04em; margin:0 0 4px;
+  }
+  .subtitle { color:var(--gold); font-family:'Barlow Condensed',sans-serif; font-weight:600;
+    text-transform:uppercase; letter-spacing:0.08em; font-size:14px; margin-bottom:30px; }
+  h2 {
+    font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:24px;
+    color:var(--wine); text-transform:uppercase; letter-spacing:0.03em;
+    margin:40px 0 14px; padding-bottom:10px; border-bottom:2px solid var(--cream);
+  }
+  h3 {
+    font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:18px;
+    color:var(--bark); text-transform:uppercase; letter-spacing:0.03em; margin:24px 0 10px;
+  }
+  p { line-height:1.65; color:var(--bark); }
+  .callout {
+    background: var(--white); border-left:4px solid var(--gold);
+    padding: 14px 18px; border-radius:6px; margin:16px 0;
+    box-shadow: 0 1px 3px rgba(19,13,10,0.06);
+  }
+  .callout.ok { border-left-color: var(--good); }
+  .callout.warn { border-left-color: var(--warn); }
+  .callout.bad { border-left-color: var(--bad); }
+  .callout strong { color: var(--wine); }
+  /* DIAGRAM */
+  .diagram {
+    background: var(--white); border: 1px solid var(--cream);
+    border-radius:10px; padding:22px; margin:14px 0;
+    font-family:'JetBrains Mono',monospace; font-size:12px; line-height:1.55;
+    white-space:pre; overflow-x:auto; color:var(--bark);
+  }
+  /* STEP BLOCKS */
+  .step {
+    background: var(--white); border: 1px solid var(--cream);
+    border-radius: 10px; padding: 20px 22px; margin: 14px 0;
+    box-shadow: 0 2px 6px rgba(19,13,10,0.05);
+  }
+  .step-num {
+    display:inline-flex; align-items:center; justify-content:center;
+    width:36px; height:36px; background:var(--wine); color:var(--white);
+    font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:18px;
+    border-radius:50%; margin-right:12px; vertical-align:middle;
+  }
+  .step-title {
+    font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:18px;
+    color:var(--wine); text-transform:uppercase; letter-spacing:0.03em;
+    display:inline; vertical-align:middle;
+  }
+  .step ul { padding-left:24px; margin:10px 0; }
+  .step li { margin-bottom:6px; line-height:1.5; }
+  /* TABLE */
+  table {
+    width:100%; border-collapse:collapse; margin:12px 0;
+    background:var(--white); font-size:14px;
+  }
+  th {
+    background:var(--wine); color:var(--white);
+    font-family:'Barlow Condensed',sans-serif; font-weight:700;
+    text-transform:uppercase; letter-spacing:0.04em; font-size:12px;
+    padding:10px 12px; text-align:left; border:1px solid var(--wine);
+  }
+  td {
+    padding:9px 12px; border:1px solid var(--cream);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: #fbf9f4; }
+  .tag {
+    display:inline-block; padding:2px 8px; border-radius:100px;
+    font-family:'Barlow Condensed',sans-serif; font-weight:600;
+    font-size:11px; text-transform:uppercase; letter-spacing:0.04em;
+  }
+  .tag-new { background:#E8F5E9; color:var(--good); }
+  .tag-existing { background:var(--cream); color:var(--bark); }
+  .tag-fill { background:#FFF3E0; color:#E65100; }
+  .code-inline {
+    font-family:'JetBrains Mono',monospace;
+    background:var(--cream); padding:2px 6px; border-radius:4px;
+    font-size:0.9em; color:var(--ink);
+  }
+  /* Columns list — at-a-glance */
+  .cols-grid {
+    display:grid; grid-template-columns:repeat(2,1fr); gap:10px;
+    margin:12px 0;
+  }
+  .col-card {
+    background:var(--white); border:1px solid var(--cream);
+    border-radius:8px; padding:12px 14px;
+  }
+  .col-card .nm {
+    font-family:'JetBrains Mono',monospace; font-weight:500;
+    color:var(--wine); font-size:14px;
+  }
+  .col-card .desc { font-size:12.5px; color:var(--muted); margin-top:3px; }
+  @media (max-width:600px){ .cols-grid{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Staff Directory — Migration Guide</h1>
+  <div class="subtitle">Adapting your existing True Nation Staff Data sheet for the Dashboard</div>
+
+  <div class="callout ok">
+    <strong>The good news:</strong> Your existing sheet is already 90% of what the dashboard needs.
+    Email, branch, location, phone, and names (in <span class="code-inline">legal_first</span> /
+    <span class="code-inline">legal_last</span>) are all there. Your
+    <span class="code-inline">userdirectory.html</span> Apps Script web app will keep working
+    untouched. We just need to add <strong>6 columns</strong> and 1 reference tab.
+  </div>
+
+  <!-- ═════════════════════ WHAT & WHY ═════════════════════ -->
+  <h2>The picture</h2>
+
+  <div class="diagram">
+┌────────────────────────────────────────────────────────────────────────┐
+│             TRUE NATION STAFF DATA  (your existing sheet)              │
+│  ──────────────────────────────────────────────────────────────────    │
+│                                                                        │
+│   data tab  (55 cols ➜ 61 cols after migration)                        │
+│   ───────────────────────────────────────────                          │
+│   ▸ email                ◀── key for USEREMAIL() match                 │
+│   ▸ branch               ◀── already there                             │
+│   ▸ location             ◀── already there (your "Campus")             │
+│   ▸ legal_first          ◀── Apps Script fills if blank                │
+│   ▸ legal_last           ◀── Apps Script fills if blank                │
+│   ▸ phone                ◀── Apps Script fills if blank                │
+│   ▸ ...50 more cols...   ◀── untouched (legal, insurance, emergency)   │
+│                                                                        │
+│   + department           ◀── NEW  (manual)                             │
+│   + title_role           ◀── NEW  (manual)                             │
+│   + sub_groups           ◀── NEW  (manual, optional)                   │
+│   + display_name         ◀── NEW  (manual, optional)                   │
+│   + sync_source          ◀── NEW  (auto-stamped)                       │
+│   + last_synced          ◀── NEW  (auto-stamped)                       │
+│                                                                        │
+│   Former Staff tab  ◀── already there; hides people from dashboard     │
+│   Audit Log tab     ◀── already there; untouched                       │
+│                                                                        │
+│   + Departments tab (new reference tab, 19 rows)                       │
+│     ▸ looks up Chat Space URL + Dept Page URL for each department      │
+│                                                                        │
+└────────────────────────────────────────────────────────────────────────┘
+
+                ▼                  ▼                  ▼
+       ┌──────────────┐   ┌──────────────┐   ┌──────────────┐
+       │ Apps Script  │   │ userdirectory│   │ AppSheet     │
+       │ Workspace    │   │ (existing)   │   │ Dashboard    │
+       │ sync (daily) │   │ keeps working│   │ (new build)  │
+       └──────────────┘   └──────────────┘   └──────────────┘
+  </div>
+
+  <!-- ═════════════════════ STEPS ═════════════════════ -->
+  <h2>The six steps</h2>
+
+  <div class="step">
+    <span class="step-num">1</span>
+    <span class="step-title">Add 6 new columns to the <span class="code-inline">data</span> tab</span>
+    <p>Open the sheet at column <strong>BC</strong> (the cell right after <span class="code-inline">medical_conditions</span>) and type these 6 headers, one per column:</p>
+    <div class="cols-grid">
+      <div class="col-card"><span class="tag tag-new">NEW</span> <span class="nm">department</span><div class="desc">e.g., "IT / Information Technology" — matches Departments tab exactly</div></div>
+      <div class="col-card"><span class="tag tag-new">NEW</span> <span class="nm">title_role</span><div class="desc">e.g., "Department Lead", "Bishop", "Member"</div></div>
+      <div class="col-card"><span class="tag tag-new">NEW</span> <span class="nm">sub_groups</span><div class="desc">Comma-separated, e.g., "Videography, Marketing" (optional)</div></div>
+      <div class="col-card"><span class="tag tag-new">NEW</span> <span class="nm">display_name</span><div class="desc">Greeting name, e.g., "Shahad" or "Bishop Tazayawan"</div></div>
+      <div class="col-card"><span class="tag tag-new">NEW</span> <span class="nm">sync_source</span><div class="desc">Auto-stamped by script: "Apps Script" or "Manual"</div></div>
+      <div class="col-card"><span class="tag tag-new">NEW</span> <span class="nm">last_synced</span><div class="desc">Auto-stamped timestamp</div></div>
+    </div>
+    <div class="callout warn">
+      <strong>Tip:</strong> You can skip this manual step — <span class="code-inline">ensureSyncColumns()</span> in the script will add them automatically. Run that first before <span class="code-inline">syncWorkspaceUsers()</span>.
+    </div>
+  </div>
+
+  <div class="step">
+    <span class="step-num">2</span>
+    <span class="step-title">Paste the Apps Script</span>
+    <ul>
+      <li>Open the sheet → <strong>Extensions → Apps Script</strong></li>
+      <li>If you already have a project there (the one powering <span class="code-inline">userdirectory.html</span>), create a <strong>new script file</strong> inside it — don't overwrite what's there. Name the file <span class="code-inline">TNIC_StaffDirectory_Sync.gs</span></li>
+      <li>Paste in the contents of <span class="code-inline">TNIC_StaffDirectory_SyncScript_v2.js</span></li>
+      <li>Click <strong>+</strong> next to <strong>Services</strong> → add <strong>Admin SDK API</strong> → Add</li>
+      <li>In Google Cloud Console: <strong>APIs &amp; Services → Enable API</strong> → "Admin SDK API"</li>
+    </ul>
+  </div>
+
+  <div class="step">
+    <span class="step-num">3</span>
+    <span class="step-title">Run <span class="code-inline">ensureSyncColumns()</span> once</span>
+    <ul>
+      <li>In Apps Script, pick <span class="code-inline">ensureSyncColumns</span> from the function dropdown → click <strong>Run</strong></li>
+      <li>Approve permissions when prompted (you must be a Workspace admin)</li>
+      <li>A toast will confirm which columns were added. Safe to re-run.</li>
+    </ul>
+  </div>
+
+  <div class="step">
+    <span class="step-num">4</span>
+    <span class="step-title">Run <span class="code-inline">syncWorkspaceUsers()</span> once manually</span>
+    <ul>
+      <li>Pick <span class="code-inline">syncWorkspaceUsers</span> → Run</li>
+      <li>
+        What will happen:
+        <ul style="margin-top:4px;">
+          <li><span class="tag tag-existing">EXISTING</span> rows whose <span class="code-inline">legal_first</span> / <span class="code-inline">legal_last</span> / <span class="code-inline">phone</span> are blank → filled from Workspace</li>
+          <li><span class="tag tag-existing">EXISTING</span> rows with hand-entered values → <strong>never overwritten</strong></li>
+          <li><span class="tag tag-new">NEW</span> Workspace users not in the sheet → new row added (email + whatever Workspace has)</li>
+          <li>Every processed row gets <span class="code-inline">sync_source = "Apps Script"</span> and <span class="code-inline">last_synced = now</span></li>
+        </ul>
+      </li>
+      <li>Check the toast message for the count: e.g., <em>"60 processed, 3 new, 12 blanks filled, 45 timestamped only"</em></li>
+    </ul>
+  </div>
+
+  <div class="step">
+    <span class="step-num">5</span>
+    <span class="step-title">Set up a daily trigger</span>
+    <ul>
+      <li>In Apps Script: <strong>Triggers</strong> (clock icon) → <strong>Add Trigger</strong></li>
+      <li>Function: <span class="code-inline">syncWorkspaceUsers</span></li>
+      <li>Event source: <strong>Time-driven</strong> → Day timer → 2am–3am</li>
+      <li>Click Save — you're done. It'll run every night.</li>
+    </ul>
+  </div>
+
+  <div class="step">
+    <span class="step-num">6</span>
+    <span class="step-title">Add a <span class="code-inline">Departments</span> reference tab</span>
+    <p>The dashboard's "My Department" card needs to know the Chat Space URL and Dept Page URL for each department. Add one more tab to the same workbook with these columns and 19 rows (one per department):</p>
+    <table>
+      <tr>
+        <th>Department</th><th>Branch</th><th>Lead</th>
+        <th>Chat Space URL</th><th>Dept Page URL</th><th>Dept Email</th>
+      </tr>
+      <tr>
+        <td>IT / Information Technology</td><td>Deacons</td><td>Shahad</td>
+        <td><em>(paste Chat URL)</em></td><td><em>(paste Sites URL)</em></td><td>it@truenation.org</td>
+      </tr>
+      <tr>
+        <td>Clerical</td><td>Deacons</td><td>Deacon Kabash</td>
+        <td></td><td></td><td>clerical@truenation.org</td>
+      </tr>
+      <tr>
+        <td colspan="6" style="text-align:center; color:var(--muted); font-style:italic;">
+          …17 more rows. I already built this tab in the earlier template — copy rows 2–20 from
+          <span class="code-inline">TNIC_Staff_Directory_Template.xlsx</span> → Departments tab.
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ═════════════════════ SAFETY ═════════════════════ -->
+  <h2>Safety checks</h2>
+  <div class="callout ok">
+    <strong>✓ Will not break <span class="code-inline">userdirectory.html</span>.</strong> That web app reads by column header name. Adding columns to the right end of the sheet is a no-op for it.
+  </div>
+  <div class="callout ok">
+    <strong>✓ Will not overwrite your data.</strong> The script only writes to
+    <span class="code-inline">legal_first</span> / <span class="code-inline">legal_last</span> /
+    <span class="code-inline">phone</span> <em>when those cells are blank</em>, plus the two
+    metadata columns. Everything else (addresses, insurance, emergency contacts) is never touched.
+  </div>
+  <div class="callout warn">
+    <strong>⚠ Test first.</strong> Run <span class="code-inline">syncWorkspaceUsers()</span> once manually
+    before enabling the trigger. Review the counts in the toast. If anything looks wrong,
+    nothing is lost — the existing rows still have all their original data.
+  </div>
+  <div class="callout bad">
+    <strong>✗ Don't run on a snapshot you can't restore.</strong> Even though the script is safe,
+    best practice: <strong>File → Make a copy</strong> of the sheet once before your first run, just in case.
+  </div>
+
+  <!-- ═════════════════════ NEXT UP ═════════════════════ -->
+  <h2>What happens next</h2>
+  <p>Once the sheet is set up and syncing, the remaining dashboard build steps are:</p>
+  <ol>
+    <li><strong>Fill in Department / Title / Display Name</strong> for existing staff (one-time manual pass)</li>
+    <li><strong>Fill in Chat Space URL + Dept Page URL</strong> on the Departments tab (19 rows)</li>
+    <li><strong>Create the AppSheet app</strong> — point it at this sheet, use <span class="code-inline">USEREMAIL()</span> filter</li>
+    <li><strong>Embed the dashboard</strong> into Google Sites as the new Home page (4 embeds: Identity, Quick Actions, My Department, Upcoming Events, plus the existing Quick Links + Announcements)</li>
+  </ol>
+
+</div>
+</body>
+</html>

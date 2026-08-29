@@ -1,0 +1,146 @@
+<!--
+  TRUE NATION INTRANET — CALENDAR: GOOGLE CALENDAR EMBED
+  ────────────────────────────────────────────────────────
+  Embed this on the Calendar & Events page.
+  Add a native Sites heading "Full Calendar" above this embed.
+
+  HOW TO REPLACE THE PLACEHOLDER WITH YOUR REAL CALENDAR:
+  1. Open Google Calendar
+  2. Click ⚙️ Settings → Settings
+  3. On the left, click the calendar you want to embed
+  4. Scroll down to "Integrate calendar"
+  5. Copy the src URL from the Embed Code field
+  6. In this file, delete the placeholder <div> and uncomment the <iframe>
+  7. Paste your src URL into the iframe src attribute
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .cal-wrap {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    background: #E8E8EC;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .cal-module {
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(19,13,10,0.05);
+    padding: 16px 18px;
+  }
+
+  .cal-embed-container {
+    position: relative;
+    width: 100%;
+    padding-top: 62%;
+    background: #D8D8DE;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .cal-embed-container iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: none;
+  }
+
+  .cal-embed-placeholder {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .cal-embed-placeholder-icon { font-size: 2.5rem; }
+
+  .cal-embed-placeholder-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #7C1316;
+  }
+
+  .cal-embed-placeholder-text {
+    font-size: 13px;
+    color: #888;
+    max-width: 340px;
+    line-height: 1.5;
+  }
+
+  .cal-embed-placeholder-code {
+    font-family: monospace;
+    font-size: 12px;
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-radius: 4px;
+    padding: 6px 12px;
+    color: #56565E;
+    word-break: break-all;
+  }
+
+  @media (max-width: 500px) {
+    .cal-embed-container { padding-top: 90%; }
+  }
+</style>
+
+<div class="cal-wrap">
+  <div class="cal-module">
+    <div class="cal-embed-container">
+
+      <!--
+        ══════════════════════════════════════════════════════
+        HOW TO CONNECT YOUR GOOGLE CALENDAR (one-time setup):
+        ══════════════════════════════════════════════════════
+        1. Open Google Calendar (calendar.google.com)
+        2. Click ⚙️ → Settings → click your TNIC calendar on the left
+        3. Scroll to "Integrate calendar"
+        4. Copy the URL shown under "Public URL to this calendar"
+           (it looks like: https://calendar.google.com/calendar/embed?src=...)
+        5. Paste that URL in place of REPLACE_WITH_CALENDAR_EMBED_SRC below
+        6. Delete the placeholder <div> above the iframe
+        7. Remove the <!-- and --> comment tags around the iframe
+        ══════════════════════════════════════════════════════
+      -->
+
+      <!-- DELETE THIS BLOCK when calendar is connected -->
+      <div class="cal-embed-placeholder">
+        <div class="cal-embed-placeholder-icon">📆</div>
+        <div class="cal-embed-placeholder-title">Calendar — Setup Required</div>
+        <div class="cal-embed-placeholder-text">
+          Paste your Google Calendar embed URL into the iframe below, then delete this placeholder block.
+        </div>
+        <div class="cal-embed-placeholder-code">src="REPLACE_WITH_CALENDAR_EMBED_SRC"</div>
+      </div>
+      <!-- END DELETE BLOCK -->
+
+      <!-- STEP 1: Replace the src URL. STEP 2: Remove the comment tags below. -->
+      <!--
+      <iframe
+        src="REPLACE_WITH_CALENDAR_EMBED_SRC"
+        style="border:0"
+        width="100%"
+        height="100%"
+        frameborder="0"
+        scrolling="no">
+      </iframe>
+      -->
+
+    </div>
+  </div>
+</div>

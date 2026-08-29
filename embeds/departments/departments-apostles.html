@@ -1,0 +1,179 @@
+<!--
+  TRUE NATION INTRANET — APOSTLES BRANCH DEPARTMENT CARDS
+  ─────────────────────────────────────────────────────────
+  Embed on the Departments index page under the Apostles Branch heading.
+  [REPLACE] Update each card's href with the actual Sites page URL.
+
+  APOSTLES (6) — alphabetical order:
+    Disciples, Everyday Sheeple, Marketing, Performing Arts, Publication, T.E.L.A.
+
+  STRUCTURAL CHANGES (June 2026):
+    • Production renamed to "Everyday Sheeple" — Everyday Sheeple is now the dept name
+    • Everyday Sheeple sub-group removed (it is the department)
+    • Publication moved from Deacons → Apostles
+    • Marketing is its own department (lead TBD; Graphic Design + Social Media)
+    • Performing Arts moved from Deacons → Apostles (lead: Deacon Kabash)
+    • T.E.L.A. replaces "T.E.L.A." — cross-functional program model
+    • PARADOX is a media content sub-group under Everyday Sheeple
+      (PARADOX App is IT/Applications — different thing)
+    • SCICA Summit removed (status unclear — not in current org listing)
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  .di-wrap {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    background: #E8E8EC;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+    box-sizing: border-box;
+  }
+
+  .di-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  a.di-card {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-radius: 8px;
+    padding: 18px 16px 14px;
+    text-decoration: none;
+    color: #26262A;
+    box-shadow: 0 2px 6px rgba(19,13,10,0.06);
+    transition: box-shadow 0.2s, transform 0.15s, border-color 0.2s;
+    min-height: 100px;
+  }
+
+  a.di-card:hover {
+    box-shadow: 0 5px 16px rgba(19,13,10,0.12);
+    transform: translateY(-2px);
+    border-color: #785710;
+  }
+
+  .di-badge {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 2px 9px;
+    border-radius: 100px;
+    margin-bottom: 8px;
+    align-self: flex-start;
+  }
+  .badge-ap { background: #1E3A8A; color: #F2F2F3; }
+  .badge-de { background: #1A5C2A; color: #F2F2F3; }
+  .badge-ju { background: #8B6200; color: #F2F2F3; }
+  .badge-bi { background: #8C1C1C; color: #F2F2F3; }
+
+  .di-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #7C1316;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+
+  .di-lead {
+    font-size: 13px;
+    color: #56565E;
+    margin-top: auto;
+    padding-top: 8px;
+  }
+
+  .di-lead-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #785710;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .di-arrow {
+    display: inline-block;
+    color: #785710;
+    font-size: 14px;
+    margin-left: 4px;
+    transition: transform 0.2s;
+  }
+  a.di-card:hover .di-arrow { transform: translateX(3px); }
+
+  @media (max-width: 500px) {
+    .di-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+</style>
+
+<div class="di-wrap">
+
+  <div class="di-grid">
+
+    <a class="di-card" href="/departments/disciples"><!-- [REPLACE] href -->
+      <span class="di-badge badge-ap">Apostles</span>
+      <div class="di-name">Disciples</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Leads</span>
+        Ash Napash · Yashami <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/everyday-sheeple"><!-- [REPLACE] href -->
+      <span class="di-badge badge-ap">Apostles</span>
+      <div class="di-name">Everyday Sheeple</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Sub-groups</span>
+        Sound · Videography · Photography · Camera &amp; Lights · A/V · Stage · Visual Art · PARADOX <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/marketing"><!-- [REPLACE] href -->
+      <span class="di-badge badge-ap">Apostles</span>
+      <div class="di-name">Marketing</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Sub-groups</span>
+        Graphic Design · Social Media <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/performing-arts"><!-- [REPLACE] href -->
+      <span class="di-badge badge-ap">Apostles</span>
+      <div class="di-name">Performing Arts</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Lead · Sub-groups</span>
+        Deacon Kabash · Acting · Dance · Music · Poetry <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/publication"><!-- [REPLACE] href -->
+      <span class="di-badge badge-ap">Apostles</span>
+      <div class="di-name">Publication</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Sub-groups</span>
+        Newsletter · Quarterly Brew <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/tela"><!-- [REPLACE] href -->
+      <span class="di-badge badge-ap">Apostles</span>
+      <div class="di-name">T.E.L.A.</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Programs</span>
+        Intramural Sports · Jr. Disciples · Little Lions · Maiden Ewe's · Naqam Freshman · Naqam Varsity <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+  </div>
+
+</div>

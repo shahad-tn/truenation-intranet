@@ -1,0 +1,450 @@
+<!--
+  TRUE NATION INTRANET — LOGISTICS SUB-GROUP PAGE
+  ─────────────────────────────────────────────────
+  Embed this on the Logistics sub-group page under IT / Information Technology.
+  Place BELOW the native Sites "COMMUNICATION & FILES" action buttons.
+
+  MODULES INCLUDED:
+  1. Equipment Status Board  — current availability of key equipment
+  2. Upcoming Assignments    — next 4 scheduled logistics deployments
+  3. Request Tracker         — recent support requests and their status
+  4. Vendor Quick Reference  — key contacts for logistics vendors/suppliers
+
+  [REPLACE] all placeholder data with real content.
+  WEEK 3: Replace Request Tracker with a live Google Sheets embed.
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .lg-wrap {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    background: #FAF8F4;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+    overflow: hidden;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* ── Module shell ── */
+  .lg-module {
+    background: white;
+    border: 1px solid #F2EDE4;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(19,13,10,0.05);
+  }
+
+  .lg-module-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px 12px;
+    border-bottom: 1px solid #F2EDE4;
+  }
+
+  .lg-module-icon { font-size: 1.125rem; }
+
+  .lg-module-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #7C1316;
+  }
+
+  .lg-module-body { padding: 14px 18px; }
+
+  /* ── Status badges ── */
+  .status {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 2px 9px;
+    border-radius: 100px;
+  }
+  .s-available  { background: #E8F5E9; color: #2E7D32; }
+  .s-inuse      { background: #FFF3E0; color: #E65100; }
+  .s-checkedout { background: #F3E5F5; color: #6A1B9A; }
+  .s-maintenance{ background: #FFEBEE; color: #B71C1C; }
+  .s-pending    { background: #FFF8E1; color: #F57F17; }
+  .s-complete   { background: #E8F5E9; color: #2E7D32; }
+  .s-inprogress { background: #E3F2FD; color: #1565C0; }
+
+  /* ── Equipment table ── */
+  .eq-table { width: 100%; border-collapse: collapse; }
+  .eq-table th {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #C9972C;
+    text-align: left;
+    padding: 0 0 10px;
+    border-bottom: 1px solid #F2EDE4;
+  }
+  .eq-table td {
+    font-size: 14px;
+    color: #3D2E28;
+    padding: 10px 0;
+    border-bottom: 1px solid #FAF8F4;
+    vertical-align: middle;
+  }
+  .eq-table tr:last-child td { border-bottom: none; }
+  .eq-name { font-weight: 500; color: #130D0A; }
+  .eq-note  { font-size: 12px; color: #888; margin-top: 2px; }
+  .eq-table th:last-child,
+  .eq-table td:last-child { text-align: right; }
+
+  /* ── Assignments list ── */
+  .assign-list { display: flex; flex-direction: column; gap: 10px; }
+  .assign-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 12px 14px;
+    background: #FAF8F4;
+    border-radius: 6px;
+  }
+  .assign-date {
+    text-align: center;
+    min-width: 44px;
+    flex-shrink: 0;
+  }
+  .assign-date-day {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.375rem;
+    color: #7C1316;
+    line-height: 1;
+  }
+  .assign-date-mon {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #C9972C;
+  }
+  .assign-info { flex: 1; }
+  .assign-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: #130D0A;
+    margin-bottom: 3px;
+  }
+  .assign-meta { font-size: 12px; color: #888; }
+
+  /* ── Request tracker ── */
+  .req-list { display: flex; flex-direction: column; gap: 8px; }
+  .req-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: #FAF8F4;
+    border-radius: 6px;
+  }
+  .req-id {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    color: #C9972C;
+    min-width: 48px;
+    flex-shrink: 0;
+  }
+  .req-text { flex: 1; font-size: 14px; color: #3D2E28; }
+  .req-dept { font-size: 11px; color: #888; margin-top: 2px; }
+
+  /* ── Vendor cards ── */
+  .vendor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+  }
+  .vendor-card {
+    background: #FAF8F4;
+    border-radius: 6px;
+    padding: 12px 14px;
+  }
+  .vendor-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.9375rem;
+    text-transform: uppercase;
+    color: #7C1316;
+    margin-bottom: 6px;
+  }
+  .vendor-type {
+    font-size: 11px;
+    color: #C9972C;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+  .vendor-contact { font-size: 13px; color: #3D2E28; line-height: 1.6; }
+  .vendor-contact a {
+    color: #7C1316;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  @media (max-width: 600px) {
+    .eq-table th:nth-child(3),
+    .eq-table td:nth-child(3) { display: none; }
+    .vendor-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="lg-wrap">
+
+  <!-- ══════════════════════════════
+       MODULE 1 — EQUIPMENT STATUS
+       ══════════════════════════════ -->
+  <div class="lg-module">
+    <div class="lg-module-head">
+      <div class="lg-module-icon">📦</div>
+      <div class="lg-module-title">Equipment Status Board</div>
+    </div>
+    <div class="lg-module-body">
+      <table class="eq-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Location</th>
+            <th>Last Updated</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- [REPLACE] with real equipment inventory -->
+          <tr>
+            <td>
+              <div class="eq-name">Projector — Epson 4K</div>
+              <div class="eq-note">Main sanctuary unit</div>
+            </td>
+            <td>AV Closet A</td>
+            <td>Mar 22</td>
+            <td><span class="status s-available">Available</span></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="eq-name">Extension Cord Set (×6)</div>
+              <div class="eq-note">Heavy-duty 25ft</div>
+            </td>
+            <td>Storage Room B</td>
+            <td>Mar 20</td>
+            <td><span class="status s-checkedout">Checked Out</span></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="eq-name">Folding Tables (×12)</div>
+              <div class="eq-note">6ft rectangular</div>
+            </td>
+            <td>Basement Storage</td>
+            <td>Mar 28</td>
+            <td><span class="status s-inuse">In Use</span></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="eq-name">PA System — Portable</div>
+              <div class="eq-note">Yamaha Stagepas 400BT</div>
+            </td>
+            <td>AV Closet A</td>
+            <td>Mar 15</td>
+            <td><span class="status s-maintenance">Maintenance</span></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="eq-name">Hand Trucks (×3)</div>
+              <div class="eq-note">Heavy-duty, 800lb capacity</div>
+            </td>
+            <td>Loading Dock</td>
+            <td>Mar 28</td>
+            <td><span class="status s-available">Available</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       MODULE 2 — UPCOMING ASSIGNMENTS
+       ══════════════════════════════ -->
+  <div class="lg-module">
+    <div class="lg-module-head">
+      <div class="lg-module-icon">📋</div>
+      <div class="lg-module-title">Upcoming Assignments</div>
+    </div>
+    <div class="lg-module-body">
+      <div class="assign-list">
+        <!-- [REPLACE] with real event schedule -->
+        <div class="assign-item">
+          <div class="assign-date">
+            <div class="assign-date-day">29</div>
+            <div class="assign-date-mon">Mar</div>
+          </div>
+          <div class="assign-info">
+            <div class="assign-title">Sabbath Service Setup</div>
+            <div class="assign-meta">Main Sanctuary · Arrive by 8:00 AM · Lead: Achwath Shawashan</div>
+          </div>
+          <span class="status s-inprogress">Upcoming</span>
+        </div>
+
+        <div class="assign-item">
+          <div class="assign-date">
+            <div class="assign-date-day">05</div>
+            <div class="assign-date-mon">Apr</div>
+          </div>
+          <div class="assign-info">
+            <div class="assign-title">Feast Preparation — Equipment Staging</div>
+            <div class="assign-meta">Fellowship Hall · All-day · Coord. with Fellowship &amp; Services</div>
+          </div>
+          <span class="status s-pending">Pending</span>
+        </div>
+
+        <div class="assign-item">
+          <div class="assign-date">
+            <div class="assign-date-day">12</div>
+            <div class="assign-date-mon">Apr</div>
+          </div>
+          <div class="assign-info">
+            <div class="assign-title">AV Equipment Transport — Venue B</div>
+            <div class="assign-meta">Off-site · Production dept. coordination required</div>
+          </div>
+          <span class="status s-pending">Pending</span>
+        </div>
+
+        <div class="assign-item">
+          <div class="assign-date">
+            <div class="assign-date-day">19</div>
+            <div class="assign-date-mon">Apr</div>
+          </div>
+          <div class="assign-info">
+            <div class="assign-title">Sabbath Service Setup</div>
+            <div class="assign-meta">Main Sanctuary · Arrive by 8:00 AM</div>
+          </div>
+          <span class="status s-pending">Pending</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       MODULE 3 — REQUEST TRACKER
+       ══════════════════════════════ -->
+  <div class="lg-module">
+    <div class="lg-module-head">
+      <div class="lg-module-icon">📝</div>
+      <div class="lg-module-title">Request Tracker</div>
+    </div>
+    <div class="lg-module-body">
+      <!-- WEEK 3: Replace this section with a Google Sheets embed -->
+      <div class="req-list">
+        <!-- [REPLACE] with real requests -->
+        <div class="req-item">
+          <div class="req-id">#LG-014</div>
+          <div>
+            <div class="req-text">Table and chair setup — Room 3B</div>
+            <div class="req-dept">Requested by: Fellowship &amp; Services · Mar 26</div>
+          </div>
+          <span class="status s-complete">Complete</span>
+        </div>
+
+        <div class="req-item">
+          <div class="req-id">#LG-015</div>
+          <div>
+            <div class="req-text">Projector transport to off-site venue</div>
+            <div class="req-dept">Requested by: Production · Mar 27</div>
+          </div>
+          <span class="status s-inprogress">In Progress</span>
+        </div>
+
+        <div class="req-item">
+          <div class="req-id">#LG-016</div>
+          <div>
+            <div class="req-text">Equipment inventory audit — AV Closet A</div>
+            <div class="req-dept">Requested by: IT · Mar 28</div>
+          </div>
+          <span class="status s-pending">Pending</span>
+        </div>
+
+        <div class="req-item">
+          <div class="req-id">#LG-017</div>
+          <div>
+            <div class="req-text">Van rental coordination — Feast prep</div>
+            <div class="req-dept">Requested by: Fellowship &amp; Services · Mar 28</div>
+          </div>
+          <span class="status s-pending">Pending</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       MODULE 4 — VENDOR QUICK REFERENCE
+       ══════════════════════════════ -->
+  <div class="lg-module">
+    <div class="lg-module-head">
+      <div class="lg-module-icon">🤝</div>
+      <div class="lg-module-title">Vendor Quick Reference</div>
+    </div>
+    <div class="lg-module-body">
+      <div class="vendor-grid">
+        <!-- [REPLACE] with real vendors -->
+        <div class="vendor-card">
+          <div class="vendor-name">ProTrans Rentals</div>
+          <div class="vendor-type">Vehicle Rental</div>
+          <div class="vendor-contact">
+            📞 <a href="tel:+15550001111">(555) 000-1111</a><br>
+            Account #: <strong>TN-4421</strong><br>
+            24hr booking required
+          </div>
+        </div>
+
+        <div class="vendor-card">
+          <div class="vendor-name">StoreSafe Units</div>
+          <div class="vendor-type">Off-site Storage</div>
+          <div class="vendor-contact">
+            📞 <a href="tel:+15550002222">(555) 000-2222</a><br>
+            Unit #: <strong>B-114</strong><br>
+            Access: M–Sat 6AM–10PM
+          </div>
+        </div>
+
+        <div class="vendor-card">
+          <div class="vendor-name">Citywide Supply Co.</div>
+          <div class="vendor-type">Equipment &amp; Supplies</div>
+          <div class="vendor-contact">
+            📞 <a href="tel:+15550003333">(555) 000-3333</a><br>
+            ✉️ <a href="mailto:orders@citywidesupply.com" target="_blank">orders@citywidesupply.com</a><br>
+            Net-30 account
+          </div>
+        </div>
+
+        <div class="vendor-card">
+          <div class="vendor-name">QuickFix Repair</div>
+          <div class="vendor-type">Equipment Repair</div>
+          <div class="vendor-contact">
+            📞 <a href="tel:+15550004444">(555) 000-4444</a><br>
+            Avg. turnaround: 3–5 days<br>
+            Warranty on IT equipment
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,108 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+  .tree{font-family:var(--font-mono);font-size:12.5px;line-height:1.85;color:var(--color-text-primary)}
+  .folder{font-weight:500;color:var(--color-text-primary)}
+  .file{color:var(--color-text-secondary)}
+  .tag{display:inline-block;font-family:var(--font-sans);font-size:10px;padding:1px 6px;border-radius:4px;margin-left:8px;vertical-align:middle;font-weight:500}
+  .tag-new{background:var(--color-background-success);color:var(--color-text-success)}
+  .tag-renamed{background:var(--color-background-info);color:var(--color-text-info)}
+  .tag-archive{background:var(--color-background-warning);color:var(--color-text-warning)}
+  .tag-active{background:var(--color-background-secondary);color:var(--color-text-secondary)}
+  .group{margin-bottom:1.2rem}
+  .group-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-secondary);margin-bottom:6px;font-family:var(--font-sans)}
+  .indent1{padding-left:20px}
+  .indent2{padding-left:40px}
+  .indent3{padding-left:60px}
+  .note{font-family:var(--font-sans);font-size:11.5px;color:var(--color-text-secondary);padding:8px 12px;border-radius:6px;background:var(--color-background-secondary);margin-top:4px;line-height:1.6}
+  hr.divider{border:none;border-top:0.5px solid var(--color-border-tertiary);margin:1.2rem 0}
+</style>
+
+<h2 class="sr-only">Proposed file structure reorganization for True Nation intranet project</h2>
+
+<div class="group">
+  <div class="group-label">Root</div>
+  <div class="tree">
+    <div><span class="folder">True Nation Intranet Project Build/</span></div>
+    <div class="indent1"><span class="file">CLAUDE.md</span> <span class="tag tag-active">stays</span></div>
+    <div class="indent1"><span class="folder">embeds/</span> <span class="tag tag-renamed">renamed from Week1_Deliverables</span></div>
+    <div class="indent1"><span class="folder">reference/</span> <span class="tag tag-new">new</span></div>
+    <div class="indent1"><span class="folder">scripts/</span> <span class="tag tag-new">new</span></div>
+    <div class="indent1"><span class="folder">archive/</span> <span class="tag tag-renamed">_archive → root (single folder)</span></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<div class="group">
+  <div class="group-label">embeds/ — organized by site page</div>
+  <div class="tree">
+    <div class="indent1"><span class="folder">home/</span> <span style="color:var(--color-text-secondary);font-size:11px;font-family:var(--font-sans)">home-announcements, home-quick-links</span></div>
+    <div class="indent1"><span class="folder">dashboard/</span> <span style="color:var(--color-text-secondary);font-size:11px;font-family:var(--font-sans)">dashboard-identity, -quick-actions, -my-department, -events</span></div>
+    <div class="indent1"><span class="folder">departments/</span></div>
+    <div class="indent2"><span class="file">departments-index-cards.html</span></div>
+    <div class="indent2"><span class="file">departments-bishops/apostles/deacons/judges.html</span></div>
+    <div class="indent2"><span class="folder">apostles/</span> <span style="color:var(--color-text-secondary);font-size:11px;font-family:var(--font-sans)">disciples, marketing, performing-arts, everyday-sheeple, publications</span></div>
+    <div class="indent2"><span class="folder">deacons/</span> <span style="color:var(--color-text-secondary);font-size:11px;font-family:var(--font-sans)">cbd, clerical, custodial, fellowship, stewardship, holistic-health, maintenance, safety-facilities, textiles</span></div>
+    <div class="indent2"><span class="folder">judges/</span> <span style="color:var(--color-text-secondary);font-size:11px;font-family:var(--font-sans)">counseling (+ sanhedrin), ministries (+ sov, elders, prayer, prison)</span></div>
+    <div class="indent1"><span class="folder">people/</span> <span style="color:var(--color-text-secondary);font-size:11px;font-family:var(--font-sans)">our-people, directory, by-campus, by-dept, profile-form</span></div>
+    <div class="indent1"><span class="folder">tela/</span> <span style="color:var(--color-text-secondary);font-size:11px;font-family:var(--font-sans)">overview, subgroup-cards, form, announcements, media, all youth-*.html</span></div>
+    <div class="indent1"><span class="folder">calendar/</span></div>
+    <div class="indent1"><span class="folder">resources/</span> <span style="color:var(--color-text-secondary);font-size:11px;font-family:var(--font-sans)">library + resources embeds</span></div>
+    <div class="indent1"><span class="folder">locations/</span></div>
+    <div class="indent1"><span class="folder">leadership/</span></div>
+    <div class="indent1"><span class="folder">it-logistics/</span> <span style="color:var(--color-text-secondary);font-size:11px;font-family:var(--font-sans)">it-*.html, logistics-*.html, paradox-app.html</span></div>
+    <div class="indent1"><span class="folder">shared/</span> <span style="color:var(--color-text-secondary);font-size:11px;font-family:var(--font-sans)">tnic-brand-styles.html, dept-subgroup-cards.html (template)</span></div>
+  </div>
+  <div class="note">File renames inside embeds: <strong>production-*.html → everyday-sheeple-*.html</strong> and <strong>finance-*.html → stewardship-*.html</strong> — matches actual dept names</div>
+</div>
+
+<hr class="divider">
+
+<div class="group">
+  <div class="group-label">reference/ — all project docs + master reference</div>
+  <div class="tree">
+    <div class="indent1"><span class="file">TNIC_All_Pages_Embeds.html</span> <span style="color:var(--color-text-secondary);font-size:11px;font-family:var(--font-sans)">master embed reference (name kept)</span></div>
+    <div class="indent1"><span class="file">TNIC_Department_Embeds.html</span></div>
+    <div class="indent1"><span class="file">org-structure-current.html</span> <span class="tag tag-renamed">renamed from tnic_org_structure_current</span></div>
+    <div class="indent1"><span class="file">org-chart.html + org-chart-*.pdf</span> <span style="color:var(--color-text-secondary);font-size:11px;font-family:var(--font-sans)">3 org chart PDFs + HTML</span></div>
+    <div class="indent1"><span class="file">staff-directory-migration-guide.html</span> <span class="tag tag-renamed">simplified from TNIC_StaffDirectory_...</span></div>
+    <div class="indent1"><span class="file">operations-guide.html + .pdf</span> <span class="tag tag-renamed">simplified from TrueNation-Intranet-...</span></div>
+    <div class="indent1"><span class="file">visual-preview.html</span> <span class="tag tag-renamed">from TNIC_Intranet_Visual_Preview</span></div>
+    <div class="indent1"><span class="file">build-reference.xlsx</span> <span class="tag tag-renamed">simplified</span></div>
+    <div class="indent1"><span class="file">master-plan.docx</span> <span class="tag tag-renamed">simplified</span></div>
+    <div class="indent1"><span class="file">dashboard-prd.docx</span> <span class="tag tag-renamed">simplified</span></div>
+    <div class="indent1"><span class="file">handoff-2026-03.docx</span> <span class="tag tag-renamed">simplified</span></div>
+    <div class="indent1"><span class="file">remaining-work.docx</span> <span class="tag tag-renamed">simplified</span></div>
+    <div class="indent1"><span class="file">onboarding-qr.png + profile-setup.pptx</span></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<div class="group">
+  <div class="group-label">scripts/</div>
+  <div class="tree">
+    <div class="indent1"><span class="file">staff-directory-sync.js</span> <span class="tag tag-renamed">renamed from TNIC_StaffDirectory_SyncScript_v2.js (v1 is archived)</span></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<div class="group">
+  <div class="group-label">archive/ — everything old, one place <span class="tag tag-renamed">_archive contents moved here</span></div>
+  <div class="tree">
+    <div class="indent1"><span class="file">18 files from Week1_Deliverables/_archive/</span></div>
+    <div class="indent1"><span class="file">3 files from root/archive/</span></div>
+    <div class="indent1"><span class="file">index.html</span> <span class="tag tag-archive">redirect-only, not needed</span></div>
+    <div class="indent1"><span class="file">userdirectory-redesign.html</span> <span class="tag tag-archive">old prototype</span></div>
+    <div class="indent1"><span class="file">CLAUDE_CODE_HANDOFF.md</span> <span class="tag tag-archive">April 2026 handoff doc</span></div>
+    <div class="indent1"><span class="file">TNIC_Embeds_All_Pages.zip</span> <span class="tag tag-archive">old zip snapshot</span></div>
+    <div class="indent1"><span class="file">TNIC_Handoff_2026-03.docx.bak</span> <span class="tag tag-archive">backup file</span></div>
+    <div class="indent1"><span class="file">tnic_dept_audit_table.svg</span> <span class="tag tag-archive">audit complete</span></div>
+  </div>
+</div>
+
+<div class="note" style="margin-top:1rem">
+  <strong>Not moved to reference/:</strong> TNIC_Org_Chart_v2.html is different from org-structure-current.html (it's a visual org chart with boxes/lines vs. the text-based branch reference) — both kept. &nbsp;|&nbsp; <strong>Not archived:</strong> TNIC_All_Pages_Embeds.html and TNIC_Department_Embeds.html are active working files, kept in reference/ (not archive).
+</div>

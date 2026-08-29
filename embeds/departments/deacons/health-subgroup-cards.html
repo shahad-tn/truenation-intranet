@@ -1,0 +1,131 @@
+<!--
+  TRUE NATION INTRANET — HOLISTIC HEALTH & HEALING SUB-GROUP CARDS
+  ───────────────────────────────────────────────
+  Embed on the Holistic Health & Healing department page under Deacons Branch.
+  Native Sites heading: "Teams & Sub-Groups"
+
+  SUB-GROUPS (2):
+    C.A.R.E. — Committed to Aid, Restore & Encourage (Lead: Qawalyah)
+    G.R.O.W. With Us (Lead: Bayanah)
+
+  [REPLACE] card href links with real sub-group page URLs.
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { margin: 0; padding: 0; background: transparent; }
+
+  .dept-wrap {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    background: #E8E8EC;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+  }
+
+  .sg-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .sg-card {
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(19,13,10,0.06);
+    transition: box-shadow 0.2s, transform 0.15s;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .sg-card:hover {
+    box-shadow: 0 4px 14px rgba(19,13,10,0.11);
+    transform: translateY(-2px);
+    border-color: #785710;
+  }
+
+  .sg-icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+
+  .sg-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #7C1316;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .sg-desc {
+    font-size: 14px;
+    color: #56565E;
+    line-height: 1.6;
+    flex: 1;
+    margin-bottom: 10px;
+  }
+
+  .sg-arrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #785710;
+    margin-top: 12px;
+  }
+
+  @media (max-width: 500px) {
+    .sg-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="dept-wrap">
+
+<!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: Deacons
+     Page description:  Promotes holistic wellness — physical, mental, and spiritual — through programs, workshops, challenges, and health resources for congregation members.
+     Lead:              Deacon Kanash
+-->
+
+  <div class="sg-grid">
+
+    <!-- [REPLACE] href with actual C.A.R.E. sub-group page URL -->
+    <a class="sg-card" href="#">
+      <div class="sg-icon">🤝</div>
+      <div class="sg-name">C.A.R.E.</div>
+      <div class="sg-desc">Committed to Aid, Restore &amp; Encourage — pastoral care team providing confidential support and encouragement to congregation members across all branches and campuses.</div>
+      <div class="sg-arrow">View sub-group →</div>
+    </a>
+
+    <!-- [REPLACE] href with actual G.R.O.W. With Us sub-group page URL -->
+    <a class="sg-card" href="#">
+      <div class="sg-icon">🌱</div>
+      <div class="sg-name">G.R.O.W. With Us</div>
+      <div class="sg-desc">Wellness and personal growth program promoting healthy practices and spiritual development through structured challenges and community support.</div>
+      <div class="sg-arrow">View sub-group →</div>
+    </a>
+
+  </div>
+</div>
+
+<script>
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:'tnic-height',height:h,id:'health-subgroup-cards'}, '*');
+    }
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sendHeight);}
+    else{sendHeight();}
+    window.addEventListener('resize',sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+</script>

@@ -1,0 +1,422 @@
+<!--
+  TRUE NATION INTRANET — CALENDAR & EVENTS PAGE
+  ───────────────────────────────────────────────
+  Embed on the Calendar & Events page.
+
+  MODULES INCLUDED:
+  1. Upcoming Events    — next upcoming events with date, type, and location
+  2. Calendar Embed     — Google Calendar embed placeholder
+  3. Past Events        — recent completed events summary
+
+  [REPLACE] All event data with real content.
+  [REPLACE] Google Calendar embed src with your published calendar URL.
+  Instructions to get calendar embed URL:
+    Google Calendar → Settings → [Calendar name] → Integrate calendar → Embed code → copy src
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .cal-wrap {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    background: #E8E8EC;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+    overflow: hidden;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* ── Module shell ── */
+  .cal-module {
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(19,13,10,0.05);
+  }
+
+  .cal-module-body { padding: 16px 18px; }
+
+  /* ── Event type badges ── */
+  .ev-badge {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 2px 8px;
+    border-radius: 100px;
+  }
+  .ev-sabbath    { background: #E8F5E9; color: #2E7D32; }
+  .ev-feast      { background: #FFF3E0; color: #E65100; }
+  .ev-study      { background: #E3F2FD; color: #1565C0; }
+  .ev-community  { background: #F3E5F5; color: #6A1B9A; }
+  .ev-youth      { background: #FCE4EC; color: #880E4F; }
+  .ev-special    { background: #FFF8E1; color: #F57F17; }
+  .ev-all        { background: #D8D8DE; color: #56565E; }
+
+  /* ── Upcoming events ── */
+  .ev-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .ev-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px;
+    background: #E8E8EC;
+    border-radius: 6px;
+    border-left: 3px solid #C9972C;
+  }
+
+  .ev-date {
+    text-align: center;
+    min-width: 44px;
+    flex-shrink: 0;
+  }
+
+  .ev-date-day {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #7C1316;
+    line-height: 1;
+  }
+
+  .ev-date-mon {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #785710;
+  }
+
+  .ev-info { flex: 1; }
+
+  .ev-title {
+    font-weight: 600;
+    font-size: 15px;
+    color: #26262A;
+    margin-bottom: 4px;
+  }
+
+  .ev-meta {
+    font-size: 12px;
+    color: #888;
+    margin-top: 3px;
+  }
+
+  .ev-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 6px;
+    align-items: center;
+  }
+
+  /* ── Google Calendar embed ── */
+  .cal-embed-container {
+    position: relative;
+    width: 100%;
+    padding-top: 62%; /* ~16:10 aspect */
+    background: #D8D8DE;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .cal-embed-container iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: none;
+  }
+
+  .cal-embed-placeholder {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .cal-embed-placeholder-icon { font-size: 2.5rem; }
+
+  .cal-embed-placeholder-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #7C1316;
+  }
+
+  .cal-embed-placeholder-text {
+    font-size: 13px;
+    color: #888;
+    max-width: 340px;
+    line-height: 1.5;
+  }
+
+  .cal-embed-placeholder-code {
+    font-family: monospace;
+    font-size: 12px;
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-radius: 4px;
+    padding: 6px 12px;
+    color: #56565E;
+    word-break: break-all;
+  }
+
+  /* ── Past events ── */
+  .past-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .past-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: #E8E8EC;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #56565E;
+  }
+
+  .past-item-date {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: #888;
+    min-width: 52px;
+    flex-shrink: 0;
+  }
+
+  .past-item-title {
+    flex: 1;
+    font-size: 14px;
+    color: #26262A;
+    font-weight: 500;
+  }
+
+  .past-item-loc {
+    font-size: 12px;
+    color: #888;
+    margin-top: 1px;
+  }
+
+  @media (max-width: 500px) {
+    .ev-item { flex-wrap: wrap; }
+    .cal-embed-container { padding-top: 90%; }
+  }
+</style>
+
+<div class="cal-wrap">
+
+  <!-- ══════════════════════════════════
+       MODULE 1 — UPCOMING EVENTS
+       ══════════════════════════════════ -->
+  <div class="cal-module">
+    <div class="cal-module-body">
+      <div class="ev-list">
+
+        <!-- [REPLACE] with real upcoming events -->
+        <div class="ev-item">
+          <div class="ev-date">
+            <div class="ev-date-day">29</div>
+            <div class="ev-date-mon">Mar</div>
+          </div>
+          <div class="ev-info">
+            <div class="ev-title">Sabbath Service</div>
+            <div class="ev-meta-row">
+              <span class="ev-badge ev-sabbath">Sabbath</span>
+              <span class="ev-meta">📍 Los Angeles (HQ) · All Campuses</span>
+            </div>
+            <div class="ev-meta">🕐 [REPLACE time] · All members</div>
+          </div>
+        </div>
+
+        <div class="ev-item">
+          <div class="ev-date">
+            <div class="ev-date-day">05</div>
+            <div class="ev-date-mon">Apr</div>
+          </div>
+          <div class="ev-info">
+            <div class="ev-title">Feast Preparation Day</div>
+            <div class="ev-meta-row">
+              <span class="ev-badge ev-feast">Feast</span>
+              <span class="ev-meta">📍 Fellowship Hall · HQ</span>
+            </div>
+            <div class="ev-meta">🕐 All day · Fellowship & Services + Logistics</div>
+          </div>
+        </div>
+
+        <div class="ev-item">
+          <div class="ev-date">
+            <div class="ev-date-day">12</div>
+            <div class="ev-date-mon">Apr</div>
+          </div>
+          <div class="ev-info">
+            <div class="ev-title">Sabbath Service</div>
+            <div class="ev-meta-row">
+              <span class="ev-badge ev-sabbath">Sabbath</span>
+              <span class="ev-meta">📍 All Campuses</span>
+            </div>
+            <div class="ev-meta">🕐 [REPLACE time]</div>
+          </div>
+        </div>
+
+        <div class="ev-item">
+          <div class="ev-date">
+            <div class="ev-date-day">19</div>
+            <div class="ev-date-mon">Apr</div>
+          </div>
+          <div class="ev-info">
+            <div class="ev-title">T.E.L.A. Youth Event</div>
+            <div class="ev-meta-row">
+              <span class="ev-badge ev-youth">Youth</span>
+              <span class="ev-meta">📍 [REPLACE location]</span>
+            </div>
+            <div class="ev-meta">🕐 [REPLACE time] · Youth members</div>
+          </div>
+        </div>
+
+        <div class="ev-item">
+          <div class="ev-date">
+            <div class="ev-date-day">26</div>
+            <div class="ev-date-mon">Apr</div>
+          </div>
+          <div class="ev-info">
+            <div class="ev-title">Community Building Event</div>
+            <div class="ev-meta-row">
+              <span class="ev-badge ev-community">Community</span>
+              <span class="ev-meta">📍 [REPLACE location]</span>
+            </div>
+            <div class="ev-meta">🕐 [REPLACE time] · Open to all</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════
+       MODULE 2 — GOOGLE CALENDAR EMBED
+       ══════════════════════════════════ -->
+  <div class="cal-module">
+    <div class="cal-module-body">
+
+      <!--
+        HOW TO EMBED YOUR GOOGLE CALENDAR:
+        1. Open Google Calendar
+        2. Click ⚙️ Settings → Settings
+        3. On the left, click the calendar you want to embed
+        4. Scroll to "Integrate calendar"
+        5. Copy the src URL from the embed code
+        6. Paste it in the iframe src below and remove the placeholder div
+      -->
+
+      <div class="cal-embed-container">
+
+        <!-- [REPLACE] Remove this placeholder div and uncomment the iframe below -->
+        <div class="cal-embed-placeholder">
+          <div class="cal-embed-placeholder-icon">📆</div>
+          <div class="cal-embed-placeholder-title">Google Calendar</div>
+          <div class="cal-embed-placeholder-text">
+            Embed your True Nation Google Calendar here. Go to Google Calendar → Settings → [Calendar name] → Integrate calendar → copy the embed src URL.
+          </div>
+          <div class="cal-embed-placeholder-code">src="REPLACE_WITH_CALENDAR_EMBED_SRC"</div>
+        </div>
+
+        <!--
+        <iframe
+          src="REPLACE_WITH_CALENDAR_EMBED_SRC"
+          style="border:0"
+          width="100%"
+          height="100%"
+          frameborder="0"
+          scrolling="no">
+        </iframe>
+        -->
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════
+       MODULE 3 — PAST EVENTS
+       ══════════════════════════════════ -->
+  <div class="cal-module">
+    <div class="cal-module-body">
+      <div class="past-list">
+
+        <!-- [REPLACE] with real past events -->
+        <div class="past-item">
+          <div class="past-item-date">Mar 22</div>
+          <div>
+            <div class="past-item-title">Sabbath Service</div>
+            <div class="past-item-loc">All Campuses</div>
+          </div>
+          <span class="ev-badge ev-sabbath">Sabbath</span>
+        </div>
+
+        <div class="past-item">
+          <div class="past-item-date">Mar 15</div>
+          <div>
+            <div class="past-item-title">Sabbath Service</div>
+            <div class="past-item-loc">All Campuses</div>
+          </div>
+          <span class="ev-badge ev-sabbath">Sabbath</span>
+        </div>
+
+        <div class="past-item">
+          <div class="past-item-date">Mar 8</div>
+          <div>
+            <div class="past-item-title">T.E.L.A. Monthly Meeting</div>
+            <div class="past-item-loc">Los Angeles HQ</div>
+          </div>
+          <span class="ev-badge ev-youth">Youth</span>
+        </div>
+
+        <div class="past-item">
+          <div class="past-item-date">Mar 1</div>
+          <div>
+            <div class="past-item-title">Sabbath Service</div>
+            <div class="past-item-loc">All Campuses</div>
+          </div>
+          <span class="ev-badge ev-sabbath">Sabbath</span>
+        </div>
+
+        <div class="past-item">
+          <div class="past-item-date">Feb 22</div>
+          <div>
+            <div class="past-item-title">Community Building Event</div>
+            <div class="past-item-loc">Los Angeles HQ</div>
+          </div>
+          <span class="ev-badge ev-community">Community</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

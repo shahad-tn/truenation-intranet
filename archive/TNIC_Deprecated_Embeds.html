@@ -1,0 +1,3075 @@
+<!DOCTYPE html>
+<!--
+  TRUE NATION INTRANET — Deprecated Embeds Archive
+  ─────────────────────────────────────────────────
+  Historical record of embed blocks that were renamed, replaced, or removed
+  during the intranet build. Moved here from TNIC_All_Pages_Embeds.html.
+
+  Sections archived:
+    - home_banner               (file removed — no replacement)
+    - home_quicklinks           (renamed → home_quick_links)
+    - finance_subgroup_cards    (renamed → stewardship_subgroup_cards)
+    - finance_fundraising       (renamed → stewardship_fundraising)
+    - finance_travel_committee  (renamed → stewardship_travel_committee)
+    - finance_tribal_exchange   (renamed → stewardship_tribal_exchange)
+    - finance_bookkeeping       (renamed → stewardship_bookkeeping)
+    - production_art            (renamed → everyday_sheeple_art)
+    - youth_development_subgroup_cards (renamed → tela_subgroup_cards)
+    - scica_summit              (file removed — discontinued)
+    - ministries_sanhedrin      (moved → counseling_sanhedrin)
+    - it_logistics              (moved → clerical_logistics)
+    - clerical_the_people       (renamed → clerical_admin_committee)
+
+  DO NOT use these embeds in Google Sites — they reference old filenames
+  and outdated org structure. Kept for historical reference only.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>TNIC Deprecated Embeds Archive</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=DM+Sans:wght@400;500;600&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{overflow:auto;height:auto}
+  body{font-family:'DM Sans',sans-serif;background:#FAF8F4;color:#3D2E28;padding:28px 20px}
+  .page-header{background:#7C1316;color:#fff;border-radius:10px;padding:24px 28px;margin-bottom:28px}
+  .page-header h1{font-family:'Barlow Condensed',sans-serif;font-size:26px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px}
+  .page-header p{font-size:13px;opacity:.85;line-height:1.6}
+  .callout{background:#fff;border-left:4px solid #C9972C;border-radius:0 8px 8px 0;padding:14px 18px;margin-bottom:24px;font-size:13px;line-height:1.6}
+  .callout strong{color:#7C1316}
+  .nav{background:#fff;border:1px solid #E8DDD0;border-radius:8px;padding:16px 20px;margin-bottom:28px}
+  .nav h3{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:#7C1316;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+  .nav-group{margin-bottom:10px}
+  .nav-group-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#9a8e87;margin-bottom:6px}
+  .nav-links{display:flex;flex-wrap:wrap;gap:6px}
+  .nav-links a{font-size:12px;color:#7C1316;text-decoration:none;background:#F2EDE4;padding:4px 10px;border-radius:20px;border:1px solid #E8DDD0}
+  .nav-links a:hover{background:#7C1316;color:#fff}
+  .page-section{margin-bottom:32px}
+  .section-header{border-left:4px solid #7C1316;padding-left:14px;margin-bottom:20px}
+  .section-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;color:#7C1316;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+  .section-count{font-size:12px;color:#9a8e87}
+  .master-section{background:#fff;border:1px solid #E8DDD0;border-radius:10px;padding:20px;margin-bottom:8px}
+  .master-header{margin-bottom:14px}
+  .master-filename{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.1em;color:#C9972C;text-transform:uppercase;display:block;margin-bottom:3px}
+  .master-label{font-family:'Barlow Condensed',sans-serif;font-size:18px;color:#7C1316;text-transform:uppercase;letter-spacing:.04em;margin:3px 0 7px}
+  .master-desc{font-size:12px;color:#9a8e87;margin-bottom:10px;line-height:1.5}
+  .copy-btn{background:#7C1316;color:#fff;border:none;border-radius:5px;padding:7px 16px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+  .copy-btn:hover{background:#5a0e10}
+  .embed-box{width:100%;height:120px;font-family:monospace;font-size:10.5px;background:#F8F5F2;border:1px solid #E8DDD0;border-radius:6px;padding:10px;resize:vertical;margin-top:10px;color:#3D2E28;overflow:auto}
+  details summary{cursor:pointer;font-size:12px;color:#7C1316;font-weight:600;margin-top:10px;padding:5px 0;user-select:none}
+  .preview-iframe{width:100%;border:1px solid #E8DDD0;border-radius:8px;margin-top:10px;background:#FAF8F4;display:block;min-height:100px}
+  .divider{border:none;border-top:1px solid #F2EDE4;margin:20px 0}
+  .toast{position:fixed;bottom:24px;right:24px;background:#2E7D32;color:#fff;padding:10px 20px;border-radius:6px;font-size:13px;display:none;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+</style>
+  <style>
+    .archive-banner {
+      background: #F8D7DA; border: 2px solid #F5C2C7;
+      border-radius: 8px; padding: 14px 20px; margin: 20px 0 28px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; color: #842029;
+      line-height: 1.6;
+    }
+    .archive-banner strong { font-weight: 700; }
+    .archive-nav {
+      background: #FAF8F4; border: 1px solid #F2EDE4;
+      border-radius: 8px; padding: 16px 20px; margin-bottom: 28px;
+    }
+    .archive-nav h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: 13px; text-transform: uppercase;
+      letter-spacing: 0.08em; color: #C9972C; margin-bottom: 10px;
+    }
+    .archive-nav ul { list-style: none; columns: 2; gap: 20px; }
+    .archive-nav li { margin-bottom: 4px; }
+    .archive-nav a { color: #7C1316; font-size: 13px; text-decoration: none; }
+    .archive-nav a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body style="font-family:'DM Sans',sans-serif;background:#FAF8F4;padding:24px 20px 60px;max-width:1100px;margin:0 auto;">
+
+  <h1 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:2rem;text-transform:uppercase;letter-spacing:0.04em;color:#7C1316;margin-bottom:6px;">Deprecated Embeds Archive</h1>
+  <p style="color:#888;font-size:13px;margin-bottom:20px;">True Nation Intranet — Historical reference only. These blocks were removed from <code>TNIC_All_Pages_Embeds.html</code>.</p>
+
+  <div class="archive-banner">
+    ⚠️ <strong>Do not use these embeds in Google Sites.</strong> They reference old file names and outdated org structure.
+    Each section notes its replacement. See <code>reference/TNIC_All_Pages_Embeds.html</code> for current versions.
+  </div>
+
+  <div class="archive-nav">
+    <h2>Contents (13 sections)</h2>
+    <ul>
+      <li><a href="#home_banner">Hero Banner</a></li>
+      <li><a href="#home_quicklinks">Quick Links Grid</a></li>
+      <li><a href="#finance_subgroup_cards">Finance Sub-Group Cards</a></li>
+      <li><a href="#finance_fundraising">Fundraising</a></li>
+      <li><a href="#finance_travel_committee">Travel Committee</a></li>
+      <li><a href="#finance_tribal_exchange">Tribal Exchange</a></li>
+      <li><a href="#finance_bookkeeping">Bookkeeping</a></li>
+      <li><a href="#production_art">Production — Art</a></li>
+      <li><a href="#youth_development_subgroup_cards">Youth Development — Sub-Group Cards</a></li>
+      <li><a href="#scica_summit">SCICA Summit</a></li>
+      <li><a href="#clerical_the_people">Clerical — The People</a></li>
+      <li><a href="#it_logistics">IT — Logistics</a></li>
+      <li><a href="#ministries_sanhedrin">Ministries — Sanhedrin</a></li>
+    </ul>
+  </div>
+
+  <div class="master-section" id="home_banner">
+  <div style="background:#F8D7DA;border:1px solid #F5C2C7;border-radius:6px;padding:8px 14px;margin-bottom:10px;font-family:sans-serif;font-size:13px;color:#842029;">&#9888;&#65039; <strong>Deprecated:</strong> home-banner.html removed — not in current embeds folder. No direct replacement file.</div>
+  <div class="master-header">
+    <span class="master-filename">home-banner.html</span>
+    <h2 class="master-label" style="color:#7C1316">Hero Banner</h2>
+    <p class="master-desc">Full-width hero banner with tagline and gold accent. Place at the very top of the Home page.</p>
+    <button onclick="copyEmbed('home_banner')" class="copy-btn" style="background:#7C1316">&#128203; Copy HTML</button>
+  </div>
+  <textarea id="embed-home_banner" class="embed-box" readonly>&lt;!--
+  TRUE NATION INTRANET — WELCOME BANNER
+  ──────────────────────────────────────
+  Embed this via Insert → Embed → Embed Code in Google Sites.
+  Place at the VERY TOP of the Home page — above all other embeds.
+  Full-width hero with tagline and gold accent.
+--&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+
+&lt;style&gt;
+  html, body { margin: 0; padding: 0; background: transparent; }
+  .hero-wrap {
+    background-color: #7C1316;
+    color: #F2EDE4;
+    padding: 48px 24px;
+    text-align: center;
+    border-radius: 12px;
+  }
+  .hero-title {
+    font-family: &#x27;Barlow Condensed&#x27;, sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    color: #F2EDE4;
+  }
+  .hero-rule {
+    width: 60px;
+    height: 3px;
+    background-color: #C9972C;
+    margin: 16px auto;
+  }
+  .hero-tagline {
+    font-family: &#x27;DM Sans&#x27;, sans-serif;
+    font-size: 1.125rem;
+    color: #F2EDE4;
+    opacity: 0.9;
+    margin-top: 8px;
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;hero-wrap&quot;&gt;
+  &lt;div class=&quot;hero-title&quot;&gt;TRUE NATION ISRAELITE CONGREGATION&lt;/div&gt;
+  &lt;div class=&quot;hero-rule&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;hero-tagline&quot;&gt;Our people. Our purpose. One community.&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:&#x27;tnic-height&#x27;,height:h,id:&#x27;home_banner&#x27;},&#x27;*&#x27;);
+    }
+    if(document.readyState===&#x27;loading&#x27;){document.addEventListener(&#x27;DOMContentLoaded&#x27;,sendHeight);}
+    else{sendHeight();}
+    window.addEventListener(&#x27;resize&#x27;,sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+&lt;/script&gt;</textarea>
+  <details>
+    <summary>&#128065; Preview</summary>
+    <iframe class="preview-iframe" srcdoc="&lt;!--
+  TRUE NATION INTRANET — WELCOME BANNER
+  ──────────────────────────────────────
+  Embed this via Insert → Embed → Embed Code in Google Sites.
+  Place at the VERY TOP of the Home page — above all other embeds.
+  Full-width hero with tagline and gold accent.
+--&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+
+&lt;style&gt;
+  html, body { margin: 0; padding: 0; background: transparent; }
+  .hero-wrap {
+    background-color: #7C1316;
+    color: #F2EDE4;
+    padding: 48px 24px;
+    text-align: center;
+    border-radius: 12px;
+  }
+  .hero-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    color: #F2EDE4;
+  }
+  .hero-rule {
+    width: 60px;
+    height: 3px;
+    background-color: #C9972C;
+    margin: 16px auto;
+  }
+  .hero-tagline {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.125rem;
+    color: #F2EDE4;
+    opacity: 0.9;
+    margin-top: 8px;
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;hero-wrap&quot;&gt;
+  &lt;div class=&quot;hero-title&quot;&gt;TRUE NATION ISRAELITE CONGREGATION&lt;/div&gt;
+  &lt;div class=&quot;hero-rule&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;hero-tagline&quot;&gt;Our people. Our purpose. One community.&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:'tnic-height',height:h,id:'home_banner'},'*');
+    }
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sendHeight);}
+    else{sendHeight();}
+    window.addEventListener('resize',sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+&lt;/script&gt;" scrolling="no" onload="try{this.style.height=(this.contentDocument.body.scrollHeight+32)+'px'}catch(e){}" height="280" loading="lazy"></iframe>
+  </details>
+</div>
+
+
+<div class="master-section" id="home_quicklinks">
+  <div style="background:#FFF3CD;border:1px solid #FFC107;border-radius:6px;padding:8px 14px;margin-bottom:10px;font-family:sans-serif;font-size:13px;color:#856404;">&#9888;&#65039; <strong>Deprecated:</strong> Renamed. See <strong><a href="#home_quick_links" style="color:#7C1316">Home — Quick Links Grid</a></strong> for the current version.</div>
+  <div class="master-header">
+    <span class="master-filename">home-quick-links.html</span>
+    <h2 class="master-label" style="color:#7C1316">Quick Links Grid</h2>
+    <p class="master-desc">8 navigation tiles linking to key intranet pages. Place below a native Sites &quot;QUICK LINKS&quot; heading.</p>
+    <button onclick="copyEmbed('home_quicklinks')" class="copy-btn" style="background:#7C1316">&#128203; Copy HTML</button>
+  </div>
+  <textarea id="embed-home_quicklinks" class="embed-box" readonly>&lt;!--
+  TRUE NATION INTRANET — QUICK LINKS GRID COMPONENT
+  ───────────────────────────────────────────────────
+  Embed this via Insert → Embed → Embed Code in Google Sites.
+  Place BELOW a native Sites &quot;QUICK LINKS&quot; heading.
+  This embed has NO outer padding or max-width — it fills
+  the full section width that Sites provides.
+
+  [REPLACE] Update each href with your actual Sites page URLs.
+--&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+
+&lt;style&gt;
+  .ql-wrap {
+    background: #FAF8F4;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .ql-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    width: 100%;
+    font-family: &#x27;DM Sans&#x27;, sans-serif;
+  }
+
+  .ql-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 24px 12px 20px;
+    background: white;
+    border: 1px solid #F2EDE4;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(19,13,10,0.07);
+    text-decoration: none;
+    color: #130D0A;
+    min-height: 110px;
+    transition: box-shadow 0.2s, transform 0.15s;
+  }
+
+  .ql-tile:hover {
+    box-shadow: 0 6px 18px rgba(19,13,10,0.13);
+    transform: translateY(-3px);
+    border-color: #C9972C;
+  }
+
+  .ql-icon {
+    font-size: 3rem;
+    margin-bottom: 14px;
+    line-height: 1;
+  }
+
+  .ql-label {
+    font-family: &#x27;Barlow Condensed&#x27;, sans-serif;
+    font-weight: 700;
+    font-size: 1.125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #7C1316;
+    line-height: 1.2;
+  }
+
+  @media (max-width: 600px) {
+    .ql-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  }
+  @media (max-width: 400px) {
+    .ql-grid { grid-template-columns: 1fr; gap: 8px; }
+  }
+  @media (min-width: 601px) and (max-width: 800px) {
+    .ql-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;ql-wrap&quot;&gt;
+&lt;div class=&quot;ql-grid&quot;&gt;
+
+  &lt;!-- [REPLACE] Each href should be the URL of that Sites page --&gt;
+  &lt;a class=&quot;ql-tile&quot; href=&quot;/our-people&quot;&gt;
+    &lt;div class=&quot;ql-icon&quot;&gt;👥&lt;/div&gt;
+    &lt;div class=&quot;ql-label&quot;&gt;Our People&lt;/div&gt;
+  &lt;/a&gt;
+
+  &lt;a class=&quot;ql-tile&quot; href=&quot;/departments&quot;&gt;
+    &lt;div class=&quot;ql-icon&quot;&gt;🏢&lt;/div&gt;
+    &lt;div class=&quot;ql-label&quot;&gt;Departments&lt;/div&gt;
+  &lt;/a&gt;
+
+  &lt;a class=&quot;ql-tile&quot; href=&quot;/tela&quot;&gt;
+    &lt;div class=&quot;ql-icon&quot;&gt;📚&lt;/div&gt;
+    &lt;div class=&quot;ql-label&quot;&gt;T.E.L.A.&lt;/div&gt;
+  &lt;/a&gt;
+
+  &lt;a class=&quot;ql-tile&quot; href=&quot;/locations&quot;&gt;
+    &lt;div class=&quot;ql-icon&quot;&gt;🌍&lt;/div&gt;
+    &lt;div class=&quot;ql-label&quot;&gt;Locations&lt;/div&gt;
+  &lt;/a&gt;
+
+  &lt;a class=&quot;ql-tile&quot; href=&quot;/calendar-events&quot;&gt;
+    &lt;div class=&quot;ql-icon&quot;&gt;📅&lt;/div&gt;
+    &lt;div class=&quot;ql-label&quot;&gt;Calendar&lt;/div&gt;
+  &lt;/a&gt;
+
+  &lt;a class=&quot;ql-tile&quot; href=&quot;/resources&quot;&gt;
+    &lt;div class=&quot;ql-icon&quot;&gt;🗂️&lt;/div&gt;
+    &lt;div class=&quot;ql-label&quot;&gt;Resources&lt;/div&gt;
+  &lt;/a&gt;
+
+  &lt;a class=&quot;ql-tile&quot; href=&quot;/leadership-hub&quot;&gt;
+    &lt;div class=&quot;ql-icon&quot;&gt;👑&lt;/div&gt;
+    &lt;div class=&quot;ql-label&quot;&gt;Leadership&lt;/div&gt;
+  &lt;/a&gt;
+
+  &lt;a class=&quot;ql-tile&quot; href=&quot;https://chat.google.com&quot; target=&quot;_blank&quot;&gt;
+    &lt;div class=&quot;ql-icon&quot;&gt;💬&lt;/div&gt;
+    &lt;div class=&quot;ql-label&quot;&gt;Chat Spaces&lt;/div&gt;
+  &lt;/a&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;</textarea>
+  <details>
+    <summary>&#128065; Preview</summary>
+    <iframe class="preview-iframe" srcdoc="&lt;!--
+  TRUE NATION INTRANET — QUICK LINKS GRID COMPONENT
+  ───────────────────────────────────────────────────
+  Embed this via Insert → Embed → Embed Code in Google Sites.
+  Place BELOW a native Sites &quot;QUICK LINKS&quot; heading.
+  This embed has NO outer padding or max-width — it fills
+  the full section width that Sites provides.
+
+  [REPLACE] Update each href with your actual Sites page URLs.
+--&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+
+&lt;style&gt;
+  .ql-wrap {
+    background: #FAF8F4;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .ql-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .ql-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 24px 12px 20px;
+    background: white;
+    border: 1px solid #F2EDE4;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(19,13,10,0.07);
+    text-decoration: none;
+    color: #130D0A;
+    min-height: 110px;
+    transition: box-shadow 0.2s, transform 0.15s;
+  }
+
+  .ql-tile:hover {
+    box-shadow: 0 6px 18px rgba(19,13,10,0.13);
+    transform: translateY(-3px);
+    border-color: #C9972C;
+  }
+
+  .ql-icon {
+    font-size: 3rem;
+    margin-bottom: 14px;
+    line-height: 1;
+  }
+
+  .ql-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #7C1316;
+    line-height: 1.2;
+  }
+
+  @media (max-width: 600px) {
+    .ql-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  }
+  @media (max-width: 400px) {
+    .ql-grid { grid-template-columns: 1fr; gap: 8px; }
+  }
+  @media (min-width: 601px) and (max-width: 800px) {
+    .ql-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;ql-wrap&quot;&gt;
+&lt;div class=&quot;ql-grid&quot;&gt;
+
+  &lt;!-- [REPLACE] Each href should be the URL of that Sites page --&gt;
+  &lt;a class=&quot;ql-tile&quot; href=&quot;/our-people&quot;&gt;
+    &lt;div class=&quot;ql-icon&quot;&gt;👥&lt;/div&gt;
+    &lt;div class=&quot;ql-label&quot;&gt;Our People&lt;/div&gt;
+  &lt;/a&gt;
+
+  &lt;a class=&quot;ql-tile&quot; href=&quot;/departments&quot;&gt;
+    &lt;div class=&quot;ql-icon&quot;&gt;🏢&lt;/div&gt;
+    &lt;div class=&quot;ql-label&quot;&gt;Departments&lt;/div&gt;
+  &lt;/a&gt;
+
+  &lt;a class=&quot;ql-tile&quot; href=&quot;/tela&quot;&gt;
+    &lt;div class=&quot;ql-icon&quot;&gt;📚&lt;/div&gt;
+    &lt;div class=&quot;ql-label&quot;&gt;T.E.L.A.&lt;/div&gt;
+  &lt;/a&gt;
+
+  &lt;a class=&quot;ql-tile&quot; href=&quot;/locations&quot;&gt;
+    &lt;div class=&quot;ql-icon&quot;&gt;🌍&lt;/div&gt;
+    &lt;div class=&quot;ql-label&quot;&gt;Locations&lt;/div&gt;
+  &lt;/a&gt;
+
+  &lt;a class=&quot;ql-tile&quot; href=&quot;/calendar-events&quot;&gt;
+    &lt;div class=&quot;ql-icon&quot;&gt;📅&lt;/div&gt;
+    &lt;div class=&quot;ql-label&quot;&gt;Calendar&lt;/div&gt;
+  &lt;/a&gt;
+
+  &lt;a class=&quot;ql-tile&quot; href=&quot;/resources&quot;&gt;
+    &lt;div class=&quot;ql-icon&quot;&gt;🗂️&lt;/div&gt;
+    &lt;div class=&quot;ql-label&quot;&gt;Resources&lt;/div&gt;
+  &lt;/a&gt;
+
+  &lt;a class=&quot;ql-tile&quot; href=&quot;/leadership-hub&quot;&gt;
+    &lt;div class=&quot;ql-icon&quot;&gt;👑&lt;/div&gt;
+    &lt;div class=&quot;ql-label&quot;&gt;Leadership&lt;/div&gt;
+  &lt;/a&gt;
+
+  &lt;a class=&quot;ql-tile&quot; href=&quot;https://chat.google.com&quot; target=&quot;_blank&quot;&gt;
+    &lt;div class=&quot;ql-icon&quot;&gt;💬&lt;/div&gt;
+    &lt;div class=&quot;ql-label&quot;&gt;Chat Spaces&lt;/div&gt;
+  &lt;/a&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;" scrolling="no" onload="try{this.style.height=(this.contentDocument.body.scrollHeight+32)+'px'}catch(e){}" height="280" loading="lazy"></iframe>
+  </details>
+</div>
+
+
+<div class="master-section" id="finance_subgroup_cards">
+  <div style="background:#FFF3CD;border:1px solid #FFC107;border-radius:6px;padding:8px 14px;margin-bottom:10px;font-family:sans-serif;font-size:13px;color:#856404;">&#9888;&#65039; <strong>Deprecated:</strong> Renamed. See <strong><a href="#stewardship_subgroup_cards" style="color:#7C1316">Stewardship — Sub-Group Cards</a></strong> for the current version.</div>
+  <div class="master-header">
+    <span class="master-filename">finance-subgroup-cards.html</span>
+    <h2 class="master-label" style="color:#1A4A3A">Finance Sub-Group Cards</h2>
+    <p class="master-desc">Department page for Finance with cards linking to sub-group pages.</p>
+    <button onclick="copyEmbed('finance_subgroup_cards')" class="copy-btn" style="background:#1A4A3A">&#128203; Copy HTML</button>
+  </div>
+  <textarea id="embed-finance_subgroup_cards" class="embed-box" readonly>&lt;!--
+  TRUE NATION INTRANET — FINANCE SUB-GROUP CARDS
+  ─────────────────────────────
+  Embed on the Finance department page under Deacons Branch.
+  Native Sites heading: &quot;Teams &amp; Sub-Groups&quot;
+
+  SUB-GROUPS (4):
+    Fundraising, Travel Committee, Tribal Exchange, Bookkeeping
+
+  [REPLACE] Lead names, descriptions, and card href links with real values.
+--&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+
+&lt;style&gt;
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { margin: 0; padding: 0; background: transparent; }
+
+  .dept-wrap {
+    font-family: &#x27;DM Sans&#x27;, sans-serif;
+    width: 100%;
+    background: #FAF8F4;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+  }
+
+  .sg-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .sg-card {
+    background: white;
+    border: 1px solid #F2EDE4;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(19,13,10,0.06);
+    transition: box-shadow 0.2s, transform 0.15s;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .sg-card:hover {
+    box-shadow: 0 4px 14px rgba(19,13,10,0.11);
+    transform: translateY(-2px);
+    border-color: #C9972C;
+  }
+
+  .sg-icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+
+  .sg-name {
+    font-family: &#x27;Barlow Condensed&#x27;, sans-serif;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #7C1316;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .sg-desc {
+    font-size: 14px;
+    color: #3D2E28;
+    line-height: 1.6;
+    flex: 1;
+    margin-bottom: 10px;
+  }
+
+  .sg-arrow {
+    font-family: &#x27;Barlow Condensed&#x27;, sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #C9972C;
+    margin-top: 12px;
+  }
+
+  @media (max-width: 500px) {
+    .sg-grid { grid-template-columns: 1fr; }
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;dept-wrap&quot;&gt;
+
+&lt;!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: Deacons
+     Page description:  Manages the congregation&#x27;s financial operations including budgeting, bookkeeping, fundraising, travel coordination, and tribal exchange programs.
+     Lead:              Marayam / Shanan
+--&gt;
+
+  &lt;div class=&quot;sg-grid&quot;&gt;
+
+    &lt;!-- [REPLACE] href with actual Fundraising sub-group page URL --&gt;
+    &lt;a class=&quot;sg-card&quot; href=&quot;#&quot;&gt;
+      &lt;div class=&quot;sg-icon&quot;&gt;💰&lt;/div&gt;
+      &lt;div class=&quot;sg-name&quot;&gt;Fundraising&lt;/div&gt;
+      &lt;div class=&quot;sg-desc&quot;&gt;Organizes fundraising initiatives and campaigns to support congregation programs and outreach.&lt;/div&gt;
+      &lt;div class=&quot;sg-arrow&quot;&gt;View sub-group →&lt;/div&gt;
+    &lt;/a&gt;
+
+    &lt;!-- [REPLACE] href with actual Travel Committee sub-group page URL --&gt;
+    &lt;a class=&quot;sg-card&quot; href=&quot;#&quot;&gt;
+      &lt;div class=&quot;sg-icon&quot;&gt;✈️&lt;/div&gt;
+      &lt;div class=&quot;sg-name&quot;&gt;Travel Committee&lt;/div&gt;
+      &lt;div class=&quot;sg-desc&quot;&gt;Coordinates travel logistics for congregation events, conferences, and ministry trips.&lt;/div&gt;
+      &lt;div class=&quot;sg-arrow&quot;&gt;View sub-group →&lt;/div&gt;
+    &lt;/a&gt;
+
+    &lt;!-- [REPLACE] href with actual Tribal Exchange sub-group page URL --&gt;
+    &lt;a class=&quot;sg-card&quot; href=&quot;#&quot;&gt;
+      &lt;div class=&quot;sg-icon&quot;&gt;🤝&lt;/div&gt;
+      &lt;div class=&quot;sg-name&quot;&gt;Tribal Exchange&lt;/div&gt;
+      &lt;div class=&quot;sg-desc&quot;&gt;Facilitates inter-congregational trade, commerce, and economic development programs.&lt;/div&gt;
+      &lt;div class=&quot;sg-arrow&quot;&gt;View sub-group →&lt;/div&gt;
+    &lt;/a&gt;
+
+    &lt;!-- [REPLACE] href with actual Bookkeeping sub-group page URL --&gt;
+    &lt;a class=&quot;sg-card&quot; href=&quot;#&quot;&gt;
+      &lt;div class=&quot;sg-icon&quot;&gt;📒&lt;/div&gt;
+      &lt;div class=&quot;sg-name&quot;&gt;Bookkeeping&lt;/div&gt;
+      &lt;div class=&quot;sg-desc&quot;&gt;Maintains financial records, processes transactions, and ensures accurate accounting for all departments.&lt;/div&gt;
+      &lt;div class=&quot;sg-arrow&quot;&gt;View sub-group →&lt;/div&gt;
+    &lt;/a&gt;
+
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:&#x27;tnic-height&#x27;,height:h,id:&#x27;finance-subgroup-cards&#x27;}, &#x27;*&#x27;);
+    }
+    if(document.readyState===&#x27;loading&#x27;){document.addEventListener(&#x27;DOMContentLoaded&#x27;,sendHeight);}
+    else{sendHeight();}
+    window.addEventListener(&#x27;resize&#x27;,sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+&lt;/script&gt;
+</textarea>
+  <details>
+    <summary>&#128065; Preview</summary>
+    <iframe class="preview-iframe" srcdoc="&lt;!--
+  TRUE NATION INTRANET — FINANCE SUB-GROUP CARDS
+  ─────────────────────────────
+  Embed on the Finance department page under Deacons Branch.
+  Native Sites heading: &quot;Teams &amp; Sub-Groups&quot;
+
+  SUB-GROUPS (4):
+    Fundraising, Travel Committee, Tribal Exchange, Bookkeeping
+
+  [REPLACE] Lead names, descriptions, and card href links with real values.
+--&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+
+&lt;style&gt;
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { margin: 0; padding: 0; background: transparent; }
+
+  .dept-wrap {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    background: #FAF8F4;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+  }
+
+  .sg-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .sg-card {
+    background: white;
+    border: 1px solid #F2EDE4;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(19,13,10,0.06);
+    transition: box-shadow 0.2s, transform 0.15s;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .sg-card:hover {
+    box-shadow: 0 4px 14px rgba(19,13,10,0.11);
+    transform: translateY(-2px);
+    border-color: #C9972C;
+  }
+
+  .sg-icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+
+  .sg-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #7C1316;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .sg-desc {
+    font-size: 14px;
+    color: #3D2E28;
+    line-height: 1.6;
+    flex: 1;
+    margin-bottom: 10px;
+  }
+
+  .sg-arrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #C9972C;
+    margin-top: 12px;
+  }
+
+  @media (max-width: 500px) {
+    .sg-grid { grid-template-columns: 1fr; }
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;dept-wrap&quot;&gt;
+
+&lt;!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: Deacons
+     Page description:  Manages the congregation's financial operations including budgeting, bookkeeping, fundraising, travel coordination, and tribal exchange programs.
+     Lead:              Marayam / Shanan
+--&gt;
+
+  &lt;div class=&quot;sg-grid&quot;&gt;
+
+    &lt;!-- [REPLACE] href with actual Fundraising sub-group page URL --&gt;
+    &lt;a class=&quot;sg-card&quot; href=&quot;#&quot;&gt;
+      &lt;div class=&quot;sg-icon&quot;&gt;💰&lt;/div&gt;
+      &lt;div class=&quot;sg-name&quot;&gt;Fundraising&lt;/div&gt;
+      &lt;div class=&quot;sg-desc&quot;&gt;Organizes fundraising initiatives and campaigns to support congregation programs and outreach.&lt;/div&gt;
+      &lt;div class=&quot;sg-arrow&quot;&gt;View sub-group →&lt;/div&gt;
+    &lt;/a&gt;
+
+    &lt;!-- [REPLACE] href with actual Travel Committee sub-group page URL --&gt;
+    &lt;a class=&quot;sg-card&quot; href=&quot;#&quot;&gt;
+      &lt;div class=&quot;sg-icon&quot;&gt;✈️&lt;/div&gt;
+      &lt;div class=&quot;sg-name&quot;&gt;Travel Committee&lt;/div&gt;
+      &lt;div class=&quot;sg-desc&quot;&gt;Coordinates travel logistics for congregation events, conferences, and ministry trips.&lt;/div&gt;
+      &lt;div class=&quot;sg-arrow&quot;&gt;View sub-group →&lt;/div&gt;
+    &lt;/a&gt;
+
+    &lt;!-- [REPLACE] href with actual Tribal Exchange sub-group page URL --&gt;
+    &lt;a class=&quot;sg-card&quot; href=&quot;#&quot;&gt;
+      &lt;div class=&quot;sg-icon&quot;&gt;🤝&lt;/div&gt;
+      &lt;div class=&quot;sg-name&quot;&gt;Tribal Exchange&lt;/div&gt;
+      &lt;div class=&quot;sg-desc&quot;&gt;Facilitates inter-congregational trade, commerce, and economic development programs.&lt;/div&gt;
+      &lt;div class=&quot;sg-arrow&quot;&gt;View sub-group →&lt;/div&gt;
+    &lt;/a&gt;
+
+    &lt;!-- [REPLACE] href with actual Bookkeeping sub-group page URL --&gt;
+    &lt;a class=&quot;sg-card&quot; href=&quot;#&quot;&gt;
+      &lt;div class=&quot;sg-icon&quot;&gt;📒&lt;/div&gt;
+      &lt;div class=&quot;sg-name&quot;&gt;Bookkeeping&lt;/div&gt;
+      &lt;div class=&quot;sg-desc&quot;&gt;Maintains financial records, processes transactions, and ensures accurate accounting for all departments.&lt;/div&gt;
+      &lt;div class=&quot;sg-arrow&quot;&gt;View sub-group →&lt;/div&gt;
+    &lt;/a&gt;
+
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:'tnic-height',height:h,id:'finance-subgroup-cards'}, '*');
+    }
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sendHeight);}
+    else{sendHeight();}
+    window.addEventListener('resize',sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+&lt;/script&gt;
+" scrolling="no" onload="try{this.style.height=(this.contentDocument.body.scrollHeight+32)+'px'}catch(e){}" height="280" loading="lazy"></iframe>
+  </details>
+</div>
+
+
+<div class="master-section" id="finance_fundraising">
+  <div style="background:#FFF3CD;border:1px solid #FFC107;border-radius:6px;padding:8px 14px;margin-bottom:10px;font-family:sans-serif;font-size:13px;color:#856404;">&#9888;&#65039; <strong>Deprecated:</strong> Renamed. See <strong><a href="#stewardship_fundraising" style="color:#7C1316">Stewardship — Fundraising</a></strong> for the current version.</div>
+  <div class="master-header">
+    <span class="master-filename">finance-fundraising.html</span>
+    <h2 class="master-label" style="color:#2A4A2A">Fundraising</h2>
+    <p class="master-desc">Sub-group page for the Fundraising team under Finance.</p>
+    <button onclick="copyEmbed('finance_fundraising')" class="copy-btn" style="background:#2A4A2A">&#128203; Copy HTML</button>
+  </div>
+  <textarea id="embed-finance_fundraising" class="embed-box" readonly>&lt;!--
+  TRUE NATION INTRANET — FINANCE: FUNDRAISING
+  ──────────────────────
+  Embed on the Fundraising sub-group page under Finance.
+  [REPLACE] lead name and action button hrefs with real values.
+--&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{margin:0;padding:0;background:transparent}
+  .sg-wrap{font-family:&#x27;DM Sans&#x27;,sans-serif;width:100%;padding:0 0 4px;display:flex;flex-direction:column;gap:12px}
+  .sg-overview{background:#fff;border:1px solid #F2EDE4;border-radius:8px;padding:18px 20px;box-shadow:0 2px 6px rgba(19,13,10,.05)}
+  .sg-dept{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#C9972C;margin-bottom:4px}
+  .sg-desc{font-size:14px;color:#3D2E28;line-height:1.65;margin-bottom:14px}
+  .sg-lead-row{display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid #F2EDE4}
+  .sg-lead-label{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9a8e87}
+  .sg-lead-name{font-size:13px;font-weight:500;color:#3D2E28}
+  .action-row{display:flex;flex-wrap:wrap;gap:10px}
+  .act-btn{display:flex;align-items:center;gap:10px;padding:11px 18px;border-radius:6px;border:1.5px solid;text-decoration:none;flex:1;min-width:160px;transition:opacity .15s}
+  .act-btn:hover{opacity:.85}
+  .act-icon{font-size:18px;flex-shrink:0}
+  .act-label{display:block;font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  .act-sub{display:block;font-size:11px;opacity:.75;margin-top:1px}
+  .btn-wine{background:#7C1316;color:#fff;border-color:#7C1316}
+  .btn-outline{background:transparent;color:#3D2E28;border-color:#E8DDD0}
+  .btn-gold{background:transparent;color:#A07820;border-color:#C9972C}
+  .sg-form{border:1.5px dashed #C9972C;border-radius:8px;padding:18px 20px;text-align:center;background:#FAF8F4}
+  .sg-form-tag{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;color:#A07820;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-title{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;color:#3D2E28;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-desc{font-size:12px;color:#9a8e87;line-height:1.5;margin-bottom:10px}
+  .sg-form-steps{background:#fff;border:1px solid #E8DDD0;border-radius:6px;padding:9px 14px;text-align:left;font-size:11px;color:#9a8e87;line-height:1.7;display:inline-block}
+  @media(max-width:500px){
+    .action-row{flex-direction:column}
+    .act-btn{min-width:unset;width:100%}
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;sg-wrap&quot;&gt;
+
+  &lt;!-- OVERVIEW --&gt;
+&lt;!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: Finance
+     Page description:  Coordinates fundraising campaigns, donation drives, and community giving initiatives for True Nation. Manages timelines, outreach, and reporting for all fundraising efforts.
+     Lead:              Ahabiyah
+--&gt;
+
+  &lt;!-- ACTION BUTTONS --&gt;
+  &lt;div class=&quot;action-row&quot;&gt;
+    &lt;a class=&quot;act-btn btn-wine&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;💬&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Open Chat Space&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Fundraising team communication&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-outline&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;📁&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Drive Folder&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Fundraising campaigns &amp; assets&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-gold&quot; href=&quot;mailto:finance@truenation.org&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;✉️&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Email Dept&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;finance@truenation.org&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+  &lt;!-- FORM PLACEHOLDER --&gt;
+  &lt;div class=&quot;sg-form&quot;&gt;
+    &lt;div class=&quot;sg-form-tag&quot;&gt;Coming Soon&lt;/div&gt;
+    &lt;div class=&quot;sg-form-title&quot;&gt;Fundraising Request Form&lt;/div&gt;
+    &lt;div class=&quot;sg-form-desc&quot;&gt;Submit requests directly to the Fundraising team through this form.&lt;/div&gt;
+    &lt;div class=&quot;sg-form-steps&quot;&gt;
+      1. Create the form in Google Forms&lt;br&gt;
+      2. Click Send → Embed &amp;lt;&amp;gt; → Copy the iframe src URL&lt;br&gt;
+      3. In Google Sites, insert an Embed block&lt;br&gt;
+      4. Paste the iframe src URL and resize as needed
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;script&gt;
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:&#x27;tnic-height&#x27;,height:h,id:&#x27;finance-fundraising&#x27;},&#x27;*&#x27;);
+    }
+    if(document.readyState===&#x27;loading&#x27;){document.addEventListener(&#x27;DOMContentLoaded&#x27;,sendHeight);}
+    else{sendHeight();}
+    window.addEventListener(&#x27;resize&#x27;,sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+&lt;/script&gt;</textarea>
+  <details>
+    <summary>&#128065; Preview</summary>
+    <iframe class="preview-iframe" srcdoc="&lt;!--
+  TRUE NATION INTRANET — FINANCE: FUNDRAISING
+  ──────────────────────
+  Embed on the Fundraising sub-group page under Finance.
+  [REPLACE] lead name and action button hrefs with real values.
+--&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{margin:0;padding:0;background:transparent}
+  .sg-wrap{font-family:'DM Sans',sans-serif;width:100%;padding:0 0 4px;display:flex;flex-direction:column;gap:12px}
+  .sg-overview{background:#fff;border:1px solid #F2EDE4;border-radius:8px;padding:18px 20px;box-shadow:0 2px 6px rgba(19,13,10,.05)}
+  .sg-dept{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#C9972C;margin-bottom:4px}
+  .sg-desc{font-size:14px;color:#3D2E28;line-height:1.65;margin-bottom:14px}
+  .sg-lead-row{display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid #F2EDE4}
+  .sg-lead-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9a8e87}
+  .sg-lead-name{font-size:13px;font-weight:500;color:#3D2E28}
+  .action-row{display:flex;flex-wrap:wrap;gap:10px}
+  .act-btn{display:flex;align-items:center;gap:10px;padding:11px 18px;border-radius:6px;border:1.5px solid;text-decoration:none;flex:1;min-width:160px;transition:opacity .15s}
+  .act-btn:hover{opacity:.85}
+  .act-icon{font-size:18px;flex-shrink:0}
+  .act-label{display:block;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  .act-sub{display:block;font-size:11px;opacity:.75;margin-top:1px}
+  .btn-wine{background:#7C1316;color:#fff;border-color:#7C1316}
+  .btn-outline{background:transparent;color:#3D2E28;border-color:#E8DDD0}
+  .btn-gold{background:transparent;color:#A07820;border-color:#C9972C}
+  .sg-form{border:1.5px dashed #C9972C;border-radius:8px;padding:18px 20px;text-align:center;background:#FAF8F4}
+  .sg-form-tag{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;color:#A07820;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;color:#3D2E28;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-desc{font-size:12px;color:#9a8e87;line-height:1.5;margin-bottom:10px}
+  .sg-form-steps{background:#fff;border:1px solid #E8DDD0;border-radius:6px;padding:9px 14px;text-align:left;font-size:11px;color:#9a8e87;line-height:1.7;display:inline-block}
+  @media(max-width:500px){
+    .action-row{flex-direction:column}
+    .act-btn{min-width:unset;width:100%}
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;sg-wrap&quot;&gt;
+
+  &lt;!-- OVERVIEW --&gt;
+&lt;!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: Finance
+     Page description:  Coordinates fundraising campaigns, donation drives, and community giving initiatives for True Nation. Manages timelines, outreach, and reporting for all fundraising efforts.
+     Lead:              Ahabiyah
+--&gt;
+
+  &lt;!-- ACTION BUTTONS --&gt;
+  &lt;div class=&quot;action-row&quot;&gt;
+    &lt;a class=&quot;act-btn btn-wine&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;💬&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Open Chat Space&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Fundraising team communication&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-outline&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;📁&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Drive Folder&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Fundraising campaigns &amp; assets&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-gold&quot; href=&quot;mailto:finance@truenation.org&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;✉️&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Email Dept&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;finance@truenation.org&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+  &lt;!-- FORM PLACEHOLDER --&gt;
+  &lt;div class=&quot;sg-form&quot;&gt;
+    &lt;div class=&quot;sg-form-tag&quot;&gt;Coming Soon&lt;/div&gt;
+    &lt;div class=&quot;sg-form-title&quot;&gt;Fundraising Request Form&lt;/div&gt;
+    &lt;div class=&quot;sg-form-desc&quot;&gt;Submit requests directly to the Fundraising team through this form.&lt;/div&gt;
+    &lt;div class=&quot;sg-form-steps&quot;&gt;
+      1. Create the form in Google Forms&lt;br&gt;
+      2. Click Send → Embed &amp;lt;&amp;gt; → Copy the iframe src URL&lt;br&gt;
+      3. In Google Sites, insert an Embed block&lt;br&gt;
+      4. Paste the iframe src URL and resize as needed
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;script&gt;
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:'tnic-height',height:h,id:'finance-fundraising'},'*');
+    }
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sendHeight);}
+    else{sendHeight();}
+    window.addEventListener('resize',sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+&lt;/script&gt;" scrolling="no" onload="try{this.style.height=(this.contentDocument.body.scrollHeight+32)+'px'}catch(e){}" height="280" loading="lazy"></iframe>
+  </details>
+</div>
+
+
+<div class="master-section" id="finance_travel_committee">
+  <div style="background:#FFF3CD;border:1px solid #FFC107;border-radius:6px;padding:8px 14px;margin-bottom:10px;font-family:sans-serif;font-size:13px;color:#856404;">&#9888;&#65039; <strong>Deprecated:</strong> Renamed. See <strong><a href="#stewardship_travel_committee" style="color:#7C1316">Stewardship — Travel Committee</a></strong> for the current version.</div>
+  <div class="master-header">
+    <span class="master-filename">finance-travel-committee.html</span>
+    <h2 class="master-label" style="color:#2A4A2A">Travel Committee</h2>
+    <p class="master-desc">Sub-group page for the Travel Committee under Finance.</p>
+    <button onclick="copyEmbed('finance_travel_committee')" class="copy-btn" style="background:#2A4A2A">&#128203; Copy HTML</button>
+  </div>
+  <textarea id="embed-finance_travel_committee" class="embed-box" readonly>&lt;!--
+  TRUE NATION INTRANET — FINANCE: TRAVEL COMMITTEE
+  ───────────────────────────
+  Embed on the Travel Committee sub-group page under Finance.
+  [REPLACE] lead name and action button hrefs with real values.
+--&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{margin:0;padding:0;background:transparent}
+  .sg-wrap{font-family:&#x27;DM Sans&#x27;,sans-serif;width:100%;padding:0 0 4px;display:flex;flex-direction:column;gap:12px}
+  .sg-overview{background:#fff;border:1px solid #F2EDE4;border-radius:8px;padding:18px 20px;box-shadow:0 2px 6px rgba(19,13,10,.05)}
+  .sg-dept{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#C9972C;margin-bottom:4px}
+  .sg-desc{font-size:14px;color:#3D2E28;line-height:1.65;margin-bottom:14px}
+  .sg-lead-row{display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid #F2EDE4}
+  .sg-lead-label{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9a8e87}
+  .sg-lead-name{font-size:13px;font-weight:500;color:#3D2E28}
+  .action-row{display:flex;flex-wrap:wrap;gap:10px}
+  .act-btn{display:flex;align-items:center;gap:10px;padding:11px 18px;border-radius:6px;border:1.5px solid;text-decoration:none;flex:1;min-width:160px;transition:opacity .15s}
+  .act-btn:hover{opacity:.85}
+  .act-icon{font-size:18px;flex-shrink:0}
+  .act-label{display:block;font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  .act-sub{display:block;font-size:11px;opacity:.75;margin-top:1px}
+  .btn-wine{background:#7C1316;color:#fff;border-color:#7C1316}
+  .btn-outline{background:transparent;color:#3D2E28;border-color:#E8DDD0}
+  .btn-gold{background:transparent;color:#A07820;border-color:#C9972C}
+  .sg-form{border:1.5px dashed #C9972C;border-radius:8px;padding:18px 20px;text-align:center;background:#FAF8F4}
+  .sg-form-tag{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;color:#A07820;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-title{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;color:#3D2E28;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-desc{font-size:12px;color:#9a8e87;line-height:1.5;margin-bottom:10px}
+  .sg-form-steps{background:#fff;border:1px solid #E8DDD0;border-radius:6px;padding:9px 14px;text-align:left;font-size:11px;color:#9a8e87;line-height:1.7;display:inline-block}
+  @media(max-width:500px){
+    .action-row{flex-direction:column}
+    .act-btn{min-width:unset;width:100%}
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;sg-wrap&quot;&gt;
+
+  &lt;!-- OVERVIEW --&gt;
+&lt;!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: Finance
+     Page description:  Plans and manages travel logistics and budgets for congregational trips to events, conferences, and campus visits. Coordinates booking, itineraries, and reimbursements.
+     Lead:              Marayam
+--&gt;
+
+  &lt;!-- ACTION BUTTONS --&gt;
+  &lt;div class=&quot;action-row&quot;&gt;
+    &lt;a class=&quot;act-btn btn-wine&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;💬&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Open Chat Space&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Travel Committee communication&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-outline&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;📁&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Drive Folder&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Travel documents &amp; bookings&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-gold&quot; href=&quot;mailto:finance@truenation.org&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;✉️&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Email Dept&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;finance@truenation.org&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+  &lt;!-- FORM PLACEHOLDER --&gt;
+  &lt;div class=&quot;sg-form&quot;&gt;
+    &lt;div class=&quot;sg-form-tag&quot;&gt;Coming Soon&lt;/div&gt;
+    &lt;div class=&quot;sg-form-title&quot;&gt;Travel Committee Request Form&lt;/div&gt;
+    &lt;div class=&quot;sg-form-desc&quot;&gt;Submit requests directly to the Travel Committee team through this form.&lt;/div&gt;
+    &lt;div class=&quot;sg-form-steps&quot;&gt;
+      1. Create the form in Google Forms&lt;br&gt;
+      2. Click Send → Embed &amp;lt;&amp;gt; → Copy the iframe src URL&lt;br&gt;
+      3. In Google Sites, insert an Embed block&lt;br&gt;
+      4. Paste the iframe src URL and resize as needed
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;script&gt;
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:&#x27;tnic-height&#x27;,height:h,id:&#x27;finance-travel-committee&#x27;},&#x27;*&#x27;);
+    }
+    if(document.readyState===&#x27;loading&#x27;){document.addEventListener(&#x27;DOMContentLoaded&#x27;,sendHeight);}
+    else{sendHeight();}
+    window.addEventListener(&#x27;resize&#x27;,sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+&lt;/script&gt;</textarea>
+  <details>
+    <summary>&#128065; Preview</summary>
+    <iframe class="preview-iframe" srcdoc="&lt;!--
+  TRUE NATION INTRANET — FINANCE: TRAVEL COMMITTEE
+  ───────────────────────────
+  Embed on the Travel Committee sub-group page under Finance.
+  [REPLACE] lead name and action button hrefs with real values.
+--&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{margin:0;padding:0;background:transparent}
+  .sg-wrap{font-family:'DM Sans',sans-serif;width:100%;padding:0 0 4px;display:flex;flex-direction:column;gap:12px}
+  .sg-overview{background:#fff;border:1px solid #F2EDE4;border-radius:8px;padding:18px 20px;box-shadow:0 2px 6px rgba(19,13,10,.05)}
+  .sg-dept{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#C9972C;margin-bottom:4px}
+  .sg-desc{font-size:14px;color:#3D2E28;line-height:1.65;margin-bottom:14px}
+  .sg-lead-row{display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid #F2EDE4}
+  .sg-lead-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9a8e87}
+  .sg-lead-name{font-size:13px;font-weight:500;color:#3D2E28}
+  .action-row{display:flex;flex-wrap:wrap;gap:10px}
+  .act-btn{display:flex;align-items:center;gap:10px;padding:11px 18px;border-radius:6px;border:1.5px solid;text-decoration:none;flex:1;min-width:160px;transition:opacity .15s}
+  .act-btn:hover{opacity:.85}
+  .act-icon{font-size:18px;flex-shrink:0}
+  .act-label{display:block;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  .act-sub{display:block;font-size:11px;opacity:.75;margin-top:1px}
+  .btn-wine{background:#7C1316;color:#fff;border-color:#7C1316}
+  .btn-outline{background:transparent;color:#3D2E28;border-color:#E8DDD0}
+  .btn-gold{background:transparent;color:#A07820;border-color:#C9972C}
+  .sg-form{border:1.5px dashed #C9972C;border-radius:8px;padding:18px 20px;text-align:center;background:#FAF8F4}
+  .sg-form-tag{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;color:#A07820;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;color:#3D2E28;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-desc{font-size:12px;color:#9a8e87;line-height:1.5;margin-bottom:10px}
+  .sg-form-steps{background:#fff;border:1px solid #E8DDD0;border-radius:6px;padding:9px 14px;text-align:left;font-size:11px;color:#9a8e87;line-height:1.7;display:inline-block}
+  @media(max-width:500px){
+    .action-row{flex-direction:column}
+    .act-btn{min-width:unset;width:100%}
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;sg-wrap&quot;&gt;
+
+  &lt;!-- OVERVIEW --&gt;
+&lt;!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: Finance
+     Page description:  Plans and manages travel logistics and budgets for congregational trips to events, conferences, and campus visits. Coordinates booking, itineraries, and reimbursements.
+     Lead:              Marayam
+--&gt;
+
+  &lt;!-- ACTION BUTTONS --&gt;
+  &lt;div class=&quot;action-row&quot;&gt;
+    &lt;a class=&quot;act-btn btn-wine&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;💬&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Open Chat Space&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Travel Committee communication&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-outline&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;📁&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Drive Folder&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Travel documents &amp; bookings&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-gold&quot; href=&quot;mailto:finance@truenation.org&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;✉️&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Email Dept&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;finance@truenation.org&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+  &lt;!-- FORM PLACEHOLDER --&gt;
+  &lt;div class=&quot;sg-form&quot;&gt;
+    &lt;div class=&quot;sg-form-tag&quot;&gt;Coming Soon&lt;/div&gt;
+    &lt;div class=&quot;sg-form-title&quot;&gt;Travel Committee Request Form&lt;/div&gt;
+    &lt;div class=&quot;sg-form-desc&quot;&gt;Submit requests directly to the Travel Committee team through this form.&lt;/div&gt;
+    &lt;div class=&quot;sg-form-steps&quot;&gt;
+      1. Create the form in Google Forms&lt;br&gt;
+      2. Click Send → Embed &amp;lt;&amp;gt; → Copy the iframe src URL&lt;br&gt;
+      3. In Google Sites, insert an Embed block&lt;br&gt;
+      4. Paste the iframe src URL and resize as needed
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;script&gt;
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:'tnic-height',height:h,id:'finance-travel-committee'},'*');
+    }
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sendHeight);}
+    else{sendHeight();}
+    window.addEventListener('resize',sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+&lt;/script&gt;" scrolling="no" onload="try{this.style.height=(this.contentDocument.body.scrollHeight+32)+'px'}catch(e){}" height="280" loading="lazy"></iframe>
+  </details>
+</div>
+
+
+<div class="master-section" id="finance_tribal_exchange">
+  <div style="background:#FFF3CD;border:1px solid #FFC107;border-radius:6px;padding:8px 14px;margin-bottom:10px;font-family:sans-serif;font-size:13px;color:#856404;">&#9888;&#65039; <strong>Deprecated:</strong> Renamed. See <strong><a href="#stewardship_tribal_exchange" style="color:#7C1316">Stewardship — Tribal Exchange</a></strong> for the current version.</div>
+  <div class="master-header">
+    <span class="master-filename">finance-tribal-exchange.html</span>
+    <h2 class="master-label" style="color:#2A4A2A">Tribal Exchange</h2>
+    <p class="master-desc">Sub-group page for the Tribal Exchange under Finance.</p>
+    <button onclick="copyEmbed('finance_tribal_exchange')" class="copy-btn" style="background:#2A4A2A">&#128203; Copy HTML</button>
+  </div>
+  <textarea id="embed-finance_tribal_exchange" class="embed-box" readonly>&lt;!--
+  TRUE NATION INTRANET — FINANCE: TRIBAL EXCHANGE
+  ──────────────────────────
+  Embed on the Tribal Exchange sub-group page under Finance.
+  [REPLACE] lead name and action button hrefs with real values.
+--&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{margin:0;padding:0;background:transparent}
+  .sg-wrap{font-family:&#x27;DM Sans&#x27;,sans-serif;width:100%;padding:0 0 4px;display:flex;flex-direction:column;gap:12px}
+  .sg-overview{background:#fff;border:1px solid #F2EDE4;border-radius:8px;padding:18px 20px;box-shadow:0 2px 6px rgba(19,13,10,.05)}
+  .sg-dept{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#C9972C;margin-bottom:4px}
+  .sg-desc{font-size:14px;color:#3D2E28;line-height:1.65;margin-bottom:14px}
+  .sg-lead-row{display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid #F2EDE4}
+  .sg-lead-label{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9a8e87}
+  .sg-lead-name{font-size:13px;font-weight:500;color:#3D2E28}
+  .action-row{display:flex;flex-wrap:wrap;gap:10px}
+  .act-btn{display:flex;align-items:center;gap:10px;padding:11px 18px;border-radius:6px;border:1.5px solid;text-decoration:none;flex:1;min-width:160px;transition:opacity .15s}
+  .act-btn:hover{opacity:.85}
+  .act-icon{font-size:18px;flex-shrink:0}
+  .act-label{display:block;font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  .act-sub{display:block;font-size:11px;opacity:.75;margin-top:1px}
+  .btn-wine{background:#7C1316;color:#fff;border-color:#7C1316}
+  .btn-outline{background:transparent;color:#3D2E28;border-color:#E8DDD0}
+  .btn-gold{background:transparent;color:#A07820;border-color:#C9972C}
+  .sg-form{border:1.5px dashed #C9972C;border-radius:8px;padding:18px 20px;text-align:center;background:#FAF8F4}
+  .sg-form-tag{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;color:#A07820;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-title{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;color:#3D2E28;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-desc{font-size:12px;color:#9a8e87;line-height:1.5;margin-bottom:10px}
+  .sg-form-steps{background:#fff;border:1px solid #E8DDD0;border-radius:6px;padding:9px 14px;text-align:left;font-size:11px;color:#9a8e87;line-height:1.7;display:inline-block}
+  @media(max-width:500px){
+    .action-row{flex-direction:column}
+    .act-btn{min-width:unset;width:100%}
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;sg-wrap&quot;&gt;
+
+  &lt;!-- OVERVIEW --&gt;
+&lt;!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: Finance
+     Page description:  Manages the internal exchange marketplace connecting True Nation members for goods and services. Oversees listings, transactions, and member participation in the tribal economy.
+     Lead:              BanaYah
+--&gt;
+
+  &lt;!-- ACTION BUTTONS --&gt;
+  &lt;div class=&quot;action-row&quot;&gt;
+    &lt;a class=&quot;act-btn btn-wine&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;💬&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Open Chat Space&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Tribal Exchange communication&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-outline&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;📁&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Drive Folder&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Exchange records &amp; listings&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-gold&quot; href=&quot;mailto:finance@truenation.org&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;✉️&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Email Dept&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;finance@truenation.org&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+  &lt;!-- FORM PLACEHOLDER --&gt;
+  &lt;div class=&quot;sg-form&quot;&gt;
+    &lt;div class=&quot;sg-form-tag&quot;&gt;Coming Soon&lt;/div&gt;
+    &lt;div class=&quot;sg-form-title&quot;&gt;Tribal Exchange Request Form&lt;/div&gt;
+    &lt;div class=&quot;sg-form-desc&quot;&gt;Submit requests directly to the Tribal Exchange team through this form.&lt;/div&gt;
+    &lt;div class=&quot;sg-form-steps&quot;&gt;
+      1. Create the form in Google Forms&lt;br&gt;
+      2. Click Send → Embed &amp;lt;&amp;gt; → Copy the iframe src URL&lt;br&gt;
+      3. In Google Sites, insert an Embed block&lt;br&gt;
+      4. Paste the iframe src URL and resize as needed
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;script&gt;
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:&#x27;tnic-height&#x27;,height:h,id:&#x27;finance-tribal-exchange&#x27;},&#x27;*&#x27;);
+    }
+    if(document.readyState===&#x27;loading&#x27;){document.addEventListener(&#x27;DOMContentLoaded&#x27;,sendHeight);}
+    else{sendHeight();}
+    window.addEventListener(&#x27;resize&#x27;,sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+&lt;/script&gt;</textarea>
+  <details>
+    <summary>&#128065; Preview</summary>
+    <iframe class="preview-iframe" srcdoc="&lt;!--
+  TRUE NATION INTRANET — FINANCE: TRIBAL EXCHANGE
+  ──────────────────────────
+  Embed on the Tribal Exchange sub-group page under Finance.
+  [REPLACE] lead name and action button hrefs with real values.
+--&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{margin:0;padding:0;background:transparent}
+  .sg-wrap{font-family:'DM Sans',sans-serif;width:100%;padding:0 0 4px;display:flex;flex-direction:column;gap:12px}
+  .sg-overview{background:#fff;border:1px solid #F2EDE4;border-radius:8px;padding:18px 20px;box-shadow:0 2px 6px rgba(19,13,10,.05)}
+  .sg-dept{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#C9972C;margin-bottom:4px}
+  .sg-desc{font-size:14px;color:#3D2E28;line-height:1.65;margin-bottom:14px}
+  .sg-lead-row{display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid #F2EDE4}
+  .sg-lead-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9a8e87}
+  .sg-lead-name{font-size:13px;font-weight:500;color:#3D2E28}
+  .action-row{display:flex;flex-wrap:wrap;gap:10px}
+  .act-btn{display:flex;align-items:center;gap:10px;padding:11px 18px;border-radius:6px;border:1.5px solid;text-decoration:none;flex:1;min-width:160px;transition:opacity .15s}
+  .act-btn:hover{opacity:.85}
+  .act-icon{font-size:18px;flex-shrink:0}
+  .act-label{display:block;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  .act-sub{display:block;font-size:11px;opacity:.75;margin-top:1px}
+  .btn-wine{background:#7C1316;color:#fff;border-color:#7C1316}
+  .btn-outline{background:transparent;color:#3D2E28;border-color:#E8DDD0}
+  .btn-gold{background:transparent;color:#A07820;border-color:#C9972C}
+  .sg-form{border:1.5px dashed #C9972C;border-radius:8px;padding:18px 20px;text-align:center;background:#FAF8F4}
+  .sg-form-tag{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;color:#A07820;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;color:#3D2E28;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-desc{font-size:12px;color:#9a8e87;line-height:1.5;margin-bottom:10px}
+  .sg-form-steps{background:#fff;border:1px solid #E8DDD0;border-radius:6px;padding:9px 14px;text-align:left;font-size:11px;color:#9a8e87;line-height:1.7;display:inline-block}
+  @media(max-width:500px){
+    .action-row{flex-direction:column}
+    .act-btn{min-width:unset;width:100%}
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;sg-wrap&quot;&gt;
+
+  &lt;!-- OVERVIEW --&gt;
+&lt;!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: Finance
+     Page description:  Manages the internal exchange marketplace connecting True Nation members for goods and services. Oversees listings, transactions, and member participation in the tribal economy.
+     Lead:              BanaYah
+--&gt;
+
+  &lt;!-- ACTION BUTTONS --&gt;
+  &lt;div class=&quot;action-row&quot;&gt;
+    &lt;a class=&quot;act-btn btn-wine&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;💬&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Open Chat Space&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Tribal Exchange communication&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-outline&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;📁&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Drive Folder&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Exchange records &amp; listings&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-gold&quot; href=&quot;mailto:finance@truenation.org&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;✉️&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Email Dept&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;finance@truenation.org&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+  &lt;!-- FORM PLACEHOLDER --&gt;
+  &lt;div class=&quot;sg-form&quot;&gt;
+    &lt;div class=&quot;sg-form-tag&quot;&gt;Coming Soon&lt;/div&gt;
+    &lt;div class=&quot;sg-form-title&quot;&gt;Tribal Exchange Request Form&lt;/div&gt;
+    &lt;div class=&quot;sg-form-desc&quot;&gt;Submit requests directly to the Tribal Exchange team through this form.&lt;/div&gt;
+    &lt;div class=&quot;sg-form-steps&quot;&gt;
+      1. Create the form in Google Forms&lt;br&gt;
+      2. Click Send → Embed &amp;lt;&amp;gt; → Copy the iframe src URL&lt;br&gt;
+      3. In Google Sites, insert an Embed block&lt;br&gt;
+      4. Paste the iframe src URL and resize as needed
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;script&gt;
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:'tnic-height',height:h,id:'finance-tribal-exchange'},'*');
+    }
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sendHeight);}
+    else{sendHeight();}
+    window.addEventListener('resize',sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+&lt;/script&gt;" scrolling="no" onload="try{this.style.height=(this.contentDocument.body.scrollHeight+32)+'px'}catch(e){}" height="280" loading="lazy"></iframe>
+  </details>
+</div>
+
+
+<div class="master-section" id="finance_bookkeeping">
+  <div style="background:#FFF3CD;border:1px solid #FFC107;border-radius:6px;padding:8px 14px;margin-bottom:10px;font-family:sans-serif;font-size:13px;color:#856404;">&#9888;&#65039; <strong>Deprecated:</strong> Renamed. See <strong><a href="#stewardship_bookkeeping" style="color:#7C1316">Stewardship — Bookkeeping</a></strong> for the current version.</div>
+  <div class="master-header">
+    <span class="master-filename">finance-bookkeeping.html</span>
+    <h2 class="master-label" style="color:#2A4A2A">Bookkeeping</h2>
+    <p class="master-desc">Sub-group page for the Bookkeeping team under Finance.</p>
+    <button onclick="copyEmbed('finance_bookkeeping')" class="copy-btn" style="background:#2A4A2A">&#128203; Copy HTML</button>
+  </div>
+  <textarea id="embed-finance_bookkeeping" class="embed-box" readonly>&lt;!--
+  TRUE NATION INTRANET — FINANCE: BOOKKEEPING
+  ──────────────────────
+  Embed on the Bookkeeping sub-group page under Finance.
+  [REPLACE] lead name and action button hrefs with real values.
+--&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{margin:0;padding:0;background:transparent}
+  .sg-wrap{font-family:&#x27;DM Sans&#x27;,sans-serif;width:100%;padding:0 0 4px;display:flex;flex-direction:column;gap:12px}
+  .sg-overview{background:#fff;border:1px solid #F2EDE4;border-radius:8px;padding:18px 20px;box-shadow:0 2px 6px rgba(19,13,10,.05)}
+  .sg-dept{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#C9972C;margin-bottom:4px}
+  .sg-desc{font-size:14px;color:#3D2E28;line-height:1.65;margin-bottom:14px}
+  .sg-lead-row{display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid #F2EDE4}
+  .sg-lead-label{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9a8e87}
+  .sg-lead-name{font-size:13px;font-weight:500;color:#3D2E28}
+  .action-row{display:flex;flex-wrap:wrap;gap:10px}
+  .act-btn{display:flex;align-items:center;gap:10px;padding:11px 18px;border-radius:6px;border:1.5px solid;text-decoration:none;flex:1;min-width:160px;transition:opacity .15s}
+  .act-btn:hover{opacity:.85}
+  .act-icon{font-size:18px;flex-shrink:0}
+  .act-label{display:block;font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  .act-sub{display:block;font-size:11px;opacity:.75;margin-top:1px}
+  .btn-wine{background:#7C1316;color:#fff;border-color:#7C1316}
+  .btn-outline{background:transparent;color:#3D2E28;border-color:#E8DDD0}
+  .btn-gold{background:transparent;color:#A07820;border-color:#C9972C}
+  .sg-form{border:1.5px dashed #C9972C;border-radius:8px;padding:18px 20px;text-align:center;background:#FAF8F4}
+  .sg-form-tag{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;color:#A07820;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-title{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;color:#3D2E28;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-desc{font-size:12px;color:#9a8e87;line-height:1.5;margin-bottom:10px}
+  .sg-form-steps{background:#fff;border:1px solid #E8DDD0;border-radius:6px;padding:9px 14px;text-align:left;font-size:11px;color:#9a8e87;line-height:1.7;display:inline-block}
+  @media(max-width:500px){
+    .action-row{flex-direction:column}
+    .act-btn{min-width:unset;width:100%}
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;sg-wrap&quot;&gt;
+
+  &lt;!-- OVERVIEW --&gt;
+&lt;!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: Finance
+     Page description:  Maintains accurate financial records, ledgers, and reporting for the congregation. Handles expense tracking, budget reconciliation, and financial documentation.
+     Lead:              Marayam
+--&gt;
+
+  &lt;!-- ACTION BUTTONS --&gt;
+  &lt;div class=&quot;action-row&quot;&gt;
+    &lt;a class=&quot;act-btn btn-wine&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;💬&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Open Chat Space&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Bookkeeping team communication&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-outline&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;📁&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Drive Folder&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Financial records &amp; ledgers&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-gold&quot; href=&quot;mailto:finance@truenation.org&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;✉️&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Email Dept&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;finance@truenation.org&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+  &lt;!-- FORM PLACEHOLDER --&gt;
+  &lt;div class=&quot;sg-form&quot;&gt;
+    &lt;div class=&quot;sg-form-tag&quot;&gt;Coming Soon&lt;/div&gt;
+    &lt;div class=&quot;sg-form-title&quot;&gt;Bookkeeping Request Form&lt;/div&gt;
+    &lt;div class=&quot;sg-form-desc&quot;&gt;Submit requests directly to the Bookkeeping team through this form.&lt;/div&gt;
+    &lt;div class=&quot;sg-form-steps&quot;&gt;
+      1. Create the form in Google Forms&lt;br&gt;
+      2. Click Send → Embed &amp;lt;&amp;gt; → Copy the iframe src URL&lt;br&gt;
+      3. In Google Sites, insert an Embed block&lt;br&gt;
+      4. Paste the iframe src URL and resize as needed
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;script&gt;
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:&#x27;tnic-height&#x27;,height:h,id:&#x27;finance-bookkeeping&#x27;},&#x27;*&#x27;);
+    }
+    if(document.readyState===&#x27;loading&#x27;){document.addEventListener(&#x27;DOMContentLoaded&#x27;,sendHeight);}
+    else{sendHeight();}
+    window.addEventListener(&#x27;resize&#x27;,sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+&lt;/script&gt;</textarea>
+  <details>
+    <summary>&#128065; Preview</summary>
+    <iframe class="preview-iframe" srcdoc="&lt;!--
+  TRUE NATION INTRANET — FINANCE: BOOKKEEPING
+  ──────────────────────
+  Embed on the Bookkeeping sub-group page under Finance.
+  [REPLACE] lead name and action button hrefs with real values.
+--&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{margin:0;padding:0;background:transparent}
+  .sg-wrap{font-family:'DM Sans',sans-serif;width:100%;padding:0 0 4px;display:flex;flex-direction:column;gap:12px}
+  .sg-overview{background:#fff;border:1px solid #F2EDE4;border-radius:8px;padding:18px 20px;box-shadow:0 2px 6px rgba(19,13,10,.05)}
+  .sg-dept{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#C9972C;margin-bottom:4px}
+  .sg-desc{font-size:14px;color:#3D2E28;line-height:1.65;margin-bottom:14px}
+  .sg-lead-row{display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid #F2EDE4}
+  .sg-lead-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9a8e87}
+  .sg-lead-name{font-size:13px;font-weight:500;color:#3D2E28}
+  .action-row{display:flex;flex-wrap:wrap;gap:10px}
+  .act-btn{display:flex;align-items:center;gap:10px;padding:11px 18px;border-radius:6px;border:1.5px solid;text-decoration:none;flex:1;min-width:160px;transition:opacity .15s}
+  .act-btn:hover{opacity:.85}
+  .act-icon{font-size:18px;flex-shrink:0}
+  .act-label{display:block;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  .act-sub{display:block;font-size:11px;opacity:.75;margin-top:1px}
+  .btn-wine{background:#7C1316;color:#fff;border-color:#7C1316}
+  .btn-outline{background:transparent;color:#3D2E28;border-color:#E8DDD0}
+  .btn-gold{background:transparent;color:#A07820;border-color:#C9972C}
+  .sg-form{border:1.5px dashed #C9972C;border-radius:8px;padding:18px 20px;text-align:center;background:#FAF8F4}
+  .sg-form-tag{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;color:#A07820;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;color:#3D2E28;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-desc{font-size:12px;color:#9a8e87;line-height:1.5;margin-bottom:10px}
+  .sg-form-steps{background:#fff;border:1px solid #E8DDD0;border-radius:6px;padding:9px 14px;text-align:left;font-size:11px;color:#9a8e87;line-height:1.7;display:inline-block}
+  @media(max-width:500px){
+    .action-row{flex-direction:column}
+    .act-btn{min-width:unset;width:100%}
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;sg-wrap&quot;&gt;
+
+  &lt;!-- OVERVIEW --&gt;
+&lt;!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: Finance
+     Page description:  Maintains accurate financial records, ledgers, and reporting for the congregation. Handles expense tracking, budget reconciliation, and financial documentation.
+     Lead:              Marayam
+--&gt;
+
+  &lt;!-- ACTION BUTTONS --&gt;
+  &lt;div class=&quot;action-row&quot;&gt;
+    &lt;a class=&quot;act-btn btn-wine&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;💬&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Open Chat Space&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Bookkeeping team communication&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-outline&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;📁&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Drive Folder&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Financial records &amp; ledgers&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-gold&quot; href=&quot;mailto:finance@truenation.org&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;✉️&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Email Dept&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;finance@truenation.org&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+  &lt;!-- FORM PLACEHOLDER --&gt;
+  &lt;div class=&quot;sg-form&quot;&gt;
+    &lt;div class=&quot;sg-form-tag&quot;&gt;Coming Soon&lt;/div&gt;
+    &lt;div class=&quot;sg-form-title&quot;&gt;Bookkeeping Request Form&lt;/div&gt;
+    &lt;div class=&quot;sg-form-desc&quot;&gt;Submit requests directly to the Bookkeeping team through this form.&lt;/div&gt;
+    &lt;div class=&quot;sg-form-steps&quot;&gt;
+      1. Create the form in Google Forms&lt;br&gt;
+      2. Click Send → Embed &amp;lt;&amp;gt; → Copy the iframe src URL&lt;br&gt;
+      3. In Google Sites, insert an Embed block&lt;br&gt;
+      4. Paste the iframe src URL and resize as needed
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;script&gt;
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:'tnic-height',height:h,id:'finance-bookkeeping'},'*');
+    }
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sendHeight);}
+    else{sendHeight();}
+    window.addEventListener('resize',sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+&lt;/script&gt;" scrolling="no" onload="try{this.style.height=(this.contentDocument.body.scrollHeight+32)+'px'}catch(e){}" height="280" loading="lazy"></iframe>
+  </details>
+</div>
+</div>
+
+<div class="page-section" id="fellowship-sub">
+  <div class="section-header" style="border-left-color:#4A2A1A">
+    <h2 class="section-title" style="color:#4A2A1A">Fellowship &amp; Services Sub-Groups</h2>
+    <span class="section-count">3 embeds</span>
+  </div>
+  
+
+<div class="master-section" id="production_art">
+  <div style="background:#FFF3CD;border:1px solid #FFC107;border-radius:6px;padding:8px 14px;margin-bottom:10px;font-family:sans-serif;font-size:13px;color:#856404;">&#9888;&#65039; <strong>Deprecated:</strong> Renamed. See <strong><a href="#everyday_sheeple_art" style="color:#7C1316">Everyday Sheeple — Visual Art</a></strong> for the current version.</div>
+  <div class="master-header">
+    <span class="master-filename">production-art.html</span>
+    <h2 class="master-label" style="color:#8B6914">Production — Art</h2>
+    <p class="master-desc">Sub-group page for the Art team under Production (Apostles).</p>
+    <button onclick="copyEmbed('production_art')" class="copy-btn" style="background:#8B6914">&#128203; Copy HTML</button>
+  </div>
+  <textarea id="embed-production_art" class="embed-box" readonly>&lt;!--
+  TRUE NATION INTRANET — PRODUCTION: ART
+  ──────────────────────
+  Embed on the Art sub-group page under Production (Apostles Branch).
+  [REPLACE] action button hrefs with real values.
+--&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{margin:0;padding:0;background:transparent}
+  .sg-wrap{font-family:&#x27;DM Sans&#x27;,sans-serif;width:100%;padding:0 0 4px;display:flex;flex-direction:column;gap:12px}
+  .sg-overview{background:#fff;border:1px solid #F2EDE4;border-radius:8px;padding:18px 20px;box-shadow:0 2px 6px rgba(19,13,10,.05)}
+  .sg-dept{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#C9972C;margin-bottom:4px}
+  .sg-desc{font-size:14px;color:#3D2E28;line-height:1.65;margin-bottom:14px}
+  .sg-lead-row{display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid #F2EDE4}
+  .sg-lead-label{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9a8e87}
+  .sg-lead-name{font-size:13px;font-weight:500;color:#3D2E28}
+  .action-row{display:flex;flex-wrap:wrap;gap:10px}
+  .act-btn{display:flex;align-items:center;gap:10px;padding:11px 18px;border-radius:6px;border:1.5px solid;text-decoration:none;flex:1;min-width:160px;transition:opacity .15s}
+  .act-btn:hover{opacity:.85}
+  .act-icon{font-size:18px;flex-shrink:0}
+  .act-label{display:block;font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  .act-sub{display:block;font-size:11px;opacity:.75;margin-top:1px}
+  .btn-wine{background:#7C1316;color:#fff;border-color:#7C1316}
+  .btn-outline{background:transparent;color:#3D2E28;border-color:#E8DDD0}
+  .btn-gold{background:transparent;color:#A07820;border-color:#C9972C}
+  .sg-form{border:1.5px dashed #C9972C;border-radius:8px;padding:18px 20px;text-align:center;background:#FAF8F4}
+  .sg-form-tag{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;color:#A07820;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-title{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;color:#3D2E28;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-desc{font-size:12px;color:#9a8e87;line-height:1.5;margin-bottom:10px}
+  .sg-form-steps{background:#fff;border:1px solid #E8DDD0;border-radius:6px;padding:9px 14px;text-align:left;font-size:11px;color:#9a8e87;line-height:1.7;display:inline-block}
+  @media(max-width:500px){
+    .action-row{flex-direction:column}
+    .act-btn{min-width:unset;width:100%}
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;sg-wrap&quot;&gt;
+
+  &lt;!-- OVERVIEW --&gt;
+&lt;!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: Production
+     Page description:  Creates visual artwork, illustrations, and original artistic content for ministry, events, and publications.
+     Lead:              Ahmaryah
+     Asst:              Karamyah
+--&gt;
+
+  &lt;!-- ACTION BUTTONS --&gt;
+  &lt;div class=&quot;action-row&quot;&gt;
+    &lt;a class=&quot;act-btn btn-wine&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;💬&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Open Chat Space&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Art team communication&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-outline&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;📁&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Drive Folder&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Artwork &amp; illustration files&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-gold&quot; href=&quot;mailto:art@truenation.org&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;✉️&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Email Team&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;art@truenation.org&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+  &lt;!-- FORM PLACEHOLDER --&gt;
+  &lt;div class=&quot;sg-form&quot;&gt;
+    &lt;div class=&quot;sg-form-tag&quot;&gt;Coming Soon&lt;/div&gt;
+    &lt;div class=&quot;sg-form-title&quot;&gt;Art Request Form&lt;/div&gt;
+    &lt;div class=&quot;sg-form-desc&quot;&gt;Submit requests directly to the Art team through this form.&lt;/div&gt;
+    &lt;div class=&quot;sg-form-steps&quot;&gt;
+      1. Create the form in Google Forms&lt;br&gt;
+      2. Click Send → Embed &amp;lt;&amp;gt; → Copy the iframe src URL&lt;br&gt;
+      3. In Google Sites, insert an Embed block&lt;br&gt;
+      4. Paste the iframe src URL and resize as needed
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;script&gt;
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:&#x27;tnic-height&#x27;,height:h,id:&#x27;production-art&#x27;},&#x27;*&#x27;);
+    }
+    if(document.readyState===&#x27;loading&#x27;){document.addEventListener(&#x27;DOMContentLoaded&#x27;,sendHeight);}
+    else{sendHeight();}
+    window.addEventListener(&#x27;resize&#x27;,sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+&lt;/script&gt;
+</textarea>
+  <details>
+    <summary>&#128065; Preview</summary>
+    <iframe class="preview-iframe" srcdoc="&lt;!--
+  TRUE NATION INTRANET — PRODUCTION: ART
+  ──────────────────────
+  Embed on the Art sub-group page under Production (Apostles Branch).
+  [REPLACE] action button hrefs with real values.
+--&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{margin:0;padding:0;background:transparent}
+  .sg-wrap{font-family:'DM Sans',sans-serif;width:100%;padding:0 0 4px;display:flex;flex-direction:column;gap:12px}
+  .sg-overview{background:#fff;border:1px solid #F2EDE4;border-radius:8px;padding:18px 20px;box-shadow:0 2px 6px rgba(19,13,10,.05)}
+  .sg-dept{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#C9972C;margin-bottom:4px}
+  .sg-desc{font-size:14px;color:#3D2E28;line-height:1.65;margin-bottom:14px}
+  .sg-lead-row{display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid #F2EDE4}
+  .sg-lead-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9a8e87}
+  .sg-lead-name{font-size:13px;font-weight:500;color:#3D2E28}
+  .action-row{display:flex;flex-wrap:wrap;gap:10px}
+  .act-btn{display:flex;align-items:center;gap:10px;padding:11px 18px;border-radius:6px;border:1.5px solid;text-decoration:none;flex:1;min-width:160px;transition:opacity .15s}
+  .act-btn:hover{opacity:.85}
+  .act-icon{font-size:18px;flex-shrink:0}
+  .act-label{display:block;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  .act-sub{display:block;font-size:11px;opacity:.75;margin-top:1px}
+  .btn-wine{background:#7C1316;color:#fff;border-color:#7C1316}
+  .btn-outline{background:transparent;color:#3D2E28;border-color:#E8DDD0}
+  .btn-gold{background:transparent;color:#A07820;border-color:#C9972C}
+  .sg-form{border:1.5px dashed #C9972C;border-radius:8px;padding:18px 20px;text-align:center;background:#FAF8F4}
+  .sg-form-tag{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;color:#A07820;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;color:#3D2E28;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-desc{font-size:12px;color:#9a8e87;line-height:1.5;margin-bottom:10px}
+  .sg-form-steps{background:#fff;border:1px solid #E8DDD0;border-radius:6px;padding:9px 14px;text-align:left;font-size:11px;color:#9a8e87;line-height:1.7;display:inline-block}
+  @media(max-width:500px){
+    .action-row{flex-direction:column}
+    .act-btn{min-width:unset;width:100%}
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;sg-wrap&quot;&gt;
+
+  &lt;!-- OVERVIEW --&gt;
+&lt;!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: Production
+     Page description:  Creates visual artwork, illustrations, and original artistic content for ministry, events, and publications.
+     Lead:              Ahmaryah
+     Asst:              Karamyah
+--&gt;
+
+  &lt;!-- ACTION BUTTONS --&gt;
+  &lt;div class=&quot;action-row&quot;&gt;
+    &lt;a class=&quot;act-btn btn-wine&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;💬&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Open Chat Space&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Art team communication&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-outline&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;📁&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Drive Folder&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Artwork &amp; illustration files&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-gold&quot; href=&quot;mailto:art@truenation.org&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;✉️&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Email Team&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;art@truenation.org&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+  &lt;!-- FORM PLACEHOLDER --&gt;
+  &lt;div class=&quot;sg-form&quot;&gt;
+    &lt;div class=&quot;sg-form-tag&quot;&gt;Coming Soon&lt;/div&gt;
+    &lt;div class=&quot;sg-form-title&quot;&gt;Art Request Form&lt;/div&gt;
+    &lt;div class=&quot;sg-form-desc&quot;&gt;Submit requests directly to the Art team through this form.&lt;/div&gt;
+    &lt;div class=&quot;sg-form-steps&quot;&gt;
+      1. Create the form in Google Forms&lt;br&gt;
+      2. Click Send → Embed &amp;lt;&amp;gt; → Copy the iframe src URL&lt;br&gt;
+      3. In Google Sites, insert an Embed block&lt;br&gt;
+      4. Paste the iframe src URL and resize as needed
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;script&gt;
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:'tnic-height',height:h,id:'production-art'},'*');
+    }
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sendHeight);}
+    else{sendHeight();}
+    window.addEventListener('resize',sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+&lt;/script&gt;
+" scrolling="no" onload="try{this.style.height=(this.contentDocument.body.scrollHeight+32)+'px'}catch(e){}" height="280" loading="lazy"></iframe>
+  </details>
+</div>
+
+
+<div class="master-section" id="youth_development_subgroup_cards">
+  <div style="background:#FFF3CD;border:1px solid #FFC107;border-radius:6px;padding:8px 14px;margin-bottom:10px;font-family:sans-serif;font-size:13px;color:#856404;">&#9888;&#65039; <strong>Deprecated:</strong> Renamed. See <strong><a href="#tela_subgroup_cards" style="color:#7C1316">T.E.L.A. — Sub-Group Cards</a></strong> for the current version.</div>
+  <div class="master-header">
+    <span class="master-filename">youth-development-subgroup-cards.html</span>
+    <h2 class="master-label" style="color:#8B6914">Youth Development — Sub-Group Cards</h2>
+    <p class="master-desc">Subgroup cards for Youth Development (Apostles): TELA + 5 youth teams.</p>
+    <button onclick="copyEmbed('youth_development_subgroup_cards')" class="copy-btn" style="background:#8B6914">&#128203; Copy HTML</button>
+  </div>
+  <textarea id="embed-youth_development_subgroup_cards" class="embed-box" readonly>&lt;!--
+  TRUE NATION INTRANET — YOUTH DEVELOPMENT SUB-GROUP CARDS
+  ─────────────────────────────
+  Embed on the Youth Development department page under Apostles Branch.
+  Native Sites heading: &quot;Teams &amp; Sub-Groups&quot;
+
+  SUB-GROUPS (6):
+    TELA, Jr Disciples, Little Lions, Maiden Ewe Academy, Naqam Fresh, Naqam Varsity
+
+  [REPLACE] Lead names, descriptions, and card href links with real values.
+--&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+
+&lt;style&gt;
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { margin: 0; padding: 0; background: transparent; }
+
+  .dept-wrap {
+    font-family: &#x27;DM Sans&#x27;, sans-serif;
+    width: 100%;
+    background: #FAF8F4;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+  }
+
+  .sg-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .sg-card {
+    background: white;
+    border: 1px solid #F2EDE4;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(19,13,10,0.06);
+    transition: box-shadow 0.2s, transform 0.15s;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .sg-card:hover {
+    box-shadow: 0 4px 14px rgba(19,13,10,0.11);
+    transform: translateY(-2px);
+    border-color: #C9972C;
+  }
+
+  .sg-icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+
+  .sg-name {
+    font-family: &#x27;Barlow Condensed&#x27;, sans-serif;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #7C1316;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .sg-desc {
+    font-size: 14px;
+    color: #3D2E28;
+    line-height: 1.6;
+    flex: 1;
+    margin-bottom: 10px;
+  }
+
+  .sg-arrow {
+    font-family: &#x27;Barlow Condensed&#x27;, sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #C9972C;
+    margin-top: 12px;
+  }
+
+  @media (max-width: 500px) {
+    .sg-grid { grid-template-columns: 1fr; }
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;dept-wrap&quot;&gt;
+
+&lt;!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: Apostles
+     Page description:  Equips the next generation through discipleship, education, mentorship, and physical training programs.
+     Lead:              Tazayawan
+--&gt;
+
+  &lt;div class=&quot;sg-grid&quot;&gt;
+
+    &lt;!-- [REPLACE] href with actual TELA sub-group page URL --&gt;
+    &lt;a class=&quot;sg-card&quot; href=&quot;#&quot;&gt;
+      &lt;div class=&quot;sg-icon&quot;&gt;🌟&lt;/div&gt;
+      &lt;div class=&quot;sg-name&quot;&gt;TELA&lt;/div&gt;
+      &lt;div class=&quot;sg-desc&quot;&gt;Youth Committee umbrella — coordinates programs, intramurals, events, and youth outreach across the congregation.&lt;/div&gt;
+      &lt;div class=&quot;sg-arrow&quot;&gt;View sub-group →&lt;/div&gt;
+    &lt;/a&gt;
+
+    &lt;!-- [REPLACE] href with actual Jr Disciples sub-group page URL --&gt;
+    &lt;a class=&quot;sg-card&quot; href=&quot;#&quot;&gt;
+      &lt;div class=&quot;sg-icon&quot;&gt;📖&lt;/div&gt;
+      &lt;div class=&quot;sg-name&quot;&gt;Jr Disciples&lt;/div&gt;
+      &lt;div class=&quot;sg-desc&quot;&gt;Discipleship and Bible study for the next generation, building foundations of faith for young members.&lt;/div&gt;
+      &lt;div class=&quot;sg-arrow&quot;&gt;View sub-group →&lt;/div&gt;
+    &lt;/a&gt;
+
+    &lt;!-- [REPLACE] href with actual Little Lions sub-group page URL --&gt;
+    &lt;a class=&quot;sg-card&quot; href=&quot;#&quot;&gt;
+      &lt;div class=&quot;sg-icon&quot;&gt;🦁&lt;/div&gt;
+      &lt;div class=&quot;sg-name&quot;&gt;Little Lions&lt;/div&gt;
+      &lt;div class=&quot;sg-desc&quot;&gt;Early-childhood program nurturing young children in True Nation values through age-appropriate teaching and activities.&lt;/div&gt;
+      &lt;div class=&quot;sg-arrow&quot;&gt;View sub-group →&lt;/div&gt;
+    &lt;/a&gt;
+
+    &lt;!-- [REPLACE] href with actual Maiden Ewe Academy sub-group page URL --&gt;
+    &lt;a class=&quot;sg-card&quot; href=&quot;#&quot;&gt;
+      &lt;div class=&quot;sg-icon&quot;&gt;🌸&lt;/div&gt;
+      &lt;div class=&quot;sg-name&quot;&gt;Maiden Ewe Academy&lt;/div&gt;
+      &lt;div class=&quot;sg-desc&quot;&gt;Mentorship and education program for young women — character formation, modesty, and skills for womanhood.&lt;/div&gt;
+      &lt;div class=&quot;sg-arrow&quot;&gt;View sub-group →&lt;/div&gt;
+    &lt;/a&gt;
+
+    &lt;!-- [REPLACE] href with actual Naqam Fresh sub-group page URL --&gt;
+    &lt;a class=&quot;sg-card&quot; href=&quot;#&quot;&gt;
+      &lt;div class=&quot;sg-icon&quot;&gt;🏃&lt;/div&gt;
+      &lt;div class=&quot;sg-name&quot;&gt;Naqam Fresh&lt;/div&gt;
+      &lt;div class=&quot;sg-desc&quot;&gt;Athletic and developmental program for younger youth — discipline, teamwork, and physical training.&lt;/div&gt;
+      &lt;div class=&quot;sg-arrow&quot;&gt;View sub-group →&lt;/div&gt;
+    &lt;/a&gt;
+
+    &lt;!-- [REPLACE] href with actual Naqam Varsity sub-group page URL --&gt;
+    &lt;a class=&quot;sg-card&quot; href=&quot;#&quot;&gt;
+      &lt;div class=&quot;sg-icon&quot;&gt;🏆&lt;/div&gt;
+      &lt;div class=&quot;sg-name&quot;&gt;Naqam Varsity&lt;/div&gt;
+      &lt;div class=&quot;sg-desc&quot;&gt;Advanced athletic and leadership program for older youth — competition, mentorship, and ministry integration.&lt;/div&gt;
+      &lt;div class=&quot;sg-arrow&quot;&gt;View sub-group →&lt;/div&gt;
+    &lt;/a&gt;
+
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:&#x27;tnic-height&#x27;,height:h,id:&#x27;youth-development-subgroup-cards&#x27;}, &#x27;*&#x27;);
+    }
+    if(document.readyState===&#x27;loading&#x27;){document.addEventListener(&#x27;DOMContentLoaded&#x27;,sendHeight);}
+    else{sendHeight();}
+    window.addEventListener(&#x27;resize&#x27;,sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+&lt;/script&gt;
+</textarea>
+  <details>
+    <summary>&#128065; Preview</summary>
+    <iframe class="preview-iframe" srcdoc="&lt;!--
+  TRUE NATION INTRANET — YOUTH DEVELOPMENT SUB-GROUP CARDS
+  ─────────────────────────────
+  Embed on the Youth Development department page under Apostles Branch.
+  Native Sites heading: &quot;Teams &amp; Sub-Groups&quot;
+
+  SUB-GROUPS (6):
+    TELA, Jr Disciples, Little Lions, Maiden Ewe Academy, Naqam Fresh, Naqam Varsity
+
+  [REPLACE] Lead names, descriptions, and card href links with real values.
+--&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+
+&lt;style&gt;
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { margin: 0; padding: 0; background: transparent; }
+
+  .dept-wrap {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    background: #FAF8F4;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+  }
+
+  .sg-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .sg-card {
+    background: white;
+    border: 1px solid #F2EDE4;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(19,13,10,0.06);
+    transition: box-shadow 0.2s, transform 0.15s;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .sg-card:hover {
+    box-shadow: 0 4px 14px rgba(19,13,10,0.11);
+    transform: translateY(-2px);
+    border-color: #C9972C;
+  }
+
+  .sg-icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+
+  .sg-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #7C1316;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .sg-desc {
+    font-size: 14px;
+    color: #3D2E28;
+    line-height: 1.6;
+    flex: 1;
+    margin-bottom: 10px;
+  }
+
+  .sg-arrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #C9972C;
+    margin-top: 12px;
+  }
+
+  @media (max-width: 500px) {
+    .sg-grid { grid-template-columns: 1fr; }
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;dept-wrap&quot;&gt;
+
+&lt;!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: Apostles
+     Page description:  Equips the next generation through discipleship, education, mentorship, and physical training programs.
+     Lead:              Tazayawan
+--&gt;
+
+  &lt;div class=&quot;sg-grid&quot;&gt;
+
+    &lt;!-- [REPLACE] href with actual TELA sub-group page URL --&gt;
+    &lt;a class=&quot;sg-card&quot; href=&quot;#&quot;&gt;
+      &lt;div class=&quot;sg-icon&quot;&gt;🌟&lt;/div&gt;
+      &lt;div class=&quot;sg-name&quot;&gt;TELA&lt;/div&gt;
+      &lt;div class=&quot;sg-desc&quot;&gt;Youth Committee umbrella — coordinates programs, intramurals, events, and youth outreach across the congregation.&lt;/div&gt;
+      &lt;div class=&quot;sg-arrow&quot;&gt;View sub-group →&lt;/div&gt;
+    &lt;/a&gt;
+
+    &lt;!-- [REPLACE] href with actual Jr Disciples sub-group page URL --&gt;
+    &lt;a class=&quot;sg-card&quot; href=&quot;#&quot;&gt;
+      &lt;div class=&quot;sg-icon&quot;&gt;📖&lt;/div&gt;
+      &lt;div class=&quot;sg-name&quot;&gt;Jr Disciples&lt;/div&gt;
+      &lt;div class=&quot;sg-desc&quot;&gt;Discipleship and Bible study for the next generation, building foundations of faith for young members.&lt;/div&gt;
+      &lt;div class=&quot;sg-arrow&quot;&gt;View sub-group →&lt;/div&gt;
+    &lt;/a&gt;
+
+    &lt;!-- [REPLACE] href with actual Little Lions sub-group page URL --&gt;
+    &lt;a class=&quot;sg-card&quot; href=&quot;#&quot;&gt;
+      &lt;div class=&quot;sg-icon&quot;&gt;🦁&lt;/div&gt;
+      &lt;div class=&quot;sg-name&quot;&gt;Little Lions&lt;/div&gt;
+      &lt;div class=&quot;sg-desc&quot;&gt;Early-childhood program nurturing young children in True Nation values through age-appropriate teaching and activities.&lt;/div&gt;
+      &lt;div class=&quot;sg-arrow&quot;&gt;View sub-group →&lt;/div&gt;
+    &lt;/a&gt;
+
+    &lt;!-- [REPLACE] href with actual Maiden Ewe Academy sub-group page URL --&gt;
+    &lt;a class=&quot;sg-card&quot; href=&quot;#&quot;&gt;
+      &lt;div class=&quot;sg-icon&quot;&gt;🌸&lt;/div&gt;
+      &lt;div class=&quot;sg-name&quot;&gt;Maiden Ewe Academy&lt;/div&gt;
+      &lt;div class=&quot;sg-desc&quot;&gt;Mentorship and education program for young women — character formation, modesty, and skills for womanhood.&lt;/div&gt;
+      &lt;div class=&quot;sg-arrow&quot;&gt;View sub-group →&lt;/div&gt;
+    &lt;/a&gt;
+
+    &lt;!-- [REPLACE] href with actual Naqam Fresh sub-group page URL --&gt;
+    &lt;a class=&quot;sg-card&quot; href=&quot;#&quot;&gt;
+      &lt;div class=&quot;sg-icon&quot;&gt;🏃&lt;/div&gt;
+      &lt;div class=&quot;sg-name&quot;&gt;Naqam Fresh&lt;/div&gt;
+      &lt;div class=&quot;sg-desc&quot;&gt;Athletic and developmental program for younger youth — discipline, teamwork, and physical training.&lt;/div&gt;
+      &lt;div class=&quot;sg-arrow&quot;&gt;View sub-group →&lt;/div&gt;
+    &lt;/a&gt;
+
+    &lt;!-- [REPLACE] href with actual Naqam Varsity sub-group page URL --&gt;
+    &lt;a class=&quot;sg-card&quot; href=&quot;#&quot;&gt;
+      &lt;div class=&quot;sg-icon&quot;&gt;🏆&lt;/div&gt;
+      &lt;div class=&quot;sg-name&quot;&gt;Naqam Varsity&lt;/div&gt;
+      &lt;div class=&quot;sg-desc&quot;&gt;Advanced athletic and leadership program for older youth — competition, mentorship, and ministry integration.&lt;/div&gt;
+      &lt;div class=&quot;sg-arrow&quot;&gt;View sub-group →&lt;/div&gt;
+    &lt;/a&gt;
+
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:'tnic-height',height:h,id:'youth-development-subgroup-cards'}, '*');
+    }
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sendHeight);}
+    else{sendHeight();}
+    window.addEventListener('resize',sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+&lt;/script&gt;
+" scrolling="no" onload="try{this.style.height=(this.contentDocument.body.scrollHeight+32)+'px'}catch(e){}" height="280" loading="lazy"></iframe>
+  </details>
+</div>
+
+
+<div class="master-section" id="scica_summit">
+  <div style="background:#F8D7DA;border:1px solid #F5C2C7;border-radius:6px;padding:8px 14px;margin-bottom:10px;font-family:sans-serif;font-size:13px;color:#842029;">&#9888;&#65039; <strong>Deprecated:</strong> SCICA Summit — no matching file (removed or standalone). No direct replacement file.</div>
+  <div class="master-header">
+    <span class="master-filename">scica-summit.html</span>
+    <h2 class="master-label" style="color:#3A3A2A">SCICA Summit</h2>
+    <p class="master-desc">Joint Apostles + Bishops committee page for the annual SCICA Summit.</p>
+    <button onclick="copyEmbed('scica_summit')" class="copy-btn" style="background:#3A3A2A">&#128203; Copy HTML</button>
+  </div>
+  <textarea id="embed-scica_summit" class="embed-box" readonly>&lt;!--
+  TRUE NATION INTRANET — SCICA SUMMIT
+  ──────────────────────
+  Embed on the sub-group page under Joint Committee · Apostles + Bishops.
+  [REPLACE] action button hrefs with real values.
+--&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{margin:0;padding:0;background:transparent}
+  .sg-wrap{font-family:&#x27;DM Sans&#x27;,sans-serif;width:100%;padding:0 0 4px;display:flex;flex-direction:column;gap:12px}
+  .sg-overview{background:#fff;border:1px solid #F2EDE4;border-radius:8px;padding:18px 20px;box-shadow:0 2px 6px rgba(19,13,10,.05)}
+  .sg-dept{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#C9972C;margin-bottom:4px}
+  .sg-desc{font-size:14px;color:#3D2E28;line-height:1.65;margin-bottom:14px}
+  .sg-lead-row{display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid #F2EDE4}
+  .sg-lead-label{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9a8e87}
+  .sg-lead-name{font-size:13px;font-weight:500;color:#3D2E28}
+  .action-row{display:flex;flex-wrap:wrap;gap:10px}
+  .act-btn{display:flex;align-items:center;gap:10px;padding:11px 18px;border-radius:6px;border:1.5px solid;text-decoration:none;flex:1;min-width:160px;transition:opacity .15s}
+  .act-btn:hover{opacity:.85}
+  .act-icon{font-size:18px;flex-shrink:0}
+  .act-label{display:block;font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  .act-sub{display:block;font-size:11px;opacity:.75;margin-top:1px}
+  .btn-wine{background:#7C1316;color:#fff;border-color:#7C1316}
+  .btn-outline{background:transparent;color:#3D2E28;border-color:#E8DDD0}
+  .btn-gold{background:transparent;color:#A07820;border-color:#C9972C}
+  .sg-form{border:1.5px dashed #C9972C;border-radius:8px;padding:18px 20px;text-align:center;background:#FAF8F4}
+  .sg-form-tag{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;color:#A07820;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-title{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;color:#3D2E28;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-desc{font-size:12px;color:#9a8e87;line-height:1.5;margin-bottom:10px}
+  .sg-form-steps{background:#fff;border:1px solid #E8DDD0;border-radius:6px;padding:9px 14px;text-align:left;font-size:11px;color:#9a8e87;line-height:1.7;display:inline-block}
+  @media(max-width:500px){
+    .action-row{flex-direction:column}
+    .act-btn{min-width:unset;width:100%}
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;sg-wrap&quot;&gt;
+
+  &lt;!-- OVERVIEW --&gt;
+&lt;!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: Joint Committee · Apostles + Bishops
+     Page description:  Annual SCICA Summit gathering — strategy, doctrine alignment, and inter-congregational fellowship between branches.
+     Leads:                         Tazayawan, Yashami
+--&gt;
+
+  &lt;!-- ACTION BUTTONS --&gt;
+  &lt;div class=&quot;action-row&quot;&gt;
+    &lt;a class=&quot;act-btn btn-wine&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;💬&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Open Chat Space&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Scica Summit team communication&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-outline&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;📁&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Drive Folder&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Shared documents&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-gold&quot; href=&quot;mailto:scica@truenation.org&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;✉️&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Email Dept&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;scica@truenation.org&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+  &lt;!-- FORM PLACEHOLDER --&gt;
+  &lt;div class=&quot;sg-form&quot;&gt;
+    &lt;div class=&quot;sg-form-tag&quot;&gt;Coming Soon&lt;/div&gt;
+    &lt;div class=&quot;sg-form-title&quot;&gt;Scica Summit Request Form&lt;/div&gt;
+    &lt;div class=&quot;sg-form-desc&quot;&gt;Submit requests directly to this team through this form.&lt;/div&gt;
+    &lt;div class=&quot;sg-form-steps&quot;&gt;
+      1. Create the form in Google Forms&lt;br&gt;
+      2. Click Send → Embed &amp;lt;&amp;gt; → Copy the iframe src URL&lt;br&gt;
+      3. In Google Sites, insert an Embed block&lt;br&gt;
+      4. Paste the iframe src URL and resize as needed
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;script&gt;
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:&#x27;tnic-height&#x27;,height:h,id:&#x27;scica-summit&#x27;},&#x27;*&#x27;);
+    }
+    if(document.readyState===&#x27;loading&#x27;){document.addEventListener(&#x27;DOMContentLoaded&#x27;,sendHeight);}
+    else{sendHeight();}
+    window.addEventListener(&#x27;resize&#x27;,sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+&lt;/script&gt;
+</textarea>
+  <details>
+    <summary>&#128065; Preview</summary>
+    <iframe class="preview-iframe" srcdoc="&lt;!--
+  TRUE NATION INTRANET — SCICA SUMMIT
+  ──────────────────────
+  Embed on the sub-group page under Joint Committee · Apostles + Bishops.
+  [REPLACE] action button hrefs with real values.
+--&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{margin:0;padding:0;background:transparent}
+  .sg-wrap{font-family:'DM Sans',sans-serif;width:100%;padding:0 0 4px;display:flex;flex-direction:column;gap:12px}
+  .sg-overview{background:#fff;border:1px solid #F2EDE4;border-radius:8px;padding:18px 20px;box-shadow:0 2px 6px rgba(19,13,10,.05)}
+  .sg-dept{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#C9972C;margin-bottom:4px}
+  .sg-desc{font-size:14px;color:#3D2E28;line-height:1.65;margin-bottom:14px}
+  .sg-lead-row{display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid #F2EDE4}
+  .sg-lead-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9a8e87}
+  .sg-lead-name{font-size:13px;font-weight:500;color:#3D2E28}
+  .action-row{display:flex;flex-wrap:wrap;gap:10px}
+  .act-btn{display:flex;align-items:center;gap:10px;padding:11px 18px;border-radius:6px;border:1.5px solid;text-decoration:none;flex:1;min-width:160px;transition:opacity .15s}
+  .act-btn:hover{opacity:.85}
+  .act-icon{font-size:18px;flex-shrink:0}
+  .act-label{display:block;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  .act-sub{display:block;font-size:11px;opacity:.75;margin-top:1px}
+  .btn-wine{background:#7C1316;color:#fff;border-color:#7C1316}
+  .btn-outline{background:transparent;color:#3D2E28;border-color:#E8DDD0}
+  .btn-gold{background:transparent;color:#A07820;border-color:#C9972C}
+  .sg-form{border:1.5px dashed #C9972C;border-radius:8px;padding:18px 20px;text-align:center;background:#FAF8F4}
+  .sg-form-tag{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;color:#A07820;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;color:#3D2E28;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-desc{font-size:12px;color:#9a8e87;line-height:1.5;margin-bottom:10px}
+  .sg-form-steps{background:#fff;border:1px solid #E8DDD0;border-radius:6px;padding:9px 14px;text-align:left;font-size:11px;color:#9a8e87;line-height:1.7;display:inline-block}
+  @media(max-width:500px){
+    .action-row{flex-direction:column}
+    .act-btn{min-width:unset;width:100%}
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;sg-wrap&quot;&gt;
+
+  &lt;!-- OVERVIEW --&gt;
+&lt;!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: Joint Committee · Apostles + Bishops
+     Page description:  Annual SCICA Summit gathering — strategy, doctrine alignment, and inter-congregational fellowship between branches.
+     Leads:                         Tazayawan, Yashami
+--&gt;
+
+  &lt;!-- ACTION BUTTONS --&gt;
+  &lt;div class=&quot;action-row&quot;&gt;
+    &lt;a class=&quot;act-btn btn-wine&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;💬&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Open Chat Space&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Scica Summit team communication&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-outline&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;📁&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Drive Folder&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Shared documents&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-gold&quot; href=&quot;mailto:scica@truenation.org&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;✉️&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Email Dept&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;scica@truenation.org&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+  &lt;!-- FORM PLACEHOLDER --&gt;
+  &lt;div class=&quot;sg-form&quot;&gt;
+    &lt;div class=&quot;sg-form-tag&quot;&gt;Coming Soon&lt;/div&gt;
+    &lt;div class=&quot;sg-form-title&quot;&gt;Scica Summit Request Form&lt;/div&gt;
+    &lt;div class=&quot;sg-form-desc&quot;&gt;Submit requests directly to this team through this form.&lt;/div&gt;
+    &lt;div class=&quot;sg-form-steps&quot;&gt;
+      1. Create the form in Google Forms&lt;br&gt;
+      2. Click Send → Embed &amp;lt;&amp;gt; → Copy the iframe src URL&lt;br&gt;
+      3. In Google Sites, insert an Embed block&lt;br&gt;
+      4. Paste the iframe src URL and resize as needed
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;script&gt;
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:'tnic-height',height:h,id:'scica-summit'},'*');
+    }
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sendHeight);}
+    else{sendHeight();}
+    window.addEventListener('resize',sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+&lt;/script&gt;
+" scrolling="no" onload="try{this.style.height=(this.contentDocument.body.scrollHeight+32)+'px'}catch(e){}" height="280" loading="lazy"></iframe>
+  </details>
+</div>
+
+
+<div class="master-section" id="clerical_the_people">
+  <div style="background:#FFF3CD;border:1px solid #FFC107;border-radius:6px;padding:8px 14px;margin-bottom:10px;font-family:sans-serif;font-size:13px;color:#856404;">&#9888;&#65039; <strong>Deprecated:</strong> Renamed. See <strong><a href="#clerical_admin_committee" style="color:#7C1316">Clerical — Administration Committee</a></strong> for the current version.</div>
+  <div class="master-header">
+    <span class="master-filename">clerical-the-people.html</span>
+    <h2 class="master-label" style="color:#7C1316">Clerical — The People</h2>
+    <p class="master-desc">Committee page for The People under Clerical (Deacons).</p>
+    <button onclick="copyEmbed('clerical_the_people')" class="copy-btn" style="background:#7C1316">&#128203; Copy HTML</button>
+  </div>
+  <textarea id="embed-clerical_the_people" class="embed-box" readonly>&lt;!--
+  TRUE NATION INTRANET — CLERICAL — THE PEOPLE
+  ──────────────────────
+  Embed on the sub-group page under Clerical.
+  [REPLACE] action button hrefs with real values.
+--&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{margin:0;padding:0;background:transparent}
+  .sg-wrap{font-family:&#x27;DM Sans&#x27;,sans-serif;width:100%;padding:0 0 4px;display:flex;flex-direction:column;gap:12px}
+  .sg-overview{background:#fff;border:1px solid #F2EDE4;border-radius:8px;padding:18px 20px;box-shadow:0 2px 6px rgba(19,13,10,.05)}
+  .sg-dept{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#C9972C;margin-bottom:4px}
+  .sg-desc{font-size:14px;color:#3D2E28;line-height:1.65;margin-bottom:14px}
+  .sg-lead-row{display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid #F2EDE4}
+  .sg-lead-label{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9a8e87}
+  .sg-lead-name{font-size:13px;font-weight:500;color:#3D2E28}
+  .action-row{display:flex;flex-wrap:wrap;gap:10px}
+  .act-btn{display:flex;align-items:center;gap:10px;padding:11px 18px;border-radius:6px;border:1.5px solid;text-decoration:none;flex:1;min-width:160px;transition:opacity .15s}
+  .act-btn:hover{opacity:.85}
+  .act-icon{font-size:18px;flex-shrink:0}
+  .act-label{display:block;font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  .act-sub{display:block;font-size:11px;opacity:.75;margin-top:1px}
+  .btn-wine{background:#7C1316;color:#fff;border-color:#7C1316}
+  .btn-outline{background:transparent;color:#3D2E28;border-color:#E8DDD0}
+  .btn-gold{background:transparent;color:#A07820;border-color:#C9972C}
+  .sg-form{border:1.5px dashed #C9972C;border-radius:8px;padding:18px 20px;text-align:center;background:#FAF8F4}
+  .sg-form-tag{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;color:#A07820;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-title{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;color:#3D2E28;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-desc{font-size:12px;color:#9a8e87;line-height:1.5;margin-bottom:10px}
+  .sg-form-steps{background:#fff;border:1px solid #E8DDD0;border-radius:6px;padding:9px 14px;text-align:left;font-size:11px;color:#9a8e87;line-height:1.7;display:inline-block}
+  @media(max-width:500px){
+    .action-row{flex-direction:column}
+    .act-btn{min-width:unset;width:100%}
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;sg-wrap&quot;&gt;
+
+  &lt;!-- OVERVIEW --&gt;
+&lt;!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: Clerical
+     Page description:  Member-relations committee handling onboarding, records, and the communication channels between leadership and the congregation.
+     Members:                       Kabash, Shahad, Nayah, Sarah
+--&gt;
+
+  &lt;!-- ACTION BUTTONS --&gt;
+  &lt;div class=&quot;action-row&quot;&gt;
+    &lt;a class=&quot;act-btn btn-wine&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;💬&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Open Chat Space&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;The People team communication&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-outline&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;📁&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Drive Folder&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Shared documents&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-gold&quot; href=&quot;mailto:clerical@truenation.org&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;✉️&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Email Dept&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;clerical@truenation.org&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+  &lt;!-- FORM PLACEHOLDER --&gt;
+  &lt;div class=&quot;sg-form&quot;&gt;
+    &lt;div class=&quot;sg-form-tag&quot;&gt;Coming Soon&lt;/div&gt;
+    &lt;div class=&quot;sg-form-title&quot;&gt;The People Request Form&lt;/div&gt;
+    &lt;div class=&quot;sg-form-desc&quot;&gt;Submit requests directly to this team through this form.&lt;/div&gt;
+    &lt;div class=&quot;sg-form-steps&quot;&gt;
+      1. Create the form in Google Forms&lt;br&gt;
+      2. Click Send → Embed &amp;lt;&amp;gt; → Copy the iframe src URL&lt;br&gt;
+      3. In Google Sites, insert an Embed block&lt;br&gt;
+      4. Paste the iframe src URL and resize as needed
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;script&gt;
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:&#x27;tnic-height&#x27;,height:h,id:&#x27;clerical-the-people&#x27;},&#x27;*&#x27;);
+    }
+    if(document.readyState===&#x27;loading&#x27;){document.addEventListener(&#x27;DOMContentLoaded&#x27;,sendHeight);}
+    else{sendHeight();}
+    window.addEventListener(&#x27;resize&#x27;,sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+&lt;/script&gt;
+</textarea>
+  <details>
+    <summary>&#128065; Preview</summary>
+    <iframe class="preview-iframe" srcdoc="&lt;!--
+  TRUE NATION INTRANET — CLERICAL — THE PEOPLE
+  ──────────────────────
+  Embed on the sub-group page under Clerical.
+  [REPLACE] action button hrefs with real values.
+--&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{margin:0;padding:0;background:transparent}
+  .sg-wrap{font-family:'DM Sans',sans-serif;width:100%;padding:0 0 4px;display:flex;flex-direction:column;gap:12px}
+  .sg-overview{background:#fff;border:1px solid #F2EDE4;border-radius:8px;padding:18px 20px;box-shadow:0 2px 6px rgba(19,13,10,.05)}
+  .sg-dept{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#C9972C;margin-bottom:4px}
+  .sg-desc{font-size:14px;color:#3D2E28;line-height:1.65;margin-bottom:14px}
+  .sg-lead-row{display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid #F2EDE4}
+  .sg-lead-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9a8e87}
+  .sg-lead-name{font-size:13px;font-weight:500;color:#3D2E28}
+  .action-row{display:flex;flex-wrap:wrap;gap:10px}
+  .act-btn{display:flex;align-items:center;gap:10px;padding:11px 18px;border-radius:6px;border:1.5px solid;text-decoration:none;flex:1;min-width:160px;transition:opacity .15s}
+  .act-btn:hover{opacity:.85}
+  .act-icon{font-size:18px;flex-shrink:0}
+  .act-label{display:block;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  .act-sub{display:block;font-size:11px;opacity:.75;margin-top:1px}
+  .btn-wine{background:#7C1316;color:#fff;border-color:#7C1316}
+  .btn-outline{background:transparent;color:#3D2E28;border-color:#E8DDD0}
+  .btn-gold{background:transparent;color:#A07820;border-color:#C9972C}
+  .sg-form{border:1.5px dashed #C9972C;border-radius:8px;padding:18px 20px;text-align:center;background:#FAF8F4}
+  .sg-form-tag{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;color:#A07820;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;color:#3D2E28;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-desc{font-size:12px;color:#9a8e87;line-height:1.5;margin-bottom:10px}
+  .sg-form-steps{background:#fff;border:1px solid #E8DDD0;border-radius:6px;padding:9px 14px;text-align:left;font-size:11px;color:#9a8e87;line-height:1.7;display:inline-block}
+  @media(max-width:500px){
+    .action-row{flex-direction:column}
+    .act-btn{min-width:unset;width:100%}
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;sg-wrap&quot;&gt;
+
+  &lt;!-- OVERVIEW --&gt;
+&lt;!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: Clerical
+     Page description:  Member-relations committee handling onboarding, records, and the communication channels between leadership and the congregation.
+     Members:                       Kabash, Shahad, Nayah, Sarah
+--&gt;
+
+  &lt;!-- ACTION BUTTONS --&gt;
+  &lt;div class=&quot;action-row&quot;&gt;
+    &lt;a class=&quot;act-btn btn-wine&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;💬&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Open Chat Space&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;The People team communication&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-outline&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;📁&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Drive Folder&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Shared documents&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-gold&quot; href=&quot;mailto:clerical@truenation.org&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;✉️&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Email Dept&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;clerical@truenation.org&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+  &lt;!-- FORM PLACEHOLDER --&gt;
+  &lt;div class=&quot;sg-form&quot;&gt;
+    &lt;div class=&quot;sg-form-tag&quot;&gt;Coming Soon&lt;/div&gt;
+    &lt;div class=&quot;sg-form-title&quot;&gt;The People Request Form&lt;/div&gt;
+    &lt;div class=&quot;sg-form-desc&quot;&gt;Submit requests directly to this team through this form.&lt;/div&gt;
+    &lt;div class=&quot;sg-form-steps&quot;&gt;
+      1. Create the form in Google Forms&lt;br&gt;
+      2. Click Send → Embed &amp;lt;&amp;gt; → Copy the iframe src URL&lt;br&gt;
+      3. In Google Sites, insert an Embed block&lt;br&gt;
+      4. Paste the iframe src URL and resize as needed
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;script&gt;
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:'tnic-height',height:h,id:'clerical-the-people'},'*');
+    }
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sendHeight);}
+    else{sendHeight();}
+    window.addEventListener('resize',sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+&lt;/script&gt;
+" scrolling="no" onload="try{this.style.height=(this.contentDocument.body.scrollHeight+32)+'px'}catch(e){}" height="280" loading="lazy"></iframe>
+  </details>
+</div>
+
+
+<div class="master-section" id="it_logistics">
+  <div style="background:#FFF3CD;border:1px solid #FFC107;border-radius:6px;padding:8px 14px;margin-bottom:10px;font-family:sans-serif;font-size:13px;color:#856404;">&#9888;&#65039; <strong>Deprecated:</strong> Renamed. See <strong><a href="#clerical_logistics" style="color:#7C1316">Clerical — Logistics</a></strong> for the current version.</div>
+  <div class="master-header">
+    <span class="master-filename">it-logistics.html</span>
+    <h2 class="master-label" style="color:#7C1316">IT — Logistics</h2>
+    <p class="master-desc">Team page for Logistics under IT (Deacons).</p>
+    <button onclick="copyEmbed('it_logistics')" class="copy-btn" style="background:#7C1316">&#128203; Copy HTML</button>
+  </div>
+  <textarea id="embed-it_logistics" class="embed-box" readonly>&lt;!--
+  TRUE NATION INTRANET — IT — LOGISTICS
+  ──────────────────────
+  Embed on the sub-group page under IT.
+  [REPLACE] action button hrefs with real values.
+--&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{margin:0;padding:0;background:transparent}
+  .sg-wrap{font-family:&#x27;DM Sans&#x27;,sans-serif;width:100%;padding:0 0 4px;display:flex;flex-direction:column;gap:12px}
+  .sg-overview{background:#fff;border:1px solid #F2EDE4;border-radius:8px;padding:18px 20px;box-shadow:0 2px 6px rgba(19,13,10,.05)}
+  .sg-dept{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#C9972C;margin-bottom:4px}
+  .sg-desc{font-size:14px;color:#3D2E28;line-height:1.65;margin-bottom:14px}
+  .sg-lead-row{display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid #F2EDE4}
+  .sg-lead-label{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9a8e87}
+  .sg-lead-name{font-size:13px;font-weight:500;color:#3D2E28}
+  .action-row{display:flex;flex-wrap:wrap;gap:10px}
+  .act-btn{display:flex;align-items:center;gap:10px;padding:11px 18px;border-radius:6px;border:1.5px solid;text-decoration:none;flex:1;min-width:160px;transition:opacity .15s}
+  .act-btn:hover{opacity:.85}
+  .act-icon{font-size:18px;flex-shrink:0}
+  .act-label{display:block;font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  .act-sub{display:block;font-size:11px;opacity:.75;margin-top:1px}
+  .btn-wine{background:#7C1316;color:#fff;border-color:#7C1316}
+  .btn-outline{background:transparent;color:#3D2E28;border-color:#E8DDD0}
+  .btn-gold{background:transparent;color:#A07820;border-color:#C9972C}
+  .sg-form{border:1.5px dashed #C9972C;border-radius:8px;padding:18px 20px;text-align:center;background:#FAF8F4}
+  .sg-form-tag{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;color:#A07820;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-title{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;color:#3D2E28;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-desc{font-size:12px;color:#9a8e87;line-height:1.5;margin-bottom:10px}
+  .sg-form-steps{background:#fff;border:1px solid #E8DDD0;border-radius:6px;padding:9px 14px;text-align:left;font-size:11px;color:#9a8e87;line-height:1.7;display:inline-block}
+  @media(max-width:500px){
+    .action-row{flex-direction:column}
+    .act-btn{min-width:unset;width:100%}
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;sg-wrap&quot;&gt;
+
+  &lt;!-- OVERVIEW --&gt;
+&lt;!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: IT
+     Page description:  Coordinates IT equipment logistics — device deployment, A/V setup for events, and inventory tracking.
+     Lead:                         [Lead TBD]
+--&gt;
+
+  &lt;!-- ACTION BUTTONS --&gt;
+  &lt;div class=&quot;action-row&quot;&gt;
+    &lt;a class=&quot;act-btn btn-wine&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;💬&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Open Chat Space&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Logistics team communication&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-outline&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;📁&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Drive Folder&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Shared documents&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-gold&quot; href=&quot;mailto:it@truenation.org&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;✉️&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Email Dept&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;it@truenation.org&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+  &lt;!-- FORM PLACEHOLDER --&gt;
+  &lt;div class=&quot;sg-form&quot;&gt;
+    &lt;div class=&quot;sg-form-tag&quot;&gt;Coming Soon&lt;/div&gt;
+    &lt;div class=&quot;sg-form-title&quot;&gt;Logistics Request Form&lt;/div&gt;
+    &lt;div class=&quot;sg-form-desc&quot;&gt;Submit requests directly to this team through this form.&lt;/div&gt;
+    &lt;div class=&quot;sg-form-steps&quot;&gt;
+      1. Create the form in Google Forms&lt;br&gt;
+      2. Click Send → Embed &amp;lt;&amp;gt; → Copy the iframe src URL&lt;br&gt;
+      3. In Google Sites, insert an Embed block&lt;br&gt;
+      4. Paste the iframe src URL and resize as needed
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;script&gt;
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:&#x27;tnic-height&#x27;,height:h,id:&#x27;it-logistics&#x27;},&#x27;*&#x27;);
+    }
+    if(document.readyState===&#x27;loading&#x27;){document.addEventListener(&#x27;DOMContentLoaded&#x27;,sendHeight);}
+    else{sendHeight();}
+    window.addEventListener(&#x27;resize&#x27;,sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+&lt;/script&gt;
+</textarea>
+  <details>
+    <summary>&#128065; Preview</summary>
+    <iframe class="preview-iframe" srcdoc="&lt;!--
+  TRUE NATION INTRANET — IT — LOGISTICS
+  ──────────────────────
+  Embed on the sub-group page under IT.
+  [REPLACE] action button hrefs with real values.
+--&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{margin:0;padding:0;background:transparent}
+  .sg-wrap{font-family:'DM Sans',sans-serif;width:100%;padding:0 0 4px;display:flex;flex-direction:column;gap:12px}
+  .sg-overview{background:#fff;border:1px solid #F2EDE4;border-radius:8px;padding:18px 20px;box-shadow:0 2px 6px rgba(19,13,10,.05)}
+  .sg-dept{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#C9972C;margin-bottom:4px}
+  .sg-desc{font-size:14px;color:#3D2E28;line-height:1.65;margin-bottom:14px}
+  .sg-lead-row{display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid #F2EDE4}
+  .sg-lead-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9a8e87}
+  .sg-lead-name{font-size:13px;font-weight:500;color:#3D2E28}
+  .action-row{display:flex;flex-wrap:wrap;gap:10px}
+  .act-btn{display:flex;align-items:center;gap:10px;padding:11px 18px;border-radius:6px;border:1.5px solid;text-decoration:none;flex:1;min-width:160px;transition:opacity .15s}
+  .act-btn:hover{opacity:.85}
+  .act-icon{font-size:18px;flex-shrink:0}
+  .act-label{display:block;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  .act-sub{display:block;font-size:11px;opacity:.75;margin-top:1px}
+  .btn-wine{background:#7C1316;color:#fff;border-color:#7C1316}
+  .btn-outline{background:transparent;color:#3D2E28;border-color:#E8DDD0}
+  .btn-gold{background:transparent;color:#A07820;border-color:#C9972C}
+  .sg-form{border:1.5px dashed #C9972C;border-radius:8px;padding:18px 20px;text-align:center;background:#FAF8F4}
+  .sg-form-tag{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;color:#A07820;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;color:#3D2E28;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-desc{font-size:12px;color:#9a8e87;line-height:1.5;margin-bottom:10px}
+  .sg-form-steps{background:#fff;border:1px solid #E8DDD0;border-radius:6px;padding:9px 14px;text-align:left;font-size:11px;color:#9a8e87;line-height:1.7;display:inline-block}
+  @media(max-width:500px){
+    .action-row{flex-direction:column}
+    .act-btn{min-width:unset;width:100%}
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;sg-wrap&quot;&gt;
+
+  &lt;!-- OVERVIEW --&gt;
+&lt;!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: IT
+     Page description:  Coordinates IT equipment logistics — device deployment, A/V setup for events, and inventory tracking.
+     Lead:                         [Lead TBD]
+--&gt;
+
+  &lt;!-- ACTION BUTTONS --&gt;
+  &lt;div class=&quot;action-row&quot;&gt;
+    &lt;a class=&quot;act-btn btn-wine&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;💬&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Open Chat Space&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Logistics team communication&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-outline&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;📁&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Drive Folder&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Shared documents&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-gold&quot; href=&quot;mailto:it@truenation.org&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;✉️&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Email Dept&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;it@truenation.org&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+  &lt;!-- FORM PLACEHOLDER --&gt;
+  &lt;div class=&quot;sg-form&quot;&gt;
+    &lt;div class=&quot;sg-form-tag&quot;&gt;Coming Soon&lt;/div&gt;
+    &lt;div class=&quot;sg-form-title&quot;&gt;Logistics Request Form&lt;/div&gt;
+    &lt;div class=&quot;sg-form-desc&quot;&gt;Submit requests directly to this team through this form.&lt;/div&gt;
+    &lt;div class=&quot;sg-form-steps&quot;&gt;
+      1. Create the form in Google Forms&lt;br&gt;
+      2. Click Send → Embed &amp;lt;&amp;gt; → Copy the iframe src URL&lt;br&gt;
+      3. In Google Sites, insert an Embed block&lt;br&gt;
+      4. Paste the iframe src URL and resize as needed
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;script&gt;
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:'tnic-height',height:h,id:'it-logistics'},'*');
+    }
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sendHeight);}
+    else{sendHeight();}
+    window.addEventListener('resize',sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+&lt;/script&gt;
+" scrolling="no" onload="try{this.style.height=(this.contentDocument.body.scrollHeight+32)+'px'}catch(e){}" height="280" loading="lazy"></iframe>
+  </details>
+</div>
+
+
+<div class="master-section" id="ministries_sanhedrin">
+  <div style="background:#FFF3CD;border:1px solid #FFC107;border-radius:6px;padding:8px 14px;margin-bottom:10px;font-family:sans-serif;font-size:13px;color:#856404;">&#9888;&#65039; <strong>Deprecated:</strong> Renamed. See <strong><a href="#counseling_sanhedrin" style="color:#7C1316">Counseling — Sanhedrin (Calendar Committee)</a></strong> for the current version.</div>
+  <div class="master-header">
+    <span class="master-filename">ministries-sanhedrin.html</span>
+    <h2 class="master-label" style="color:#2E4A6B">Ministries — Sanhedrin</h2>
+    <p class="master-desc">Committee page for Sanhedrin under Ministries (Judges).</p>
+    <button onclick="copyEmbed('ministries_sanhedrin')" class="copy-btn" style="background:#2E4A6B">&#128203; Copy HTML</button>
+  </div>
+  <textarea id="embed-ministries_sanhedrin" class="embed-box" readonly>&lt;!--
+  TRUE NATION INTRANET — MINISTRIES — SANHEDRIN
+  ──────────────────────
+  Embed on the sub-group page under Ministries.
+  [REPLACE] action button hrefs with real values.
+--&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{margin:0;padding:0;background:transparent}
+  .sg-wrap{font-family:&#x27;DM Sans&#x27;,sans-serif;width:100%;padding:0 0 4px;display:flex;flex-direction:column;gap:12px}
+  .sg-overview{background:#fff;border:1px solid #F2EDE4;border-radius:8px;padding:18px 20px;box-shadow:0 2px 6px rgba(19,13,10,.05)}
+  .sg-dept{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#C9972C;margin-bottom:4px}
+  .sg-desc{font-size:14px;color:#3D2E28;line-height:1.65;margin-bottom:14px}
+  .sg-lead-row{display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid #F2EDE4}
+  .sg-lead-label{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9a8e87}
+  .sg-lead-name{font-size:13px;font-weight:500;color:#3D2E28}
+  .action-row{display:flex;flex-wrap:wrap;gap:10px}
+  .act-btn{display:flex;align-items:center;gap:10px;padding:11px 18px;border-radius:6px;border:1.5px solid;text-decoration:none;flex:1;min-width:160px;transition:opacity .15s}
+  .act-btn:hover{opacity:.85}
+  .act-icon{font-size:18px;flex-shrink:0}
+  .act-label{display:block;font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  .act-sub{display:block;font-size:11px;opacity:.75;margin-top:1px}
+  .btn-wine{background:#7C1316;color:#fff;border-color:#7C1316}
+  .btn-outline{background:transparent;color:#3D2E28;border-color:#E8DDD0}
+  .btn-gold{background:transparent;color:#A07820;border-color:#C9972C}
+  .sg-form{border:1.5px dashed #C9972C;border-radius:8px;padding:18px 20px;text-align:center;background:#FAF8F4}
+  .sg-form-tag{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;color:#A07820;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-title{font-family:&#x27;Barlow Condensed&#x27;,sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;color:#3D2E28;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-desc{font-size:12px;color:#9a8e87;line-height:1.5;margin-bottom:10px}
+  .sg-form-steps{background:#fff;border:1px solid #E8DDD0;border-radius:6px;padding:9px 14px;text-align:left;font-size:11px;color:#9a8e87;line-height:1.7;display:inline-block}
+  @media(max-width:500px){
+    .action-row{flex-direction:column}
+    .act-btn{min-width:unset;width:100%}
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;sg-wrap&quot;&gt;
+
+  &lt;!-- OVERVIEW --&gt;
+&lt;!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: Ministries
+     Page description:  Council of elders and judges that adjudicates doctrinal questions and disputes within the congregation.
+     Lead:                         [Lead TBD]
+--&gt;
+
+  &lt;!-- ACTION BUTTONS --&gt;
+  &lt;div class=&quot;action-row&quot;&gt;
+    &lt;a class=&quot;act-btn btn-wine&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;💬&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Open Chat Space&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Sanhedrin team communication&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-outline&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;📁&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Drive Folder&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Shared documents&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-gold&quot; href=&quot;mailto:ministries@truenation.org&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;✉️&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Email Dept&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;ministries@truenation.org&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+  &lt;!-- FORM PLACEHOLDER --&gt;
+  &lt;div class=&quot;sg-form&quot;&gt;
+    &lt;div class=&quot;sg-form-tag&quot;&gt;Coming Soon&lt;/div&gt;
+    &lt;div class=&quot;sg-form-title&quot;&gt;Sanhedrin Request Form&lt;/div&gt;
+    &lt;div class=&quot;sg-form-desc&quot;&gt;Submit requests directly to this team through this form.&lt;/div&gt;
+    &lt;div class=&quot;sg-form-steps&quot;&gt;
+      1. Create the form in Google Forms&lt;br&gt;
+      2. Click Send → Embed &amp;lt;&amp;gt; → Copy the iframe src URL&lt;br&gt;
+      3. In Google Sites, insert an Embed block&lt;br&gt;
+      4. Paste the iframe src URL and resize as needed
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;script&gt;
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:&#x27;tnic-height&#x27;,height:h,id:&#x27;ministries-sanhedrin&#x27;},&#x27;*&#x27;);
+    }
+    if(document.readyState===&#x27;loading&#x27;){document.addEventListener(&#x27;DOMContentLoaded&#x27;,sendHeight);}
+    else{sendHeight();}
+    window.addEventListener(&#x27;resize&#x27;,sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+&lt;/script&gt;
+</textarea>
+  <details>
+    <summary>&#128065; Preview</summary>
+    <iframe class="preview-iframe" srcdoc="&lt;!--
+  TRUE NATION INTRANET — MINISTRIES — SANHEDRIN
+  ──────────────────────
+  Embed on the sub-group page under Ministries.
+  [REPLACE] action button hrefs with real values.
+--&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{margin:0;padding:0;background:transparent}
+  .sg-wrap{font-family:'DM Sans',sans-serif;width:100%;padding:0 0 4px;display:flex;flex-direction:column;gap:12px}
+  .sg-overview{background:#fff;border:1px solid #F2EDE4;border-radius:8px;padding:18px 20px;box-shadow:0 2px 6px rgba(19,13,10,.05)}
+  .sg-dept{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#C9972C;margin-bottom:4px}
+  .sg-desc{font-size:14px;color:#3D2E28;line-height:1.65;margin-bottom:14px}
+  .sg-lead-row{display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid #F2EDE4}
+  .sg-lead-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9a8e87}
+  .sg-lead-name{font-size:13px;font-weight:500;color:#3D2E28}
+  .action-row{display:flex;flex-wrap:wrap;gap:10px}
+  .act-btn{display:flex;align-items:center;gap:10px;padding:11px 18px;border-radius:6px;border:1.5px solid;text-decoration:none;flex:1;min-width:160px;transition:opacity .15s}
+  .act-btn:hover{opacity:.85}
+  .act-icon{font-size:18px;flex-shrink:0}
+  .act-label{display:block;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  .act-sub{display:block;font-size:11px;opacity:.75;margin-top:1px}
+  .btn-wine{background:#7C1316;color:#fff;border-color:#7C1316}
+  .btn-outline{background:transparent;color:#3D2E28;border-color:#E8DDD0}
+  .btn-gold{background:transparent;color:#A07820;border-color:#C9972C}
+  .sg-form{border:1.5px dashed #C9972C;border-radius:8px;padding:18px 20px;text-align:center;background:#FAF8F4}
+  .sg-form-tag{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;color:#A07820;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;color:#3D2E28;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-desc{font-size:12px;color:#9a8e87;line-height:1.5;margin-bottom:10px}
+  .sg-form-steps{background:#fff;border:1px solid #E8DDD0;border-radius:6px;padding:9px 14px;text-align:left;font-size:11px;color:#9a8e87;line-height:1.7;display:inline-block}
+  @media(max-width:500px){
+    .action-row{flex-direction:column}
+    .act-btn{min-width:unset;width:100%}
+  }
+&lt;/style&gt;
+
+&lt;div class=&quot;sg-wrap&quot;&gt;
+
+  &lt;!-- OVERVIEW --&gt;
+&lt;!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: Ministries
+     Page description:  Council of elders and judges that adjudicates doctrinal questions and disputes within the congregation.
+     Lead:                         [Lead TBD]
+--&gt;
+
+  &lt;!-- ACTION BUTTONS --&gt;
+  &lt;div class=&quot;action-row&quot;&gt;
+    &lt;a class=&quot;act-btn btn-wine&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;💬&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Open Chat Space&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Sanhedrin team communication&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-outline&quot; href=&quot;#&quot; target=&quot;_blank&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;📁&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Drive Folder&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;Shared documents&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a class=&quot;act-btn btn-gold&quot; href=&quot;mailto:ministries@truenation.org&quot;&gt;
+      &lt;span class=&quot;act-icon&quot;&gt;✉️&lt;/span&gt;
+      &lt;span&gt;
+        &lt;span class=&quot;act-label&quot;&gt;Email Dept&lt;/span&gt;
+        &lt;span class=&quot;act-sub&quot;&gt;ministries@truenation.org&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/div&gt;
+
+  &lt;!-- FORM PLACEHOLDER --&gt;
+  &lt;div class=&quot;sg-form&quot;&gt;
+    &lt;div class=&quot;sg-form-tag&quot;&gt;Coming Soon&lt;/div&gt;
+    &lt;div class=&quot;sg-form-title&quot;&gt;Sanhedrin Request Form&lt;/div&gt;
+    &lt;div class=&quot;sg-form-desc&quot;&gt;Submit requests directly to this team through this form.&lt;/div&gt;
+    &lt;div class=&quot;sg-form-steps&quot;&gt;
+      1. Create the form in Google Forms&lt;br&gt;
+      2. Click Send → Embed &amp;lt;&amp;gt; → Copy the iframe src URL&lt;br&gt;
+      3. In Google Sites, insert an Embed block&lt;br&gt;
+      4. Paste the iframe src URL and resize as needed
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;script&gt;
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:'tnic-height',height:h,id:'ministries-sanhedrin'},'*');
+    }
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sendHeight);}
+    else{sendHeight();}
+    window.addEventListener('resize',sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+&lt;/script&gt;
+" scrolling="no" onload="try{this.style.height=(this.contentDocument.body.scrollHeight+32)+'px'}catch(e){}" height="280" loading="lazy"></iframe>
+  </details>
+</div>
+
+
+
+</body>
+</html>

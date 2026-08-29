@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<!--
+  TRUE NATION INTRANET — Profile Editor UI (My Dashboard)
+  ─────────────────────────────────────────────────────────
+  Apps Script HTML template served by profile-editor.gs (doGet).
+  Paste as an HTML file named "profile-editor-ui" in the same project.
+
+  Template variables injected by doGet():
+    <?= userEmail ?>     — logged-in user's truenation.org address
+    <?= userDataJson ?>  — JSON string of current record (all editable + read-only cols)
+    <?= campuses ?>      — JSON array of campus name strings
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Your Profile — True Nation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #E8E8EC;
+      color: #26262A;
+      min-height: 100vh;
+      padding: 12px 16px 40px;
+    }
+
+    /* ── Slim email indicator ── */
+    .pe-email-bar {
+      font-size: 11px; color: #AAA;
+      margin-bottom: 12px;
+    }
+    .pe-email-bar span {
+      background: #D8D8DE; color: #56565E;
+      font-size: 11px; font-weight: 500;
+      padding: 2px 8px; border-radius: 100px;
+    }
+
+    /* ── Read-only context bar ── */
+    .pe-context {
+      background: #D8D8DE; border: 1px solid #E8DDD2;
+      border-radius: 8px; padding: 12px 16px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 8px 16px; margin-bottom: 16px;
+    }
+    @media (min-width: 480px) { .pe-context { grid-template-columns: repeat(4, 1fr); } }
+    .pe-ro-item {}
+    .pe-ro-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600; font-size: 10px;
+      text-transform: uppercase; letter-spacing: 0.07em;
+      color: #C9972C; margin-bottom: 2px;
+    }
+    .pe-ro-value { font-size: 13px; color: #56565E; font-weight: 500; }
+    .pe-ro-value--empty { color: #BBB; font-style: italic; }
+
+    /* ── Section cards ── */
+    .pe-section {
+      background: white;
+      border: 1px solid #BFBFC7;
+      border-radius: 10px;
+      padding: 18px 16px;
+      box-shadow: 0 2px 8px rgba(19,13,10,0.06);
+      margin-bottom: 14px;
+    }
+    .pe-section__label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: 10px;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: #C9972C; margin-bottom: 14px;
+      padding-bottom: 8px; border-bottom: 1px solid #BFBFC7;
+    }
+
+    /* ── Field grid ── */
+    .pe-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 420px) { .pe-grid { grid-template-columns: 1fr; } }
+    .pe-field { display: flex; flex-direction: column; gap: 4px; }
+    .pe-field--full { grid-column: 1 / -1; }
+
+    .pe-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: 11px;
+      text-transform: uppercase; letter-spacing: 0.07em;
+      color: #56565E;
+    }
+    .pe-hint {
+      font-size: 11px; color: #AAA;
+      margin-top: 3px; line-height: 1.4;
+    }
+
+    .pe-input, .pe-select {
+      width: 100%;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px; color: #26262A;
+      background: #E8E8EC;
+      border: 1px solid #E8DDD2;
+      border-radius: 6px;
+      padding: 9px 12px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      outline: none;
+      appearance: none; -webkit-appearance: none;
+    }
+    .pe-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239a8e87' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+    .pe-input:focus, .pe-select:focus {
+      border-color: #C9972C;
+      box-shadow: 0 0 0 3px rgba(201,151,44,0.15);
+      background: white;
+    }
+    .pe-input::placeholder { color: #BBB; }
+
+    /* ── Submit ── */
+    .pe-submit-wrap { margin-top: 6px; }
+    .pe-btn {
+      display: block; width: 100%;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: 1rem;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      color: #F2F2F3; background: #7C1316;
+      border: none; border-radius: 8px;
+      padding: 13px 20px; cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .pe-btn:hover:not(:disabled) { background: #5A0E11; }
+    .pe-btn:active:not(:disabled) { transform: scale(0.98); }
+    .pe-btn:disabled { background: #C8B8B9; cursor: not-allowed; }
+
+    /* ── Status messages ── */
+    .pe-status {
+      border-radius: 8px; padding: 12px 16px;
+      font-size: 13px; line-height: 1.5;
+      margin-top: 12px; display: none;
+    }
+    .pe-status--success { background: #EAF4EC; border: 1px solid #A5D6A7; color: #1B5E20; }
+    .pe-status--error   { background: #FFF0F0; border: 1px solid #FFCDD2; color: #7C1316; }
+    .pe-status--loading { background: #D8D8DE; border: 1px solid #E8DDD2; color: #56565E; }
+
+    /* ── Not found ── */
+    .pe-not-found { text-align: center; padding: 32px 20px; }
+    .pe-not-found__icon { font-size: 2rem; margin-bottom: 10px; }
+    .pe-not-found__title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: 1.1rem;
+      text-transform: uppercase; color: #7C1316; margin-bottom: 8px;
+    }
+    .pe-not-found p { font-size: 13px; color: #888; line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+<div class="pe-email-bar">Editing profile for <span><?= userEmail ?></span> &nbsp;·&nbsp; Blank fields are left as-is.</div>
+
+<div id="main-content"></div>
+
+<script>
+  var userData  = <?!= userDataJson ?>;
+  var campuses  = <?!= campuses ?>;
+
+  /* ── Utility ── */
+  function esc(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;').replace(/"/g, '&quot;')
+      .replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function val(key) {
+    return userData[key] || '';
+  }
+
+  function inputHtml(id, type, placeholder, value, hint) {
+    return '<div class="pe-field">' +
+      '<label class="pe-label" for="' + id + '">' + id.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) + '</label>' +
+      '<input class="pe-input" type="' + type + '" id="' + id + '" name="' + id + '"' +
+        ' value="' + esc(value) + '" placeholder="' + esc(placeholder || '') + '">' +
+      (hint ? '<div class="pe-hint">' + hint + '</div>' : '') +
+    '</div>';
+  }
+
+  function selectHtml(id, label, options, selectedVal) {
+    var opts = options.map(function(o) {
+      var v = typeof o === 'object' ? o.value : o;
+      var l = typeof o === 'object' ? o.label : o;
+      return '<option value="' + esc(v) + '"' + (v === selectedVal ? ' selected' : '') + '>' + esc(l) + '</option>';
+    });
+    return '<div class="pe-field">' +
+      '<label class="pe-label" for="' + id + '">' + esc(label) + '</label>' +
+      '<select class="pe-select" id="' + id + '" name="' + id + '">' +
+        '<option value="">— Select —</option>' + opts.join('') +
+      '</select>' +
+    '</div>';
+  }
+
+  function roItem(label, key) {
+    var v = val(key);
+    return '<div class="pe-ro-item">' +
+      '<div class="pe-ro-label">' + esc(label) + '</div>' +
+      (v ? '<div class="pe-ro-value">' + esc(v) + '</div>'
+         : '<div class="pe-ro-value pe-ro-value--empty">Not set</div>') +
+    '</div>';
+  }
+
+  /* ── Build UI ── */
+  function buildUI() {
+    var container = document.getElementById('main-content');
+
+    if (!userData.found) {
+      container.innerHTML =
+        '<div class="pe-section"><div class="pe-not-found">' +
+          '<div class="pe-not-found__icon">🔍</div>' +
+          '<div class="pe-not-found__title">Record Not Found</div>' +
+          '<p>Your account (' + esc(userData.email) + ') wasn\'t found in the staff directory.<br>' +
+          'Contact IT to get your record set up.</p>' +
+        '</div></div>';
+      return;
+    }
+
+    var campusOptions = campuses.map(function(c) { return { value: c, label: c }; });
+
+    /* ── Read-only context ── */
+    var contextCard =
+      '<div class="pe-context">' +
+        roItem('Branch',     'branch') +
+        roItem('Department', 'department') +
+        roItem('Role / Title', 'title_role') +
+        roItem('Employment', 'employment_type') +
+      '</div>' +
+      '<p style="font-size:11px;color:#AAA;margin-bottom:16px">Need a change to the fields above? Contact IT or your department lead.</p>';
+
+    /* ── Section 1: Name & Identity ── */
+    var nameSection =
+      '<div class="pe-section">' +
+        '<div class="pe-section__label">Name &amp; Identity</div>' +
+        '<div class="pe-grid">' +
+          '<div class="pe-field">' +
+            '<label class="pe-label" for="hebrew_first">Hebrew First Name</label>' +
+            '<input class="pe-input" type="text" id="hebrew_first" name="hebrew_first"' +
+              ' value="' + esc(val('hebrew_first')) + '" placeholder="Primary display name">' +
+            '<div class="pe-hint">Your primary name shown across the intranet</div>' +
+          '</div>' +
+          '<div class="pe-field">' +
+            '<label class="pe-label" for="hebrew_last">Hebrew Last Name</label>' +
+            '<input class="pe-input" type="text" id="hebrew_last" name="hebrew_last"' +
+              ' value="' + esc(val('hebrew_last')) + '" placeholder="">' +
+          '</div>' +
+          '<div class="pe-field">' +
+            '<label class="pe-label" for="legal_first">First Name</label>' +
+            '<input class="pe-input" type="text" id="legal_first" name="legal_first"' +
+              ' value="' + esc(val('legal_first')) + '" placeholder="">' +
+          '</div>' +
+          '<div class="pe-field">' +
+            '<label class="pe-label" for="legal_middle">Middle Name</label>' +
+            '<input class="pe-input" type="text" id="legal_middle" name="legal_middle"' +
+              ' value="' + esc(val('legal_middle')) + '" placeholder="">' +
+          '</div>' +
+          '<div class="pe-field">' +
+            '<label class="pe-label" for="legal_last">Last Name</label>' +
+            '<input class="pe-input" type="text" id="legal_last" name="legal_last"' +
+              ' value="' + esc(val('legal_last')) + '" placeholder="">' +
+          '</div>' +
+          selectHtml('gender', 'Gender', ['Male', 'Female'], val('gender')) +
+          '<div class="pe-field">' +
+            '<label class="pe-label" for="date_of_birth">Date of Birth</label>' +
+            '<input class="pe-input" type="date" id="date_of_birth" name="date_of_birth"' +
+              ' value="' + esc(val('date_of_birth')) + '">' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+
+    /* ── Section 2: Contact ── */
+    var contactSection =
+      '<div class="pe-section">' +
+        '<div class="pe-section__label">Contact Information</div>' +
+        '<div class="pe-grid">' +
+          '<div class="pe-field">' +
+            '<label class="pe-label" for="phone">Mobile / Phone</label>' +
+            '<input class="pe-input" type="tel" id="phone" name="phone"' +
+              ' value="' + esc(val('phone')) + '" placeholder="(555) 000-0000">' +
+          '</div>' +
+          '<div class="pe-field">' +
+            '<label class="pe-label" for="personal_email">Personal Email</label>' +
+            '<input class="pe-input" type="email" id="personal_email" name="personal_email"' +
+              ' value="' + esc(val('personal_email')) + '" placeholder="personal@gmail.com">' +
+            '<div class="pe-hint">Non-TN email for recovery use only — not displayed publicly</div>' +
+          '</div>' +
+          '<div class="pe-field pe-field--full">' +
+            '<label class="pe-label" for="address1">Street Address</label>' +
+            '<input class="pe-input" type="text" id="address1" name="address1"' +
+              ' value="' + esc(val('address1')) + '" placeholder="123 Main St">' +
+          '</div>' +
+          '<div class="pe-field pe-field--full">' +
+            '<label class="pe-label" for="address2">Address Line 2</label>' +
+            '<input class="pe-input" type="text" id="address2" name="address2"' +
+              ' value="' + esc(val('address2')) + '" placeholder="Apt, Suite, Unit…">' +
+          '</div>' +
+          '<div class="pe-field">' +
+            '<label class="pe-label" for="city">City</label>' +
+            '<input class="pe-input" type="text" id="city" name="city"' +
+              ' value="' + esc(val('city')) + '" placeholder="">' +
+          '</div>' +
+          '<div class="pe-field">' +
+            '<label class="pe-label" for="state">State / Province</label>' +
+            '<input class="pe-input" type="text" id="state" name="state"' +
+              ' value="' + esc(val('state')) + '" placeholder="">' +
+          '</div>' +
+          '<div class="pe-field">' +
+            '<label class="pe-label" for="zip">ZIP / Postal Code</label>' +
+            '<input class="pe-input" type="text" id="zip" name="zip"' +
+              ' value="' + esc(val('zip')) + '" placeholder="">' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+
+    /* ── Section 3: Campus ── */
+    var campusSection =
+      '<div class="pe-section">' +
+        '<div class="pe-section__label">Campus</div>' +
+        '<div class="pe-grid">' +
+          selectHtml('location', 'Home Campus / School', campusOptions, val('location')) +
+        '</div>' +
+      '</div>';
+
+    /* ── Section 4: Emergency Contact 1 ── */
+    var ec1Section =
+      '<div class="pe-section">' +
+        '<div class="pe-section__label">Emergency Contact 1</div>' +
+        '<div class="pe-grid">' +
+          '<div class="pe-field">' +
+            '<label class="pe-label" for="emergency_name">Name</label>' +
+            '<input class="pe-input" type="text" id="emergency_name" name="emergency_name"' +
+              ' value="' + esc(val('emergency_name')) + '" placeholder="Full name">' +
+          '</div>' +
+          '<div class="pe-field">' +
+            '<label class="pe-label" for="emergency_phone">Phone</label>' +
+            '<input class="pe-input" type="tel" id="emergency_phone" name="emergency_phone"' +
+              ' value="' + esc(val('emergency_phone')) + '" placeholder="(555) 000-0000">' +
+          '</div>' +
+          '<div class="pe-field pe-field--full">' +
+            '<label class="pe-label" for="emergency_relationship">Relationship</label>' +
+            '<input class="pe-input" type="text" id="emergency_relationship" name="emergency_relationship"' +
+              ' value="' + esc(val('emergency_relationship')) + '" placeholder="e.g. Spouse, Parent, Sibling">' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+
+    /* ── Section 5: Emergency Contact 2 ── */
+    var ec2Section =
+      '<div class="pe-section">' +
+        '<div class="pe-section__label">Emergency Contact 2</div>' +
+        '<div class="pe-grid">' +
+          '<div class="pe-field">' +
+            '<label class="pe-label" for="ec2_name">Name</label>' +
+            '<input class="pe-input" type="text" id="ec2_name" name="ec2_name"' +
+              ' value="' + esc(val('ec2_name')) + '" placeholder="Full name">' +
+          '</div>' +
+          '<div class="pe-field">' +
+            '<label class="pe-label" for="ec2_phone">Phone</label>' +
+            '<input class="pe-input" type="tel" id="ec2_phone" name="ec2_phone"' +
+              ' value="' + esc(val('ec2_phone')) + '" placeholder="(555) 000-0000">' +
+          '</div>' +
+          '<div class="pe-field pe-field--full">' +
+            '<label class="pe-label" for="ec2_relationship">Relationship</label>' +
+            '<input class="pe-input" type="text" id="ec2_relationship" name="ec2_relationship"' +
+              ' value="' + esc(val('ec2_relationship')) + '" placeholder="e.g. Sibling, Friend, Parent">' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+
+    /* ── Section 6: Skills & Ministry ── */
+    var skillsSection =
+      '<div class="pe-section">' +
+        '<div class="pe-section__label">Skills &amp; Ministry</div>' +
+        '<div class="pe-grid">' +
+          '<div class="pe-field pe-field--full">' +
+            '<label class="pe-label" for="skills">Skills</label>' +
+            '<input class="pe-input" type="text" id="skills" name="skills"' +
+              ' value="' + esc(val('skills')) + '" placeholder="Comma-separated, e.g. Piano, Graphic Design, Teaching">' +
+          '</div>' +
+          '<div class="pe-field pe-field--full">' +
+            '<label class="pe-label" for="ministry_interests">Ministry Interests</label>' +
+            '<input class="pe-input" type="text" id="ministry_interests" name="ministry_interests"' +
+              ' value="' + esc(val('ministry_interests')) + '" placeholder="e.g. Youth Ministry, Worship, Teaching">' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+
+    /* ── Section 7: Insurance ── */
+    var insuranceSection =
+      '<div class="pe-section">' +
+        '<div class="pe-section__label">Insurance</div>' +
+        '<div class="pe-grid">' +
+          '<div class="pe-field">' +
+            '<label class="pe-label" for="insurance_provider">Provider</label>' +
+            '<input class="pe-input" type="text" id="insurance_provider" name="insurance_provider"' +
+              ' value="' + esc(val('insurance_provider')) + '" placeholder="e.g. Blue Cross">' +
+          '</div>' +
+          '<div class="pe-field">' +
+            '<label class="pe-label" for="insurance_policy">Policy Number</label>' +
+            '<input class="pe-input" type="text" id="insurance_policy" name="insurance_policy"' +
+              ' value="' + esc(val('insurance_policy')) + '" placeholder="Subscriber / Policy ID">' +
+          '</div>' +
+          '<div class="pe-field pe-field--full">' +
+            '<label class="pe-label" for="insurance_dependents">Dependents Listed</label>' +
+            '<input class="pe-input" type="text" id="insurance_dependents" name="insurance_dependents"' +
+              ' value="' + esc(val('insurance_dependents')) + '" placeholder="Yes / No / Names">' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+
+    /* ── Submit block ── */
+    var submitBlock =
+      '<div class="pe-submit-wrap">' +
+        '<button class="pe-btn" id="submit-btn" onclick="submitForm()">Save Changes</button>' +
+        '<div class="pe-status pe-status--loading" id="status-loading">⏳ Saving your changes…</div>' +
+        '<div class="pe-status pe-status--success" id="status-success"></div>' +
+        '<div class="pe-status pe-status--error"   id="status-error"></div>' +
+      '</div>';
+
+    container.innerHTML =
+      contextCard +
+      nameSection +
+      contactSection +
+      campusSection +
+      ec1Section +
+      ec2Section +
+      skillsSection +
+      insuranceSection +
+      submitBlock;
+  }
+
+  /* ── Submit ── */
+  function submitForm() {
+    var btn     = document.getElementById('submit-btn');
+    var loading = document.getElementById('status-loading');
+    var success = document.getElementById('status-success');
+    var error   = document.getElementById('status-error');
+
+    /* Collect all editable field IDs */
+    var fieldIds = [
+      'hebrew_first', 'hebrew_last',
+      'legal_first', 'legal_middle', 'legal_last',
+      'gender', 'date_of_birth',
+      'phone', 'personal_email',
+      'address1', 'address2', 'city', 'state', 'zip',
+      'location',
+      'emergency_name', 'emergency_phone', 'emergency_relationship',
+      'ec2_name', 'ec2_phone', 'ec2_relationship',
+      'skills', 'ministry_interests',
+      'insurance_provider', 'insurance_policy', 'insurance_dependents',
+    ];
+
+    var formData = { email: userData.email };
+    var hasChange = false;
+
+    fieldIds.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      var newVal = el.value.trim();
+      formData[id] = newVal;
+      if (newVal && newVal !== (userData[id] || '').trim()) {
+        hasChange = true;
+      }
+    });
+
+    if (!hasChange) {
+      error.textContent = 'No changes detected. Update a field and try again.';
+      error.style.display = 'block';
+      success.style.display = 'none';
+      loading.style.display = 'none';
+      return;
+    }
+
+    btn.disabled = true;
+    loading.style.display = 'block';
+    success.style.display = 'none';
+    error.style.display   = 'none';
+
+    google.script.run
+      .withSuccessHandler(function(result) {
+        loading.style.display = 'none';
+        btn.disabled = false;
+
+        if (result.success) {
+          /* Update local cache */
+          result.updated.forEach(function(f) {
+            if (formData[f] !== undefined) userData[f] = formData[f];
+          });
+
+          /* Human-readable field name map */
+          var labels = {
+            hebrew_first: 'Hebrew First', hebrew_last: 'Hebrew Last',
+            legal_first: 'First', legal_middle: 'Middle', legal_last: 'Last',
+            gender: 'Gender', date_of_birth: 'Date of Birth',
+            phone: 'Phone', personal_email: 'Personal Email',
+            address1: 'Address', address2: 'Address 2', city: 'City', state: 'State', zip: 'ZIP',
+            location: 'Campus',
+            emergency_name: 'EC1 Name', emergency_phone: 'EC1 Phone', emergency_relationship: 'EC1 Relationship',
+            ec2_name: 'EC2 Name', ec2_phone: 'EC2 Phone', ec2_relationship: 'EC2 Relationship',
+            skills: 'Skills', ministry_interests: 'Ministry Interests',
+            insurance_provider: 'Ins. Provider', insurance_policy: 'Policy #', insurance_dependents: 'Dependents',
+          };
+
+          var fieldList = result.updated.map(function(f) {
+            return labels[f] || f;
+          }).join(', ');
+
+          success.innerHTML = '✅ <strong>Saved!</strong>' +
+            (fieldList ? ' Updated: ' + fieldList + '.' : ' Your profile is up to date.');
+          success.style.display = 'block';
+
+          if (result.updated.length === 0) {
+            success.innerHTML = '✅ No changes — your profile is already up to date.';
+          }
+        } else {
+          error.textContent = '❌ ' + (result.message || 'Something went wrong. Please try again.');
+          error.style.display = 'block';
+        }
+      })
+      .withFailureHandler(function(err) {
+        loading.style.display = 'none';
+        btn.disabled = false;
+        error.textContent = '❌ Error: ' + (err.message || 'Could not reach the server. Try again.');
+        error.style.display = 'block';
+      })
+      .updateMyProfile(formData);
+  }
+
+  /* Build on load */
+  buildUI();
+</script>
+
+</body>
+</html>

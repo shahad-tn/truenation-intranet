@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Size Comparison — v1 vs v2 vs v3</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #e8e8e8;
+    margin: 0;
+    padding: 24px;
+    color: #130D0A;
+  }
+  .page-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 1.5rem;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    color: #7C1316; margin-bottom: 4px;
+  }
+  .page-sub { font-size: 0.875rem; color: #666; margin-bottom: 28px; }
+
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 1.25rem;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    color: #7C1316; margin: 0 0 16px;
+    padding-bottom: 8px; border-bottom: 2px solid #F2EDE4;
+  }
+
+  /* 3-column grid */
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 40px;
+  }
+
+  .col-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 0.75rem;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 8px; padding: 5px 12px;
+    border-radius: 4px; display: inline-block;
+  }
+  .label-v1 { background: #ffd6d6; color: #8b0000; }
+  .label-v2 { background: #fff3cc; color: #7a5c00; }
+  .label-v3 { background: #d0f0d0; color: #1a5c1a; }
+
+  .panel {
+    background: white; border-radius: 10px;
+    padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  .size-note {
+    font-size: 0.65rem; background: #f5f5f5; color: #555;
+    padding: 8px 12px; border-radius: 6px; margin-top: 14px;
+    line-height: 1.8; font-family: monospace;
+  }
+  .v1c { color: #c0392b; }
+  .v2c { color: #c07800; }
+  .v3c { color: #27ae60; }
+
+  /* shared tag colors */
+  .tag-all    { background: #E3F2FD; color: #1565C0; }
+  .tag-it     { background: #F3E5F5; color: #7B1FA2; }
+
+  /* ══════════════════════════════
+     ANNOUNCEMENTS V1 (original)
+     ══════════════════════════════ */
+  .ann-v1 .ann-item {
+    background: white; border: 1px solid #F2EDE4;
+    border-left: 4px solid #C9972C; border-radius: 0 8px 8px 0;
+    padding: 16px 20px; margin-bottom: 10px;
+  }
+  .ann-v1 .ann-date {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: #C9972C; margin-bottom: 4px;
+  }
+  .ann-v1 .ann-title { font-weight: 700; font-size: 16px; color: #130D0A; margin-bottom: 6px; line-height: 1.3; }
+  .ann-v1 .ann-body  { font-size: 14px; color: #3D2E28; line-height: 1.55; }
+  .ann-v1 .ann-tag {
+    display: inline-block; font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600; font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.07em; padding: 2px 8px; border-radius: 100px; margin-left: 8px;
+  }
+
+  /* ══════════════════════════════
+     ANNOUNCEMENTS V2 (last update)
+     ══════════════════════════════ */
+  .ann-v2 .ann-item {
+    background: white; border: 1px solid #F2EDE4;
+    border-left: 5px solid #C9972C; border-radius: 0 8px 8px 0;
+    padding: 20px 24px; margin-bottom: 12px;
+  }
+  .ann-v2 .ann-date {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+    font-size: 16px; text-transform: uppercase; letter-spacing: 0.08em;
+    color: #C9972C; margin-bottom: 6px;
+  }
+  .ann-v2 .ann-title { font-weight: 700; font-size: 22px; color: #130D0A; margin-bottom: 8px; line-height: 1.3; }
+  .ann-v2 .ann-body  { font-size: 17px; color: #3D2E28; line-height: 1.6; }
+  .ann-v2 .ann-tag {
+    display: inline-block; font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600; font-size: 14px; text-transform: uppercase;
+    letter-spacing: 0.07em; padding: 3px 10px; border-radius: 100px; margin-left: 8px;
+  }
+
+  /* ══════════════════════════════
+     ANNOUNCEMENTS V3 (proposed)
+     ══════════════════════════════ */
+  .ann-v3 .ann-item {
+    background: white; border: 1px solid #F2EDE4;
+    border-left: 5px solid #C9972C; border-radius: 0 8px 8px 0;
+    padding: 20px 24px; margin-bottom: 12px;
+  }
+  .ann-v3 .ann-date {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+    font-size: 14px; text-transform: uppercase; letter-spacing: 0.08em;
+    color: #C9972C; margin-bottom: 6px;
+  }
+  .ann-v3 .ann-title { font-weight: 700; font-size: 20px; color: #130D0A; margin-bottom: 8px; line-height: 1.3; }
+  .ann-v3 .ann-body  { font-size: 15px; color: #3D2E28; line-height: 1.6; }
+  .ann-v3 .ann-tag {
+    display: inline-block; font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600; font-size: 12px; text-transform: uppercase;
+    letter-spacing: 0.07em; padding: 3px 10px; border-radius: 100px; margin-left: 8px;
+  }
+
+  /* ══════════════════════════════
+     QUICK LINKS V1 (original)
+     ══════════════════════════════ */
+  .ql-v1 { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+  .ql-v1 .ql-tile {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 24px 12px 20px; background: white;
+    border: 1px solid #F2EDE4; border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(19,13,10,0.07); text-decoration: none;
+    color: #130D0A; min-height: 100px;
+  }
+  .ql-v1 .ql-icon  { font-size: 32px; margin-bottom: 10px; line-height: 1; }
+  .ql-v1 .ql-label {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    font-size: 14px; text-transform: uppercase; letter-spacing: 0.06em; color: #7C1316;
+  }
+
+  /* ══════════════════════════════
+     QUICK LINKS V2 (last update)
+     ══════════════════════════════ */
+  .ql-v2 { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+  .ql-v2 .ql-tile {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 32px 16px 28px; background: white;
+    border: 1px solid #F2EDE4; border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(19,13,10,0.07); text-decoration: none;
+    color: #130D0A; min-height: 140px;
+  }
+  .ql-v2 .ql-icon  { font-size: 48px; margin-bottom: 14px; line-height: 1; }
+  .ql-v2 .ql-label {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    font-size: 18px; text-transform: uppercase; letter-spacing: 0.06em; color: #7C1316;
+  }
+
+  /* ══════════════════════════════
+     QUICK LINKS V3 (proposed)
+     ══════════════════════════════ */
+  .ql-v3 { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+  .ql-v3 .ql-tile {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 24px 12px 20px; background: white;
+    border: 1px solid #F2EDE4; border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(19,13,10,0.07); text-decoration: none;
+    color: #130D0A; min-height: 110px;
+  }
+  .ql-v3 .ql-icon  { font-size: 48px; margin-bottom: 14px; line-height: 1; }
+  .ql-v3 .ql-label {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    font-size: 18px; text-transform: uppercase; letter-spacing: 0.06em; color: #7C1316;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-title">Size Comparison — V1 vs V2 vs V3</div>
+<div class="page-sub">V1 = original &nbsp;|&nbsp; V2 = last update &nbsp;|&nbsp; V3 = your proposed sizes. Tell me which to apply.</div>
+
+<!-- ══════════════════════════════════════════
+     ANNOUNCEMENTS
+     ══════════════════════════════════════════ -->
+<div class="section-title">Announcements</div>
+<div class="compare-row">
+
+  <!-- V1 -->
+  <div>
+    <div class="col-label label-v1">V1 — Original</div>
+    <div class="panel">
+      <div class="ann-v1">
+        <div class="ann-item">
+          <div class="ann-date">March 27, 2026 <span class="ann-tag tag-all">All Staff</span></div>
+          <div class="ann-title">Welcome to the New True Nation Intranet</div>
+          <div class="ann-body">Shalawam family. The new portal is live. Use the Quick Links above to navigate to your department, find a team member, or check the calendar.</div>
+        </div>
+        <div class="ann-item">
+          <div class="ann-date">Coming Soon — Week 3 <span class="ann-tag tag-it">IT</span></div>
+          <div class="ann-title">Submit Announcements via Form</div>
+          <div class="ann-body">Department leads will soon be able to submit announcements through a Google Form.</div>
+        </div>
+      </div>
+      <div class="size-note">
+        Date:  <span class="v1c">11px</span><br>
+        Title: <span class="v1c">16px</span><br>
+        Body:  <span class="v1c">14px</span><br>
+        Tag:   <span class="v1c">10px</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- V2 -->
+  <div>
+    <div class="col-label label-v2">V2 — Last Update</div>
+    <div class="panel">
+      <div class="ann-v2">
+        <div class="ann-item">
+          <div class="ann-date">March 27, 2026 <span class="ann-tag tag-all">All Staff</span></div>
+          <div class="ann-title">Welcome to the New True Nation Intranet</div>
+          <div class="ann-body">Shalawam family. The new portal is live. Use the Quick Links above to navigate to your department, find a team member, or check the calendar.</div>
+        </div>
+        <div class="ann-item">
+          <div class="ann-date">Coming Soon — Week 3 <span class="ann-tag tag-it">IT</span></div>
+          <div class="ann-title">Submit Announcements via Form</div>
+          <div class="ann-body">Department leads will soon be able to submit announcements through a Google Form.</div>
+        </div>
+      </div>
+      <div class="size-note">
+        Date:  <span class="v2c">16px</span><br>
+        Title: <span class="v2c">22px</span><br>
+        Body:  <span class="v2c">17px</span><br>
+        Tag:   <span class="v2c">14px</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- V3 -->
+  <div>
+    <div class="col-label label-v3">V3 — Your Proposed</div>
+    <div class="panel">
+      <div class="ann-v3">
+        <div class="ann-item">
+          <div class="ann-date">March 27, 2026 <span class="ann-tag tag-all">All Staff</span></div>
+          <div class="ann-title">Welcome to the New True Nation Intranet</div>
+          <div class="ann-body">Shalawam family. The new portal is live. Use the Quick Links above to navigate to your department, find a team member, or check the calendar.</div>
+        </div>
+        <div class="ann-item">
+          <div class="ann-date">Coming Soon — Week 3 <span class="ann-tag tag-it">IT</span></div>
+          <div class="ann-title">Submit Announcements via Form</div>
+          <div class="ann-body">Department leads will soon be able to submit announcements through a Google Form.</div>
+        </div>
+      </div>
+      <div class="size-note">
+        Date:  <span class="v3c">14px</span><br>
+        Title: <span class="v3c">20px</span><br>
+        Body:  <span class="v3c">15px</span><br>
+        Tag:   <span class="v3c">12px</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     QUICK LINKS
+     ══════════════════════════════════════════ -->
+<div class="section-title">Quick Links</div>
+<div class="compare-row">
+
+  <!-- V1 -->
+  <div>
+    <div class="col-label label-v1">V1 — Original</div>
+    <div class="panel">
+      <div class="ql-v1">
+        <div class="ql-tile"><div class="ql-icon">👥</div><div class="ql-label">Our People</div></div>
+        <div class="ql-tile"><div class="ql-icon">🏢</div><div class="ql-label">Departments</div></div>
+        <div class="ql-tile"><div class="ql-icon">📚</div><div class="ql-label">T.E.L.A.</div></div>
+        <div class="ql-tile"><div class="ql-icon">🌍</div><div class="ql-label">Locations</div></div>
+        <div class="ql-tile"><div class="ql-icon">📅</div><div class="ql-label">Calendar</div></div>
+        <div class="ql-tile"><div class="ql-icon">🗂️</div><div class="ql-label">Resources</div></div>
+        <div class="ql-tile"><div class="ql-icon">👑</div><div class="ql-label">Leadership</div></div>
+        <div class="ql-tile"><div class="ql-icon">💬</div><div class="ql-label">Chat</div></div>
+      </div>
+      <div class="size-note">
+        Icon:    <span class="v1c">32px</span><br>
+        Label:   <span class="v1c">14px</span><br>
+        Height:  <span class="v1c">min 100px</span><br>
+        Padding: <span class="v1c">24px 12px 20px</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- V2 -->
+  <div>
+    <div class="col-label label-v2">V2 — Last Update</div>
+    <div class="panel">
+      <div class="ql-v2">
+        <div class="ql-tile"><div class="ql-icon">👥</div><div class="ql-label">Our People</div></div>
+        <div class="ql-tile"><div class="ql-icon">🏢</div><div class="ql-label">Departments</div></div>
+        <div class="ql-tile"><div class="ql-icon">📚</div><div class="ql-label">T.E.L.A.</div></div>
+        <div class="ql-tile"><div class="ql-icon">🌍</div><div class="ql-label">Locations</div></div>
+        <div class="ql-tile"><div class="ql-icon">📅</div><div class="ql-label">Calendar</div></div>
+        <div class="ql-tile"><div class="ql-icon">🗂️</div><div class="ql-label">Resources</div></div>
+        <div class="ql-tile"><div class="ql-icon">👑</div><div class="ql-label">Leadership</div></div>
+        <div class="ql-tile"><div class="ql-icon">💬</div><div class="ql-label">Chat</div></div>
+      </div>
+      <div class="size-note">
+        Icon:    <span class="v2c">48px</span><br>
+        Label:   <span class="v2c">18px</span><br>
+        Height:  <span class="v2c">min 140px</span><br>
+        Padding: <span class="v2c">32px 16px 28px</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- V3 -->
+  <div>
+    <div class="col-label label-v3">V3 — Your Proposed</div>
+    <div class="panel">
+      <div class="ql-v3">
+        <div class="ql-tile"><div class="ql-icon">👥</div><div class="ql-label">Our People</div></div>
+        <div class="ql-tile"><div class="ql-icon">🏢</div><div class="ql-label">Departments</div></div>
+        <div class="ql-tile"><div class="ql-icon">📚</div><div class="ql-label">T.E.L.A.</div></div>
+        <div class="ql-tile"><div class="ql-icon">🌍</div><div class="ql-label">Locations</div></div>
+        <div class="ql-tile"><div class="ql-icon">📅</div><div class="ql-label">Calendar</div></div>
+        <div class="ql-tile"><div class="ql-icon">🗂️</div><div class="ql-label">Resources</div></div>
+        <div class="ql-tile"><div class="ql-icon">👑</div><div class="ql-label">Leadership</div></div>
+        <div class="ql-tile"><div class="ql-icon">💬</div><div class="ql-label">Chat</div></div>
+      </div>
+      <div class="size-note">
+        Icon:    <span class="v3c">48px</span><br>
+        Label:   <span class="v3c">18px</span><br>
+        Height:  <span class="v3c">min 110px</span><br>
+        Padding: <span class="v3c">24px 12px 20px</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

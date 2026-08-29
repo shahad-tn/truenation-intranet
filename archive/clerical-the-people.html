@@ -1,0 +1,98 @@
+<!--
+  TRUE NATION INTRANET — CLERICAL — THE PEOPLE
+  ──────────────────────
+  Embed on the sub-group page under Clerical.
+  [REPLACE] action button hrefs with real values.
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{margin:0;padding:0;background:transparent}
+  .sg-wrap{font-family:'DM Sans',sans-serif;width:100%;padding:0 0 4px;display:flex;flex-direction:column;gap:12px}
+  .sg-overview{background:#fff;border:1px solid #F2EDE4;border-radius:8px;padding:18px 20px;box-shadow:0 2px 6px rgba(19,13,10,.05)}
+  .sg-dept{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#C9972C;margin-bottom:4px}
+  .sg-desc{font-size:14px;color:#3D2E28;line-height:1.65;margin-bottom:14px}
+  .sg-lead-row{display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid #F2EDE4}
+  .sg-lead-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9a8e87}
+  .sg-lead-name{font-size:13px;font-weight:500;color:#3D2E28}
+  .action-row{display:flex;flex-wrap:wrap;gap:10px}
+  .act-btn{display:flex;align-items:center;gap:10px;padding:11px 18px;border-radius:6px;border:1.5px solid;text-decoration:none;flex:1;min-width:160px;transition:opacity .15s}
+  .act-btn:hover{opacity:.85}
+  .act-icon{font-size:18px;flex-shrink:0}
+  .act-label{display:block;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  .act-sub{display:block;font-size:11px;opacity:.75;margin-top:1px}
+  .btn-wine{background:#7C1316;color:#fff;border-color:#7C1316}
+  .btn-outline{background:transparent;color:#3D2E28;border-color:#E8DDD0}
+  .btn-gold{background:transparent;color:#A07820;border-color:#C9972C}
+  .sg-form{border:1.5px dashed #C9972C;border-radius:8px;padding:18px 20px;text-align:center;background:#FAF8F4}
+  .sg-form-tag{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;color:#A07820;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;color:#3D2E28;text-transform:uppercase;margin-bottom:5px}
+  .sg-form-desc{font-size:12px;color:#9a8e87;line-height:1.5;margin-bottom:10px}
+  .sg-form-steps{background:#fff;border:1px solid #E8DDD0;border-radius:6px;padding:9px 14px;text-align:left;font-size:11px;color:#9a8e87;line-height:1.7;display:inline-block}
+  @media(max-width:500px){
+    .action-row{flex-direction:column}
+    .act-btn{min-width:unset;width:100%}
+  }
+</style>
+
+<div class="sg-wrap">
+
+  <!-- OVERVIEW -->
+<!-- SUGGESTIONS — add natively in Google Sites:
+     Page badge / dept: Clerical
+     Page description:  Member-relations committee handling onboarding, records, and the communication channels between leadership and the congregation.
+     Members:                       Kabash, Shahad, Nayah, Sarah
+-->
+
+  <!-- ACTION BUTTONS -->
+  <div class="action-row">
+    <a class="act-btn btn-wine" href="#" target="_blank">
+      <span class="act-icon">💬</span>
+      <span>
+        <span class="act-label">Open Chat Space</span>
+        <span class="act-sub">The People team communication</span>
+      </span>
+    </a>
+    <a class="act-btn btn-outline" href="#" target="_blank">
+      <span class="act-icon">📁</span>
+      <span>
+        <span class="act-label">Drive Folder</span>
+        <span class="act-sub">Shared documents</span>
+      </span>
+    </a>
+    <a class="act-btn btn-gold" href="mailto:clerical@truenation.org">
+      <span class="act-icon">✉️</span>
+      <span>
+        <span class="act-label">Email Dept</span>
+        <span class="act-sub">clerical@truenation.org</span>
+      </span>
+    </a>
+  </div>
+
+  <!-- FORM PLACEHOLDER -->
+  <div class="sg-form">
+    <div class="sg-form-tag">Coming Soon</div>
+    <div class="sg-form-title">The People Request Form</div>
+    <div class="sg-form-desc">Submit requests directly to this team through this form.</div>
+    <div class="sg-form-steps">
+      1. Create the form in Google Forms<br>
+      2. Click Send → Embed &lt;&gt; → Copy the iframe src URL<br>
+      3. In Google Sites, insert an Embed block<br>
+      4. Paste the iframe src URL and resize as needed
+    </div>
+  </div>
+
+</div>
+
+<script>
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:'tnic-height',height:h,id:'clerical-the-people'},'*');
+    }
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sendHeight);}
+    else{sendHeight();}
+    window.addEventListener('resize',sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+</script>

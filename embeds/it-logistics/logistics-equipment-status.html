@@ -1,0 +1,108 @@
+<!--
+  TRUE NATION INTRANET — LOGISTICS: EQUIPMENT STATUS BOARD
+  ──────────────────────────────────────────────────────────
+  Embed on the Logistics sub-group page (IT / Information Technology).
+  Place below the "Communication & Files" action buttons.
+  [REPLACE] all placeholder rows with real equipment inventory.
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{margin:0;padding:0;background:transparent}
+  .lg-wrap{font-family:'DM Sans',sans-serif;width:100%;padding:0 0 4px}
+  .lg-module{background:#fff;border:1px solid #BFBFC7;border-radius:8px;box-shadow:0 2px 6px rgba(19,13,10,.05)}
+  .lg-module-body{padding:14px 18px}
+  .status{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.07em;padding:2px 9px;border-radius:100px}
+  .s-available  {background:#E8F5E9;color:#2E7D32}
+  .s-inuse      {background:#FFF3E0;color:#E65100}
+  .s-checkedout {background:#F3E5F5;color:#6A1B9A}
+  .s-maintenance{background:#FFEBEE;color:#B71C1C}
+  .eq-table{width:100%;border-collapse:collapse}
+  .eq-table th{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.07em;color: #785710;text-align:left;padding:0 0 10px;border-bottom:1px solid #BFBFC7}
+  .eq-table td{font-size:14px;color:#56565E;padding:10px 0;border-bottom:1px solid #BFBFC7;vertical-align:middle}
+  .eq-table tr:last-child td{border-bottom:none}
+  .eq-name{font-weight:500;color:#26262A}
+  .eq-note{font-size:12px;color:#888;margin-top:2px}
+  .eq-table th:last-child,.eq-table td:last-child{text-align:right}
+  @media(max-width:600px){
+    .eq-table th:nth-child(3),.eq-table td:nth-child(3){display:none}
+  }
+</style>
+
+<div class="lg-wrap">
+  <div class="lg-module">
+    <div class="lg-module-body">
+      <table class="eq-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Location</th>
+            <th>Last Updated</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- [REPLACE] with real equipment inventory -->
+          <tr>
+            <td>
+              <div class="eq-name">Projector — Epson 4K</div>
+              <div class="eq-note">Main sanctuary unit</div>
+            </td>
+            <td>AV Closet A</td>
+            <td>Mar 22</td>
+            <td><span class="status s-available">Available</span></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="eq-name">Extension Cord Set (×6)</div>
+              <div class="eq-note">Heavy-duty 25ft</div>
+            </td>
+            <td>Storage Room B</td>
+            <td>Mar 20</td>
+            <td><span class="status s-checkedout">Checked Out</span></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="eq-name">Folding Tables (×12)</div>
+              <div class="eq-note">6ft rectangular</div>
+            </td>
+            <td>Basement Storage</td>
+            <td>Mar 28</td>
+            <td><span class="status s-inuse">In Use</span></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="eq-name">PA System — Portable</div>
+              <div class="eq-note">Yamaha Stagepas 400BT</div>
+            </td>
+            <td>AV Closet A</td>
+            <td>Mar 15</td>
+            <td><span class="status s-maintenance">Maintenance</span></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="eq-name">Hand Trucks (×3)</div>
+              <div class="eq-note">Heavy-duty, 800lb capacity</div>
+            </td>
+            <td>Loading Dock</td>
+            <td>Mar 28</td>
+            <td><span class="status s-available">Available</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:'tnic-height',height:h,id:'logistics_equipment'},'*');
+    }
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sendHeight);}
+    else{sendHeight();}
+    window.addEventListener('resize',sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+</script>

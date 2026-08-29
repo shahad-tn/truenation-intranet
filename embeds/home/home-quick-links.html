@@ -1,0 +1,136 @@
+<!--
+  TRUE NATION INTRANET — QUICK LINKS GRID COMPONENT
+  ───────────────────────────────────────────────────
+  Embed this via Insert → Embed → Embed Code in Google Sites.
+  Place BELOW a native Sites "QUICK LINKS" heading.
+  This embed has NO outer padding or max-width — it fills
+  the full section width that Sites provides.
+
+  [REPLACE] Update each href below with your actual Google Sites page URLs.
+  To find a page URL: open the published site → navigate to the page → copy the URL from the address bar.
+
+  CURRENT PLACEHOLDERS (update these 8 links):
+    /our-people       → e.g. https://sites.google.com/truenation.org/intranet/our-people
+    /departments      → e.g. https://sites.google.com/truenation.org/intranet/departments
+    /tela             → e.g. https://sites.google.com/truenation.org/intranet/tela
+    /locations        → e.g. https://sites.google.com/truenation.org/intranet/locations
+    /calendar-events  → e.g. https://sites.google.com/truenation.org/intranet/calendar
+    /resources        → e.g. https://sites.google.com/truenation.org/intranet/resources
+    /leadership-hub   → e.g. https://sites.google.com/truenation.org/intranet/leadership
+    Google Chat link  → already points to https://chat.google.com (no change needed)
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  .ql-wrap {
+    background: #E8E8EC;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .ql-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .ql-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 24px 12px 20px;
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(19,13,10,0.07);
+    text-decoration: none;
+    color: #26262A;
+    min-height: 110px;
+    transition: box-shadow 0.2s, transform 0.15s;
+  }
+
+  .ql-tile:hover {
+    box-shadow: 0 6px 18px rgba(19,13,10,0.13);
+    transform: translateY(-3px);
+    border-color: #785710;
+  }
+
+  .ql-icon {
+    font-size: 3rem;
+    margin-bottom: 14px;
+    line-height: 1;
+  }
+
+  .ql-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #7C1316;
+    line-height: 1.2;
+  }
+
+  @media (max-width: 600px) {
+    .ql-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  }
+  @media (max-width: 400px) {
+    .ql-grid { grid-template-columns: 1fr; gap: 8px; }
+  }
+  @media (min-width: 601px) and (max-width: 800px) {
+    .ql-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+</style>
+
+<div class="ql-wrap">
+<div class="ql-grid">
+
+  <!-- [REPLACE] Each href should be the URL of that Sites page -->
+  <a class="ql-tile" href="/our-people">
+    <div class="ql-icon">👥</div>
+    <div class="ql-label">Our People</div>
+  </a>
+
+  <a class="ql-tile" href="/departments">
+    <div class="ql-icon">🏢</div>
+    <div class="ql-label">Departments</div>
+  </a>
+
+  <a class="ql-tile" href="/tela">
+    <div class="ql-icon">📚</div>
+    <div class="ql-label">T.E.L.A.</div>
+  </a>
+
+  <a class="ql-tile" href="/locations">
+    <div class="ql-icon">🌍</div>
+    <div class="ql-label">Locations</div>
+  </a>
+
+  <a class="ql-tile" href="/calendar-events">
+    <div class="ql-icon">📅</div>
+    <div class="ql-label">Calendar</div>
+  </a>
+
+  <a class="ql-tile" href="/resources">
+    <div class="ql-icon">🗂️</div>
+    <div class="ql-label">Resources</div>
+  </a>
+
+  <a class="ql-tile" href="/leadership-hub">
+    <div class="ql-icon">👑</div>
+    <div class="ql-label">Leadership</div>
+  </a>
+
+  <a class="ql-tile" href="https://chat.google.com" target="_blank">
+    <div class="ql-icon">💬</div>
+    <div class="ql-label">Chat Spaces</div>
+  </a>
+
+</div>
+</div>

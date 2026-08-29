@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<!--
+  TNIC ANNOUNCEMENTS — HOME PAGE BOARD + PUBLIC FEED (MOCK)
+  ========================================================
+  One dataset, two renderings. Toggle at the top switches between:
+    A. MANAGER BOARD — dashboard tab 4. Order, pin, set duration, add home-only posts.
+    B. PUBLIC FEED   — the embed on portal.truenation.org, seen by every member.
+
+  New fields on `items` to support this: home_from, home_until, home_order, home_pin.
+  No second table. Reorder on the left, the right changes. That is the whole point.
+
+  In production: ?page=home (manager) and the home-announcements embed (public)
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home Page Announcements</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --wine:#7C1316; --wine-dk:#5E0E10; --gold:#C9972C;
+    --page:#E8E8EC; --surface:#D8D8DE; --line:#BFBFC7;
+    --onwine:#F2F2F3; --ink:#26262A; --ink-dk:#131316; --muted:#56565E;
+    --ok:#2F6B3F; --ok-bg:#E4EFE7;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--page);color:var(--ink);
+    font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+    font-size:16px;line-height:1.55;}
+  h1,h2,h3{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;margin:0;}
+  button{font-family:'DM Sans',sans-serif;}
+  :focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+
+  .hp-top{background:var(--wine);color:var(--onwine);padding:20px 22px;}
+  .hp-in{max-width:980px;margin:0 auto;}
+  .hp-kick{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:12px;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin:0 0 3px;}
+  .hp-h1{font-weight:700;font-size:29px;letter-spacing:.03em;line-height:1.1;margin-bottom:14px;}
+  .hp-toggle{display:flex;gap:6px;flex-wrap:wrap;}
+  .hp-tg{background:rgba(255,255,255,.12);border:2px solid transparent;color:var(--onwine);
+    font-size:13.5px;font-weight:500;padding:9px 16px;border-radius:7px;cursor:pointer;}
+  .hp-tg:hover{background:rgba(255,255,255,.2);}
+  .hp-tg[aria-pressed="true"]{background:var(--onwine);color:var(--wine);font-weight:700;border-color:var(--gold);}
+
+  .hp-wrap{max-width:980px;margin:0 auto;padding:22px 22px 70px;}
+  .hp-explain{background:#fff;border:1px solid var(--line);border-left:6px solid var(--gold);
+    border-radius:10px;padding:14px 18px;margin:0 0 20px;font-size:14px;}
+  .hp-explain b{color:var(--wine);}
+
+  /* ---------- Manager board ---------- */
+  .hp-sec{font-size:15px;font-weight:700;letter-spacing:.14em;color:var(--ink);
+    margin:26px 0 12px;padding-bottom:7px;border-bottom:2px solid var(--surface);}
+  .hp-sec:first-of-type{margin-top:0;}
+  .hp-row{background:#fff;border:1px solid var(--line);border-radius:10px;
+    padding:14px 16px;margin:0 0 10px;display:flex;gap:13px;align-items:flex-start;}
+  .hp-row[data-pin="1"]{border-left:6px solid var(--gold);}
+  .hp-grip{color:var(--muted);font-size:16px;line-height:1.3;cursor:grab;user-select:none;flex:0 0 auto;}
+  .hp-main{flex:1;min-width:0;}
+  .hp-t{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;
+    letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin:0 0 3px;}
+  .hp-b{margin:0 0 8px;font-size:14.5px;}
+  .hp-meta{display:flex;flex-wrap:wrap;gap:5px 14px;font-size:12px;color:var(--muted);}
+  .hp-meta b{color:var(--ink);font-weight:500;}
+  .hp-badge{font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+    padding:3px 8px;border-radius:4px;background:var(--surface);color:var(--ink);}
+  .hp-badge.pin{background:var(--gold);color:var(--ink-dk);}
+  .hp-badge.both{background:var(--ok-bg);color:var(--ok);}
+  .hp-ctrls{display:flex;flex-direction:column;gap:5px;flex:0 0 auto;}
+  .hp-mini{background:#fff;border:1px solid var(--line);color:var(--ink);font-size:11.5px;
+    font-weight:600;padding:5px 10px;border-radius:5px;cursor:pointer;white-space:nowrap;}
+  .hp-mini:hover{border-color:var(--gold);}
+  .hp-mini[disabled]{opacity:.35;cursor:default;}
+
+  .hp-add{background:var(--wine);border:2px solid var(--wine);color:var(--onwine);
+    font-size:14px;font-weight:700;padding:11px 20px;border-radius:8px;cursor:pointer;margin-top:6px;}
+  .hp-add:hover{background:var(--wine-dk);}
+
+  /* ---------- Public feed ---------- */
+  .pf-frame{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  .pf-bar{background:var(--surface);padding:8px 14px;font-size:11.5px;color:var(--muted);
+    border-bottom:1px solid var(--line);}
+  .pf-body{padding:24px;}
+  .pf-h2{font-size:23px;letter-spacing:.09em;color:var(--wine);margin-bottom:3px;}
+  .pf-sub{font-size:13px;color:var(--muted);margin:0 0 20px;}
+  .pf-card{border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:0 0 12px;background:#fff;}
+  .pf-card.pin{border-left:6px solid var(--gold);background:#FFFDF7;}
+  .pf-pin{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--ink-dk);background:var(--gold);padding:3px 9px;border-radius:4px;
+    display:inline-block;margin-bottom:7px;}
+  .pf-t{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:20px;
+    letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin:0 0 5px;}
+  .pf-b{margin:0 0 9px;font-size:15px;}
+  .pf-f{font-size:12.5px;color:var(--muted);border-top:1px solid var(--surface);padding-top:9px;margin:0;}
+  .pf-f b{color:var(--ink);font-weight:500;}
+  .pf-perm{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;padding-top:18px;border-top:2px solid var(--surface);}
+  .pf-tile{flex:1 1 150px;border:1px solid var(--line);border-radius:9px;padding:14px;
+    text-align:center;font-size:13.5px;font-weight:600;color:var(--wine);background:#fff;}
+  .pf-tile span{display:block;font-size:11.5px;font-weight:400;color:var(--muted);margin-top:3px;}
+
+  .hp-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(120%);
+    background:var(--ink-dk);color:var(--onwine);padding:11px 20px;border-radius:8px;
+    font-size:13.5px;transition:transform .25s ease;z-index:50;}
+  .hp-toast.show{transform:translateX(-50%) translateY(0);}
+
+  @media (max-width:620px){
+    .hp-row{flex-wrap:wrap;}
+    .hp-ctrls{flex-direction:row;width:100%;}
+    .hp-h1{font-size:24px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hp-top">
+  <div class="hp-in">
+    <p class="hp-kick">True Nation &middot; Intranet</p>
+    <h1 class="hp-h1">Home Page Announcements</h1>
+    <div class="hp-toggle" role="group" aria-label="Switch view">
+      <button class="hp-tg" aria-pressed="true"  data-v="board">Manager board</button>
+      <button class="hp-tg" aria-pressed="false" data-v="feed">What the congregation sees</button>
+    </div>
+  </div>
+</header>
+
+<main class="hp-wrap">
+  <p class="hp-explain" id="explain"></p>
+
+  <!-- ===== MANAGER BOARD ===== -->
+  <section id="v-board">
+    <h2 class="hp-sec">Live on the home page now</h2>
+    <div id="liveRows"></div>
+    <button class="hp-add" type="button" data-toast="Opens a short form — home-page-only post, never enters a reader script">+ Add a home-page-only post</button>
+
+    <h2 class="hp-sec">Scheduled — not visible yet</h2>
+    <div id="soonRows"></div>
+
+    <h2 class="hp-sec">Came down automatically</h2>
+    <div id="pastRows"></div>
+  </section>
+
+  <!-- ===== PUBLIC FEED ===== -->
+  <section id="v-feed" hidden>
+    <div class="pf-frame">
+      <div class="pf-bar">portal.truenation.org &nbsp;&middot;&nbsp; embedded on the intranet home page</div>
+      <div class="pf-body">
+        <h2 class="pf-h2">Announcements</h2>
+        <p class="pf-sub" id="pfSub"></p>
+        <div id="pfCards"></div>
+        <div class="pf-perm">
+          <div class="pf-tile">True Nation Alms<span>Give &amp; view commitments</span></div>
+          <div class="pf-tile">Store<span>TrueNation.org/store</span></div>
+          <div class="pf-tile">Staff Directory<span>Find anyone</span></div>
+        </div>
+        <p style="font-size:12px;color:var(--muted);margin:16px 0 0;">
+          Those three tiles are permanent — they live in the home page settings, not in the announcements feed.
+        </p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="hp-toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* One dataset. home_order drives both views. */
+var HOME = [
+  { id:1, pin:true, title:"Parking lot closed Sunday",
+    body:"The main lot will be closed all day Sunday for resurfacing. Please use street parking on Vernon.",
+    by:"Rakab", dept:"Maintenance", state:"live",
+    from:"Sep 3", until:"Sep 7", alsoRead:"Sat, Sep 5" },
+  { id:2, pin:false, title:"Passover garment fittings",
+    body:"Uniform fittings for Passover garments will be held next Sabbath after class in the back room. Sisters first, then brothers.",
+    by:"Qawalyah", dept:"Textiles & Attire", state:"live",
+    from:"Sep 1", until:"Sep 12", alsoRead:"Sat, Sep 5" },
+  { id:3, pin:false, title:"Intramural sports sign-ups",
+    body:"T.E.L.A. Intramural Sports sign-ups close this Wednesday. See Bishop Tazayawan or scan the QR code in the hallway.",
+    by:"Ashley", dept:"T.E.L.A.", state:"live",
+    from:"Sep 2", until:"Sep 9", alsoRead:"Sat, Sep 5" },
+  { id:4, pin:false, title:"Hospitality contribution schedule",
+    body:"The September hospitality rotation is posted. Check your email for the day you are assigned.",
+    by:"Marayam", dept:"Hospitality", state:"live",
+    from:"Aug 30", until:"Sep 30", alsoRead:null },
+  { id:5, pin:false, title:"Feast Day dish sign-up opens",
+    body:"Sign-ups for the Feast Day potluck open Monday. Watch your email for the link.",
+    by:"Marayam", dept:"Hospitality", state:"soon",
+    from:"Sep 14", until:"Sep 23", alsoRead:null },
+  { id:6, pin:false, title:"Photo booth after class",
+    body:"Please get some photos at our photo booth. It will be open 45 minutes after class.",
+    by:"Ahmaryah", dept:"Everyday Sheeple", state:"past",
+    from:"Aug 20", until:"Aug 27", alsoRead:"Wed, Aug 26" }
+];
+
+var EXPLAIN = {
+  board:'<b>Manager board.</b> Same items as the review queue — these are the ones flagged for the home page, plus home-only posts that are never read aloud. Reorder here and the public feed reorders. Anything past its end date drops off on its own.',
+  feed:'<b>Public feed.</b> Exactly what every member at truenation.org sees on the intranet home page. No controls, no submitter names, no expired items. This view is generated — nobody edits it directly.'
+};
+
+function esc(s){return String(s).replace(/&(?!#?\w+;)/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function byState(st){ return HOME.filter(function(x){return x.state===st;}); }
+
+function rowHTML(it, i, arr){
+  var h='<article class="hp-row" data-pin="'+(it.pin?1:0)+'" data-id="'+it.id+'">';
+  h+='<span class="hp-grip" aria-hidden="true">&#8942;&#8942;</span><div class="hp-main">';
+  h+='<h3 class="hp-t">'+esc(it.title)+'</h3>';
+  h+='<p class="hp-b">'+esc(it.body)+'</p>';
+  h+='<div class="hp-meta">';
+  if(it.pin) h+='<span class="hp-badge pin">Pinned</span>';
+  h+='<span class="hp-badge '+(it.alsoRead?'both':'')+'">'+(it.alsoRead?'Also read aloud':'Home page only')+'</span>';
+  h+='<span>Up <b>'+esc(it.from)+'</b> to <b>'+esc(it.until)+'</b></span>';
+  h+='<span>'+esc(it.by)+' &middot; '+esc(it.dept)+'</span>';
+  if(it.alsoRead) h+='<span>In the '+esc(it.alsoRead)+' script</span>';
+  h+='</div></div>';
+  h+='<div class="hp-ctrls">';
+  if(it.state==='live'){
+    h+='<button class="hp-mini" data-act="up" '+(i===0?'disabled':'')+' aria-label="Move up">&#9650; Up</button>';
+    h+='<button class="hp-mini" data-act="down" '+(i===arr.length-1?'disabled':'')+' aria-label="Move down">&#9660; Down</button>';
+    h+='<button class="hp-mini" data-act="pin">'+(it.pin?'Unpin':'Pin')+'</button>';
+    h+='<button class="hp-mini" data-act="off">Take down</button>';
+  } else if(it.state==='soon'){
+    h+='<button class="hp-mini" data-act="now">Publish now</button>';
+  } else {
+    h+='<button class="hp-mini" data-act="again">Put back up</button>';
+  }
+  h+='</div></article>';
+  return h;
+}
+
+function renderBoard(){
+  ['live','soon','past'].forEach(function(st,n){
+    var el=[document.getElementById('liveRows'),document.getElementById('soonRows'),document.getElementById('pastRows')][n];
+    var arr=byState(st);
+    el.innerHTML = arr.length
+      ? arr.map(function(it,i){return rowHTML(it,i,arr);}).join('')
+      : '<p style="font-size:14px;color:var(--muted);margin:0 0 10px;">Nothing here.</p>';
+  });
+}
+
+function renderFeed(){
+  var live=byState('live');
+  document.getElementById('pfSub').textContent =
+    live.length + ' current announcement' + (live.length===1?'':'s') + ' · updated automatically';
+  document.getElementById('pfCards').innerHTML = live.map(function(it){
+    var h='<div class="pf-card'+(it.pin?' pin':'')+'">';
+    if(it.pin) h+='<span class="pf-pin">Important</span>';
+    h+='<h3 class="pf-t">'+esc(it.title)+'</h3>';
+    h+='<p class="pf-b">'+esc(it.body)+'</p>';
+    h+='<p class="pf-f">Questions? Contact <b>'+esc(it.by)+'</b> · '+esc(it.dept)+'</p>';
+    h+='</div>';
+    return h;
+  }).join('');
+}
+
+document.querySelector('main').addEventListener('click',function(e){
+  var b=e.target.closest('button[data-act]'); if(!b) return;
+  var id=parseInt(b.closest('.hp-row').getAttribute('data-id'),10);
+  var idx=HOME.findIndex(function(x){return x.id===id;});
+  var it=HOME[idx], act=b.getAttribute('data-act');
+
+  if(act==='up'||act==='down'){
+    var live=byState('live');
+    var pos=live.indexOf(it), swap=live[act==='up'?pos-1:pos+1];
+    if(!swap) return;
+    var a=HOME.indexOf(it), c=HOME.indexOf(swap);
+    HOME[a]=swap; HOME[c]=it;
+    toast('Order saved. The home page updates immediately.');
+  }
+  else if(act==='pin'){ it.pin=!it.pin; toast(it.pin?'Pinned to the top of the home page.':'Unpinned.'); }
+  else if(act==='off'){ it.state='past'; toast('Taken down. Still in the record, just not visible.'); }
+  else if(act==='now'){ it.state='live'; toast('Published. Live on the home page now.'); }
+  else if(act==='again'){ it.state='live'; toast('Back up on the home page.'); }
+
+  renderBoard(); renderFeed();
+});
+
+var tgs=document.querySelectorAll('.hp-tg');
+for(var i=0;i<tgs.length;i++){
+  tgs[i].addEventListener('click',function(){
+    for(var j=0;j<tgs.length;j++) tgs[j].setAttribute('aria-pressed','false');
+    this.setAttribute('aria-pressed','true');
+    var v=this.getAttribute('data-v');
+    document.getElementById('v-board').hidden = v!=='board';
+    document.getElementById('v-feed').hidden  = v!=='feed';
+    document.getElementById('explain').innerHTML = EXPLAIN[v];
+  });
+}
+
+var tEl=document.getElementById('toast'),tT;
+function toast(m){tEl.textContent=m;tEl.classList.add('show');clearTimeout(tT);
+  tT=setTimeout(function(){tEl.classList.remove('show');},3000);}
+document.body.addEventListener('click',function(e){
+  var b=e.target.closest('[data-toast]'); if(b) toast(b.getAttribute('data-toast'));
+});
+
+document.getElementById('explain').innerHTML = EXPLAIN.board;
+renderBoard(); renderFeed();
+
+(function(){
+  function sh(){var h=document.body?document.body.scrollHeight:0;
+    window.parent.postMessage({type:'tnic-height',height:h,id:'announcements-home'},'*');}
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sh);}else{sh();}
+  window.addEventListener('resize',sh);
+  if(window.ResizeObserver){new ResizeObserver(sh).observe(document.body);}
+})();
+</script>
+</body>
+</html>

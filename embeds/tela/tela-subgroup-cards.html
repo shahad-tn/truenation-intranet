@@ -1,0 +1,174 @@
+<!--
+  TRUE NATION INTRANET — T.E.L.A. SUB-GROUP CARDS
+  ──────────────────────────────────────────────────
+  Embed on the T.E.L.A. (T.E.L.A.) department page under Apostles Branch.
+  Native Sites heading: "Teams & Sub-Groups"
+
+  SUB-GROUPS (6):
+    Intramural Sports, Jr. Disciples, Little Lions,
+    Maiden Ewe's, Naqam Freshman, Naqam Varsity
+
+  [REPLACE] Lead names, descriptions, and card href links with real values.
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .dept-wrap {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    background: #E8E8EC;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+    box-sizing: border-box;
+  }
+
+  .sg-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+
+  .sg-card {
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(19,13,10,0.06);
+    transition: box-shadow 0.2s, transform 0.15s;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .sg-card:hover {
+    box-shadow: 0 4px 14px rgba(19,13,10,0.11);
+    transform: translateY(-2px);
+    border-color: #785710;
+  }
+
+  .sg-arrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #785710;
+    margin-top: 12px;
+  }
+
+  .sg-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #7C1316;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .sg-desc {
+    font-size: 15px;
+    color: #56565E;
+    line-height: 1.6;
+    flex: 1;
+    margin-bottom: 10px;
+  }
+
+  .sg-lead {
+    padding-top: 10px;
+    border-top: 1px solid #BFBFC7;
+    font-size: 13px;
+    color: #56565E;
+  }
+
+  .sg-lead span {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #785710;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  @media (max-width: 640px) {
+    .sg-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 380px) {
+    .sg-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="dept-wrap">
+
+  <div class="sg-grid">
+
+    <!-- [REPLACE] href with actual Intramural Sports page URL -->
+    <a class="sg-card" href="#">
+      <div class="sg-name">Intramural Sports</div>
+      <div class="sg-desc">Organizes recreational sports leagues and athletic activities for youth members across campuses.</div>
+      <div class="sg-lead"><span>Lead</span>Bishop Tazayawan</div>
+      <div class="sg-arrow">View sub-group →</div>
+    </a>
+
+    <!-- [REPLACE] href with actual Jr. Disciples page URL -->
+    <a class="sg-card" href="#">
+      <div class="sg-name">Jr. Disciples</div>
+      <div class="sg-desc">Younger youth discipleship track introducing foundational study and congregation values.</div>
+      <div class="sg-lead"><span>Lead</span>Ash Napash</div>
+      <div class="sg-arrow">View sub-group →</div>
+    </a>
+
+    <!-- [REPLACE] href with actual Little Lions page URL -->
+    <a class="sg-card" href="#">
+      <div class="sg-name">Little Lions</div>
+      <div class="sg-desc">Early childhood program building spiritual foundation and community for the youngest members.</div>
+      <div class="sg-lead"><span>Lead</span>Bishop Tazayawan</div>
+      <div class="sg-arrow">View sub-group →</div>
+    </a>
+
+    <!-- [REPLACE] href with actual Maiden Ewe's page URL -->
+    <a class="sg-card" href="#">
+      <div class="sg-name">Maiden Ewe's</div>
+      <div class="sg-desc">Young women's development program focused on identity, values, and leadership formation.</div>
+      <div class="sg-lead"><span>Lead</span>Shawashan</div>
+      <div class="sg-arrow">View sub-group →</div>
+    </a>
+
+    <!-- [REPLACE] href with actual Naqam Freshman page URL -->
+    <a class="sg-card" href="#">
+      <div class="sg-name">Naqam Freshman</div>
+      <div class="sg-desc">Entry-level Naqam youth track providing structured study and mentorship for new participants.</div>
+      <div class="sg-lead"><span>Lead</span>Bishop Tazayawan</div>
+      <div class="sg-arrow">View sub-group →</div>
+    </a>
+
+    <!-- [REPLACE] href with actual Naqam Varsity page URL -->
+    <a class="sg-card" href="#">
+      <div class="sg-name">Naqam Varsity</div>
+      <div class="sg-desc">Advanced Naqam track for committed youth engaged in deeper study, leadership, and service.</div>
+      <div class="sg-lead"><span>Lead</span>Bishop Tazayawan</div>
+      <div class="sg-arrow">View sub-group →</div>
+    </a>
+
+  </div>
+
+</div>
+
+<script>
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:'tnic-height',height:h,id:'tela-subgroup-cards'},'*');
+    }
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sendHeight);}
+    else{sendHeight();}
+    window.addEventListener('resize',sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+</script>

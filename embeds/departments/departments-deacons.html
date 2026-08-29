@@ -1,0 +1,216 @@
+<!--
+  TRUE NATION INTRANET — DEACONS BRANCH DEPARTMENT CARDS
+  ────────────────────────────────────────────────────────
+  Embed on the Departments index page under the Deacons Branch heading.
+  [REPLACE] Update each card's href with the actual Sites page URL.
+
+  DEACONS (10): CBD, Clerical, Custodial, Fellowship & Service,
+                Stewardship, Holistic Health & Healing, IT, Maintenance,
+                Safety & Facilities, Textiles & Attire
+
+  STRUCTURAL CHANGES (June 2026):
+    • Performing Arts MOVED from Deacons → Apostles
+    • E.R.T. + Security consolidated into new "Safety & Facilities" dept
+    • Logistics moved from IT → Clerical
+    • IT sub-groups now: Infrastructure, Website, Applications (no Logistics)
+    • Holistic Health sub-groups: C.A.R.E. (Qawalyah) + G.R.O.W. With Us (Bayanah)
+    • Fellowship & Service adds "Fellowship" role (Mathathyah — org-wide incl. TELA)
+    • CBD: CoT Ghana → CoT Kumasi, Ghana
+    • Textiles: "Seamstress" renamed to "Faithful Seams"
+    • Stewardship (formerly Finance): Travel lead is now Shabayah (was Marayam)
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  .di-wrap {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    background: #E8E8EC;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+    box-sizing: border-box;
+  }
+
+  .di-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  a.di-card {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-radius: 8px;
+    padding: 18px 16px 14px;
+    text-decoration: none;
+    color: #26262A;
+    box-shadow: 0 2px 6px rgba(19,13,10,0.06);
+    transition: box-shadow 0.2s, transform 0.15s, border-color 0.2s;
+    min-height: 100px;
+  }
+
+  a.di-card:hover {
+    box-shadow: 0 5px 16px rgba(19,13,10,0.12);
+    transform: translateY(-2px);
+    border-color: #785710;
+  }
+
+  .di-badge {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 2px 9px;
+    border-radius: 100px;
+    margin-bottom: 8px;
+    align-self: flex-start;
+  }
+  .badge-ap { background: #1E3A8A; color: #F2F2F3; }
+  .badge-de { background: #1A5C2A; color: #F2F2F3; }
+  .badge-ju { background: #8B6200; color: #F2F2F3; }
+  .badge-bi { background: #8C1C1C; color: #F2F2F3; }
+
+  .di-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #7C1316;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+
+  .di-lead {
+    font-size: 13px;
+    color: #56565E;
+    margin-top: auto;
+    padding-top: 8px;
+  }
+
+  .di-lead-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #785710;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .di-arrow {
+    display: inline-block;
+    color: #785710;
+    font-size: 14px;
+    margin-left: 4px;
+    transition: transform 0.2s;
+  }
+  a.di-card:hover .di-arrow { transform: translateX(3px); }
+
+  @media (max-width: 500px) {
+    .di-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+</style>
+
+<div class="di-wrap">
+
+  <div class="di-grid">
+
+    <a class="di-card" href="/departments/cbd"><!-- [REPLACE] href -->
+      <span class="di-badge badge-de">Deacons</span>
+      <div class="di-name">CBD — Community Building</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Sub-groups</span>
+        Camp Tazarah · CoT Kumasi, Ghana · CoT Macon, GA <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/clerical"><!-- [REPLACE] href -->
+      <span class="di-badge badge-de">Deacons</span>
+      <div class="di-name">Clerical</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Sub-groups</span>
+        Administration Committee · Logistics <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/custodial"><!-- [REPLACE] href -->
+      <span class="di-badge badge-de">Deacons</span>
+      <div class="di-name">Custodial</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Sub-groups</span>
+        Cleaning Crew · Detailing <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/fellowship-service"><!-- [REPLACE] href -->
+      <span class="di-badge badge-de">Deacons</span>
+      <div class="di-name">Fellowship &amp; Service</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Sub-groups</span>
+        Fellowship · Hospitality · Feast Committee → Beverages · Ceremonial · Culinary · Decor · Desserts · Sacrificial · Serving <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/holistic-health"><!-- [REPLACE] href -->
+      <span class="di-badge badge-de">Deacons</span>
+      <div class="di-name">Holistic Health &amp; Healing</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Sub-groups</span>
+        C.A.R.E. · G.R.O.W. With Us <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/it"><!-- [REPLACE] href -->
+      <span class="di-badge badge-de">Deacons</span>
+      <div class="di-name">IT / Information Technology</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Sub-groups</span>
+        Infrastructure · Website · Applications <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/maintenance"><!-- [REPLACE] href -->
+      <span class="di-badge badge-de">Deacons</span>
+      <div class="di-name">Maintenance</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Lead</span>
+        Deacon Rakab (Overseer: Bishop Izar) <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/safety-facilities"><!-- [REPLACE] href -->
+      <span class="di-badge badge-de">Deacons</span>
+      <div class="di-name">Safety &amp; Facilities</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Sub-groups</span>
+        E.R.T. · Security <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/stewardship"><!-- [REPLACE] href -->
+      <span class="di-badge badge-de">Deacons</span>
+      <div class="di-name">Stewardship</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Sub-groups</span>
+        Bookkeeping · Fundraising · Travel · Tribal Exchange <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/textiles-attire"><!-- [REPLACE] href -->
+      <span class="di-badge badge-de">Deacons</span>
+      <div class="di-name">Textiles &amp; Attire</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Sub-groups</span>
+        Apparel · Faithful Seams · Uniform <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+  </div>
+
+</div>

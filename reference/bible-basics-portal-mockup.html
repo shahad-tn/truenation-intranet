@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<!--
+  MOCKUP — Bible Basics Teacher Portal (clickable prototype)
+  Purpose: approve look + flow before writing the Apps Script.
+  Simulated signed-in teacher: Shahad (1st Tuesdays).
+  All data here is fake/in-memory. Nothing is saved.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bible Basics — Teacher Portal (Mockup)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --wine:#7C1316; --gold:#C9972C; --snow:#FAF8F4; --cream:#F2EDE4;
+    --bark:#3D2E28; --ink:#130D0A; --line:#E4DCCE;
+    --green:#1A5C2A; --greenbg:#EAF3E6;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--snow);color:var(--ink);
+    font-family:'DM Sans',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    line-height:1.6;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,.hd{font-family:'Barlow Condensed','DM Sans',sans-serif;
+    text-transform:uppercase;letter-spacing:.03em;margin:0}
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px 60px}
+
+  /* Header */
+  header{background:var(--wine);color:var(--cream);padding:22px 20px}
+  .head-in{max-width:960px;margin:0 auto;display:flex;align-items:center;
+    justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .brand h1{font-size:30px;font-weight:700;line-height:1.05;color:var(--cream)}
+  .brand p{margin:2px 0 0;font-size:14px;color:#E8D9BB;letter-spacing:.04em;
+    text-transform:uppercase;font-family:'Barlow Condensed',sans-serif}
+  .whoami{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:8px 12px;font-size:14px}
+  .whoami .dot{width:9px;height:9px;border-radius:50%;background:#7DDf9f;background:#8ee0a6;flex:none}
+
+  /* Access gate banner */
+  .gate{max-width:960px;margin:14px auto 0;display:flex;align-items:center;gap:10px;
+    background:var(--greenbg);border:1px solid #BFD9BF;border-left:5px solid var(--green);
+    color:#173A17;padding:10px 14px;border-radius:0 10px 10px 0;font-size:14px}
+  .gate strong{color:var(--green)}
+  .gate a{margin-left:auto;color:var(--wine);font-weight:700;font-size:13px}
+
+  /* Tabs */
+  .tabs{display:flex;gap:6px;border-bottom:2px solid var(--line);margin:26px 0 22px;flex-wrap:wrap}
+  .tab{appearance:none;border:none;background:none;cursor:pointer;
+    font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.04em;
+    font-size:18px;font-weight:600;color:var(--bark);padding:10px 16px;border-radius:8px 8px 0 0;
+    border-bottom:3px solid transparent;margin-bottom:-2px}
+  .tab[aria-selected="true"]{color:var(--wine);border-bottom-color:var(--gold);background:#fff}
+  .tab:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  .tab .count{font-family:'DM Sans',sans-serif;font-size:12px;background:var(--cream);
+    color:var(--bark);border-radius:20px;padding:1px 8px;margin-left:6px;letter-spacing:0}
+
+  .panel{display:none}
+  .panel.active{display:block}
+
+  /* Progress */
+  .prog{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;
+    margin-bottom:22px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .prog .num{font-family:'Barlow Condensed',sans-serif;font-size:34px;font-weight:700;color:var(--wine);line-height:1}
+  .prog .lbl{font-size:13px;color:var(--bark);text-transform:uppercase;letter-spacing:.05em}
+  .bar{flex:1;min-width:180px;height:12px;background:var(--cream);border-radius:20px;overflow:hidden}
+  .bar span{display:block;height:100%;background:var(--gold);width:3%}
+  .prog .note{font-size:13px;color:var(--bark);flex-basis:100%;margin-top:2px}
+
+  /* Cards */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;
+    display:flex;flex-direction:column;gap:8px}
+  .card h3{font-size:20px;font-weight:600;color:var(--wine)}
+  .ref{display:inline-block;font-size:12px;color:var(--bark);background:var(--cream);
+    border-radius:6px;padding:2px 8px;letter-spacing:.02em;align-self:flex-start}
+  .card p{margin:0;font-size:14px;color:var(--bark);flex:1}
+  .btn{appearance:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:700;
+    font-size:14px;border-radius:9px;padding:10px 14px;border:2px solid var(--wine);
+    background:var(--wine);color:#fff;transition:transform .08s ease}
+  .btn:hover{transform:translateY(-1px)}
+  .btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  .btn.ghost{background:#fff;color:var(--wine)}
+  .btn.sm{padding:7px 12px;font-size:13px}
+  .btn[disabled]{opacity:.5;cursor:not-allowed;transform:none}
+
+  /* My topics list + schedule rows */
+  .row{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;
+    display:flex;align-items:center;gap:14px;margin-bottom:10px}
+  .datebox{flex:none;width:64px;text-align:center;background:var(--wine);color:var(--cream);
+    border-radius:10px;padding:8px 4px}
+  .datebox .mo{font-family:'Barlow Condensed',sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:.06em}
+  .datebox .dy{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:700;line-height:1}
+  .row .info{flex:1;min-width:0}
+  .row .info .t{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:600;color:var(--ink);text-transform:uppercase;letter-spacing:.02em}
+  .row .info .m{font-size:13px;color:var(--bark)}
+  .pill{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+    padding:3px 9px;border-radius:20px;flex:none}
+  .pill.you{background:#F3E3C6;color:#6B4E10}
+  .pill.other{background:var(--cream);color:var(--bark)}
+  .pill.open{background:#EDE6DA;color:#6b5d4b;border:1px dashed #C9BCA6}
+  .empty{color:var(--bark);font-size:14px;background:#fff;border:1px dashed var(--line);
+    border-radius:12px;padding:22px;text-align:center}
+
+  /* Modal */
+  .scrim{position:fixed;inset:0;background:rgba(19,13,10,.55);display:none;
+    align-items:center;justify-content:center;padding:20px;z-index:50}
+  .scrim.show{display:flex}
+  .modal{background:var(--snow);border-radius:16px;max-width:440px;width:100%;padding:24px;
+    border-top:6px solid var(--gold)}
+  .modal h2{font-size:22px;color:var(--wine);font-weight:700}
+  .modal .sub{font-size:14px;color:var(--bark);margin:6px 0 16px}
+  fieldset{border:none;padding:0;margin:0}
+  legend{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--bark);margin-bottom:8px}
+  .opt{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);
+    border-radius:10px;padding:12px 14px;margin-bottom:8px;cursor:pointer}
+  .opt:has(input:checked){border-color:var(--gold);background:#FFFDF7;box-shadow:0 0 0 2px #F3E3C6}
+  .opt input{width:18px;height:18px;accent-color:var(--wine)}
+  .opt .od{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:600;color:var(--ink);text-transform:uppercase}
+  .opt:focus-within{outline:2px solid var(--gold);outline-offset:2px}
+  .modal .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .banner-demo{font-size:12px;color:var(--bark);text-align:center;margin-top:26px;
+    padding-top:14px;border-top:1px solid var(--line)}
+  .banner-demo a{color:var(--wine);font-weight:700}
+
+  /* Denied screen */
+  #denied{display:none;text-align:center;padding:70px 20px}
+  #denied .lock{font-size:52px}
+  #denied h2{font-size:30px;color:var(--wine);font-weight:700;margin-top:8px}
+  #denied p{max-width:460px;margin:10px auto;color:var(--bark)}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <header>
+    <div class="head-in">
+      <div class="brand">
+        <h1>Bible Basics</h1>
+        <p>Teacher Portal &middot; Tuesday Classes</p>
+      </div>
+      <div class="whoami">
+        <span class="dot" aria-hidden="true"></span>
+        <span>Signed in: <strong>Shahad</strong> &middot; 1st Tuesdays</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="gate" role="status">
+    <span aria-hidden="true">&#10003;</span>
+    <span>Access verified &mdash; you're a member of the <strong>Moreh (Teachers)</strong> group.</span>
+    <a href="#" onclick="showDenied();return false;">Preview access-denied view</a>
+  </div>
+
+  <div class="wrap">
+    <div class="tabs" role="tablist" aria-label="Bible Basics sections">
+      <button class="tab" role="tab" aria-selected="true"  aria-controls="p-bucket"   id="t-bucket"   onclick="tab('bucket')">Available topics <span class="count" id="c-open">12</span></button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="p-mine"     id="t-mine"     onclick="tab('mine')">My topics <span class="count" id="c-mine">0</span></button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="p-schedule" id="t-schedule" onclick="tab('schedule')">Class schedule</button>
+    </div>
+
+    <!-- BUCKET -->
+    <section class="panel active" id="p-bucket" role="tabpanel" aria-labelledby="t-bucket">
+      <div class="prog">
+        <div><div class="num" id="prog-num">4</div><div class="lbl">Claimed</div></div>
+        <div class="bar"><span id="prog-bar"></span></div>
+        <div><div class="num">150</div><div class="lbl">In the curriculum</div></div>
+        <p class="note">First come, first served. When all 150 are taught, the bucket resets and the cycle repeats. (Showing a 12-topic sample.)</p>
+      </div>
+      <div class="grid" id="bucket"></div>
+    </section>
+
+    <!-- MY TOPICS -->
+    <section class="panel" id="p-mine" role="tabpanel" aria-labelledby="t-mine">
+      <div id="mine"></div>
+    </section>
+
+    <!-- SCHEDULE -->
+    <section class="panel" id="p-schedule" role="tabpanel" aria-labelledby="t-schedule">
+      <p style="font-size:14px;color:var(--bark);margin:0 0 14px">Every Tuesday, auto-assigned by the monthly rotation. Your dates are highlighted &mdash; claim a topic to fill them in.</p>
+      <div id="schedule"></div>
+    </section>
+
+    <div class="banner-demo">
+      This is a clickable mockup &mdash; nothing is saved. <a href="#" onclick="resetDemo();return false;">Reset demo</a>
+    </div>
+  </div>
+</div>
+
+<!-- Denied state -->
+<div id="denied">
+  <div class="lock" aria-hidden="true">&#128274;</div>
+  <h2>Teachers only</h2>
+  <p>This page is limited to members of the <strong>Moreh (Teachers)</strong> group. If you should have access, contact <strong>it@truenation.org</strong>.</p>
+  <button class="btn ghost" onclick="hideDenied()">Back to mockup</button>
+</div>
+
+<!-- Claim modal -->
+<div class="scrim" id="scrim" role="dialog" aria-modal="true" aria-labelledby="m-title" aria-describedby="m-sub">
+  <div class="modal">
+    <h2 id="m-title">Claim this topic</h2>
+    <p class="sub" id="m-sub"></p>
+    <form id="claimForm" onsubmit="confirmClaim(event)">
+      <fieldset>
+        <legend>Assign to one of your Tuesdays</legend>
+        <div id="dateOpts"></div>
+      </fieldset>
+      <div class="actions">
+        <button type="button" class="btn ghost sm" onclick="closeModal()">Cancel</button>
+        <button type="submit" class="btn sm">Claim &amp; schedule</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="sr" role="status" aria-live="polite" id="live"></div>
+
+<script>
+  var TEACHER = "Shahad";              // simulated signed-in user
+  var MY_NTH  = 1;                     // Shahad teaches 1st Tuesdays
+  var ROTATION = {1:"Shahad",2:"Mathathyah",3:"Raiyah",4:"Yediyah",5:"Bayan"};
+
+  var TOPICS = [
+    {id:"BB-001",name:"The Creation Account",ref:"Genesis 1–2",desc:"The six days, the seventh rest, and what it establishes about order and purpose."},
+    {id:"BB-002",name:"The Fall of Man",ref:"Genesis 3",desc:"Disobedience in the garden and the consequences that follow."},
+    {id:"BB-003",name:"Noah and the Flood",ref:"Genesis 6–9",desc:"Judgment, the ark, and the covenant of the rainbow."},
+    {id:"BB-004",name:"The Call of Abraham",ref:"Genesis 12",desc:"The promise, the departure, and the beginning of a nation."},
+    {id:"BB-005",name:"Covenant & Circumcision",ref:"Genesis 15–17",desc:"The sign of the covenant and the promise of descendants."},
+    {id:"BB-006",name:"Joseph in Egypt",ref:"Genesis 37–50",desc:"From the pit to the palace, and providence through hardship."},
+    {id:"BB-007",name:"Moses & the Exodus",ref:"Exodus 1–14",desc:"The burning bush, the plagues, and deliverance from bondage."},
+    {id:"BB-008",name:"The Ten Commandments",ref:"Exodus 20",desc:"The law given at Sinai and the foundation of the covenant."},
+    {id:"BB-009",name:"The Tabernacle",ref:"Exodus 25–40",desc:"The pattern of worship and the presence dwelling among the people."},
+    {id:"BB-010",name:"Entering the Land",ref:"Joshua 1–6",desc:"Crossing the Jordan and the fall of Jericho."},
+    {id:"BB-011",name:"The Judges",ref:"Judges 2–16",desc:"Cycles of falling away, oppression, and deliverance."},
+    {id:"BB-012",name:"The United Kingdom",ref:"1 Samuel–1 Kings",desc:"Saul, David, and Solomon — the rise of the monarchy."}
+  ];
+  // pre-claimed sample so the schedule isn't empty
+  var claims = {}; // id -> {teacher, dateISO}
+  var MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+  function nthTue(d){ return Math.ceil(d.getDate()/7); }
+  function upcomingTuesdays(n){
+    var out=[], d=new Date(2026,6,24); // start just after "today" (Jul 23 2026)
+    while(out.length<n){ if(d.getDay()===2) out.push(new Date(d)); d.setDate(d.getDate()+1); }
+    return out;
+  }
+  function myUpcoming(n){ return upcomingTuesdays(40).filter(function(d){return nthTue(d)===MY_NTH && !dateClaimed(d);}).slice(0,n); }
+  function iso(d){ return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate(); }
+  function dateClaimed(d){ for(var k in claims){ if(claims[k].dateISO===iso(d)) return true;} return false; }
+
+  // seed a few claims across teachers
+  (function seed(){
+    var tues=upcomingTuesdays(12);
+    var seedMap=[["BB-007",0],["BB-002",1],["BB-011",2]]; // topic id, index into tues
+    seedMap.forEach(function(s){ var d=tues[s[1]]; claims[s[0]]={teacher:ROTATION[nthTue(d)],dateISO:iso(d)}; });
+  })();
+
+  function tab(which){
+    ["bucket","mine","schedule"].forEach(function(w){
+      document.getElementById("p-"+w).classList.toggle("active",w===which);
+      document.getElementById("t-"+w).setAttribute("aria-selected",w===which);
+    });
+    if(which==="mine") renderMine();
+    if(which==="schedule") renderSchedule();
+  }
+
+  function renderBucket(){
+    var g=document.getElementById("bucket"); g.innerHTML="";
+    var open=TOPICS.filter(function(t){return !claims[t.id];});
+    document.getElementById("c-open").textContent=open.length;
+    var claimed=TOPICS.length-open.length;
+    document.getElementById("prog-num").textContent=claimed;
+    document.getElementById("prog-bar").style.width=Math.max(3,Math.round(claimed/150*100))+"%";
+    open.forEach(function(t){
+      var c=document.createElement("div"); c.className="card";
+      c.innerHTML='<span class="ref">'+t.ref+'</span>'+
+        '<h3>'+t.name+'</h3><p>'+t.desc+'</p>'+
+        '<button class="btn" onclick="openModal(\''+t.id+'\')">Claim topic</button>';
+      g.appendChild(c);
+    });
+  }
+
+  function renderMine(){
+    var m=document.getElementById("mine");
+    var mine=TOPICS.filter(function(t){return claims[t.id]&&claims[t.id].teacher===TEACHER;});
+    document.getElementById("c-mine").textContent=mine.length;
+    if(!mine.length){ m.innerHTML='<div class="empty">You haven’t claimed any topics yet. Head to <strong>Available topics</strong> to pick from the bucket.</div>'; return; }
+    m.innerHTML="";
+    mine.forEach(function(t){
+      var d=new Date(claims[t.id].dateISO.replace(/-/g,"/"));
+      var r=document.createElement("div"); r.className="row";
+      r.innerHTML='<div class="datebox"><div class="mo">'+MONTHS[d.getMonth()]+'</div><div class="dy">'+d.getDate()+'</div></div>'+
+        '<div class="info"><div class="t">'+t.name+'</div><div class="m">'+t.ref+' &middot; '+dow(d)+'</div></div>'+
+        '<span class="pill you">You</span>'+
+        '<button class="btn ghost sm" onclick="release(\''+t.id+'\')">Release</button>';
+      m.appendChild(r);
+    });
+  }
+
+  function renderSchedule(){
+    var s=document.getElementById("schedule"); s.innerHTML="";
+    upcomingTuesdays(10).forEach(function(d){
+      var teacher=ROTATION[nthTue(d)]||"—";
+      var claimedTopic=null;
+      for(var k in claims){ if(claims[k].dateISO===iso(d)){ claimedTopic=byId(k); break; } }
+      var mine=teacher===TEACHER;
+      var r=document.createElement("div"); r.className="row";
+      var pill = claimedTopic
+        ? '<span class="pill '+(mine?'you':'other')+'">'+teacher+'</span>'
+        : '<span class="pill open">Open</span>';
+      var title = claimedTopic ? claimedTopic.name : "Topic not yet chosen";
+      r.innerHTML='<div class="datebox"><div class="mo">'+MONTHS[d.getMonth()]+'</div><div class="dy">'+d.getDate()+'</div></div>'+
+        '<div class="info"><div class="t">'+title+'</div><div class="m">'+ordinal(nthTue(d))+' Tuesday &middot; Teacher: '+teacher+'</div></div>'+
+        pill;
+      if(mine) r.style.boxShadow="0 0 0 2px #F3E3C6", r.style.borderColor="var(--gold)";
+      s.appendChild(r);
+    });
+  }
+
+  // Modal
+  var pendingId=null;
+  function openModal(id){
+    pendingId=id; var t=byId(id);
+    document.getElementById("m-sub").innerHTML='<strong>'+t.name+'</strong> &mdash; '+t.ref;
+    var opts=document.getElementById("dateOpts"); opts.innerHTML="";
+    myUpcoming(5).forEach(function(d,i){
+      var lab=document.createElement("label"); lab.className="opt";
+      lab.innerHTML='<input type="radio" name="date" value="'+iso(d)+'" '+(i===0?"checked":"")+'>'+
+        '<span class="od">'+dow(d)+', '+MONTHS[d.getMonth()]+' '+d.getDate()+'</span>';
+      opts.appendChild(lab);
+    });
+    document.getElementById("scrim").classList.add("show");
+  }
+  function closeModal(){ document.getElementById("scrim").classList.remove("show"); pendingId=null; }
+  function confirmClaim(e){
+    e.preventDefault();
+    var sel=document.querySelector('input[name="date"]:checked');
+    if(!sel||!pendingId) return;
+    var t=byId(pendingId);
+    claims[pendingId]={teacher:TEACHER,dateISO:sel.value};
+    announce(t.name+" claimed and scheduled.");
+    closeModal(); renderBucket(); renderMine();
+  }
+  function release(id){ var t=byId(id); delete claims[id]; announce(t.name+" released back to the bucket."); renderMine(); renderBucket(); }
+
+  function byId(id){ for(var i=0;i<TOPICS.length;i++) if(TOPICS[i].id===id) return TOPICS[i]; return null; }
+  function dow(d){ return ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][d.getDay()]; }
+  function ordinal(n){ return ["","1st","2nd","3rd","4th","5th"][n]||n+"th"; }
+  function announce(msg){ document.getElementById("live").textContent=msg; }
+
+  function showDenied(){ document.getElementById("app").style.display="none"; document.getElementById("denied").style.display="block"; window.scrollTo(0,0); }
+  function hideDenied(){ document.getElementById("denied").style.display="none"; document.getElementById("app").style.display="block"; }
+  function resetDemo(){ claims={}; (function(){ var tues=upcomingTuesdays(12);[["BB-007",0],["BB-002",1],["BB-011",2]].forEach(function(s){var d=tues[s[1]];claims[s[0]]={teacher:ROTATION[nthTue(d)],dateISO:iso(d)};});})(); renderBucket(); renderMine(); renderSchedule(); announce("Demo reset."); tab('bucket'); }
+
+  renderBucket();
+</script>
+</body>
+</html>

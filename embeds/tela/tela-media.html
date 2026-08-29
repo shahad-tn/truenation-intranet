@@ -1,0 +1,424 @@
+<!--
+  TRUE NATION INTRANET — T.E.L.A.: MEDIA
+  ─────────────────────────────────────────
+  Native Sites heading: "Media"
+  Photo gallery grid, video recaps, and PARADOX connection.
+  [REPLACE] All image srcs, video links, Drive folder IDs.
+  Everyday Sheeple support provided by PARADOX (Bishop Tazayawan).
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .media-wrap {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    background: #E8E8EC;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  /* ── Photo gallery ── */
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 8px;
+  }
+
+  .photo-tile {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background: #D8D8DE;
+    cursor: pointer;
+    border: 1px solid #E8DDD2;
+  }
+
+  .photo-tile:hover .photo-overlay { opacity: 1; }
+
+  .photo-tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Placeholder when no image yet */
+  .photo-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .photo-placeholder__icon { font-size: 1.75rem; opacity: 0.4; }
+
+  .photo-placeholder__label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #888;
+  }
+
+  .photo-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(124,19,22,0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .photo-overlay-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: white;
+    text-align: center;
+    padding: 0 8px;
+  }
+
+  /* Span the first tile larger on desktop */
+  .photo-tile--feature {
+    grid-column: span 2;
+    grid-row: span 2;
+    aspect-ratio: unset;
+  }
+
+  /* ── Video recaps ── */
+  .video-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .video-item {
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-radius: 8px;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    padding: 12px 14px;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.2s, transform 0.15s;
+    box-shadow: 0 1px 4px rgba(19,13,10,0.05);
+  }
+
+  .video-item:hover {
+    box-shadow: 0 4px 12px rgba(19,13,10,0.1);
+    transform: translateY(-1px);
+  }
+
+  .video-thumb {
+    width: 80px;
+    height: 54px;
+    border-radius: 6px;
+    background: #D8D8DE;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #E8DDD2;
+  }
+
+  .video-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .play-badge {
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    background: rgba(124,19,22,0.85);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: white;
+  }
+
+  .video-info { flex: 1; min-width: 0; }
+
+  .video-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: #7C1316;
+    line-height: 1.2;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .video-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .video-badge {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 8px;
+    border-radius: 100px;
+    background: #D8D8DE;
+    color: #56565E;
+    border: 1px solid #E8DDD2;
+  }
+
+  .video-date { font-size: 12px; color: #888; }
+
+  /* ── PARADOX notice ── */
+  .paradox-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-left: 4px solid #C9972C;
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 14px;
+    color: #56565E;
+    line-height: 1.6;
+  }
+
+  .paradox-notice__icon { font-size: 1.5rem; flex-shrink: 0; padding-top: 1px; }
+
+  .paradox-notice strong { color: #7C1316; }
+
+  /* ── Drive + submit row ── */
+  .action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .act-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    min-height: 50px;
+    transition: all 0.2s;
+    flex: 1;
+    min-width: 150px;
+  }
+
+  .act-btn__icon { font-size: 1.3rem; flex-shrink: 0; }
+
+  .act-btn__text-main {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: block;
+    line-height: 1.2;
+  }
+
+  .act-btn__text-sub {
+    font-size: 11px;
+    display: block;
+    opacity: 0.75;
+    margin-top: 1px;
+  }
+
+  .btn-wine { background: #7C1316; color: #F2F2F3; }
+  .btn-wine:hover { background: #5A0E11; }
+  .btn-wine .act-btn__text-sub { color: #F2F2F3; }
+
+  .btn-outline { background: white; border: 2px solid #7C1316; color: #7C1316; }
+  .btn-outline:hover { background: #7C1316; color: #F2F2F3; }
+
+  .btn-gold { background: white; border: 2px solid #C9972C; color: #26262A; }
+  .btn-gold:hover { background: #C9972C; color: white; }
+  .btn-gold .act-btn__text-main { color: #7C1316; }
+
+  @media (max-width: 600px) {
+    .photo-tile--feature { grid-column: span 1; grid-row: span 1; }
+    .photo-grid { grid-template-columns: repeat(2, 1fr); }
+    .video-item { flex-direction: column; align-items: flex-start; }
+    .video-thumb { width: 100%; height: 120px; }
+    .act-btn { min-width: 100%; }
+  }
+</style>
+
+<div class="media-wrap">
+
+  <!-- ── Photo Gallery ── -->
+  <div class="photo-grid">
+
+    <!-- Feature tile (spans 2 cols × 2 rows) -->
+    <a class="photo-tile photo-tile--feature" href="REPLACE_DRIVE_PHOTO_LINK">
+      <!-- [REPLACE] <img src="..." alt="..."> when photo is ready -->
+      <div class="photo-placeholder">
+        <div class="photo-placeholder__icon">📸</div>
+        <div class="photo-placeholder__label">Featured Photo</div>
+      </div>
+      <div class="photo-overlay">
+        <span class="photo-overlay-label">[REPLACE Event Name]</span>
+      </div>
+    </a>
+
+    <!-- Smaller tiles -->
+    <a class="photo-tile" href="REPLACE_DRIVE_PHOTO_LINK">
+      <div class="photo-placeholder">
+        <div class="photo-placeholder__icon">📸</div>
+        <div class="photo-placeholder__label">Photo</div>
+      </div>
+      <div class="photo-overlay"><span class="photo-overlay-label">[Event]</span></div>
+    </a>
+
+    <a class="photo-tile" href="REPLACE_DRIVE_PHOTO_LINK">
+      <div class="photo-placeholder">
+        <div class="photo-placeholder__icon">📸</div>
+        <div class="photo-placeholder__label">Photo</div>
+      </div>
+      <div class="photo-overlay"><span class="photo-overlay-label">[Event]</span></div>
+    </a>
+
+    <a class="photo-tile" href="REPLACE_DRIVE_PHOTO_LINK">
+      <div class="photo-placeholder">
+        <div class="photo-placeholder__icon">📸</div>
+        <div class="photo-placeholder__label">Photo</div>
+      </div>
+      <div class="photo-overlay"><span class="photo-overlay-label">[Event]</span></div>
+    </a>
+
+    <a class="photo-tile" href="REPLACE_DRIVE_PHOTO_LINK">
+      <div class="photo-placeholder">
+        <div class="photo-placeholder__icon">📸</div>
+        <div class="photo-placeholder__label">Photo</div>
+      </div>
+      <div class="photo-overlay"><span class="photo-overlay-label">[Event]</span></div>
+    </a>
+
+    <!--
+      [ADD MORE PHOTO TILES as events are documented]
+      Replace the div.photo-placeholder inside with <img src="..." alt="...">
+    -->
+
+  </div>
+
+  <!-- ── Video recaps ── -->
+  <div class="video-list">
+
+    <!-- Video 1 — [REPLACE] href, title, badge, date -->
+    <a class="video-item" href="REPLACE_VIDEO_LINK" target="_blank">
+      <div class="video-thumb">
+        <!-- [REPLACE] with <img src="..." alt="..."> thumbnail when ready -->
+        🎬
+        <div class="play-badge">▶</div>
+      </div>
+      <div class="video-info">
+        <div class="video-title">[REPLACE] Event Recap — Title Here</div>
+        <div class="video-meta">
+          <span class="video-badge">Recap</span>
+          <span class="video-date">[Date]</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Video 2 -->
+    <a class="video-item" href="REPLACE_VIDEO_LINK" target="_blank">
+      <div class="video-thumb">
+        🎬
+        <div class="play-badge">▶</div>
+      </div>
+      <div class="video-info">
+        <div class="video-title">[REPLACE] Event Recap — Title Here</div>
+        <div class="video-meta">
+          <span class="video-badge">Highlight</span>
+          <span class="video-date">[Date]</span>
+        </div>
+      </div>
+    </a>
+
+    <!--
+      [ADD MORE VIDEO ITEMS]
+      badge options: Recap · Highlight · Documentary · Live Recording
+      <a class="video-item" href="LINK" target="_blank">
+        <div class="video-thumb">🎬<div class="play-badge">▶</div></div>
+        <div class="video-info">
+          <div class="video-title">[Title]</div>
+          <div class="video-meta">
+            <span class="video-badge">[Type]</span>
+            <span class="video-date">[Date]</span>
+          </div>
+        </div>
+      </a>
+    -->
+
+  </div>
+
+  <!-- ── PARADOX connection notice ── -->
+  <div class="paradox-notice">
+    <div class="paradox-notice__icon">🎙</div>
+    <div>
+      T.E.L.A. event media is produced in partnership with <strong>PARADOX</strong> — the media and production department of True Nation Community, overseen by Bishop Tazayawan. To request event coverage, recording, or photography, contact
+      <a href="mailto:paradox@truenation.org" target="_blank" style="color:#7C1316;font-weight:600;">paradox@truenation.org</a>
+      or use the PARADOX APP.
+    </div>
+  </div>
+
+  <!-- ── Quick actions ── -->
+  <div class="action-row">
+    <!-- [REPLACE] REPLACE_FOLDER_ID with T.E.L.A. Media Drive folder -->
+    <a class="act-btn btn-wine" href="https://drive.google.com/drive/folders/REPLACE_FOLDER_ID">
+      <div class="act-btn__icon">📁</div>
+      <div>
+        <span class="act-btn__text-main">Full Photo Album</span>
+        <span class="act-btn__text-sub">View all in Drive</span>
+      </div>
+    </a>
+    <!-- [REPLACE] REPLACE with media request form link -->
+    <a class="act-btn btn-outline" href="REPLACE_MEDIA_REQUEST_FORM" target="_blank">
+      <div class="act-btn__icon">📋</div>
+      <div>
+        <span class="act-btn__text-main">Request Coverage</span>
+        <span class="act-btn__text-sub">Submit a media request</span>
+      </div>
+    </a>
+    <!-- PARADOX APP external link -->
+    <a class="act-btn btn-gold" href="REPLACE_PARADOX_APP_URL" target="_blank">
+      <div class="act-btn__icon">📱</div>
+      <div>
+        <span class="act-btn__text-main">PARADOX APP</span>
+        <span class="act-btn__text-sub">Media platform</span>
+      </div>
+    </a>
+  </div>
+
+</div>

@@ -1,0 +1,425 @@
+<!--
+  TRUE NATION INTRANET — DEPARTMENTS INDEX CARDS
+  ────────────────────────────────────────────────
+  Embed this on the main Departments page.
+  Place BELOW the native Sites banner.
+  This single file contains all 5 branches and all 20 departments.
+
+  [REPLACE] Update each card's href with the actual Sites page URL
+  for that department. Format: /departments/it-information-technology
+
+  BRANCH SUMMARY (June 2026):
+  APOSTLES (6): Disciples, Everyday Sheeple, Marketing, Performing Arts,
+                Publication, T.E.L.A.
+  DEACONS (10): CBD, Clerical, Custodial, Fellowship & Service,
+                Holistic Health & Healing, IT, Maintenance,
+                Safety & Facilities, Stewardship, Textiles & Attire
+  JUDGES  (2):  Counseling, Ministries
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  .di-wrap {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    padding: 4px 0 20px;
+  }
+
+  /* Branch divider heading */
+  .di-branch {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px 0 14px;
+  }
+  .di-branch:first-child { margin-top: 4px; }
+
+  .di-branch-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #7C1316;
+    white-space: nowrap;
+  }
+
+  .di-branch-line {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, #C9972C, transparent);
+  }
+
+  .di-branch-desc {
+    font-size: 0.8125rem;
+    color: #56565E;
+    white-space: nowrap;
+  }
+
+  /* Department card grid */
+  .di-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  /* Individual card */
+  a.di-card {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-radius: 8px;
+    padding: 18px 16px 14px;
+    text-decoration: none;
+    color: #26262A;
+    box-shadow: 0 2px 6px rgba(19,13,10,0.06);
+    transition: box-shadow 0.2s, transform 0.15s, border-color 0.2s;
+    min-height: 100px;
+  }
+
+  a.di-card:hover {
+    box-shadow: 0 5px 16px rgba(19,13,10,0.12);
+    transform: translateY(-2px);
+    border-color: #785710;
+  }
+
+  .di-badge {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 2px 9px;
+    border-radius: 100px;
+    margin-bottom: 8px;
+    align-self: flex-start;
+  }
+  .badge-bi { background: #8C1C1C; color: #F2F2F3; }
+  .badge-ap { background: #1E3A8A; color: #F2F2F3; }
+  .badge-de { background: #1A5C2A; color: #F2F2F3; }
+  .badge-ju { background: #8B6200; color: #F2F2F3; }
+
+  .di-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #7C1316;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+
+  .di-lead {
+    font-size: 13px;
+    color: #56565E;
+    margin-top: auto;
+    padding-top: 8px;
+  }
+
+  .di-lead-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #785710;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .di-arrow {
+    display: inline-block;
+    color: #785710;
+    font-size: 14px;
+    margin-left: 4px;
+    transition: transform 0.2s;
+  }
+  a.di-card:hover .di-arrow { transform: translateX(3px); }
+
+  @media (max-width: 500px) {
+    .di-grid { grid-template-columns: 1fr 1fr; }
+    .di-branch { flex-wrap: wrap; gap: 6px; }
+    .di-branch-desc { display: none; }
+  }
+</style>
+
+<div class="di-wrap">
+
+  <!-- ══════════════════════
+       BISHOP COUNCIL (4)
+       ══════════════════════ -->
+  <div class="di-branch" style="margin-top:4px">
+    <div class="di-branch-label">Bishops Branch</div>
+    <div class="di-branch-line"></div>
+    <div class="di-branch-desc">Governance · Oversight · Campuses · International</div>
+  </div>
+  <div class="di-grid">
+
+    <a class="di-card" href="/leadership/bishops#tazayawan"><!-- [REPLACE] href -->
+      <span class="di-badge badge-bi">Bishop</span>
+      <div class="di-name">Bishop Tazayawan</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Campus</span>
+        Los Angeles, CA · HQ
+        <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/leadership/bishops#yahzeqel"><!-- [REPLACE] href -->
+      <span class="di-badge badge-bi">Bishop</span>
+      <div class="di-name">Bishop Yahzeqel</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Campuses</span>
+        Detroit, MI · Macon, GA
+        <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/leadership/bishops#banayah"><!-- [REPLACE] href -->
+      <span class="di-badge badge-bi">Bishop</span>
+      <div class="di-name">Bishop Banayah</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Liaison</span>
+        Philippines · International
+        <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/leadership/bishops#izar"><!-- [REPLACE] href -->
+      <span class="di-badge badge-bi">Bishop</span>
+      <div class="di-name">Bishop Izar</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Liaison</span>
+        Ghana · International
+        <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ══════════════════════
+       APOSTLES BRANCH (6)
+       ══════════════════════ -->
+  <div class="di-branch">
+    <div class="di-branch-label">Apostles Branch</div>
+    <div class="di-branch-line"></div>
+    <div class="di-branch-desc">Teaching · Education · Research · Voice · Disciples</div>
+  </div>
+
+  <div class="di-grid">
+
+    <a class="di-card" href="/departments/disciples"><!-- [REPLACE] href -->
+      <span class="di-badge badge-ap">Apostles</span>
+      <div class="di-name">Disciples</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Leads</span>
+        Ash Napash · Yashami
+        <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/everyday-sheeple"><!-- [REPLACE] href -->
+      <span class="di-badge badge-ap">Apostles</span>
+      <div class="di-name">Everyday Sheeple</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Lead · Sub-groups</span>
+        Yashan · Sound · Videography · Photography · Camera &amp; Lights · A/V · Stage · Visual Art · PARADOX
+        <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/marketing"><!-- [REPLACE] href -->
+      <span class="di-badge badge-ap">Apostles</span>
+      <div class="di-name">Marketing</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Sub-groups</span>
+        Graphic Design · Social Media
+        <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/performing-arts"><!-- [REPLACE] href -->
+      <span class="di-badge badge-ap">Apostles</span>
+      <div class="di-name">Performing Arts</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Lead · Programs</span>
+        Deacon Kabash · Acting · Dance · Music · Poetry
+        <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/publication"><!-- [REPLACE] href -->
+      <span class="di-badge badge-ap">Apostles</span>
+      <div class="di-name">Publication</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Lead · Sub-groups</span>
+        Shamar · Newsletter · Quarterly Brew
+        <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/tela"><!-- [REPLACE] href -->
+      <span class="di-badge badge-ap">Apostles</span>
+      <div class="di-name">T.E.L.A.</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Lead</span>
+        Bishop Tazayawan
+        <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+  </div>
+
+
+  <!-- ══════════════════════
+       DEACONS BRANCH (10)
+       ══════════════════════ -->
+  <div class="di-branch">
+    <div class="di-branch-label">Deacons Branch</div>
+    <div class="di-branch-line"></div>
+    <div class="di-branch-desc">Administration · Resources · Business · Finances · Records</div>
+  </div>
+
+  <div class="di-grid">
+
+    <a class="di-card" href="/departments/cbd"><!-- [REPLACE] href -->
+      <span class="di-badge badge-de">Deacons</span>
+      <div class="di-name">CBD — Community Building</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Overseer</span>
+        Bishop Tazayawan
+        <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/clerical"><!-- [REPLACE] href -->
+      <span class="di-badge badge-de">Deacons</span>
+      <div class="di-name">Clerical</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Lead</span>
+        Deacon Kabash
+        <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/custodial"><!-- [REPLACE] href -->
+      <span class="di-badge badge-de">Deacons</span>
+      <div class="di-name">Custodial</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Lead</span>
+        Kawan
+        <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/fellowship-service"><!-- [REPLACE] href -->
+      <span class="di-badge badge-de">Deacons</span>
+      <div class="di-name">Fellowship &amp; Service</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Leads</span>
+        Deacons Kabash / Kahan
+        <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/holistic-health-healing"><!-- [REPLACE] href -->
+      <span class="di-badge badge-de">Deacons</span>
+      <div class="di-name">Holistic Health &amp; Healing</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Lead</span>
+        Deacon Kanash
+        <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/it-information-technology"><!-- [REPLACE] href -->
+      <span class="di-badge badge-de">Deacons</span>
+      <div class="di-name">IT / Information Technology</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Lead</span>
+        Shahad
+        <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/maintenance"><!-- [REPLACE] href -->
+      <span class="di-badge badge-de">Deacons</span>
+      <div class="di-name">Maintenance</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Lead · Overseer</span>
+        Deacon Rakab · Bishop Izar
+        <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/safety-facilities"><!-- [REPLACE] href -->
+      <span class="di-badge badge-de">Deacons</span>
+      <div class="di-name">Safety &amp; Facilities</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Sub-groups</span>
+        E.R.T. · Security
+        <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/stewardship"><!-- [REPLACE] href -->
+      <span class="di-badge badge-de">Deacons</span>
+      <div class="di-name">Stewardship</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Sub-groups</span>
+        Bookkeeping · Fundraising · Travel · Tribal Exchange
+        <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/textiles-attire"><!-- [REPLACE] href -->
+      <span class="di-badge badge-de">Deacons</span>
+      <div class="di-name">Textiles &amp; Attire</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Lead</span>
+        Deacon Kanash
+        <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+  </div>
+
+
+  <!-- ══════════════════════
+       JUDGES BRANCH (2)  <!-- ══════════════════════
+       JUDGES BRANCH (2)
+       ══════════════════════ -->
+  <div class="di-branch">
+    <div class="di-branch-label">Judges Branch</div>
+    <div class="di-branch-line"></div>
+    <div class="di-branch-desc">Righteousness · Council · Judging · Repentance</div>
+  </div>
+
+  <div class="di-grid">
+
+    <a class="di-card" href="/departments/counseling"><!-- [REPLACE] href -->
+      <span class="di-badge badge-ju">Judges</span>
+      <div class="di-name">Counseling</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Lead</span>
+        Bishop Tazayawan
+        <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/ministries"><!-- [REPLACE] href -->
+      <span class="di-badge badge-ju">Judges</span>
+      <div class="di-name">Ministries</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Lead</span>
+        Bishop Banayah
+        <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+  </div>
+
+</div>

@@ -1,0 +1,279 @@
+<!--
+  TRUE NATION INTRANET — DEPARTMENT SUB-GROUP CARDS
+  ───────────────────────────────────────────────────
+  Embed this on each department page via Insert → Embed → Embed Code.
+  Do NOT include a visible "Teams & Sub-Groups" heading inside the embed —
+  add it natively in Google Sites above the embed block if needed.
+
+  ⚠ PARADOX: Do NOT use this sub-group cards section for the PARADOX dept
+  page. PARADOX sub-teams (Everyday Sheeple, Camera & Lights,
+  Sound, Videography, PARADOX APP) should NOT appear in the dept embed.
+
+  [PLACEHOLDER] Replace the card content for each department.
+  Remove the "Form placeholder" section until Week 3.
+
+  DEPARTMENTS WITH NO SUB-GROUPS:
+    Security, Maintenance — delete all cards and only keep
+    the action buttons section.
+
+  FEAST COMMITTEE:
+    Fellowship & Services has 7 sub-teams. Duplicate the
+    card template to add all 7 (Beverages, Ceremonial,
+    Culinary, Decor, Desserts, Sacrificial Cooking, Serving).
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  .dept-wrap {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    background: #E8E8EC;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  /* ── Sub-group card grid ── */
+  .sg-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .sg-card {
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(19,13,10,0.06);
+    transition: box-shadow 0.2s, transform 0.15s;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sg-card:hover {
+    box-shadow: 0 4px 14px rgba(19,13,10,0.11);
+    transform: translateY(-2px);
+  }
+
+  .sg-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #7C1316;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .sg-desc {
+    font-size: 15px;
+    color: #56565E;
+    line-height: 1.6;
+    flex: 1;
+    margin-bottom: 10px;
+  }
+
+  .sg-lead {
+    padding-top: 10px;
+    border-top: 1px solid #BFBFC7;
+    font-size: 13px;
+    color: #56565E;
+  }
+
+  .sg-lead span {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #785710;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  /* ── Action buttons ── */
+  .action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+    justify-content: center;
+  }
+
+  .act-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    min-height: 52px;
+    transition: all 0.2s;
+    flex: 1;
+    min-width: 180px;
+    max-width: 260px;
+    text-align: center;
+  }
+
+  .act-btn__icon { font-size: 1.5rem; flex-shrink: 0; }
+
+  .act-btn__text-main {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: block;
+    line-height: 1.2;
+  }
+
+  .act-btn__text-sub {
+    font-size: 12px;
+    display: block;
+    opacity: 0.75;
+    margin-top: 1px;
+  }
+
+  .btn-wine {
+    background: #7C1316;
+    color: #F2F2F3;
+  }
+  .btn-wine:hover { background: #5A0E11; }
+  .btn-wine .act-btn__text-sub { color: #F2F2F3; }
+
+  .btn-outline {
+    background: white;
+    border: 2px solid #7C1316;
+    color: #7C1316;
+  }
+  .btn-outline:hover { background: #7C1316; color: #F2F2F3; }
+
+  .btn-gold {
+    background: white;
+    border: 2px solid #C9972C;
+    color: #26262A;
+  }
+  .btn-gold:hover { background: #C9972C; color: white; }
+  .btn-gold .act-btn__text-main { color: #7C1316; }
+
+  /* ── Form placeholder (remove in Week 3 and replace with real embed) ── */
+  .form-placeholder {
+    background: #D8D8DE;
+    border: 2px dashed #C9972C;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .form-placeholder__label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #785710;
+    margin-bottom: 6px;
+  }
+
+  .form-placeholder__text {
+    font-size: 15px;
+    color: #56565E;
+  }
+
+  @media (max-width: 640px) {
+    .sg-grid { grid-template-columns: repeat(2, 1fr); }
+    .act-btn { max-width: 100%; }
+  }
+  @media (max-width: 380px) {
+    .sg-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="dept-wrap">
+
+  <!-- ══════════════════════════════════
+       SUB-GROUP CARDS
+       [PLACEHOLDER] Replace for each department
+       ══════════════════════════════════ -->
+  <div class="sg-grid">
+
+    <!-- Card 1 — [PLACEHOLDER] -->
+    <div class="sg-card">
+      <div class="sg-name">Logistics</div>
+    <!-- SUGGESTION desc: Coordinates equipment, transportation, and operational logistics for events and weekly services. -->
+    <!-- SUGGESTION lead: LeadAchwath Shawashan -->
+    </div>
+
+    <!-- Card 2 — [PLACEHOLDER] -->
+    <div class="sg-card">
+      <div class="sg-name">Infrastructure</div>
+    <!-- SUGGESTION desc: Manages network, hardware, Google Workspace configuration, and physical technology infrastructure. -->
+    <!-- SUGGESTION lead: LeadAhch Shahad -->
+    </div>
+
+    <!-- Card 3 — [PLACEHOLDER] -->
+    <div class="sg-card">
+      <div class="sg-name">Website</div>
+    <!-- SUGGESTION desc: Maintains the public website, intranet portal, and PARADOX APP platform. -->
+    <!-- SUGGESTION lead: LeadAhch Shahad -->
+    </div>
+
+    <!--
+      [ADD MORE CARDS HERE]
+      <div class="sg-card">
+        <div class="sg-name">[SUB-GROUP NAME]</div>
+    <!-- SUGGESTION desc: [Description] -->
+    <!-- SUGGESTION lead: Lead[Name] -->
+      </div>
+    -->
+
+  </div>
+
+  <!-- ══════════════════════════════════
+       ACTION BUTTONS
+       [REPLACE] Update all href values
+       ══════════════════════════════════ -->
+  <div class="action-row">
+
+    <a class="act-btn btn-wine" href="https://chat.google.com/room/REPLACE_SPACE_ID" target="_blank">
+      <div class="act-btn__icon">💬</div>
+      <div>
+        <span class="act-btn__text-main">Open Chat Space</span>
+        <span class="act-btn__text-sub">Team communication</span>
+      </div>
+    </a>
+
+    <a class="act-btn btn-outline" href="https://drive.google.com/drive/folders/REPLACE_FOLDER_ID">
+      <div class="act-btn__icon">📁</div>
+      <div>
+        <span class="act-btn__text-main">Drive Folder</span>
+        <span class="act-btn__text-sub">Shared documents</span>
+      </div>
+    </a>
+
+    <a class="act-btn btn-gold" href="mailto:it@truenation.org" target="_blank">
+      <div class="act-btn__icon">✉️</div>
+      <div>
+        <span class="act-btn__text-main">Email Dept</span>
+        <!-- [REPLACE] with this department's group email -->
+        <span class="act-btn__text-sub">it@truenation.org</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ══════════════════════════════════
+       FORM PLACEHOLDER — remove in Week 3
+       and replace with Google Form embed
+       ══════════════════════════════════ -->
+  <div class="form-placeholder">
+    <div class="form-placeholder__label">Coming in Week 3</div>
+    <div class="form-placeholder__text">Department request form will appear here.</div>
+  </div>
+
+</div>

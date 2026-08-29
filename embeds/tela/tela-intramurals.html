@@ -1,0 +1,401 @@
+<!--
+  TRUE NATION INTRANET — T.E.L.A.: INTRAMURAL SPORTS
+  ─────────────────────────────────────────────────────
+  Native Sites heading: "Intramural Sports"
+  Expanded section card: season info, sport tiles, schedule, registration.
+  [REPLACE] All sport names, dates, lead name, Drive/Chat/Form links.
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .intra-wrap {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    background: #E8E8EC;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  /* ── Season banner ── */
+  .season-banner {
+    background: #7C1316;
+    border-radius: 8px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .season-left { display: flex; flex-direction: column; gap: 4px; }
+
+  .season-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #785710;
+  }
+
+  .season-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.375rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #F2F2F3;
+    line-height: 1.15;
+  }
+
+  .season-dates {
+    font-size: 13px;
+    color: rgba(250,248,244,0.7);
+    margin-top: 2px;
+  }
+
+  .season-lead {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+  }
+
+  .season-lead-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #785710;
+  }
+
+  .season-lead-name {
+    font-size: 14px;
+    color: #F2F2F3;
+    font-weight: 500;
+  }
+
+  /* ── Sports grid ── */
+  .sports-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 10px;
+  }
+
+  .sport-tile {
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-radius: 8px;
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    transition: box-shadow 0.2s, transform 0.15s;
+  }
+
+  .sport-tile:hover {
+    box-shadow: 0 4px 12px rgba(19,13,10,0.1);
+    transform: translateY(-2px);
+  }
+
+  .sport-icon { font-size: 1.875rem; line-height: 1; }
+
+  .sport-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.9375rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #7C1316;
+    line-height: 1.2;
+  }
+
+  .sport-status {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 8px;
+    border-radius: 100px;
+  }
+
+  .status-active   { background: #D4EDDA; color: #1A6B3A; }
+  .status-upcoming { background: #FFF3CD; color: #856404; }
+  .status-offseason { background: #D8D8DE; color: #888; }
+
+  /* ── Schedule table ── */
+  .schedule-card {
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(19,13,10,0.05);
+  }
+
+  .schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .schedule-table thead tr {
+    background: #D8D8DE;
+  }
+
+  .schedule-table th {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #7C1316;
+    padding: 10px 14px;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .schedule-table td {
+    padding: 10px 14px;
+    color: #56565E;
+    border-top: 1px solid #BFBFC7;
+    vertical-align: middle;
+  }
+
+  .schedule-table tr:hover td { background: #E8E8EC; }
+
+  .sched-sport-badge {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 2px 8px;
+    border-radius: 100px;
+    background: #7C1316;
+    color: #F2F2F3;
+    white-space: nowrap;
+  }
+
+  .sched-location { font-size: 12px; color: #888; margin-top: 2px; }
+
+  /* ── Action buttons ── */
+  .action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .act-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    min-height: 50px;
+    transition: all 0.2s;
+    flex: 1;
+    min-width: 150px;
+  }
+
+  .act-btn__icon { font-size: 1.3rem; flex-shrink: 0; }
+
+  .act-btn__text-main {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: block;
+    line-height: 1.2;
+  }
+
+  .act-btn__text-sub {
+    font-size: 11px;
+    display: block;
+    opacity: 0.75;
+    margin-top: 1px;
+  }
+
+  .btn-wine { background: #7C1316; color: #F2F2F3; }
+  .btn-wine:hover { background: #5A0E11; }
+  .btn-wine .act-btn__text-sub { color: #F2F2F3; }
+
+  .btn-outline { background: white; border: 2px solid #7C1316; color: #7C1316; }
+  .btn-outline:hover { background: #7C1316; color: #F2F2F3; }
+
+  .btn-gold { background: white; border: 2px solid #C9972C; color: #26262A; }
+  .btn-gold:hover { background: #C9972C; color: white; }
+  .btn-gold .act-btn__text-main { color: #7C1316; }
+
+  @media (max-width: 600px) {
+    .season-banner { flex-direction: column; align-items: flex-start; }
+    .season-lead { align-items: flex-start; }
+    .schedule-table { font-size: 13px; }
+    .schedule-table th, .schedule-table td { padding: 8px 10px; }
+    .act-btn { min-width: 100%; }
+  }
+</style>
+
+<div class="intra-wrap">
+
+  <!-- Season banner -->
+  <div class="season-banner">
+    <div class="season-left">
+      <span class="season-label">Current Season</span>
+      <div class="season-title">[REPLACE] Spring 2026 Season</div>
+      <div class="season-dates">📅 [REPLACE] Season dates — e.g. March 1 – May 31, 2026</div>
+    </div>
+    <div class="season-lead">
+      <span class="season-lead-label">Intramurals Lead</span>
+      <span class="season-lead-name">[REPLACE Lead Name]</span>
+    </div>
+  </div>
+
+  <!-- Sports tiles -->
+  <div class="sports-grid">
+
+    <div class="sport-tile">
+      <div class="sport-icon">⚽</div>
+      <div class="sport-name">Soccer</div>
+      <span class="sport-status status-active">Active</span>
+    </div>
+
+    <div class="sport-tile">
+      <div class="sport-icon">🏀</div>
+      <div class="sport-name">Basketball</div>
+      <span class="sport-status status-active">Active</span>
+    </div>
+
+    <div class="sport-tile">
+      <div class="sport-icon">🏐</div>
+      <div class="sport-name">Volleyball</div>
+      <span class="sport-status status-upcoming">Upcoming</span>
+    </div>
+
+    <div class="sport-tile">
+      <div class="sport-icon">🏃</div>
+      <div class="sport-name">Track & Field</div>
+      <span class="sport-status status-upcoming">Upcoming</span>
+    </div>
+
+    <div class="sport-tile">
+      <div class="sport-icon">🏓</div>
+      <div class="sport-name">Table Tennis</div>
+      <span class="sport-status status-offseason">Off Season</span>
+    </div>
+
+    <!--
+      [ADD / REMOVE SPORT TILES as needed]
+      Status classes: status-active · status-upcoming · status-offseason
+      <div class="sport-tile">
+        <div class="sport-icon">[emoji]</div>
+        <div class="sport-name">[Sport Name]</div>
+        <span class="sport-status status-active">Active</span>
+      </div>
+    -->
+
+  </div>
+
+  <!-- Upcoming games / schedule -->
+  <div class="schedule-card">
+    <table class="schedule-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Sport</th>
+          <th>Matchup</th>
+          <th>Location</th>
+          <th>Time</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- [REPLACE] Game rows — add/remove as needed -->
+        <tr>
+          <td>Apr 5</td>
+          <td><span class="sched-sport-badge">Soccer</span></td>
+          <td>
+            [REPLACE Team A] vs. [REPLACE Team B]
+            <div class="sched-location">📍 [REPLACE Venue]</div>
+          </td>
+          <td>[Campus / Field]</td>
+          <td>[Time]</td>
+        </tr>
+
+        <tr>
+          <td>Apr 8</td>
+          <td><span class="sched-sport-badge">Basketball</span></td>
+          <td>
+            [REPLACE Team A] vs. [REPLACE Team B]
+            <div class="sched-location">📍 [REPLACE Venue]</div>
+          </td>
+          <td>[Campus / Gym]</td>
+          <td>[Time]</td>
+        </tr>
+
+        <tr>
+          <td>Apr 12</td>
+          <td><span class="sched-sport-badge">Soccer</span></td>
+          <td>
+            [REPLACE Team A] vs. [REPLACE Team B]
+            <div class="sched-location">📍 [REPLACE Venue]</div>
+          </td>
+          <td>[Campus / Field]</td>
+          <td>[Time]</td>
+        </tr>
+
+        <!--
+          [ADD MORE GAME ROWS HERE]
+          <tr>
+            <td>[Date]</td>
+            <td><span class="sched-sport-badge">[Sport]</span></td>
+            <td>[Team A] vs. [Team B]<div class="sched-location">📍 [Venue]</div></td>
+            <td>[Campus]</td>
+            <td>[Time]</td>
+          </tr>
+        -->
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Quick actions -->
+  <div class="action-row">
+    <!-- [REPLACE] REPLACE_SPACE_ID with Intramurals Chat Space ID -->
+    <a class="act-btn btn-wine" href="https://chat.google.com/room/REPLACE_SPACE_ID" target="_blank">
+      <div class="act-btn__icon">💬</div>
+      <div>
+        <span class="act-btn__text-main">Intramurals Chat</span>
+        <span class="act-btn__text-sub">Team updates & scores</span>
+      </div>
+    </a>
+    <!-- [REPLACE] REPLACE_FOLDER_ID with Intramurals Drive folder -->
+    <a class="act-btn btn-outline" href="https://drive.google.com/drive/folders/REPLACE_FOLDER_ID">
+      <div class="act-btn__icon">📁</div>
+      <div>
+        <span class="act-btn__text-main">Rosters & Schedules</span>
+        <span class="act-btn__text-sub">Drive folder</span>
+      </div>
+    </a>
+    <!-- [REPLACE] REPLACE with Google Form registration URL -->
+    <a class="act-btn btn-gold" href="REPLACE_REGISTRATION_FORM_URL" target="_blank">
+      <div class="act-btn__icon">📋</div>
+      <div>
+        <span class="act-btn__text-main">Register / Sign Up</span>
+        <span class="act-btn__text-sub">Player registration form</span>
+      </div>
+    </a>
+  </div>
+
+</div>

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: #FAF8F4; color: #3D2E28; font-size: 13px; }
+h2.sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
+
+.wrap { padding: 16px; max-width: 860px; margin: 0 auto; }
+
+/* tabs */
+.tabs { display:flex; gap:4px; margin-bottom:16px; flex-wrap:wrap; }
+.tab { padding:7px 14px; border:1.5px solid #E0D8CF; background:#fff; cursor:pointer; font-size:12px; font-weight:600; color:#7A6F6A; letter-spacing:.02em; border-radius:3px; }
+.tab.active { background:#7C1316; color:#fff; border-color:#7C1316; }
+
+.panel { display:none; }
+.panel.active { display:block; }
+
+/* issue cards */
+.issue-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.issue-card { background:#fff; border:1.5px solid #E0D8CF; border-left:4px solid #ccc; padding:12px 14px; }
+.issue-card.high { border-left-color:#7C1316; }
+.issue-card.med  { border-left-color:#C9972C; }
+.issue-card.info { border-left-color:#5B8DB8; }
+.issue-tag { font-size:10px; font-weight:700; letter-spacing:.10em; text-transform:uppercase; margin-bottom:6px; }
+.high .issue-tag { color:#7C1316; }
+.med  .issue-tag { color:#C9972C; }
+.info .issue-tag { color:#5B8DB8; }
+.issue-title { font-weight:700; color:#130D0A; margin-bottom:5px; font-size:13px; }
+.issue-body { font-size:12px; color:#7A6F6A; line-height:1.55; }
+
+/* overlap map */
+.overlap-table { width:100%; border-collapse:collapse; font-size:12px; }
+.overlap-table th { background:#130D0A; color:#FAF8F4; padding:8px 12px; text-align:left; font-size:11px; letter-spacing:.08em; text-transform:uppercase; }
+.overlap-table td { padding:9px 12px; border-bottom:1px solid #F2EDE4; vertical-align:top; }
+.overlap-table tr:nth-child(odd) td { background:#fff; }
+.overlap-table tr:nth-child(even) td { background:#FAF8F4; }
+.role-name { font-weight:700; color:#130D0A; }
+.role-person { color:#7C1316; font-weight:600; }
+.dup-badge { display:inline-block; background:#FFF0E8; color:#B85000; font-size:10px; font-weight:700; padding:1px 6px; border-radius:2px; letter-spacing:.05em; }
+.ok-badge  { display:inline-block; background:#E8F4E8; color:#2E6B2E; font-size:10px; font-weight:700; padding:1px 6px; border-radius:2px; }
+
+/* proposal */
+.branch-block { margin-bottom:14px; }
+.branch-header { padding:9px 14px; font-weight:700; font-size:12px; letter-spacing:.06em; text-transform:uppercase; display:flex; align-items:center; gap:8px; }
+.branch-header.bishops  { background:#130D0A; color:#FAF8F4; }
+.branch-header.apostles { background:#F0E6D0; color:#8B6914; }
+.branch-header.deacons  { background:#F0D8D8; color:#7C1316; }
+.branch-header.judges   { background:#D8DFF0; color:#2E4A6B; }
+.branch-header.tela     { background:#E8F0E8; color:#2E5B2E; }
+.dept-rows { background:#fff; border:1px solid #E0D8CF; border-top:none; }
+.dept-row { display:grid; grid-template-columns:180px 1fr; border-bottom:1px solid #F2EDE4; font-size:12px; }
+.dept-row:last-child { border-bottom:none; }
+.dept-name { padding:7px 12px; font-weight:700; color:#130D0A; background:#FAF8F4; border-right:1px solid #E0D8CF; }
+.dept-subs { padding:7px 12px; color:#3D2E28; }
+.changed { background:#FFF8E8; }
+.changed .dept-name { background:#FFF0D0; }
+.new-tag { display:inline-block; background:#C9972C; color:#fff; font-size:9px; font-weight:700; padding:1px 5px; border-radius:2px; margin-left:4px; vertical-align:middle; }
+.move-tag { display:inline-block; background:#5B8DB8; color:#fff; font-size:9px; font-weight:700; padding:1px 5px; border-radius:2px; margin-left:4px; vertical-align:middle; }
+
+/* questions */
+.q-list { display:flex; flex-direction:column; gap:10px; }
+.q-card { background:#fff; border:1.5px solid #E0D8CF; padding:13px 16px; display:grid; grid-template-columns:28px 1fr; gap:10px; align-items:start; }
+.q-num { font-weight:700; color:#7C1316; font-size:15px; }
+.q-title { font-weight:700; color:#130D0A; margin-bottom:4px; }
+.q-body { font-size:12px; color:#7A6F6A; line-height:1.55; }
+.q-options { margin-top:8px; display:flex; flex-direction:column; gap:4px; }
+.q-opt { font-size:12px; padding:5px 10px; border:1px solid #E0D8CF; background:#FAF8F4; color:#3D2E28; }
+.q-opt strong { color:#7C1316; }
+</style>
+</head>
+<body>
+<h2 class="sr-only">True Nation org structure analysis: issues, overlaps, and restructuring recommendations</h2>
+<div class="wrap">
+
+<div class="tabs">
+  <div class="tab active" onclick="show('issues',this)">⚠ Issues Found</div>
+  <div class="tab" onclick="show('overlap',this)">↔ TELA Overlaps</div>
+  <div class="tab" onclick="show('proposal',this)">✓ Proposed Structure</div>
+  <div class="tab" onclick="show('questions',this)">? Decisions Needed</div>
+</div>
+
+<!-- ISSUES -->
+<div id="issues" class="panel active">
+  <div class="issue-grid">
+
+    <div class="issue-card high">
+      <div class="issue-tag">High — Duplication</div>
+      <div class="issue-title">TELA mirrors 7 existing org roles</div>
+      <div class="issue-body">TELA's Operations & Support Team re-creates roles that already exist in parent departments: fellowship, care, administration, fundraising, logistics, media, discipleship. Same people, separate titles.</div>
+    </div>
+
+    <div class="issue-card high">
+      <div class="issue-tag">High — Structural</div>
+      <div class="issue-title">"Stewardship" name mismatch</div>
+      <div class="issue-body">In churches, "Stewardship" = financial/resource stewardship. ERT + Security is more accurately "Safety & Facilities" or "Campus Safety." Using "Stewardship" will confuse it with Finance.</div>
+    </div>
+
+    <div class="issue-card med">
+      <div class="issue-tag">Medium — Placement</div>
+      <div class="issue-title">IT Logistics doesn't belong in IT</div>
+      <div class="issue-body">Shawashan's "Logistics" role appears to be operational (events, transport, setup) — not IT infrastructure. It makes more sense under Clerical/Administration, where operations coordination lives.</div>
+    </div>
+
+    <div class="issue-card med">
+      <div class="issue-tag">Medium — Missing</div>
+      <div class="issue-title">IT "Applications" sub-group dropped</div>
+      <div class="issue-body">PARADOX App is listed under Production — but software development belongs in IT/Applications. Production handles content; IT handles the software platform the content runs on.</div>
+    </div>
+
+    <div class="issue-card med">
+      <div class="issue-tag">Medium — Unclear</div>
+      <div class="issue-title">Bishops leading Deacon departments</div>
+      <div class="issue-body">Bishop Tazayawan leads CBD (Deacon dept). Bishop Izar leads Maintenance (Deacon dept). Bishops overseeing ops is fine, but a Deacon should be the day-to-day operational lead for each.</div>
+    </div>
+
+    <div class="issue-card med">
+      <div class="issue-tag">Medium — Missing</div>
+      <div class="issue-title">Finance has no department lead</div>
+      <div class="issue-body">Finance is listed as "TBD" — with Bookkeeping (Marayam), Fundraising (Ahhabyah), Travel (Shabayah), and Tribal Exchange (Banayah) all active. Someone needs to own the department.</div>
+    </div>
+
+    <div class="issue-card info">
+      <div class="issue-tag">Info — Clarify</div>
+      <div class="issue-title">TELA placement in the org tree</div>
+      <div class="issue-body">TELA appears under Apostles in the new structure, but Bishop Tazayawan (not an Apostle) is Youth Director. Is TELA under Apostles with Bishop oversight, or is it a cross-branch program?</div>
+    </div>
+
+    <div class="issue-card info">
+      <div class="issue-tag">Info — Clarify</div>
+      <div class="issue-title">Accra, Ghana school vs. CoT Kumasi</div>
+      <div class="issue-body">The Schools list has both Kumasi and Accra, Ghana. CBD only shows CoT Kumasi. Is there a City of Truth Accra? Or is Accra a school without a CoT community center?</div>
+    </div>
+
+    <div class="issue-card info">
+      <div class="issue-tag">Info — New</div>
+      <div class="issue-title">SCICA Summit not listed</div>
+      <div class="issue-body">Previously a joint Bishops + Apostles committee (Tazayawan + Yashami). Not in the new structure — is it discontinued, or just missing from this list?</div>
+    </div>
+
+    <div class="issue-card info">
+      <div class="issue-tag">Info — New</div>
+      <div class="issue-title">Kanash leads 3 departments</div>
+      <div class="issue-body">Deacon Kanash currently leads: Holistic Health & Healing, Textiles & Attire, and ERT (under new Stewardship dept). That's a heavy load — intentional, or worth distributing?</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- OVERLAP MAP -->
+<div id="overlap" class="panel">
+  <p style="font-size:12.5px;color:#7A6F6A;margin-bottom:12px;">TELA's Operations & Support Team re-creates roles that already exist in parent departments. The fix: treat these as <strong>joint appointments</strong> — one person, one role, serving TELA as part of their department work. No separate titles needed.</p>
+  <table class="overlap-table">
+    <thead>
+      <tr>
+        <th>TELA Role</th>
+        <th>Person</th>
+        <th>Parent Dept Role (same person)</th>
+        <th>Fix</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="role-name">Youth Minister of Art & Worship</span></td>
+        <td><span class="role-person">Deacon Kabash</span></td>
+        <td>Performing Arts Dept Lead (Apostles)</td>
+        <td><span class="dup-badge">Merge</span> Kabash's Performing Arts role covers TELA — no separate TELA title</td>
+      </tr>
+      <tr>
+        <td><span class="role-name">Youth Minister of Discipleship</span></td>
+        <td><span class="role-person">Apostle Yashami</span></td>
+        <td>Disciples Dept Lead (Apostles)</td>
+        <td><span class="dup-badge">Merge</span> Yashami's Disciples role covers TELA discipleship</td>
+      </tr>
+      <tr>
+        <td><span class="role-name">Youth Minister of Fellowship</span></td>
+        <td><span class="role-person">Mathathyah</span></td>
+        <td>Fellowship — Fellowship & Service (Deacons)</td>
+        <td><span class="dup-badge">Merge</span> Mathathyah does fellowship org-wide, including TELA</td>
+      </tr>
+      <tr>
+        <td><span class="role-name">C.A.R.E. Team Leader</span></td>
+        <td><span class="role-person">Qawalyah</span></td>
+        <td>C.A.R.E. sub-group — Holistic Health (Deacons)</td>
+        <td><span class="dup-badge">Merge</span> C.A.R.E. team serves org-wide, including TELA youth</td>
+      </tr>
+      <tr>
+        <td><span class="role-name">Program Administrator</span></td>
+        <td><span class="role-person">Sarah Haynes</span></td>
+        <td>Administration Committee — Clerical (Deacons)</td>
+        <td><span class="dup-badge">Merge</span> Sarah's Clerical role covers TELA administration</td>
+      </tr>
+      <tr>
+        <td><span class="role-name">Fundraising Coordinator</span></td>
+        <td><span class="role-person">Ahhabyah</span></td>
+        <td>Fundraising — Finance (Deacons)</td>
+        <td><span class="dup-badge">Merge</span> Ahhabyah handles fundraising org-wide, including TELA</td>
+      </tr>
+      <tr>
+        <td><span class="role-name">Asst. Youth Director / Logistics</span></td>
+        <td><span class="role-person">Shawashan</span></td>
+        <td>Logistics — IT (Deacons) + Hospitality</td>
+        <td><span class="dup-badge">Merge</span> Move Logistics to Clerical (not IT), Shawashan serves TELA from there</td>
+      </tr>
+      <tr>
+        <td><span class="role-name">Project Asst. & Media</span></td>
+        <td><span class="role-person">Bayanah</span></td>
+        <td>G.R.O.W. With Us — Holistic Health (Deacons)</td>
+        <td><span class="ok-badge">Keep</span> Bayanah's media role for TELA is distinct from G.R.O.W. — but could report through Marketing</td>
+      </tr>
+      <tr>
+        <td><span class="role-name">Event & Activities Coordinator</span></td>
+        <td><span class="role-person">Ashley</span></td>
+        <td>Not in org structure — no parent role listed</td>
+        <td><span class="ok-badge">Keep</span> TELA-specific coordinator — this one is genuinely TELA-only</td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="margin-top:12px;padding:10px 14px;background:#E8F4E8;border-left:3px solid #2E6B2E;font-size:12px;color:#3D2E28;">
+    <strong>Result:</strong> Instead of 9 separate TELA support roles, you have a <strong>Youth Director (Tazayawan)</strong> supported by people who serve TELA as an extension of their existing department roles — plus 1–2 TELA-specific roles (Ashley as Events Coordinator, and the Asst. Youth Director title for Shawashan if you want to keep it).
+  </div>
+</div>
+
+<!-- PROPOSAL -->
+<div id="proposal" class="panel">
+  <p style="font-size:12.5px;color:#7A6F6A;margin-bottom:12px;">Key changes highlighted. <span style="background:#FFF8E8;padding:1px 4px;border:1px solid #F0D890;">Gold</span> = changed/moved. <span style="background:#fff;padding:1px 4px;border:1px solid #E0D8CF;">White</span> = unchanged.</p>
+
+  <!-- Bishops -->
+  <div class="branch-block">
+    <div class="branch-header bishops">Bishops — Top Leadership & School Oversight</div>
+    <div class="dept-rows">
+      <div class="dept-row"><div class="dept-name">Tazayawan</div><div class="dept-subs">Los Angeles, CA (HQ) · Youth Director (TELA) · CBD Overseer</div></div>
+      <div class="dept-row"><div class="dept-name">Yahzeqel</div><div class="dept-subs">Detroit, MI · Macon, GA · CoT Macon Overseer</div></div>
+      <div class="dept-row"><div class="dept-name">Izar</div><div class="dept-subs">Kumasi, Ghana · Accra, Ghana · Maintenance Overseer · CoT Kumasi Overseer</div></div>
+      <div class="dept-row"><div class="dept-name">Banayah</div><div class="dept-subs">Manila, Philippines · Cebu, Philippines · Ministries Overseer · Tribal Exchange</div></div>
+    </div>
+  </div>
+
+  <!-- Apostles -->
+  <div class="branch-block">
+    <div class="branch-header apostles">Apostles Branch — Ash Napash, Yashami</div>
+    <div class="dept-rows">
+      <div class="dept-row"><div class="dept-name">Disciples</div><div class="dept-subs">Ash Napash, Yashami</div></div>
+      <div class="dept-row"><div class="dept-name">Marketing</div><div class="dept-subs">Lead: TBD · Graphic Design (Ratazah) · Social Media (Yaqataza)</div></div>
+      <div class="dept-row"><div class="dept-name">Performing Arts</div><div class="dept-subs">Deacon Kabash · Acting (Tazayawan) · Dance (TBD) · Music (Kabash) · Poetry (Kabash)</div></div>
+      <div class="dept-row"><div class="dept-name">Production</div><div class="dept-subs">Yashan · A/V (Shamar) · Camera & Lights (Yashan) · Everyday Sheeple · PARADOX · Photography · Sound (Yashami) · Stage (Ahman) · Visual Art · Videography</div></div>
+      <div class="dept-row"><div class="dept-name">Publications</div><div class="dept-subs">Deacon Shamar · Newsletter · Quarterly Brew</div></div>
+    </div>
+  </div>
+
+  <!-- TELA -->
+  <div class="branch-block">
+    <div class="branch-header tela">T.E.L.A. / Youth Development — Cross-Functional Program</div>
+    <div class="dept-rows">
+      <div class="dept-row changed"><div class="dept-name">Youth Director<span class="new-tag">RESTRUCTURED</span></div><div class="dept-subs">Bishop Tazayawan · TELA is a program, not a branch — support roles are joint appointments from parent depts (no duplicate titles)</div></div>
+      <div class="dept-row"><div class="dept-name">Youth Programs</div><div class="dept-subs">Intramural Sports · Jr. Disciples (Ash Napash) · Little Lions (Tazayawan) · Maiden Ewe's (Shawashan) · Naqam Freshman · Naqam Varsity</div></div>
+      <div class="dept-row changed"><div class="dept-name">Youth Council<span class="move-tag">CLARIFY</span></div><div class="dept-subs">Coordinating body — is this the same as or separate from the Judges Council?</div></div>
+    </div>
+  </div>
+
+  <!-- Deacons -->
+  <div class="branch-block">
+    <div class="branch-header deacons">Deacons Branch — Kahan, Kabash, Kanash, Ahman, Rakab, Shamar</div>
+    <div class="dept-rows">
+      <div class="dept-row"><div class="dept-name">CBD</div><div class="dept-subs">Ops: TBD Deacon · Bishop Tazayawan (overseer) · Camp Tazarah (Ash Napash) · CoT Kumasi (Izar) · CoT Macon (Yahzeqel)</div></div>
+      <div class="dept-row changed"><div class="dept-name">Clerical<span class="move-tag">GAINS LOGISTICS</span></div><div class="dept-subs">Deacon Kabash · Administration Committee · Logistics (Shawashan) ← moved from IT</div></div>
+      <div class="dept-row"><div class="dept-name">Custodial</div><div class="dept-subs">Kawan · Cleaning Crew · Detailing (Lawah)</div></div>
+      <div class="dept-row"><div class="dept-name">Fellowship & Service</div><div class="dept-subs">Kahan/Kabash · Fellowship (Mathathyah — org-wide incl. TELA) · Hospitality (Shawashan) · Feast Committee → Beverages, Ceremonial (TBD), Culinary (Kanash), Decor (Adah), Desserts (Shalawa), Sacrificial (Kahan), Serving (Lawah)</div></div>
+      <div class="dept-row"><div class="dept-name">Finance</div><div class="dept-subs">Lead: <strong>TBD ← needs a lead</strong> · Bookkeeping (Marayam) · Fundraising (Ahhabyah) · Travel (Shabayah) · Tribal Exchange (Banayah)</div></div>
+      <div class="dept-row"><div class="dept-name">Holistic Health</div><div class="dept-subs">Deacon Kanash · C.A.R.E. (Qawalyah — org-wide incl. TELA) · G.R.O.W. With Us (Bayanah)</div></div>
+      <div class="dept-row changed"><div class="dept-name">IT<span class="move-tag">LOSES LOGISTICS</span></div><div class="dept-subs">Shahad · Infrastructure · Website · Applications (incl. PARADOX App) ← add back</div></div>
+      <div class="dept-row"><div class="dept-name">Maintenance</div><div class="dept-subs">Ops: Deacon Rakab · Bishop Izar (overseer)</div></div>
+      <div class="dept-row changed"><div class="dept-name">Safety & Facilities<span class="new-tag">RENAME</span></div><div class="dept-subs">Was "Stewardship" — Lead: TBD · E.R.T. (Kanash/Shamar) · Security (Ahman)</div></div>
+      <div class="dept-row"><div class="dept-name">Textiles & Attire</div><div class="dept-subs">Deacon Kanash · Apparel (Kanash) · Faithful Seams (Kanash) · Uniform (Qawalyah)</div></div>
+    </div>
+  </div>
+
+  <!-- Judges -->
+  <div class="branch-block">
+    <div class="branch-header judges">Judges Branch — Council Oversight</div>
+    <div class="dept-rows">
+      <div class="dept-row"><div class="dept-name">Counseling</div><div class="dept-subs">Bishop Tazayawan · Coord: Apostle Yashami · Sanhedrin</div></div>
+      <div class="dept-row"><div class="dept-name">Ministries</div><div class="dept-subs">Bishop Banayah · Elders Ministry · Prayer Ministry · Prison Ministry · SOV — Sisters of Voices (Marayam)</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- QUESTIONS -->
+<div id="questions" class="panel">
+  <div class="q-list">
+
+    <div class="q-card">
+      <div class="q-num">1</div>
+      <div>
+        <div class="q-title">Rename "Stewardship" to "Safety & Facilities"?</div>
+        <div class="q-body">In churches, "Stewardship" almost universally means financial/resource stewardship — it will be confused with the Finance department. ERT + Security is more accurately a safety/facilities function. Options:</div>
+        <div class="q-options">
+          <div class="q-opt"><strong>A.</strong> Safety & Facilities — most descriptive of what ERT + Security actually do</div>
+          <div class="q-opt"><strong>B.</strong> Campus Safety — clear, campus-context language</div>
+          <div class="q-opt"><strong>C.</strong> Keep "Stewardship" — if you're expanding it to include Maintenance + Custodial as well (stewardship of physical spaces)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">2</div>
+      <div>
+        <div class="q-title">Is Shawashan's "Logistics" IT-work or operations-work?</div>
+        <div class="q-body">If Shawashan handles physical logistics — event setup, equipment transport, coordination — that belongs under Clerical/Administration, not IT. IT logistics implies hardware procurement, device deployment, etc. Which is it?</div>
+        <div class="q-options">
+          <div class="q-opt"><strong>A.</strong> Move to Clerical — operational logistics (events, transport, coordination)</div>
+          <div class="q-opt"><strong>B.</strong> Keep in IT — IT-specific logistics (hardware, tech deployment)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">3</div>
+      <div>
+        <div class="q-title">PARADOX App — Production or IT/Applications?</div>
+        <div class="q-body">There's a difference between PARADOX (the media content/show — lives in Production) and PARADOX App (the software application — arguably lives in IT/Applications). Should these be split?</div>
+        <div class="q-options">
+          <div class="q-opt"><strong>A.</strong> Split them — PARADOX show under Production, PARADOX App under IT/Applications</div>
+          <div class="q-opt"><strong>B.</strong> Keep both under Production — they're the same project, Shahad just happens to build the app</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">4</div>
+      <div>
+        <div class="q-title">Who leads Finance?</div>
+        <div class="q-body">Finance has active sub-group leads (Marayam, Ahhabyah, Shabayah, Banayah) but the department lead is TBD. Is there someone currently acting in that role, or is it genuinely an open seat?</div>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">5</div>
+      <div>
+        <div class="q-title">Is the TELA Youth Council a separate body from the Judges Council?</div>
+        <div class="q-body">You listed a "Youth Council" under TELA. The Judges Council is Tazayawan, Banayah, Izar, Yahzeqel, Ash Napash, Yashami. Is the Youth Council a separate governing or advisory body specific to TELA, or is it referring to the same Council?</div>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">6</div>
+      <div>
+        <div class="q-title">Accra, Ghana — is there a CoT Accra, or just a school?</div>
+        <div class="q-body">The Schools list has both Kumasi and Accra under Bishop Izar. CBD only lists CoT Kumasi. Is Accra a full City of Truth community, or just a school location without a CoT center?</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div>
+<script>
+function show(id, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+}
+</script>
+</body>
+</html>

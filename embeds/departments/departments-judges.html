@@ -1,0 +1,137 @@
+<!--
+  TRUE NATION INTRANET — JUDGES BRANCH DEPARTMENT CARDS
+  ───────────────────────────────────────────────────────
+  Embed on the Departments index page under the Judges Branch heading.
+  [REPLACE] Update each card's href with the actual Sites page URL.
+
+  JUDGES (2): Counseling, Ministries
+
+  Counseling: lead Bishop Tazayawan, coordinator Apostle Yashami.
+    Sub-groups: Sanhedrin (Calendar Committee) ← moved from Ministries.
+  Ministries: lead Bishop Banayah.
+    Sub-groups: Elders Ministry, Prayer Ministry, Prison Ministry,
+    SOV — Sisters of Virtue (Marayam). NOTE: "Sword of the Word" is outdated — correct name is "Sisters of Virtue".
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  .di-wrap {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    background: #E8E8EC;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+    box-sizing: border-box;
+  }
+
+  .di-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  a.di-card {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-radius: 8px;
+    padding: 18px 16px 14px;
+    text-decoration: none;
+    color: #26262A;
+    box-shadow: 0 2px 6px rgba(19,13,10,0.06);
+    transition: box-shadow 0.2s, transform 0.15s, border-color 0.2s;
+    min-height: 100px;
+  }
+
+  a.di-card:hover {
+    box-shadow: 0 5px 16px rgba(19,13,10,0.12);
+    transform: translateY(-2px);
+    border-color: #785710;
+  }
+
+  .di-badge {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 2px 9px;
+    border-radius: 100px;
+    margin-bottom: 8px;
+    align-self: flex-start;
+  }
+  .badge-ap { background: #1E3A8A; color: #F2F2F3; }
+  .badge-de { background: #1A5C2A; color: #F2F2F3; }
+  .badge-ju { background: #8B6200; color: #F2F2F3; }
+  .badge-bi { background: #8C1C1C; color: #F2F2F3; }
+
+  .di-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #7C1316;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+
+  .di-lead {
+    font-size: 13px;
+    color: #56565E;
+    margin-top: auto;
+    padding-top: 8px;
+  }
+
+  .di-lead-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #785710;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .di-arrow {
+    display: inline-block;
+    color: #785710;
+    font-size: 14px;
+    margin-left: 4px;
+    transition: transform 0.2s;
+  }
+  a.di-card:hover .di-arrow { transform: translateX(3px); }
+
+  @media (max-width: 500px) {
+    .di-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+</style>
+
+<div class="di-wrap">
+
+  <div class="di-grid">
+
+    <a class="di-card" href="/departments/counseling"><!-- [REPLACE] href -->
+      <span class="di-badge badge-ju">Judges</span>
+      <div class="di-name">Counseling</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Lead · Sub-groups</span>
+        Bishop Tazayawan · Sanhedrin <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="di-card" href="/departments/ministries"><!-- [REPLACE] href -->
+      <span class="di-badge badge-ju">Judges</span>
+      <div class="di-name">Ministries</div>
+      <div class="di-lead">
+        <span class="di-lead-label">Sub-groups</span>
+        Elders · Prayer · Prison · SOV (Sisters of Virtue) <span class="di-arrow">→</span>
+      </div>
+    </a>
+
+  </div>
+
+</div>

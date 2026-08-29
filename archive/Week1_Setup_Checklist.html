@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TNIC Intranet — Week 1 Setup Checklist</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --wine: #7C1316;
+    --wine-dark: #5A0E11;
+    --gold: #C9972C;
+    --snow: #FAF8F4;
+    --cream: #F2EDE4;
+    --brown: #130D0A;
+    --brown-mid: #3D2E28;
+    --green: #2E7D32;
+    --green-bg: #E8F5E9;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--snow);
+    color: var(--brown);
+    line-height: 1.6;
+    padding: 24px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .header {
+    background: var(--wine);
+    color: var(--cream);
+    padding: 32px 24px;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .header h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .header .subtitle {
+    font-size: 0.9375rem;
+    opacity: 0.9;
+    margin-top: 8px;
+  }
+
+  .gold-rule {
+    width: 40px;
+    height: 3px;
+    background: var(--gold);
+    margin: 12px auto;
+  }
+
+  .progress-bar {
+    background: var(--cream);
+    border-radius: 100px;
+    height: 12px;
+    margin-bottom: 32px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .progress-bar-fill {
+    background: linear-gradient(90deg, var(--wine), var(--gold));
+    height: 100%;
+    border-radius: 100px;
+    width: 0%;
+    transition: width 0.5s ease;
+  }
+
+  .progress-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--brown-mid);
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .phase {
+    margin-bottom: 32px;
+  }
+
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .phase-number {
+    background: var(--wine);
+    color: var(--cream);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .phase-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--wine);
+  }
+
+  .phase-desc {
+    font-size: 0.8125rem;
+    color: var(--brown-mid);
+  }
+
+  .task {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    background: white;
+    border: 1px solid var(--cream);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .task:hover {
+    box-shadow: 0 2px 8px rgba(19,13,10,0.08);
+  }
+
+  .task.done {
+    background: var(--green-bg);
+    border-color: #C8E6C9;
+  }
+
+  .task.done .task-title {
+    text-decoration: line-through;
+    color: var(--brown-mid);
+  }
+
+  .checkbox {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--wine);
+    border-radius: 4px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+    transition: all 0.2s;
+  }
+
+  .task.done .checkbox {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+  }
+
+  .task-title {
+    font-weight: 700;
+    font-size: 0.9375rem;
+    color: var(--brown);
+    margin-bottom: 4px;
+  }
+
+  .task-detail {
+    font-size: 0.8125rem;
+    color: var(--brown-mid);
+    line-height: 1.5;
+  }
+
+  .task-where {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 8px;
+    border-radius: 100px;
+    margin-top: 6px;
+  }
+
+  .where-admin { background: #FFF3E0; color: #E65100; }
+  .where-sites { background: #E3F2FD; color: #1565C0; }
+  .where-drive { background: #F3E5F5; color: #7B1FA2; }
+  .where-calendar { background: #E8F5E9; color: #2E7D32; }
+  .where-mobile { background: #FCE4EC; color: #C62828; }
+  .where-offline { background: var(--cream); color: var(--brown-mid); }
+
+  .note {
+    background: white;
+    border-left: 4px solid var(--gold);
+    padding: 16px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+    font-size: 0.875rem;
+  }
+
+  .note-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  @media print {
+    .checkbox { border-width: 1px; }
+    .task { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Week 1 Setup Checklist</h1>
+  <div class="gold-rule"></div>
+  <div class="subtitle">True Nation Intranet — Phase 1: Foundation + Home</div>
+</div>
+
+<div class="progress-label">
+  <span>PROGRESS</span>
+  <span id="progressCount">0 / 11 complete</span>
+</div>
+<div class="progress-bar">
+  <div class="progress-bar-fill" id="progressFill"></div>
+</div>
+
+<!-- ═══ PHASE A: Google Admin Setup ═══ -->
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-number">A</div>
+    <div>
+      <div class="phase-title">Google Admin Setup</div>
+      <div class="phase-desc">Configure Groups, permissions, and build team access</div>
+    </div>
+  </div>
+
+  <div class="task" onclick="toggleTask(this)">
+    <div class="checkbox"></div>
+    <div>
+      <div class="task-title">Verify all 10 Google Groups exist</div>
+      <div class="task-detail">Go to Google Admin Console → Directory → Groups. Confirm these exist: everyone@, tn-admin@, leadership@, finance@, it@, tela@, moreh@, deacons@, apostles@, judges@ (all @truenation.org)</div>
+      <span class="task-where where-admin">Google Admin Console</span>
+    </div>
+  </div>
+
+  <div class="task" onclick="toggleTask(this)">
+    <div class="checkbox"></div>
+    <div>
+      <div class="task-title">Add build team members to tn-admin@</div>
+      <div class="task-detail">In Groups, open tn-admin@truenation.org → Add members. Every build team member gets immediate edit access to Sites, Drive, and AppSheet admin.</div>
+      <span class="task-where where-admin">Google Admin Console</span>
+    </div>
+  </div>
+
+  <div class="task" onclick="toggleTask(this)">
+    <div class="checkbox"></div>
+    <div>
+      <div class="task-title">Assign Delegated Admin roles to helpers</div>
+      <div class="task-detail">Admin Console → Account → Admin roles → Create custom role scoped to Groups management + Sites/Drive. Assign to build team helpers (not full Super Admin).</div>
+      <span class="task-where where-admin">Google Admin Console</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PHASE B: Site Structure ═══ -->
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-number">B</div>
+    <div>
+      <div class="phase-title">Site Structure</div>
+      <div class="phase-desc">Set up navigation, pages, and permissions on portal.truenation.org</div>
+    </div>
+  </div>
+
+  <div class="task" onclick="toggleTask(this)">
+    <div class="checkbox"></div>
+    <div>
+      <div class="task-title">Set up 8-section navigation</div>
+      <div class="task-detail">In Google Sites editor: create pages for Home, Our People, Departments, T.E.L.A., Locations, Calendar & Events, Resources, Leadership Hub. Arrange in this exact order in the nav.</div>
+      <span class="task-where where-sites">Google Sites</span>
+    </div>
+  </div>
+
+  <div class="task" onclick="toggleTask(this)">
+    <div class="checkbox"></div>
+    <div>
+      <div class="task-title">Set page permissions</div>
+      <div class="task-detail">Leadership Hub → Share → Restrict to leadership@truenation.org only. All other pages → everyone@truenation.org. (Sites → Sharing settings per page)</div>
+      <span class="task-where where-sites">Google Sites</span>
+    </div>
+  </div>
+
+  <div class="note">
+    <div class="note-label">Tip</div>
+    Google Sites page-level restrictions work via "Published page viewers." Set the site published to everyone@, then restrict the Leadership Hub page to leadership@.
+  </div>
+</div>
+
+<!-- ═══ PHASE C: Brand + Content ═══ -->
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-number">C</div>
+    <div>
+      <div class="phase-title">Brand + Content</div>
+      <div class="phase-desc">Apply brand CSS and build the Home page using the provided templates</div>
+    </div>
+  </div>
+
+  <div class="task" onclick="toggleTask(this)">
+    <div class="checkbox"></div>
+    <div>
+      <div class="task-title">Embed brand CSS on every page</div>
+      <div class="task-detail">Insert → Embed → Embed Code → paste the contents of tnic-brand-styles.html at the TOP of every page. This loads fonts and brand variables.</div>
+      <span class="task-where where-sites">Google Sites</span>
+    </div>
+  </div>
+
+  <div class="task" onclick="toggleTask(this)">
+    <div class="checkbox"></div>
+    <div>
+      <div class="task-title">Build Home page from template</div>
+      <div class="task-detail">Embed home-page.html below the brand styles. Replace all [REPLACE] URLs: update quick link hrefs with your actual Google Sites page URLs, and replace the calendar iframe src with your All-Org Events calendar ID.</div>
+      <span class="task-where where-sites">Google Sites</span>
+    </div>
+  </div>
+
+  <div class="task" onclick="toggleTask(this)">
+    <div class="checkbox"></div>
+    <div>
+      <div class="task-title">Embed AppSheet directory on "Our People"</div>
+      <div class="task-detail">Go to the Our People page → Insert → Embed → paste the AppSheet embed URL for the existing staff directory. Test search, filters, and tap-to-call on mobile.</div>
+      <span class="task-where where-sites">Google Sites</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PHASE D: Calendars + Drive ═══ -->
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-number">D</div>
+    <div>
+      <div class="phase-title">Calendars + Drive</div>
+      <div class="phase-desc">Create shared calendars and set up the Admin Handoff document</div>
+    </div>
+  </div>
+
+  <div class="task" onclick="toggleTask(this)">
+    <div class="checkbox"></div>
+    <div>
+      <div class="task-title">Create All-Org Events and Feast Days calendars</div>
+      <div class="task-detail">In Google Calendar → Create new calendar → "TNIC All-Org Events" and "TNIC Feast Days." Share both with everyone@truenation.org (See all event details). Copy the Calendar IDs for embedding.</div>
+      <span class="task-where where-calendar">Google Calendar</span>
+    </div>
+  </div>
+
+  <div class="task" onclick="toggleTask(this)">
+    <div class="checkbox"></div>
+    <div>
+      <div class="task-title">Save Admin Handoff doc to Drive</div>
+      <div class="task-detail">Upload Admin_Handoff_Document.docx to a Drive folder shared only with tn-admin@truenation.org. Fill in any [placeholder] values with actual URLs as you create resources.</div>
+      <span class="task-where where-drive">Google Drive</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PHASE E: Mobile Test ═══ -->
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-number">E</div>
+    <div>
+      <div class="phase-title">Mobile QA</div>
+      <div class="phase-desc">Test everything on actual phones before moving to Week 2</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <div class="note-label">Critical</div>
+    The majority of TNIC staff access from mobile. Every item below must pass on both iOS and Android before Week 1 is complete.
+  </div>
+
+  <div class="task" onclick="toggleTask(this)">
+    <div class="checkbox"></div>
+    <div>
+      <div class="task-title">Mobile test: Home, Our People, navigation</div>
+      <div class="task-detail">On a real phone: verify no horizontal scroll, tap targets are large enough (44x44px min), banner text is readable, quick links grid stacks properly, calendar embed loads, directory search/filter works, tap-to-call and tap-to-email work.</div>
+      <span class="task-where where-mobile">iOS + Android</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleTask(el) {
+    el.classList.toggle('done');
+    const check = el.querySelector('.checkbox');
+    check.innerHTML = el.classList.contains('done') ? '&#10003;' : '';
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const tasks = document.querySelectorAll('.task');
+    const done = document.querySelectorAll('.task.done');
+    const pct = Math.round((done.length / tasks.length) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressCount').textContent = done.length + ' / ' + tasks.length + ' complete';
+  }
+</script>
+
+</body>
+</html>

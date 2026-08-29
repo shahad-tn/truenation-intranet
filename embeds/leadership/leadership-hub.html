@@ -1,0 +1,493 @@
+<!--
+  TRUE NATION INTRANET — LEADERSHIP HUB
+  ──────────────────────────────────────
+  Embed on the Leadership Hub page.
+
+  SECTIONS:
+  1. Bishop Council     — public profiles for all 5 bishops
+  2. Apostles           — public profiles for Ash and Yashami
+  3. Restricted Notice  — locked content placeholder for Phase 3 restricted section
+
+  BISHOPS:
+    Tazayawan — HQ Los Angeles; Judges Branch; IT, T.E.L.A., PARADOX, CBD, Counseling
+    Yahzeqel  — Satellite campuses (Detroit, Macon)
+    Banayah   — Judges Branch; Ministries; HQ Liaison for Philippines
+    Izar      — Maintenance; HQ Liaison for Ghana
+    (5th bishop slot available — add when confirmed)
+
+  APOSTLES:
+    Ash Napash  — Apostles Branch; Disciples
+    Yashami     — Apostles Branch; Disciples
+
+  [REPLACE] Photos, bios, contact links, and restricted content items as available.
+  Phase 3: Replace restricted section with Google Groups access-controlled embed.
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .lh-wrap {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    background: #E8E8EC;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* ── Section module ── */
+  .lh-section {
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(19,13,10,0.05);
+  }
+
+  .lh-section-body { padding: 16px 18px; }
+
+  /* ── Leader card grid ── */
+  .lh-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+  }
+
+  .lh-card {
+    background: #E8E8EC;
+    border-radius: 8px;
+    padding: 18px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    border: 1px solid #BFBFC7;
+  }
+
+  /* Avatar */
+  .lh-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: #D8D8DE;
+    border: 3px solid #C9972C;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .lh-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .lh-card-info { width: 100%; }
+
+  .lh-card-role {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #785710;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .lh-card-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.1875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #7C1316;
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+
+  .lh-card-bio {
+    font-size: 13px;
+    color: #56565E;
+    line-height: 1.55;
+    margin-bottom: 10px;
+  }
+
+  /* Departments pills */
+  .lh-depts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  .lh-dept-pill {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 2px 8px;
+    border-radius: 100px;
+    background: #D8D8DE;
+    color: #56565E;
+    border: 1px solid #E8DDD2;
+  }
+
+  /* Campus tag */
+  .lh-campus {
+    font-size: 12px;
+    color: #888;
+    padding-top: 10px;
+    border-top: 1px solid #BFBFC7;
+    width: 100%;
+  }
+
+  /* Contact link */
+  .lh-email-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    color: #7C1316;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.15s;
+    padding-top: 4px;
+  }
+  .lh-email-link:hover { color: #5A0E11; }
+
+  /* ── Branch divider label ── */
+  .lh-branch-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #785710;
+    margin-bottom: 12px;
+  }
+
+  /* ── Restricted section ── */
+  .lh-restricted {
+    background: white;
+    border: 2px solid #7C1316;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .lh-restricted-body {
+    padding: 20px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .lh-restricted-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #FFF8E8;
+    border: 1px solid #BFBFC7;
+    border-left: 4px solid #C9972C;
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-size: 14px;
+    color: #56565E;
+    line-height: 1.55;
+  }
+
+  .lh-restricted-items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .lh-restricted-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: #E8E8EC;
+    border-radius: 6px;
+    border: 2px dashed #C9972C;
+  }
+
+  .lh-restricted-item-icon { font-size: 1.25rem; flex-shrink: 0; }
+
+  .lh-restricted-item-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.9375rem;
+    text-transform: uppercase;
+    color: #7C1316;
+    letter-spacing: 0.03em;
+  }
+
+  .lh-restricted-item-sub {
+    font-size: 12px;
+    color: #888;
+    margin-top: 2px;
+  }
+
+  .lh-restricted-item-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    background: #C9972C;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 100px;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 500px) {
+    .lh-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 360px) {
+    .lh-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="lh-wrap">
+
+  <!-- ══════════════════════════════════
+       SECTION 1 — BISHOP COUNCIL
+       ══════════════════════════════════ -->
+  <div class="lh-section">
+    <div class="lh-section-body">
+      <div class="lh-grid">
+
+        <!-- Bishop Tazayawan -->
+        <div class="lh-card">
+          <div class="lh-avatar">
+            <!-- [REPLACE] with <img src="..."> when photo is available -->
+          </div>
+          <div class="lh-card-info">
+            <span class="lh-card-role">Bishop · HQ</span>
+            <div class="lh-card-name">Bishop Tazayawan</div>
+            <div class="lh-card-bio">[REPLACE with bio or role description]</div>
+            <div class="lh-depts">
+              <span class="lh-dept-pill">IT / Info Tech</span>
+              <span class="lh-dept-pill">T.E.L.A.</span>
+              <span class="lh-dept-pill">PARADOX</span>
+              <span class="lh-dept-pill">CBD</span>
+              <span class="lh-dept-pill">Counseling</span>
+            </div>
+            <div class="lh-campus">📍 Los Angeles (HQ)</div>
+            <!-- [REPLACE] email href -->
+            <a class="lh-email-link" href="mailto:bishop.tazayawan@truenation.org" target="_blank">
+              ✉️ Contact
+            </a>
+          </div>
+        </div>
+
+        <!-- Bishop Yahzeqel -->
+        <div class="lh-card">
+          <div class="lh-avatar"></div>
+          <div class="lh-card-info">
+            <span class="lh-card-role">Bishop · Satellite</span>
+            <div class="lh-card-name">Bishop Yahzeqel</div>
+            <div class="lh-card-bio">[REPLACE with bio or role description]</div>
+            <div class="lh-depts">
+              <span class="lh-dept-pill">Detroit</span>
+              <span class="lh-dept-pill">Macon</span>
+            </div>
+            <div class="lh-campus">📍 Detroit, MI · Macon, GA</div>
+            <a class="lh-email-link" href="mailto:bishop.yahzeqel@truenation.org" target="_blank">
+              ✉️ Contact
+            </a>
+          </div>
+        </div>
+
+        <!-- Bishop Banayah -->
+        <div class="lh-card">
+          <div class="lh-avatar"></div>
+          <div class="lh-card-info">
+            <span class="lh-card-role">Bishop · Judges</span>
+            <div class="lh-card-name">Bishop Banayah</div>
+            <div class="lh-card-bio">[REPLACE with bio or role description]</div>
+            <div class="lh-depts">
+              <span class="lh-dept-pill">Ministries</span>
+              <span class="lh-dept-pill">Philippines Liaison</span>
+            </div>
+            <div class="lh-campus">📍 Los Angeles (HQ) · 📡 Philippines Liaison</div>
+            <a class="lh-email-link" href="mailto:bishop.banayah@truenation.org" target="_blank">
+              ✉️ Contact
+            </a>
+          </div>
+        </div>
+
+        <!-- Bishop Izar -->
+        <div class="lh-card">
+          <div class="lh-avatar"></div>
+          <div class="lh-card-info">
+            <span class="lh-card-role">Bishop</span>
+            <div class="lh-card-name">Bishop Izar</div>
+            <div class="lh-card-bio">[REPLACE with bio or role description]</div>
+            <div class="lh-depts">
+              <span class="lh-dept-pill">Maintenance</span>
+              <span class="lh-dept-pill">Ghana Liaison</span>
+            </div>
+            <div class="lh-campus">📍 Los Angeles (HQ) · 📡 Ghana Liaison</div>
+            <a class="lh-email-link" href="mailto:bishop.izar@truenation.org" target="_blank">
+              ✉️ Contact
+            </a>
+          </div>
+        </div>
+
+        <!--
+          [ADD FIFTH BISHOP HERE when confirmed]
+          <div class="lh-card">
+            <div class="lh-avatar"></div>
+            <div class="lh-card-info">
+              <span class="lh-card-role">Bishop</span>
+              <div class="lh-card-name">[Name]</div>
+              ...
+            </div>
+          </div>
+        -->
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════
+       SECTION 2 — APOSTLES
+       ══════════════════════════════════ -->
+  <div class="lh-section">
+    <div class="lh-section-body">
+      <div class="lh-grid">
+
+        <!-- Ash Napash -->
+        <div class="lh-card">
+          <div class="lh-avatar">
+            <!-- [REPLACE] with photo when available -->
+            📖
+          </div>
+          <div class="lh-card-info">
+            <span class="lh-card-role">Apostle · Apostles Branch</span>
+            <div class="lh-card-name">Ash Napash</div>
+            <div class="lh-card-bio">[REPLACE with bio or role description]</div>
+            <div class="lh-depts">
+              <span class="lh-dept-pill">Disciples</span>
+            </div>
+            <div class="lh-campus">📍 Los Angeles (HQ)</div>
+            <a class="lh-email-link" href="mailto:ash@truenation.org" target="_blank">
+              ✉️ Contact
+            </a>
+          </div>
+        </div>
+
+        <!-- Yashami -->
+        <div class="lh-card">
+          <div class="lh-avatar">📖</div>
+          <div class="lh-card-info">
+            <span class="lh-card-role">Apostle · Apostles Branch</span>
+            <div class="lh-card-name">Yashami</div>
+            <div class="lh-card-bio">[REPLACE with bio or role description]</div>
+            <div class="lh-depts">
+              <span class="lh-dept-pill">Disciples</span>
+            </div>
+            <div class="lh-campus">📍 Los Angeles (HQ)</div>
+            <a class="lh-email-link" href="mailto:yashami@truenation.org" target="_blank">
+              ✉️ Contact
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════
+       SECTION 3 — RESTRICTED CONTENT
+       (Phase 3 — access controlled via Google Groups)
+       ══════════════════════════════════ -->
+  <div class="lh-restricted">
+    <div class="lh-restricted-body">
+
+      <div class="lh-restricted-notice">
+        <div>
+          <strong>Coming in Phase 3 —</strong> The items below will be restricted to members of the <strong>tn-leadership@</strong> Google Group. Access controls will be configured in Phase 3 (Weeks 9–12). Contact <a href="mailto:it@truenation.org" target="_blank" style="color:#7C1316;font-weight:600;">it@truenation.org</a> with questions.
+        </div>
+      </div>
+
+      <div class="lh-restricted-items">
+
+        <div class="lh-restricted-item">
+          <div class="lh-restricted-item-icon">📊</div>
+          <div>
+            <div class="lh-restricted-item-title">Council Meeting Minutes</div>
+            <div class="lh-restricted-item-sub">Bishops & Apostles only</div>
+          </div>
+          <span class="lh-restricted-item-tag">Restricted</span>
+        </div>
+
+        <div class="lh-restricted-item">
+          <div class="lh-restricted-item-icon">💰</div>
+          <div>
+            <div class="lh-restricted-item-title">Stewardship Reports & Dashboards</div>
+            <div class="lh-restricted-item-sub">Leadership & Stewardship leads</div>
+          </div>
+          <span class="lh-restricted-item-tag">Restricted</span>
+        </div>
+
+        <div class="lh-restricted-item">
+          <div class="lh-restricted-item-icon">📋</div>
+          <div>
+            <div class="lh-restricted-item-title">Strategic Planning Documents</div>
+            <div class="lh-restricted-item-sub">Bishop Council</div>
+          </div>
+          <span class="lh-restricted-item-tag">Restricted</span>
+        </div>
+
+        <div class="lh-restricted-item">
+          <div class="lh-restricted-item-icon">👥</div>
+          <div>
+            <div class="lh-restricted-item-title">Personnel & Deacon Records</div>
+            <div class="lh-restricted-item-sub">Bishop Council & Clerical</div>
+          </div>
+          <span class="lh-restricted-item-tag">Restricted</span>
+        </div>
+
+        <div class="lh-restricted-item">
+          <div class="lh-restricted-item-icon">⚖️</div>
+          <div>
+            <div class="lh-restricted-item-title">Sanhedrin / Calendar Committee Notes</div>
+            <div class="lh-restricted-item-sub">Judges Branch — Counseling Dept</div>
+          </div>
+          <span class="lh-restricted-item-tag">Restricted</span>
+        </div>
+
+        <!--
+          [ADD MORE RESTRICTED ITEMS HERE as needed]
+          <div class="lh-restricted-item">
+            <div class="lh-restricted-item-icon">📄</div>
+            <div>
+              <div class="lh-restricted-item-title">[Title]</div>
+              <div class="lh-restricted-item-sub">[Who has access]</div>
+            </div>
+            <span class="lh-restricted-item-tag">Restricted</span>
+          </div>
+        -->
+
+      </div>
+    </div>
+  </div>
+
+</div>

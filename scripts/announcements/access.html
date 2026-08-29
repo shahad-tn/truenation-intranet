@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{--wine:#7C1316;--wine-dk:#5E0E10;--gold:#C9972C;--gold-text:#785710;--gold-on-wine:#D4A94D;--page:#E8E8EC;--surface:#D8D8DE;
+    --line:#BFBFC7;--line-strong:#86868F;--onwine:#F2F2F3;--ink:#26262A;--muted:#56565E;--ok:#2F6B3F;--ok-bg:#E4EFE7;
+    --err:#8A1F16;--err-bg:#F6E3E1;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--page);color:var(--ink);
+    font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:16px;line-height:1.5;}
+  h1,h2,h3{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;margin:0;}
+  :focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+  .ac-top{background:var(--wine);color:var(--onwine);padding:20px 22px;}
+  .ac-in{max-width:940px;margin:0 auto;}
+  .ac-kick{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:12px;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--gold-on-wine);margin:0 0 3px;}
+  .ac-h1{font-weight:700;font-size:29px;letter-spacing:.03em;margin-bottom:7px;}
+  .ac-lede{font-size:14px;margin:0;max-width:64ch;opacity:.93;}
+  .ac-wrap{max-width:940px;margin:0 auto;padding:22px 22px 70px;}
+  .ac-note{background:#fff;border:1px solid var(--line);border-left:6px solid var(--gold);
+    border-radius:10px;padding:14px 18px;margin:0 0 22px;font-size:14px;}
+  .ac-note b{color:var(--wine);}
+  .ac-mod{font-size:16px;font-weight:700;letter-spacing:.15em;color:var(--ink);
+    margin:26px 0 12px;padding-bottom:7px;border-bottom:2px solid var(--surface);}
+  .ac-rule{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:0 0 12px;}
+  .ac-cap{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;
+    letter-spacing:.06em;text-transform:uppercase;color:var(--wine);margin:0 0 2px;}
+  .ac-desc{font-size:13px;color:var(--muted);margin:0 0 11px;}
+  .ac-row{display:flex;gap:9px;flex-wrap:wrap;align-items:flex-start;}
+  .ac-in-txt{flex:1 1 340px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);
+    padding:10px 12px;border:2px solid var(--line-strong);border-radius:7px;min-height:44px;resize:vertical;}
+  .ac-in-txt:focus{border-color:var(--wine);outline:none;}
+  .ac-btn{background:var(--wine);border:2px solid var(--wine);color:var(--onwine);font-family:'DM Sans',sans-serif;
+    font-size:13.5px;font-weight:700;padding:10px 18px;border-radius:7px;cursor:pointer;}
+  .ac-btn:hover{background:var(--wine-dk);}
+  .ac-btn[disabled]{opacity:.55;cursor:default;}
+  .ac-btn2{background:#fff;color:var(--ink);border:2px solid var(--line-strong);font-family:'DM Sans',sans-serif;
+    font-size:13.5px;font-weight:600;padding:10px 18px;border-radius:7px;cursor:pointer;}
+  .ac-btn2:hover{border-color:var(--gold);}
+  .ac-meta{font-size:11.5px;color:var(--muted);margin:9px 0 0;}
+  .ac-chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    background:var(--surface);color:var(--ink);padding:3px 8px;border-radius:4px;margin-left:7px;}
+  .ac-chip.open{background:var(--ok-bg);color:var(--ok);}
+  .ac-panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:0 0 20px;}
+  .ac-panel h3{font-size:16px;letter-spacing:.08em;color:var(--wine);margin-bottom:9px;}
+  .ac-res{margin:14px 0 0;font-size:13.5px;}
+  .ac-res div{padding:6px 0;border-top:1px solid var(--surface);}
+  .ac-yes{color:var(--ok);font-weight:700;}
+  .ac-no{color:var(--muted);}
+  .ac-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(140%);
+    background:#131316;color:var(--onwine);padding:12px 22px;border-radius:8px;font-size:14px;
+    transition:transform .25s ease;z-index:50;max-width:90vw;text-align:center;}
+  .ac-toast.show{transform:translateX(-50%) translateY(0);}
+  .ac-toast.bad{background:var(--err);}
+  .ac-load{text-align:center;color:var(--muted);padding:50px 0;}
+</style>
+</head>
+<body>
+
+<header class="ac-top">
+  <div class="ac-in">
+    <p class="ac-kick">True Nation &middot; Intranet</p>
+    <h1 class="ac-h1">Access Control</h1>
+    <p class="ac-lede">Who can do what, across every intranet module. Each row lists the Google Groups allowed to use one capability. Change the groups here; change who is in a group in Google Admin.</p>
+  </div>
+</header>
+
+<main class="ac-wrap">
+  <p class="ac-note" id="superNote"></p>
+
+  <section class="ac-panel">
+    <h3>Check a person</h3>
+    <p style="font-size:13px;color:var(--muted);margin:0 0 11px;">Enter an address to see exactly what that account can do and which group grants it.</p>
+    <div class="ac-row">
+      <input class="ac-in-txt" id="whoIn" type="email" placeholder="someone@truenation.org" style="min-height:auto;">
+      <button class="ac-btn2" type="button" id="whoBtn">Check</button>
+    </div>
+    <div class="ac-res" id="whoRes"></div>
+  </section>
+
+  <div class="ac-load" id="loading">Loading access rules&hellip;</div>
+  <div id="rules"></div>
+
+  <section class="ac-panel" style="margin-top:26px;">
+    <h3>Add a capability</h3>
+    <p style="font-size:13px;color:var(--muted);margin:0 0 11px;">For a new module or a new thing people can do within one. Use lowercase, no spaces.</p>
+    <div class="ac-row" style="margin-bottom:9px;">
+      <input class="ac-in-txt" id="nMod" placeholder="module (e.g. calendar)" style="flex:1 1 180px;min-height:auto;">
+      <input class="ac-in-txt" id="nCap" placeholder="capability (e.g. manage)" style="flex:1 1 180px;min-height:auto;">
+    </div>
+    <div class="ac-row">
+      <input class="ac-in-txt" id="nGrp" placeholder="groups, comma separated — or @domain" style="min-height:auto;">
+      <button class="ac-btn" type="button" id="nBtn">Add</button>
+    </div>
+    <input class="ac-in-txt" id="nDesc" placeholder="what this lets someone do" style="min-height:auto;width:100%;margin-top:9px;">
+  </section>
+</main>
+
+<div class="ac-toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+var $ = function(id){ return document.getElementById(id); };
+function esc(s){return String(s).replace(/&(?!#?\w+;)/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function load(){
+  google.script.run.withSuccessHandler(render)
+    .withFailureHandler(function(e){ $('loading').innerHTML = '<b>Could not load rules.</b><br>' + esc(e.message); })
+    .acl_getMatrix();
+}
+
+function render(data){
+  $('loading').hidden = true;
+  $('superNote').innerHTML = '<b>Super admins:</b> ' + esc(data.superAdminGroups.join(', ')) +
+    ' can do everything everywhere and cannot be locked out here. Use <b>@domain</b> for anyone signed in at ' +
+    esc(data.domain) + ', or <b>@none</b> to switch a capability off without deleting it.';
+
+  var byMod = {};
+  data.rules.forEach(function(r){ (byMod[r.module] = byMod[r.module] || []).push(r); });
+
+  var html = '';
+  Object.keys(byMod).sort().forEach(function(mod){
+    html += '<h2 class="ac-mod">' + esc(mod) + '</h2>';
+    byMod[mod].forEach(function(r){
+      var open = r.groups.indexOf('@domain') > -1;
+      html += '<article class="ac-rule">';
+      html += '<h3 class="ac-cap">' + esc(r.capability.replace(/_/g,' ')) +
+              (open ? '<span class="ac-chip open">Everyone</span>' : '') + '</h3>';
+      html += '<p class="ac-desc">' + esc(r.description) + '</p>';
+      html += '<div class="ac-row">';
+      html += '<textarea class="ac-in-txt" data-mod="' + esc(mod) + '" data-cap="' + esc(r.capability) + '">' + esc(r.groups) + '</textarea>';
+      html += '<button class="ac-btn" type="button" data-save="1">Save</button>';
+      html += '</div>';
+      if(r.updatedBy) html += '<p class="ac-meta">Last changed by ' + esc(r.updatedBy) + (r.updatedAt ? ' on ' + esc(r.updatedAt) : '') + '</p>';
+      html += '</article>';
+    });
+  });
+  $('rules').innerHTML = html;
+}
+
+$('rules').addEventListener('click', function(e){
+  var b = e.target.closest('button[data-save]'); if(!b) return;
+  var ta = b.closest('.ac-row').querySelector('textarea');
+  b.disabled = true; b.textContent = 'Saving…';
+  google.script.run
+    .withSuccessHandler(function(){ b.disabled = false; b.textContent = 'Save'; toast('Saved. Takes effect within five minutes.'); })
+    .withFailureHandler(function(err){ b.disabled = false; b.textContent = 'Save'; toast(err.message, true); })
+    .acl_setRule(ta.getAttribute('data-mod'), ta.getAttribute('data-cap'), ta.value);
+});
+
+$('nBtn').addEventListener('click', function(){
+  var b = this; b.disabled = true;
+  google.script.run
+    .withSuccessHandler(function(){ b.disabled = false; ['nMod','nCap','nGrp','nDesc'].forEach(function(i){ $(i).value=''; }); toast('Capability added.'); load(); })
+    .withFailureHandler(function(err){ b.disabled = false; toast(err.message, true); })
+    .acl_addRule($('nMod').value, $('nCap').value, $('nGrp').value, $('nDesc').value);
+});
+
+$('whoBtn').addEventListener('click', function(){
+  var b = this; b.disabled = true; $('whoRes').innerHTML = 'Checking…';
+  google.script.run
+    .withSuccessHandler(function(r){
+      b.disabled = false;
+      var h = '<div style="border:none;padding-bottom:4px;"><b>' + esc(r.email) + '</b>' +
+              (r.isSuperAdmin ? ' <span class="ac-chip open">Super admin</span>' : '') + '</div>';
+      r.results.forEach(function(x){
+        h += '<div>' + (x.allowed ? '<span class="ac-yes">Can</span>' : '<span class="ac-no">Cannot</span>') +
+             ' <b>' + esc(x.capability.replace(/_/g,' ')) + '</b> in ' + esc(x.module) +
+             (x.allowed && x.via.length ? ' <span class="ac-no">— via ' + esc(x.via.join(', ')) + '</span>' : '') + '</div>';
+      });
+      $('whoRes').innerHTML = h;
+    })
+    .withFailureHandler(function(err){ b.disabled = false; $('whoRes').innerHTML = ''; toast(err.message, true); })
+    .acl_explain($('whoIn').value);
+});
+
+var tEl = $('toast'), tT;
+function toast(m, bad){
+  tEl.textContent = m; tEl.className = 'ac-toast show' + (bad ? ' bad' : '');
+  clearTimeout(tT); tT = setTimeout(function(){ tEl.className = 'ac-toast'; }, 4000);
+}
+
+load();
+</script>
+</body>
+</html>

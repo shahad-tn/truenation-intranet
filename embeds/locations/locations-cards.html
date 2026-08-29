@@ -1,0 +1,573 @@
+<!--
+  TRUE NATION INTRANET — LOCATIONS PAGE
+  ──────────────────────────────────────
+  Embed on the Locations page.
+  Each campus card contains: address, map placeholder, bishop/liaison,
+  service schedule, and campus-specific announcements.
+
+  CAMPUSES (5):
+    Los Angeles (HQ), Detroit, Macon, Philippines, Ghana
+
+  [REPLACE] Address, schedule, announcement, and map embed iframe src for each campus.
+  Map iframe: Insert → Embed from Google Maps → copy src URL.
+  International campuses note Bishop Banayah (Philippines) and Bishop Izar (Ghana)
+  as HQ liaisons, not on-site bishops.
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .loc-wrap {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    background: #E8E8EC;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* ── Campus card ── */
+  .loc-card {
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(19,13,10,0.06);
+  }
+
+  /* Card body: two-column on desktop */
+  .loc-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  /* Left column: info */
+  .loc-info {
+    padding: 16px 18px;
+    border-right: 1px solid #BFBFC7;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  /* Right column: map */
+  .loc-map {
+    position: relative;
+    background: #D8D8DE;
+    min-height: 220px;
+  }
+
+  .loc-map iframe {
+    width: 100%;
+    height: 100%;
+    min-height: 220px;
+    border: none;
+    display: block;
+  }
+
+  .loc-map-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 220px;
+    padding: 20px;
+    text-align: center;
+    gap: 8px;
+  }
+
+  .loc-map-placeholder-icon { font-size: 2.25rem; }
+
+  .loc-map-placeholder-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #785710;
+  }
+
+  .loc-map-placeholder-sub {
+    font-size: 12px;
+    color: #888;
+  }
+
+  /* Info sections */
+  .loc-section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #785710;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .loc-section-value {
+    font-size: 14px;
+    color: #56565E;
+    line-height: 1.6;
+  }
+
+  .loc-section-value strong {
+    color: #26262A;
+    font-weight: 600;
+  }
+
+  .loc-section-value a {
+    color: #7C1316;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  /* Bishop chip */
+  .loc-bishop {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .loc-bishop-icon {
+    width: 36px;
+    height: 36px;
+    background: #D8D8DE;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .loc-bishop-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #26262A;
+    line-height: 1.3;
+  }
+
+  .loc-bishop-role {
+    font-size: 12px;
+    color: #888;
+    margin-top: 2px;
+  }
+
+  /* Announcement strip */
+  .loc-announce {
+    background: #FFF8E8;
+    border-top: 1px solid #BFBFC7;
+    border-left: 4px solid #C9972C;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #56565E;
+    line-height: 1.5;
+  }
+
+  .loc-announce-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #785710;
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  /* ── Schedule grid ── */
+  .sched-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .sched-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #56565E;
+  }
+
+  .sched-row-day { color: #888; min-width: 80px; }
+  .sched-row-time { font-weight: 500; color: #26262A; }
+
+  @media (max-width: 600px) {
+    .loc-body {
+      grid-template-columns: 1fr;
+    }
+    .loc-info {
+      border-right: none;
+      border-bottom: 1px solid #BFBFC7;
+    }
+    .loc-map { min-height: 180px; }
+    .loc-map iframe { min-height: 180px; }
+    .loc-map-placeholder { min-height: 180px; }
+  }
+</style>
+
+<div class="loc-wrap">
+
+  <!-- ══════════════════════════
+       LOS ANGELES — HQ
+       ══════════════════════════ -->
+  <div class="loc-card">
+    <div class="loc-body">
+      <div class="loc-info">
+
+        <div>
+          <span class="loc-section-label">Address</span>
+          <div class="loc-section-value">
+            <!-- [REPLACE] with actual address -->
+            [REPLACE Street Address]<br>Los Angeles, CA [ZIP]
+          </div>
+        </div>
+
+        <div class="loc-bishop">
+          <div class="loc-bishop-icon">👤</div>
+          <div>
+            <div class="loc-bishop-name">Bishop Tazayawan</div>
+            <div class="loc-bishop-role">Campus Bishop · HQ</div>
+          </div>
+        </div>
+
+        <div>
+          <span class="loc-section-label">Service Schedule</span>
+          <div class="sched-list">
+            <!-- [REPLACE] with actual schedule -->
+            <div class="sched-row">
+              <span class="sched-row-day">Sabbath</span>
+              <span class="sched-row-time">[REPLACE]</span>
+            </div>
+            <div class="sched-row">
+              <span class="sched-row-day">Bible Study</span>
+              <span class="sched-row-time">[REPLACE]</span>
+            </div>
+            <div class="sched-row">
+              <span class="sched-row-day">Prayer</span>
+              <span class="sched-row-time">[REPLACE]</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <span class="loc-section-label">Contact</span>
+          <div class="loc-section-value">
+            ✉️ <a href="mailto:la@truenation.org">la@truenation.org</a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- [REPLACE] Map: go to Google Maps → share → embed → copy src -->
+      <div class="loc-map">
+        <div class="loc-map-placeholder">
+          <div class="loc-map-placeholder-icon">🗺️</div>
+          <div class="loc-map-placeholder-text">Map — Coming Soon</div>
+          <div class="loc-map-placeholder-sub">Paste Google Maps embed src here</div>
+        </div>
+        <!--
+        <iframe
+          src="REPLACE_WITH_GOOGLE_MAPS_EMBED_SRC"
+          allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        -->
+      </div>
+    </div>
+
+    <!-- [REPLACE] Campus-specific announcement -->
+    <div class="loc-announce">
+      <span class="loc-announce-label">Campus Announcement</span>
+      [REPLACE] Add any HQ-specific announcement here, or remove this strip if none.
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════
+       DETROIT
+       ══════════════════════════ -->
+  <div class="loc-card">
+    <div class="loc-body">
+      <div class="loc-info">
+
+        <div>
+          <span class="loc-section-label">Address</span>
+          <div class="loc-section-value">
+            [REPLACE Street Address]<br>Detroit, MI [ZIP]
+          </div>
+        </div>
+
+        <div class="loc-bishop">
+          <div class="loc-bishop-icon">👤</div>
+          <div>
+            <div class="loc-bishop-name">Bishop Yahzeqel</div>
+            <div class="loc-bishop-role">Campus Bishop</div>
+          </div>
+        </div>
+
+        <div>
+          <span class="loc-section-label">Service Schedule</span>
+          <div class="sched-list">
+            <div class="sched-row">
+              <span class="sched-row-day">Sabbath</span>
+              <span class="sched-row-time">[REPLACE]</span>
+            </div>
+            <div class="sched-row">
+              <span class="sched-row-day">Bible Study</span>
+              <span class="sched-row-time">[REPLACE]</span>
+            </div>
+            <div class="sched-row">
+              <span class="sched-row-day">Prayer</span>
+              <span class="sched-row-time">[REPLACE]</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <span class="loc-section-label">Contact</span>
+          <div class="loc-section-value">
+            ✉️ <a href="mailto:detroit@truenation.org">detroit@truenation.org</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="loc-map">
+        <div class="loc-map-placeholder">
+          <div class="loc-map-placeholder-icon">🗺️</div>
+          <div class="loc-map-placeholder-text">Map — Coming Soon</div>
+          <div class="loc-map-placeholder-sub">Paste Google Maps embed src here</div>
+        </div>
+        <!--
+        <iframe
+          src="REPLACE_WITH_GOOGLE_MAPS_EMBED_SRC"
+          allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        -->
+      </div>
+    </div>
+
+    <div class="loc-announce">
+      <span class="loc-announce-label">Campus Announcement</span>
+      [REPLACE] Add Detroit-specific announcement here, or remove this strip if none.
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════
+       MACON
+       ══════════════════════════ -->
+  <div class="loc-card">
+    <div class="loc-body">
+      <div class="loc-info">
+
+        <div>
+          <span class="loc-section-label">Address</span>
+          <div class="loc-section-value">
+            [REPLACE Street Address]<br>Macon, GA [ZIP]
+          </div>
+        </div>
+
+        <div class="loc-bishop">
+          <div class="loc-bishop-icon">👤</div>
+          <div>
+            <div class="loc-bishop-name">Bishop Yahzeqel</div>
+            <div class="loc-bishop-role">Campus Bishop</div>
+          </div>
+        </div>
+
+        <div>
+          <span class="loc-section-label">Service Schedule</span>
+          <div class="sched-list">
+            <div class="sched-row">
+              <span class="sched-row-day">Sabbath</span>
+              <span class="sched-row-time">[REPLACE]</span>
+            </div>
+            <div class="sched-row">
+              <span class="sched-row-day">Bible Study</span>
+              <span class="sched-row-time">[REPLACE]</span>
+            </div>
+            <div class="sched-row">
+              <span class="sched-row-day">Prayer</span>
+              <span class="sched-row-time">[REPLACE]</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <span class="loc-section-label">Contact</span>
+          <div class="loc-section-value">
+            ✉️ <a href="mailto:macon@truenation.org">macon@truenation.org</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="loc-map">
+        <div class="loc-map-placeholder">
+          <div class="loc-map-placeholder-icon">🗺️</div>
+          <div class="loc-map-placeholder-text">Map — Coming Soon</div>
+          <div class="loc-map-placeholder-sub">Paste Google Maps embed src here</div>
+        </div>
+        <!--
+        <iframe
+          src="REPLACE_WITH_GOOGLE_MAPS_EMBED_SRC"
+          allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        -->
+      </div>
+    </div>
+
+    <div class="loc-announce">
+      <span class="loc-announce-label">Campus Announcement</span>
+      [REPLACE] Add Macon-specific announcement here, or remove this strip if none.
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════
+       PHILIPPINES — INTERNATIONAL
+       ══════════════════════════ -->
+  <div class="loc-card">
+    <div class="loc-body">
+      <div class="loc-info">
+
+        <div>
+          <span class="loc-section-label">Address</span>
+          <div class="loc-section-value">
+            [REPLACE — City/Province]<br>Philippines
+          </div>
+        </div>
+
+        <div class="loc-bishop">
+          <div class="loc-bishop-icon">📡</div>
+          <div>
+            <div class="loc-bishop-name">Bishop Banayah</div>
+            <div class="loc-bishop-role">HQ Liaison · International Comms</div>
+          </div>
+        </div>
+
+        <div>
+          <span class="loc-section-label">Service Schedule</span>
+          <div class="sched-list">
+            <div class="sched-row">
+              <span class="sched-row-day">Sabbath</span>
+              <span class="sched-row-time">[REPLACE]</span>
+            </div>
+            <div class="sched-row">
+              <span class="sched-row-day">Bible Study</span>
+              <span class="sched-row-time">[REPLACE]</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <span class="loc-section-label">Contact</span>
+          <div class="loc-section-value">
+            ✉️ <a href="mailto:philippines@truenation.org">philippines@truenation.org</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="loc-map">
+        <div class="loc-map-placeholder">
+          <div class="loc-map-placeholder-icon">🗺️</div>
+          <div class="loc-map-placeholder-text">Map — Coming Soon</div>
+          <div class="loc-map-placeholder-sub">Paste Google Maps embed src here</div>
+        </div>
+        <!--
+        <iframe
+          src="REPLACE_WITH_GOOGLE_MAPS_EMBED_SRC"
+          allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        -->
+      </div>
+    </div>
+
+    <div class="loc-announce">
+      <span class="loc-announce-label">Campus Announcement</span>
+      [REPLACE] Add Philippines-specific announcement here, or remove this strip if none.
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════
+       GHANA — INTERNATIONAL
+       ══════════════════════════ -->
+  <div class="loc-card">
+    <div class="loc-body">
+      <div class="loc-info">
+
+        <div>
+          <span class="loc-section-label">Address</span>
+          <div class="loc-section-value">
+            [REPLACE — City/Region]<br>Ghana
+          </div>
+        </div>
+
+        <div class="loc-bishop">
+          <div class="loc-bishop-icon">📡</div>
+          <div>
+            <div class="loc-bishop-name">Bishop Izar</div>
+            <div class="loc-bishop-role">HQ Liaison · International Comms</div>
+          </div>
+        </div>
+
+        <div>
+          <span class="loc-section-label">Service Schedule</span>
+          <div class="sched-list">
+            <div class="sched-row">
+              <span class="sched-row-day">Sabbath</span>
+              <span class="sched-row-time">[REPLACE]</span>
+            </div>
+            <div class="sched-row">
+              <span class="sched-row-day">Bible Study</span>
+              <span class="sched-row-time">[REPLACE]</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <span class="loc-section-label">Contact</span>
+          <div class="loc-section-value">
+            ✉️ <a href="mailto:ghana@truenation.org">ghana@truenation.org</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="loc-map">
+        <div class="loc-map-placeholder">
+          <div class="loc-map-placeholder-icon">🗺️</div>
+          <div class="loc-map-placeholder-text">Map — Coming Soon</div>
+          <div class="loc-map-placeholder-sub">Paste Google Maps embed src here</div>
+        </div>
+        <!--
+        <iframe
+          src="REPLACE_WITH_GOOGLE_MAPS_EMBED_SRC"
+          allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        -->
+      </div>
+    </div>
+
+    <div class="loc-announce">
+      <span class="loc-announce-label">Campus Announcement</span>
+      [REPLACE] Add Ghana-specific announcement here, or remove this strip if none.
+    </div>
+  </div>
+
+</div>

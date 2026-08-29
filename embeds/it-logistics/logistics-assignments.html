@@ -1,0 +1,101 @@
+<!--
+  TRUE NATION INTRANET — LOGISTICS: UPCOMING ASSIGNMENTS
+  ────────────────────────────────────────────────────────
+  Embed on the Logistics sub-group page (IT / Information Technology).
+  [REPLACE] all placeholder assignments with real scheduled deployments.
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{margin:0;padding:0;background:transparent}
+  .lg-wrap{font-family:'DM Sans',sans-serif;width:100%;padding:0 0 4px}
+  .lg-module{background:#fff;border:1px solid #BFBFC7;border-radius:8px;box-shadow:0 2px 6px rgba(19,13,10,.05)}
+  .lg-module-body{padding:14px 18px}
+  .status{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.07em;padding:2px 9px;border-radius:100px}
+  .s-pending    {background:#FFF8E1;color:#F57F17}
+  .s-inprogress {background:#E3F2FD;color:#1565C0}
+  .s-complete   {background:#E8F5E9;color:#2E7D32}
+  .assign-list{display:flex;flex-direction:column;gap:10px}
+  .assign-item{display:flex;align-items:flex-start;gap:14px;padding:12px 14px;background:#E8E8EC;border-radius:6px}
+  .assign-date{text-align:center;min-width:44px;flex-shrink:0}
+  .assign-date-day{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.375rem;color:#7C1316;line-height:1}
+  .assign-date-mon{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color: #785710}
+  .assign-info{flex:1}
+  .assign-title{font-weight:600;font-size:14px;color:#26262A;margin-bottom:3px}
+  .assign-meta{font-size:12px;color:#888}
+  @media(max-width:500px){
+    .assign-item{flex-wrap:wrap}
+    .assign-date{min-width:unset;display:flex;gap:6px;align-items:baseline}
+    .assign-date-day{font-size:1.1rem}
+  }
+</style>
+
+<div class="lg-wrap">
+  <div class="lg-module">
+    <div class="lg-module-body">
+      <div class="assign-list">
+        <!-- [REPLACE] with real scheduled assignments -->
+        <div class="assign-item">
+          <div class="assign-date">
+            <div class="assign-date-day">29</div>
+            <div class="assign-date-mon">Mar</div>
+          </div>
+          <div class="assign-info">
+            <div class="assign-title">Sabbath Service Setup</div>
+            <div class="assign-meta">Main Sanctuary · Arrive by 8:00 AM · Lead: Achwath Shawashan</div>
+          </div>
+          <span class="status s-inprogress">Upcoming</span>
+        </div>
+
+        <div class="assign-item">
+          <div class="assign-date">
+            <div class="assign-date-day">05</div>
+            <div class="assign-date-mon">Apr</div>
+          </div>
+          <div class="assign-info">
+            <div class="assign-title">Feast Preparation — Equipment Staging</div>
+            <div class="assign-meta">Fellowship Hall · All-day · Coord. with Fellowship &amp; Services</div>
+          </div>
+          <span class="status s-pending">Pending</span>
+        </div>
+
+        <div class="assign-item">
+          <div class="assign-date">
+            <div class="assign-date-day">12</div>
+            <div class="assign-date-mon">Apr</div>
+          </div>
+          <div class="assign-info">
+            <div class="assign-title">AV Equipment Transport — Venue B</div>
+            <div class="assign-meta">Off-site · Everyday Sheeple dept. coordination required</div>
+          </div>
+          <span class="status s-pending">Pending</span>
+        </div>
+
+        <div class="assign-item">
+          <div class="assign-date">
+            <div class="assign-date-day">19</div>
+            <div class="assign-date-mon">Apr</div>
+          </div>
+          <div class="assign-info">
+            <div class="assign-title">Sabbath Service Setup</div>
+            <div class="assign-meta">Main Sanctuary · Arrive by 8:00 AM</div>
+          </div>
+          <span class="status s-pending">Pending</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function(){
+    function sendHeight(){
+      var h=document.body?document.body.scrollHeight:0;
+      window.parent.postMessage({type:'tnic-height',height:h,id:'logistics_assignments'},'*');
+    }
+    if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sendHeight);}
+    else{sendHeight();}
+    window.addEventListener('resize',sendHeight);
+    if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+  })();
+</script>

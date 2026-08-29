@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>People Card Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f5f5f5;
+    padding: 40px 24px;
+    color: #130D0A;
+  }
+
+  h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #7C1316;
+    margin-bottom: 6px;
+  }
+  .label {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #ddd;
+  }
+  .section { margin-bottom: 48px; }
+
+  /* ─── NATIVE GOOGLE SITES PEOPLE CARD ─── */
+  .sites-people-card {
+    background: white;
+    border-radius: 8px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+    max-width: 340px;
+  }
+  .sites-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #4285F4;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-family: 'Google Sans', 'DM Sans', sans-serif;
+  }
+  .sites-info { flex: 1; }
+  .sites-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #202124;
+    margin-bottom: 3px;
+  }
+  .sites-title {
+    font-size: 13px;
+    color: #5f6368;
+    margin-bottom: 3px;
+  }
+  .sites-email {
+    font-size: 12px;
+    color: #1a73e8;
+    text-decoration: none;
+  }
+
+  /* ─── OUR EMBED LEAD ROW (current) ─── */
+  .our-card {
+    background: white;
+    border: 1px solid #F2EDE4;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(19,13,10,0.06);
+    display: flex;
+    flex-direction: column;
+    max-width: 220px;
+  }
+  .our-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #7C1316;
+    margin-bottom: 8px;
+  }
+  .our-desc {
+    font-size: 15px;
+    color: #3D2E28;
+    line-height: 1.6;
+    flex: 1;
+    margin-bottom: 10px;
+  }
+  .our-lead {
+    padding-top: 10px;
+    border-top: 1px solid #F2EDE4;
+    font-size: 13px;
+    color: #3D2E28;
+  }
+  .our-lead span {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #C9972C;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  /* ─── OPTION: EMBED AVATAR STYLE ─── */
+  .our-lead-with-avatar {
+    padding-top: 10px;
+    border-top: 1px solid #F2EDE4;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .embed-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #7C1316;
+    color: #FAF8F4;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.02em;
+  }
+  .embed-lead-text {}
+  .embed-lead-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #C9972C;
+    display: block;
+    margin-bottom: 1px;
+  }
+  .embed-lead-name {
+    font-size: 13px;
+    color: #3D2E28;
+  }
+
+  /* grid for option 3 */
+  .card-row {
+    display: grid;
+    grid-template-columns: repeat(3, 220px);
+    gap: 14px;
+  }
+
+  /* annotations */
+  .note {
+    font-size: 12px;
+    color: #888;
+    margin-top: 10px;
+    font-style: italic;
+  }
+  .pros-cons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 12px;
+    font-size: 13px;
+    max-width: 400px;
+  }
+  .pros { color: #1a7a3a; }
+  .cons { color: #b00020; }
+  .pros li, .cons li { margin-left: 16px; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+  <!-- ── OPTION 1 ── -->
+  <div class="section">
+    <h2>Option 1 — Native Google Sites "People" card</h2>
+    <p class="label">Insert → People card • Separate block above or below the embed • Pulled from Google Workspace profile</p>
+
+    <div class="sites-people-card">
+      <div class="sites-avatar">A</div>
+      <div class="sites-info">
+        <div class="sites-name">Ahch Shahad</div>
+        <div class="sites-title">IT Lead · True Nation</div>
+        <a class="sites-email" href="#">shahad@truenation.org</a>
+      </div>
+    </div>
+
+    <div class="pros-cons">
+      <ul class="pros">
+        <li>Uses real Workspace photo</li>
+        <li>Clickable — opens profile</li>
+        <li>Zero maintenance</li>
+      </ul>
+      <ul class="cons">
+        <li>Separate block, not inside card</li>
+        <li>Can't style to match brand</li>
+        <li>One card per person (not in grid)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ── OPTION 2 ── -->
+  <div class="section">
+    <h2>Option 2 — Current embed (text only, no avatar)</h2>
+    <p class="label">What you have right now in the sub-group cards</p>
+
+    <div class="our-card">
+      <div class="our-name">Infrastructure</div>
+      <div class="our-desc">Manages network, hardware, Google Workspace configuration, and physical technology infrastructure.</div>
+      <div class="our-lead">
+        <span>Lead</span>Ahch Shahad
+      </div>
+    </div>
+    <p class="note">Gold label + name, anchored to bottom of card.</p>
+  </div>
+
+  <!-- ── OPTION 3 ── -->
+  <div class="section">
+    <h2>Option 3 — Embed with brand avatar circle</h2>
+    <p class="label">CSS-generated circle with initial in Wine color — stays inside the card, matches brand</p>
+
+    <div class="card-row">
+      <div class="our-card">
+        <div class="our-name">Logistics</div>
+        <div class="our-desc">Coordinates equipment, transportation, and operational logistics for events and weekly services.</div>
+        <div class="our-lead-with-avatar">
+          <div class="embed-avatar">A</div>
+          <div class="embed-lead-text">
+            <span class="embed-lead-label">Lead</span>
+            <span class="embed-lead-name">Achwath Shawashan</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="our-card">
+        <div class="our-name">Infrastructure</div>
+        <div class="our-desc">Manages network, hardware, Google Workspace configuration, and physical technology infrastructure.</div>
+        <div class="our-lead-with-avatar">
+          <div class="embed-avatar">S</div>
+          <div class="embed-lead-text">
+            <span class="embed-lead-label">Lead</span>
+            <span class="embed-lead-name">Ahch Shahad</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="our-card">
+        <div class="our-name">Website</div>
+        <div class="our-desc">Maintains the public website, intranet portal, and PARADOX APP platform.</div>
+        <div class="our-lead-with-avatar">
+          <div class="embed-avatar">S</div>
+          <div class="embed-lead-text">
+            <span class="embed-lead-label">Lead</span>
+            <span class="embed-lead-name">Ahch Shahad</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pros-cons">
+      <ul class="pros">
+        <li>Stays inside the card grid</li>
+        <li>Matches Wine/Gold brand colors</li>
+        <li>Works on all department pages</li>
+      </ul>
+      <ul class="cons">
+        <li>Manual initial (not from photo)</li>
+        <li>You update the letter if name changes</li>
+      </ul>
+    </div>
+  </div>
+
+</body>
+</html>

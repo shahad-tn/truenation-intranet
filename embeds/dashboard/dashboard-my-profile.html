@@ -1,0 +1,118 @@
+<!--
+  TRUE NATION INTRANET — DASHBOARD MY PROFILE
+  ─────────────────────────────────────────────
+  Embed via Insert → Embed → Embed Code in Google Sites.
+  Place BELOW the Upcoming Events embed on the My Dashboard page.
+  Add a native Sites heading "MY PROFILE" above this embed.
+
+  Embeds the profile-editor.gs standalone Apps Script web app in a
+  TNIC-branded card with section header.
+
+  Deployment URL (profile-editor.gs):
+    https://script.google.com/a/macros/truenation.org/s/AKfycbzvYnsSNAUzqif4FLxGa00w7T5FEQaF7lXY5hOMPbDmLPvluaGzg5KX5LF6f5Y3-1tK/exec
+
+  TO UPDATE THE PROFILE EDITOR CODE (no URL change needed):
+    1. Edit profile-editor.gs or profile-editor-ui.html in the standalone project
+    2. Deploy → Manage Deployments → Edit (pencil) → Version: New version → Deploy
+    3. The iframe src URL here stays the same.
+
+  HEIGHT:
+    Desktop: 2200px — fits all 7 sections without scrolling.
+    Mobile (≤500px): 2800px — single-column layout is significantly taller.
+    If content still scrolls after a code update, increase these values.
+-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: transparent; }
+
+  .mp-wrap {
+    font-family: 'DM Sans', sans-serif;
+    background: #E8E8EC;
+    border-radius: 10px;
+    padding: 16px 16px 20px;
+    width: 100%;
+  }
+
+  .mp-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .mp-header__icon {
+    width: 36px; height: 36px;
+    background: #D8D8DE;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .mp-header__title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 1rem;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    color: #7C1316;
+  }
+  .mp-header__sub {
+    font-size: 11px; color: #AAA; margin-top: 1px;
+  }
+
+  .mp-card {
+    background: white;
+    border: 1px solid #BFBFC7;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(19,13,10,0.06);
+  }
+
+  .mp-card iframe {
+    width: 100%;
+    height: 2200px;
+    border: none;
+    display: block;
+  }
+
+  @media (max-width: 500px) {
+    .mp-card iframe { height: 2800px; }
+  }
+</style>
+
+<div class="mp-wrap">
+
+  <div class="mp-header">
+    <div class="mp-header__icon">👤</div>
+    <div>
+      <div class="mp-header__title">My Profile</div>
+      <div class="mp-header__sub">Update your directory information</div>
+    </div>
+  </div>
+
+  <div class="mp-card">
+    <iframe
+      src="https://script.google.com/a/macros/truenation.org/s/AKfycbzvYnsSNAUzqif4FLxGa00w7T5FEQaF7lXY5hOMPbDmLPvluaGzg5KX5LF6f5Y3-1tK/exec"
+      allowfullscreen
+      title="Update Your Profile">
+    </iframe>
+  </div>
+
+</div>
+
+<script>
+  (function(){
+    function sendHeight(){
+      var h = document.body ? document.body.scrollHeight : 0;
+      window.parent.postMessage({ type: 'tnic-height', height: h, id: 'dashboard_my_profile' }, '*');
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', sendHeight);
+    } else {
+      sendHeight();
+    }
+    window.addEventListener('resize', sendHeight);
+    if (window.ResizeObserver) {
+      new ResizeObserver(sendHeight).observe(document.body);
+    }
+  })();
+</script>

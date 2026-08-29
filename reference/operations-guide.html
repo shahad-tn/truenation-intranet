@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>True Nation Intranet — Operations Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* ── Brand Tokens ─────────────────────────────── */
+  :root {
+    --wine:  #7C1316;
+    --gold:  #C9972C;
+    --snow:  #FAF8F4;
+    --cream: #F2EDE4;
+    --bark:  #3D2E28;
+    --ink:   #130D0A;
+    --font-head: 'Barlow Condensed', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  /* ── Reset & Base ─────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--bark);
+    background: var(--snow);
+    line-height: 1.6;
+  }
+
+  /* ── Page Wrapper ─────────────────────────────── */
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 0 60px;
+  }
+
+  /* ── Cover ────────────────────────────────────── */
+  .cover {
+    background: var(--ink);
+    color: var(--snow);
+    padding: 64px 56px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 6px;
+    background: var(--gold);
+  }
+  .cover-badge {
+    display: inline-block;
+    background: var(--wine);
+    color: var(--cream);
+    font-family: var(--font-head);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    margin-bottom: 32px;
+  }
+  .cover-label {
+    font-family: var(--font-head);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.20em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .cover-title {
+    font-family: var(--font-head);
+    font-size: 52px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #fff;
+    line-height: 1.05;
+    margin-bottom: 20px;
+  }
+  .cover-sub {
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 400;
+    color: #BFB5AE;
+    max-width: 560px;
+    line-height: 1.5;
+    margin-bottom: 40px;
+  }
+  .cover-meta {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: #7A6F6A;
+    letter-spacing: 0.04em;
+  }
+  .cover-meta span { margin-right: 24px; }
+  .cover-divider {
+    border: none;
+    border-top: 1px solid #2E2722;
+    margin: 32px 0;
+  }
+
+  /* ── Section Container ────────────────────────── */
+  .section {
+    padding: 48px 56px;
+    border-bottom: 1px solid var(--cream);
+  }
+  .section:last-child { border-bottom: none; }
+
+  /* ── Section Headings ─────────────────────────── */
+  .section-eyebrow {
+    font-family: var(--font-head);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .section-title {
+    font-family: var(--font-head);
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--wine);
+    margin-bottom: 24px;
+  }
+  .section-intro {
+    font-size: 14px;
+    color: var(--bark);
+    max-width: 680px;
+    margin-bottom: 28px;
+    line-height: 1.65;
+  }
+
+  /* ── Stage Cards (AT A GLANCE) ────────────────── */
+  .stage-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0;
+    align-items: stretch;
+    margin-top: 8px;
+  }
+  .stage-card {
+    background: #fff;
+    border: 1.5px solid var(--cream);
+    padding: 28px 24px;
+  }
+  .stage-card.stage-1 { border-right: none; }
+  .stage-card.stage-2 { border-left: none; }
+  .stage-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    background: var(--cream);
+    border-top: 1.5px solid var(--cream);
+    border-bottom: 1.5px solid var(--cream);
+  }
+  .stage-arrow span {
+    font-size: 22px;
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .stage-pill {
+    display: inline-block;
+    font-family: var(--font-head);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    margin-bottom: 12px;
+  }
+  .stage-pill.public { background: #E8F4E8; color: #2E6B2E; }
+  .stage-pill.auth   { background: #E8EAF4; color: #2E3B6B; }
+  .stage-label {
+    font-family: var(--font-head);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+  .stage-url {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--wine);
+    background: var(--snow);
+    border: 1px solid var(--cream);
+    padding: 5px 10px;
+    margin-bottom: 12px;
+    display: inline-block;
+    letter-spacing: 0.01em;
+  }
+  .stage-desc {
+    font-size: 13px;
+    color: var(--bark);
+    line-height: 1.55;
+  }
+
+  /* ── Resource Table ───────────────────────────── */
+  table.resource-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 4px;
+  }
+  table.resource-table thead tr {
+    background: var(--ink);
+    color: var(--snow);
+  }
+  table.resource-table thead th {
+    font-family: var(--font-head);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    text-align: left;
+  }
+  table.resource-table tbody tr:nth-child(odd)  { background: #fff; }
+  table.resource-table tbody tr:nth-child(even) { background: var(--snow); }
+  table.resource-table tbody td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--cream);
+    vertical-align: top;
+  }
+  table.resource-table .res-label {
+    font-weight: 700;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  table.resource-table .res-url {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--wine);
+    font-weight: 500;
+  }
+
+  /* ── Steps ────────────────────────────────────── */
+  .steps { margin-top: 8px; }
+  .step {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+    align-items: start;
+  }
+  .step-num {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--wine);
+    color: #fff;
+    font-family: var(--font-head);
+    font-size: 20px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-body {}
+  .step-title {
+    font-family: var(--font-head);
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .step-desc {
+    font-size: 13px;
+    color: var(--bark);
+    line-height: 1.55;
+  }
+  .step-sub {
+    margin-top: 8px;
+    padding: 10px 14px;
+    background: var(--snow);
+    border-left: 3px solid var(--gold);
+    font-size: 12.5px;
+    color: var(--bark);
+    line-height: 1.55;
+  }
+
+  /* ── Profile Steps ────────────────────────────── */
+  .profile-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .ps-item {
+    background: var(--snow);
+    border: 1px solid var(--cream);
+    padding: 12px 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .ps-num {
+    font-family: var(--font-head);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--wine);
+    flex-shrink: 0;
+    line-height: 1;
+    margin-top: 1px;
+  }
+  .ps-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+
+  /* ── Callout ──────────────────────────────────── */
+  .callout {
+    background: var(--cream);
+    border-left: 4px solid var(--gold);
+    padding: 20px 24px;
+    margin: 28px 0 0;
+  }
+  .callout-title {
+    font-family: var(--font-head);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--wine);
+    margin-bottom: 8px;
+  }
+  .callout p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--bark);
+  }
+
+  /* ── Admin Tasks ──────────────────────────────── */
+  .task-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .task-card {
+    background: #fff;
+    border: 1.5px solid var(--cream);
+    padding: 20px 22px;
+  }
+  .task-title {
+    font-family: var(--font-head);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--wine);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .task-title::before {
+    content: '';
+    display: inline-block;
+    width: 10px; height: 10px;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+  .task-list {
+    list-style: none;
+    padding: 0;
+  }
+  .task-list li {
+    font-size: 13px;
+    color: var(--bark);
+    line-height: 1.55;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--cream);
+    display: flex;
+    gap: 8px;
+  }
+  .task-list li:last-child { border-bottom: none; }
+  .task-list li::before {
+    content: counter(li);
+    counter-increment: li;
+    font-family: var(--font-head);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--wine);
+    min-width: 14px;
+    margin-top: 1px;
+  }
+  .task-list { counter-reset: li; }
+
+  /* ── Troubleshooting Table ────────────────────── */
+  table.trouble-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 4px;
+  }
+  table.trouble-table thead tr {
+    background: var(--wine);
+    color: #fff;
+  }
+  table.trouble-table thead th {
+    font-family: var(--font-head);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    text-align: left;
+  }
+  table.trouble-table tbody tr:nth-child(odd)  { background: #fff; }
+  table.trouble-table tbody tr:nth-child(even) { background: var(--snow); }
+  table.trouble-table tbody td {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--cream);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  table.trouble-table td:first-child { font-weight: 600; color: var(--ink); }
+  table.trouble-table td.fix { color: var(--bark); }
+
+  /* ── Where Table ──────────────────────────────── */
+  .where-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-top: 8px;
+  }
+  .where-card {
+    background: #fff;
+    border: 1.5px solid var(--cream);
+    padding: 18px 20px;
+  }
+  .where-label {
+    font-family: var(--font-head);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--wine);
+    margin-bottom: 6px;
+  }
+  .where-location {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .where-note {
+    font-size: 12px;
+    color: #7A6F6A;
+    line-height: 1.4;
+  }
+
+  /* ── Brand Swatches ───────────────────────────── */
+  .brand-section { margin-top: 8px; }
+  .brand-sub {
+    font-family: var(--font-head);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--bark);
+    margin-bottom: 14px;
+    margin-top: 28px;
+  }
+  .swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .swatch {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .swatch-dot {
+    width: 36px; height: 36px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    border: 1px solid rgba(0,0,0,0.08);
+  }
+  .swatch-info {}
+  .swatch-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .swatch-hex {
+    font-size: 11px;
+    color: #7A6F6A;
+    font-family: var(--font-body);
+  }
+  .swatch-use {
+    font-size: 11px;
+    color: #7A6F6A;
+  }
+  .type-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .type-table th {
+    font-family: var(--font-head);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 8px 0;
+    text-align: left;
+    border-bottom: 2px solid var(--cream);
+    color: var(--bark);
+  }
+  .type-table td {
+    padding: 9px 0;
+    border-bottom: 1px solid var(--cream);
+    color: var(--bark);
+    vertical-align: top;
+  }
+  .type-table td:first-child { font-weight: 700; color: var(--ink); width: 180px; }
+
+  /* ── Maintainer Section ───────────────────────── */
+  .maintainer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .maintainer-card {
+    background: #fff;
+    border: 1.5px solid var(--cream);
+    padding: 20px 22px;
+  }
+  .maintainer-label {
+    font-family: var(--font-head);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .maintainer-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+  .maintainer-email {
+    font-size: 12px;
+    color: var(--wine);
+  }
+  .maintainer-note {
+    font-size: 12.5px;
+    color: var(--bark);
+    line-height: 1.55;
+    margin-top: 8px;
+  }
+  .groups-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-top: 12px;
+  }
+  .group-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 12.5px;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--cream);
+  }
+  .group-email {
+    font-weight: 700;
+    color: var(--wine);
+    font-size: 12px;
+  }
+  .group-desc { color: var(--bark); font-size: 11.5px; }
+
+  /* ── Footer / Keep Alive ──────────────────────── */
+  .keep-alive {
+    background: var(--wine);
+    color: #fff;
+    padding: 24px 56px;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .keep-alive-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .keep-alive-body {}
+  .keep-alive-title {
+    font-family: var(--font-head);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .keep-alive-text {
+    font-size: 13px;
+    line-height: 1.55;
+    opacity: 0.88;
+  }
+
+  /* ── Print / PDF ──────────────────────────────── */
+  @media print {
+    body { background: #fff; font-size: 12px; }
+    .page { max-width: 100%; }
+    .cover { padding: 48px 40px 40px; }
+    .cover-title { font-size: 42px; }
+    .section { padding: 36px 40px; }
+    .keep-alive { padding: 20px 40px; }
+
+    /* Page breaks before major sections */
+    .section.break-before { page-break-before: always; }
+
+    /* Don't break inside cards */
+    .task-card,
+    .step,
+    .where-card,
+    .maintainer-card { page-break-inside: avoid; }
+
+    /* Ensure tables stay readable */
+    table thead { display: table-header-group; }
+    table tr    { page-break-inside: avoid; }
+
+    /* Hide web font loading artifacts */
+    @font-face { font-display: block; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── COVER ─────────────────────────────────── -->
+  <div class="cover">
+    <div class="cover-badge">For Internal Use Only</div>
+    <div class="cover-label">True Nation Israelite Congregation</div>
+    <h1 class="cover-title">True Nation Intranet<br>Operations Guide</h1>
+    <p class="cover-sub">How staff onboarding and directory management works. A reference for administrators and intranet maintainers.</p>
+    <hr class="cover-divider">
+    <div class="cover-meta">
+      <span>Owner: tn-admin@truenation.org</span>
+      <span>Last Updated: June 2026</span>
+      <span>Restricted to admin group</span>
+    </div>
+  </div>
+
+  <!-- ── AT A GLANCE ────────────────────────────── -->
+  <div class="section">
+    <div class="section-eyebrow">Overview</div>
+    <h2 class="section-title">At a Glance</h2>
+    <p class="section-intro">Onboarding is a two-stage process. Stage 1 is public-facing — anyone can fill out the form. Stage 2 requires a True Nation Google account and happens after the account is created.</p>
+
+    <div class="stage-grid">
+      <div class="stage-card stage-1">
+        <span class="stage-pill public">Stage 1 · Public</span>
+        <div class="stage-label">Vercel Onboarding Form</div>
+        <div class="stage-url">truenation.vercel.app/onboarding</div>
+        <p class="stage-desc">New staff fill out a short public form — no login required. The system provisions a <strong>@truenation.org</strong> Google account and emails the new staff member their credentials.</p>
+      </div>
+      <div class="stage-arrow"><span>→</span></div>
+      <div class="stage-card stage-2">
+        <span class="stage-pill auth">Stage 2 · Authenticated</span>
+        <div class="stage-label">Google Sites Profile Setup</div>
+        <div class="stage-url">truenation.vercel.app/setup</div>
+        <p class="stage-desc">After logging in with their new account, staff complete the full 8-step profile — emergency contacts, household info, ID upload, skills, and ministry interests.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── WHERE EVERYTHING LIVES ─────────────────── -->
+  <div class="section">
+    <div class="section-eyebrow">Quick Reference</div>
+    <h2 class="section-title">Where Everything Lives</h2>
+
+    <table class="resource-table">
+      <thead>
+        <tr>
+          <th style="width:220px">Resource</th>
+          <th>Location / URL</th>
+          <th>Access</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="res-label">Public Onboarding Form</td>
+          <td class="res-url">truenation.vercel.app/onboarding</td>
+          <td>Anyone (no login required)</td>
+        </tr>
+        <tr>
+          <td class="res-label">Profile Setup Page</td>
+          <td class="res-url">truenation.vercel.app/setup</td>
+          <td>@truenation.org account required</td>
+        </tr>
+        <tr>
+          <td class="res-label">Staff Directory (Intranet)</td>
+          <td class="res-url">portal.truenation.org</td>
+          <td>@truenation.org account required</td>
+        </tr>
+        <tr>
+          <td class="res-label">Google Admin Console</td>
+          <td class="res-url">admin.google.com</td>
+          <td>Admins only (tn-admin group)</td>
+        </tr>
+        <tr>
+          <td class="res-label">Staff Data (Google Sheet)</td>
+          <td>Shared with tn-admin@truenation.org</td>
+          <td>tn-admin group only</td>
+        </tr>
+        <tr>
+          <td class="res-label">ID Documents (Drive)</td>
+          <td>Restricted Google Drive folder</td>
+          <td>tn-admin group only — not visible to sheet-level access</td>
+        </tr>
+        <tr>
+          <td class="res-label">Source Code (GitHub)</td>
+          <td class="res-url">github.com/shahad-tn/truenation-intranet-directory</td>
+          <td>tn-admin group + dev team</td>
+        </tr>
+        <tr>
+          <td class="res-label">Admin Notifications</td>
+          <td class="res-url">tn-admin@truenation.org</td>
+          <td>Admin group inbox</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <div class="callout-title">Access Control Policy</div>
+      <p>Always use <strong>Google Groups</strong> for access control. Never share individual pages, folders, or sheets with personal email addresses — always use the group address. Never create a shared generic login (e.g. admin@truenation.org). Individual accounts give you a full audit trail and enable clean offboarding.</p>
+    </div>
+  </div>
+
+  <!-- ── HOW A NEW STAFF MEMBER JOINS ───────────── -->
+  <div class="section break-before">
+    <div class="section-eyebrow">Onboarding Flow</div>
+    <h2 class="section-title">How a New Staff Member Joins</h2>
+
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Send Them the Onboarding Link</div>
+          <p class="step-desc">Share <strong>truenation.vercel.app/onboarding</strong> via email, text, or in person. No account needed to access the form.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">They Fill Out the Short Form</div>
+          <p class="step-desc">Legal name, preferred name, personal email address, desired username, and campus/location. This is brief by design — Stage 2 collects the rest.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">The System Creates Their Google Account</div>
+          <p class="step-desc">A <strong>@truenation.org</strong> Google Workspace account is provisioned automatically. Credentials and the profile setup link are emailed to their personal address.</p>
+          <div class="step-sub">
+            <strong>If they don't receive the email:</strong> Ask them to check spam. An admin can also manually resend from the Google Admin Console (admin.google.com → Users → select user → Security → Reset password).
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">They Log In &amp; Complete Their 8-Step Profile</div>
+          <p class="step-desc">At <strong>truenation.vercel.app/setup</strong>, staff complete the full profile using their new @truenation.org account.</p>
+          <div class="profile-steps">
+            <div class="ps-item"><div class="ps-num">1</div><div class="ps-label">Personal &amp; Contact Info</div></div>
+            <div class="ps-item"><div class="ps-num">2</div><div class="ps-label">Legal Name</div></div>
+            <div class="ps-item"><div class="ps-num">3</div><div class="ps-label">Household</div></div>
+            <div class="ps-item"><div class="ps-num">4</div><div class="ps-label">Medical Info</div></div>
+            <div class="ps-item"><div class="ps-num">5</div><div class="ps-label">Emergency Contacts</div></div>
+            <div class="ps-item"><div class="ps-num">6</div><div class="ps-label">ID &amp; Photo</div></div>
+            <div class="ps-item"><div class="ps-num">7</div><div class="ps-label">Skills &amp; Ministry</div></div>
+            <div class="ps-item"><div class="ps-num">8</div><div class="ps-label">Confirmation</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="step-title">Admins Assign Their Role</div>
+          <p class="step-desc">An admin opens the Staff Sheet and fills in: branch, department, cost center, and employment type. The directory reflects the update on the next sync.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="callout">
+      <div class="callout-title">Why Two Stages?</div>
+      <p>The short public form gets a new person into the system quickly, even from a phone at an event. The full profile setup is done on their own time, after they have their login. This prevents bottlenecks and keeps the onboarding form simple to share.</p>
+    </div>
+  </div>
+
+  <!-- ── COMMON ADMIN TASKS ──────────────────────── -->
+  <div class="section">
+    <div class="section-eyebrow">Admin Reference</div>
+    <h2 class="section-title">Common Admin Tasks</h2>
+
+    <div class="task-grid">
+
+      <div class="task-card">
+        <div class="task-title">Add a New Admin</div>
+        <ol class="task-list">
+          <li>Go to admin.google.com and locate the user</li>
+          <li>Add them to the <strong>tn-admin@truenation.org</strong> Google Group</li>
+          <li>Grant Delegated Admin role (Groups + Sites minimum)</li>
+          <li>Brief them on these access control policies</li>
+        </ol>
+      </div>
+
+      <div class="task-card">
+        <div class="task-title">Edit a Profile (Self-Service)</div>
+        <ol class="task-list">
+          <li>Sign in at truenation.vercel.app/setup with your @truenation.org account</li>
+          <li>Navigate to the step you want to update</li>
+          <li>Save the section — the Staff Sheet updates automatically</li>
+        </ol>
+      </div>
+
+      <div class="task-card">
+        <div class="task-title">Edit a Profile (Admin)</div>
+        <ol class="task-list">
+          <li>Open the Staff Sheet (shared with tn-admin group)</li>
+          <li>Find the staff member's row</li>
+          <li>Edit the relevant cell(s) directly</li>
+          <li>Directory updates on the next daily sync (or trigger manually)</li>
+        </ol>
+      </div>
+
+      <div class="task-card">
+        <div class="task-title">Remove Someone Who Has Left</div>
+        <ol class="task-list">
+          <li>Suspend their Google account in Admin Console (do not delete — preserves audit trail)</li>
+          <li>Move their row to the <strong>Former Staff</strong> tab in the Staff Sheet</li>
+          <li>Remove them from all Google Groups</li>
+          <li>Revoke any shared Drive or Sites access as needed</li>
+        </ol>
+      </div>
+
+      <div class="task-card">
+        <div class="task-title">Reset Someone's Password</div>
+        <ol class="task-list">
+          <li>Go to admin.google.com → Users</li>
+          <li>Select the user → Security tab</li>
+          <li>Click Reset Password</li>
+          <li>Send them the temporary password; ask them to change it on first sign-in</li>
+        </ol>
+      </div>
+
+      <div class="task-card">
+        <div class="task-title">Trigger a Manual Directory Sync</div>
+        <ol class="task-list">
+          <li>Go to script.google.com → TNIC StaffDirectory project</li>
+          <li>Select the <strong>syncWorkspaceToSheet</strong> function</li>
+          <li>Click Run → confirm any permissions prompted</li>
+          <li>Check the Audit Log tab in the Staff Sheet for confirmation</li>
+        </ol>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── TROUBLESHOOTING ─────────────────────────── -->
+  <div class="section break-before">
+    <div class="section-eyebrow">When Something Looks Wrong</div>
+    <h2 class="section-title">Troubleshooting</h2>
+
+    <table class="trouble-table">
+      <thead>
+        <tr>
+          <th style="width:280px">Symptom</th>
+          <th>Likely Cause &amp; Fix</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Onboarding form won't submit</td>
+          <td class="fix">Username collision — the desired username already exists. Ask them to choose a different one and resubmit.</td>
+        </tr>
+        <tr>
+          <td>Didn't receive the welcome email</td>
+          <td class="fix">Check spam folder first. If still missing, admin can manually reset the password from Admin Console and provide credentials directly.</td>
+        </tr>
+        <tr>
+          <td>Profile setup page is blank or shows an error</td>
+          <td class="fix">User is signed in with their personal Gmail, not their @truenation.org account. Ask them to sign out and sign back in with the correct account.</td>
+        </tr>
+        <tr>
+          <td>Address autocomplete not working on profile form</td>
+          <td class="fix">Google Maps API key may be expired or over quota. Contact the IT lead (shahad@truenation.org) to check the API key in the Vercel dashboard.</td>
+        </tr>
+        <tr>
+          <td>ID photo upload fails</td>
+          <td class="fix">File is too large (limit: 4 MB). Ask the user to compress the image and retry. JPG format recommended.</td>
+        </tr>
+        <tr>
+          <td>Staff member can't see the directory</td>
+          <td class="fix">They are not signed in with a @truenation.org account, or their account hasn't been added to the correct Google Group. Verify in Admin Console.</td>
+        </tr>
+        <tr>
+          <td>New entry not showing in the directory after profile setup</td>
+          <td class="fix">The daily sync hasn't run yet. Trigger a manual sync from Apps Script (see Common Admin Tasks), or wait until the next scheduled run.</td>
+        </tr>
+        <tr>
+          <td>Audit Log tab is not updating</td>
+          <td class="fix">The Apps Script trigger may have been deleted or paused. Go to script.google.com → Triggers and confirm the daily sync trigger is active.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── WHAT LIVES WHERE ────────────────────────── -->
+  <div class="section">
+    <div class="section-eyebrow">Data &amp; Code</div>
+    <h2 class="section-title">What Lives Where</h2>
+
+    <div class="where-grid">
+      <div class="where-card">
+        <div class="where-label">Staff Data</div>
+        <div class="where-location">Google Sheet (Staff Directory)</div>
+        <div class="where-note">Single source of truth for all active staff. Shared with tn-admin group only. Includes <em>data</em>, <em>Former Staff</em>, <em>Audit Log</em>, and <em>Data Backup</em> tabs.</div>
+      </div>
+      <div class="where-card">
+        <div class="where-label">ID Documents &amp; Photos</div>
+        <div class="where-location">Restricted Google Drive Folder</div>
+        <div class="where-note">Accessible to tn-admin@truenation.org only. Not visible to people who have access to the Staff Sheet. Keep these two permission sets separate.</div>
+      </div>
+      <div class="where-card">
+        <div class="where-label">Source Code</div>
+        <div class="where-location">GitHub — truenation-intranet-directory</div>
+        <div class="where-note">All onboarding form and profile setup code. Access managed via tn-admin group. Changes here affect the live Vercel deployment.</div>
+      </div>
+      <div class="where-card">
+        <div class="where-label">Audit Log</div>
+        <div class="where-location">Inside the Staff Google Sheet</div>
+        <div class="where-note">Every sync and manual edit is logged here. Check this tab first if something looks wrong with a staff record or if you need to trace a change.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── VISUAL BRAND ────────────────────────────── -->
+  <div class="section break-before">
+    <div class="section-eyebrow">Design Reference</div>
+    <h2 class="section-title">Visual Brand</h2>
+    <p class="section-intro">Use these tokens consistently across all intranet pages and documents. Never substitute alternate colors or fonts without IT lead approval.</p>
+
+    <div class="brand-section">
+      <div class="brand-sub">Color Palette</div>
+      <div class="swatch-grid">
+        <div class="swatch">
+          <div class="swatch-dot" style="background:#7C1316;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Wine</div>
+            <div class="swatch-hex">#7C1316</div>
+            <div class="swatch-use">Headers, links, CTAs</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-dot" style="background:#C9972C;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Gold</div>
+            <div class="swatch-hex">#C9972C</div>
+            <div class="swatch-use">Accents, labels, borders</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-dot" style="background:#E8E8EC;border:1px solid #E0D8CF;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Snow</div>
+            <div class="swatch-hex">#FAF8F4</div>
+            <div class="swatch-use">Page &amp; section backgrounds</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-dot" style="background:#D8D8DE;border:1px solid #E0D8CF;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Cream</div>
+            <div class="swatch-hex">#F2EDE4</div>
+            <div class="swatch-use">Card borders, subtle fills</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-dot" style="background:#3D2E28;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Bark</div>
+            <div class="swatch-hex">#3D2E28</div>
+            <div class="swatch-use">Body text</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-dot" style="background:#130D0A;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Ink</div>
+            <div class="swatch-hex">#130D0A</div>
+            <div class="swatch-use">Dark text, headings</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="brand-sub">Typography</div>
+      <table class="type-table">
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th>Font</th>
+            <th>Weight</th>
+            <th>Style Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Headings &amp; Labels</td>
+            <td>Barlow Condensed</td>
+            <td>600, 700</td>
+            <td>Uppercase, letter-spacing 0.04–0.20em</td>
+          </tr>
+          <tr>
+            <td>Body Text</td>
+            <td>DM Sans</td>
+            <td>400, 500, 700</td>
+            <td>Normal case, line-height 1.55–1.65</td>
+          </tr>
+          <tr>
+            <td>URLs &amp; Code</td>
+            <td>DM Sans</td>
+            <td>500–700</td>
+            <td>Wine color (#7C1316), no underline by default</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top:16px; padding:12px 16px; background:var(--snow); border:1px solid var(--cream); font-size:12.5px; color:var(--bark);">
+        <strong>Google Fonts import (for HTML embeds):</strong><br>
+        <code style="font-family:var(--font-body); color:var(--wine); font-size:12px;">https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap</code>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── WHO MAINTAINS THIS ──────────────────────── -->
+  <div class="section">
+    <div class="section-eyebrow">Ownership</div>
+    <h2 class="section-title">Who Maintains This</h2>
+
+    <div class="maintainer-grid">
+      <div class="maintainer-card">
+        <div class="maintainer-label">Primary Maintainer</div>
+        <div class="maintainer-name">Shahad</div>
+        <div class="maintainer-email">shahad@truenation.org</div>
+        <p class="maintainer-note">IT Department Lead. Owns the codebase, deployment pipeline, and data architecture. Primary point of contact for all intranet and directory issues.</p>
+      </div>
+      <div class="maintainer-card">
+        <div class="maintainer-label">Admin Team</div>
+        <div class="maintainer-name">tn-admin@truenation.org</div>
+        <div class="maintainer-email">Sarah Haynes · Kabash · Yedayah · Shawashan · Nayah</div>
+        <p class="maintainer-note">Delegated admins with access to Admin Console, Staff Sheet, and restricted Drive. If Shahad is unavailable, contact any admin in this group.</p>
+      </div>
+      <div class="maintainer-card">
+        <div class="maintainer-label">Code Repository</div>
+        <div class="maintainer-name">GitHub</div>
+        <div class="maintainer-email">github.com/shahad-tn/truenation-intranet-directory</div>
+        <p class="maintainer-note">All onboarding form and profile setup source code. Deployed automatically to Vercel on push to main branch.</p>
+      </div>
+      <div class="maintainer-card">
+        <div class="maintainer-label">Hosting</div>
+        <div class="maintainer-name">Vercel (form) · Google Sites (intranet)</div>
+        <p class="maintainer-note">The public onboarding form and profile setup pages run on Vercel. The staff directory and intranet run on Google Sites. Both are managed through the tn-admin group.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:28px;">
+      <div class="section-eyebrow" style="margin-bottom:12px;">Active Google Groups</div>
+      <div class="groups-grid">
+        <div class="group-row"><div class="group-email">everyone@truenation.org</div><div class="group-desc">All staff &amp; volunteers</div></div>
+        <div class="group-row"><div class="group-email">tn-admin@truenation.org</div><div class="group-desc">Intranet administrators</div></div>
+        <div class="group-row"><div class="group-email">leadership@truenation.org</div><div class="group-desc">Bishops &amp; branch leaders</div></div>
+        <div class="group-row"><div class="group-email">finance@truenation.org</div><div class="group-desc">Finance department</div></div>
+        <div class="group-row"><div class="group-email">it@truenation.org</div><div class="group-desc">IT department</div></div>
+        <div class="group-row"><div class="group-email">tela@truenation.org</div><div class="group-desc">T.E.L.A. students &amp; participants</div></div>
+        <div class="group-row"><div class="group-email">moreh@truenation.org</div><div class="group-desc">Teachers / Moreh</div></div>
+        <div class="group-row"><div class="group-email">deacons@truenation.org</div><div class="group-desc">Deacons branch members</div></div>
+        <div class="group-row"><div class="group-email">apostles@truenation.org</div><div class="group-desc">Apostles branch members</div></div>
+        <div class="group-row"><div class="group-email">judges@truenation.org</div><div class="group-desc">Judges branch members</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── KEEP ALIVE ──────────────────────────────── -->
+  <div class="keep-alive">
+    <div class="keep-alive-icon">📌</div>
+    <div class="keep-alive-body">
+      <div class="keep-alive-title">Keep This Guide Alive</div>
+      <p class="keep-alive-text">When processes, URLs, team members, or tools change — update this document and re-share with tn-admin@truenation.org. An outdated operations guide is worse than no guide at all. Owner: Shahad · Last updated: June 2026</p>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<?!= include('styles') ?>
+<style>
+  body{background:transparent;}
+  .pf-body{max-width:840px;margin:0 auto;padding:22px 20px 28px;}
+  .pf-h2{font-size:23px;letter-spacing:.09em;color:var(--wine);margin-bottom:3px;}
+  .pf-sub{font-size:13px;color:var(--muted);margin:0 0 20px;}
+  .pf-card{border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:0 0 12px;background:#fff;}
+  .pf-card.pin{border-left:6px solid var(--gold);background:#FFFDF7;}
+  .pf-pin{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--ink-dk);background:var(--gold);padding:3px 9px;border-radius:4px;
+    display:inline-block;margin-bottom:7px;}
+  .pf-t{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:20px;
+    letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin:0 0 5px;}
+  .pf-b{margin:0 0 9px;font-size:15px;}
+  .pf-f{font-size:12.5px;color:var(--muted);border-top:1px solid var(--surface);padding-top:9px;margin:0;}
+  .pf-f b{color:var(--ink);font-weight:500;}
+  .pf-empty{border:2px dashed var(--line);border-radius:10px;padding:30px 20px;
+    text-align:center;color:var(--muted);font-size:14.5px;background:#fff;}
+  .pf-perm{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;padding-top:18px;border-top:2px solid var(--surface);}
+  .pf-tile{flex:1 1 150px;border:1px solid var(--line);border-radius:9px;padding:14px;
+    text-align:center;font-size:13.5px;font-weight:600;color:var(--wine);background:#fff;
+    text-decoration:none;display:block;}
+  .pf-tile:hover{border-color:var(--gold);}
+  .pf-tile span{display:block;font-size:11.5px;font-weight:400;color:var(--muted);margin-top:3px;}
+</style>
+</head>
+<body>
+<div class="pf-body">
+  <h2 class="pf-h2">Announcements</h2>
+  <p class="pf-sub" id="sub">Loading&hellip;</p>
+  <div id="cards"></div>
+  <div class="pf-perm">
+    <a class="pf-tile" href="https://portal.truenation.org/alms">True Nation Alms<span>Give &amp; view commitments</span></a>
+    <a class="pf-tile" href="https://truenation.org/store">Store<span>Shirts &amp; sweatshirts</span></a>
+    <a class="pf-tile" href="https://portal.truenation.org/directory">Staff Directory<span>Find anyone</span></a>
+  </div>
+</div>
+
+<script>
+function esc(s){return String(s).replace(/&(?!#?\w+;)/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+google.script.run.withSuccessHandler(function(d){
+  document.getElementById('sub').textContent =
+    d.rows.length ? d.rows.length + ' current announcement' + (d.rows.length===1?'':'s') + ' · updated ' + d.updated
+                  : '';
+  document.getElementById('cards').innerHTML = d.rows.length
+    ? d.rows.map(function(r){
+        return '<div class="pf-card' + (r.pin?' pin':'') + '">' +
+          (r.pin ? '<span class="pf-pin">Important</span>' : '') +
+          '<h3 class="pf-t">' + esc(r.title) + '</h3>' +
+          '<p class="pf-b">' + esc(r.body) + '</p>' +
+          (r.contact ? '<p class="pf-f">Questions? Contact <b>' + esc(r.contact) + '</b></p>' : '') +
+          '</div>';
+      }).join('')
+    : '<div class="pf-empty">No announcements right now. Check back after the next service.</div>';
+  sendHeight();
+}).withFailureHandler(function(e){
+  document.getElementById('sub').textContent = '';
+  document.getElementById('cards').innerHTML =
+    '<div class="pf-empty">Announcements are unavailable right now.</div>';
+  sendHeight();
+}).getHomeFeed();
+
+function sendHeight(){
+  var h = document.body ? document.body.scrollHeight : 0;
+  window.parent.postMessage({type:'tnic-height',height:h,id:'announcements-home'},'*');
+}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sendHeight);}else{sendHeight();}
+window.addEventListener('resize',sendHeight);
+if(window.ResizeObserver){new ResizeObserver(sendHeight).observe(document.body);}
+</script>
+</body>
+</html>

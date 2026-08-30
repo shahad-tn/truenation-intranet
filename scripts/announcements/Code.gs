@@ -56,6 +56,11 @@ function doGet(e) {
   var t = HtmlService.createTemplateFromFile(page);
   t.ctx = ACL.context('announcements');
   t.params = (e && e.parameter) || {};
+  // Absolute base URL for in-app links. Apps Script renders these pages inside
+  // a googleusercontent.com sandbox frame, so a RELATIVE href (e.g. "?page=x")
+  // resolves against that sandbox origin and lands on a blank page. Always
+  // build in-app links from appUrl.
+  t.appUrl = appUrl_();
   return renderPage_(t, {
     submit: 'Submit an Announcement',
     review: 'Announcements Dashboard',
@@ -82,6 +87,19 @@ function deniedPage_(message, page) {
 }
 
 function include(name) { return HtmlService.createHtmlOutputFromFile(name).getContent(); }
+
+/**
+ * The deployed web app's absolute URL, with no trailing query string.
+ * Use this for every link between pages of this app - see the note in doGet.
+ */
+function appUrl_() {
+  try {
+    return ScriptApp.getService().getUrl() || '';
+  } catch (e) {
+    Logger.log('appUrl_ failed: ' + e.message);
+    return '';
+  }
+}
 
 // ----------------------------- SHEET HELPERS -----------------------------
 

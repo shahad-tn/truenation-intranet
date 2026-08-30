@@ -758,10 +758,33 @@ var MEMBER_VISIBLE_SHEET_FIELDS = [
 ];
 
 /**
- * Set to false to also hide spouse and children names/photos from non-admin
- * members. Their own row and the admin view are unaffected either way.
+ * ── VISIBILITY TOGGLES ──────────────────────────────────────────────────────
+ * These two booleans are the only things you need to change to widen or narrow
+ * what a member sees about ANOTHER member. Neither affects a member's own row,
+ * and neither affects the admin view — both always return the full record.
+ * After changing either one: save, then Deploy > Manage deployments > pencil >
+ * New version > Deploy. No client-side change is required.
+ *
+ * MEMBER_VISIBLE_FAMILY
+ *   true  (current) - members see each other's spouse and children: name and
+ *                     photo. Children have no name in the sheet other than
+ *                     their government first/last, so this does expose minors'
+ *                     legal names to every signed-in member. Reviewed and
+ *                     accepted 2026-08-29.
+ *   false           - spouse and children are withheld from members entirely.
+ *
+ * MEMBER_VISIBLE_BIRTHDAY
+ *   false (current) - no birthday data reaches a member's browser at all.
+ *   true            - adds sheetData.birthday as "MM-DD" (month and day only,
+ *                     never the birth year; the full date_of_birth stays
+ *                     admin-only regardless). Flipping this alone does NOT
+ *                     make a birthday appear on screen - userdirectory.html
+ *                     has no code that renders it yet. See
+ *                     reference/directory-visibility-toggles.md.
+ * ────────────────────────────────────────────────────────────────────────────
  */
-var MEMBER_VISIBLE_FAMILY = true;
+var MEMBER_VISIBLE_FAMILY   = true;
+var MEMBER_VISIBLE_BIRTHDAY = false;
 
 /**
  * Month/day only — the birthday, never the birth year.
@@ -801,7 +824,7 @@ function publicView_(u) {
   MEMBER_VISIBLE_SHEET_FIELDS.forEach(function(f) {
     if (sd[f] !== undefined) safe[f] = sd[f];
   });
-  safe.birthday = birthdayOnly_(sd.date_of_birth);
+  if (MEMBER_VISIBLE_BIRTHDAY) safe.birthday = birthdayOnly_(sd.date_of_birth);
 
   return {
     primaryEmail:      u.primaryEmail,

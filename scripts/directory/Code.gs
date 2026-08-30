@@ -1205,11 +1205,27 @@ function updateSelf(email, sheetData, gwData) {
 
 // ── Audit Log — read ──────────────────────────────────────────────────────────
 
+/**
+ * Returns up to the last 100 audit entries for one member.
+ *
+ * Admins may read any member's log; everyone else may read only their own.
+ *
+ * An earlier revision removed this guard entirely, on the reasoning that
+ * isAdmin() could throw and cause silent failures. isAdmin() does not throw -
+ * it wraps AdminDirectory.Members.get in its own try/catch and returns false.
+ * What it CAN do is return a cached false for up to 5 minutes (see the
+ * getUserCache 'isAdmin' key). So the guard is restored, and a denial now
+ * raises a visible error instead of returning an empty list, which is what
+ * made the original problem hard to see.
+ */
 function getAuditLog(targetEmail) {
-  // Note: admin-only access is enforced in the UI (admin modal only).
-  // Removing the isAdmin() guard here prevents silent failures when
-  // AdminDirectory scope issues cause isAdmin() to throw.
   if (!targetEmail) return [];
+
+  var caller = Session.getActiveUser().getEmail();
+  if (caller !== targetEmail && !isAdmin()) {
+    Logger.log('getAuditLog: denied ' + caller + ' -> ' + targetEmail);
+    throw new Error('Access denied. You may only view your own audit history.');
+  }
   var sheet = getAuditSheet_();
   var data  = sheet.getDataRange().getValues();
   if (data.length <= 1) return [];

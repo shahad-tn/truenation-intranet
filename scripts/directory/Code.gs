@@ -736,7 +736,134 @@ function getSelfPhoto() {
   var email = Session.getActiveUser().getEmail();
   return getPhotoDataUrl_(email);
 }
+// ── Directory — read (access-filtered) ────────────────────────────────────────
+
+/**
+ * Sheet columns any signed-in member may see about ANY OTHER member.
+ * Anything not listed here is admin-only. A member always sees their own row
+ * in full, and admins always see every row in full.
+ *
+ * Deliberately excluded: date_of_birth (see birthdayOnly_ below), home_address,
+ * legal_first/middle/last, gender is included, emergency_*, ec2_*, insurance_*,
+ * notes, id_front_url, id_back_url, cost_center, start_date, employment_type,
+ * family_id, spouse_legal_*, profile_complete_date.
+ */
+var MEMBER_VISIBLE_SHEET_FIELDS = [
+  "branch",
+  "gender",
+  "location",
+  "phone",
+  "skills",
+  "ministry_interests"
+];
+
+/**
+ * Set to false to also hide spouse and children names/photos from non-admin
+ * members. Their own row and the admin view are unaffected either way.
+ */
+var MEMBER_VISIBLE_FAMILY = true;
+
+/**
+ * Month/day only — the birthday, never the birth year.
+ * Returns "" when the stored value is not a usable date.
+ */
+function birthdayOnly_(dob) {
+  if (!dob) return "";
+  var d = (dob instanceof Date) ? dob : new Date(dob);
+  if (isNaN(d.getTime())) return "";
+  var m   = d.getUTCMonth() + 1;
+  var day = d.getUTCDate();
+  return (m < 10 ? "0" + m : m) + "-" + (day < 10 ? "0" + day : day);
+}
+
+/**
+ * Strips family entries down to what the card actually renders.
+ */
+function publicFamily_(list) {
+  return (list || []).map(function(fm) {
+    return {
+      role:     fm.role     || "",
+      name:     fm.name     || "",
+      govFirst: fm.govFirst || "",
+      govLast:  fm.govLast  || "",
+      photo:    fm.photo    || null
+    };
+  });
+}
+
+/**
+ * The member-facing view of another member. Everything not explicitly carried
+ * over here is dropped before the payload leaves the server.
+ */
+function publicView_(u) {
+  var sd   = u.sheetData || {};
+  var safe = {};
+  MEMBER_VISIBLE_SHEET_FIELDS.forEach(function(f) {
+    if (sd[f] !== undefined) safe[f] = sd[f];
+  });
+  safe.birthday = birthdayOnly_(sd.date_of_birth);
+
+  return {
+    primaryEmail:      u.primaryEmail,
+    name:              u.name,
+    thumbnailPhotoUrl: u.thumbnailPhotoUrl || null,
+    phones:            u.phones            || [],
+    organizations:     u.organizations     || [],
+    locations:         u.locations         || [],
+    relations:         [],
+    emails:            [],
+    recoveryEmail:     "",
+    suspended:         false,
+    lastLoginTime:     null,
+    creationTime:      null,
+    sheetData:         safe,
+    spouseInfo:        MEMBER_VISIBLE_FAMILY ? (u.spouseInfo || null) : null,
+    familyMembers:     MEMBER_VISIBLE_FAMILY ? publicFamily_(u.familyMembers) : []
+  };
+}
+
+/**
+ * Directory listing, filtered to what the CALLER is allowed to see.
+ *
+ * Admins get every row in full. Everyone else gets their own row in full,
+ * suspended accounts omitted entirely, and every other row reduced to
+ * publicView_ above.
+ *
+ * The redaction runs AFTER the cache read on every single call, so a payload
+ * built for an admin can never be replayed from cache to a member.
+ */
 function getUsers() {
+  var all = getUsersFull_();
+
+  var viewer = "";
+  try { viewer = Session.getActiveUser().getEmail() || ""; } catch (e) { viewer = ""; }
+
+  var admin = false;
+  try {
+    admin = isAdmin();
+  } catch (e) {
+    // Fail closed: a scope error must reduce what an admin sees,
+    // never expand what a member sees.
+    Logger.log("getUsers: isAdmin() threw, treating caller as non-admin: " + e.message);
+    admin = false;
+  }
+
+  if (admin) return all;
+
+  var out = [];
+  all.forEach(function(u) {
+    if (viewer && u.primaryEmail === viewer) { out.push(u); return; }
+    if (u.suspended) return;
+    out.push(publicView_(u));
+  });
+  return out;
+}
+
+/**
+ * PRIVATE — full, unfiltered directory data. Never expose this to the client
+ * directly; go through getUsers(), which applies per-caller redaction.
+ */
+function getUsersFull_() {
   // Cache the full user list for 3 minutes — biggest load time reduction
   var cache     = CacheService.getScriptCache();
   var cached    = cache.get('getUsers_result');

@@ -156,7 +156,9 @@ YT `/truenationlosangeles`. Member-facing contact is always `it@truenation.org`,
   (**borders and fills only — never text**; as text it is 2.2:1 and fails AA. Use
   `#785710` on light, `#D4A94D` on wine). Page `#E8E8EC` (was Warm Snow `#FAF8F4`),
   Surface `#D8D8DE` (was Warm Cream `#F2EDE4`), Card `#FFFFFF`, Line `#BFBFC7`,
-  control borders `#86868F`, body text `#26262A` (was `#130D0A`), muted `#56565E`,
+  control borders `#767680` (the guide's `#86868F` is only 2.95:1 on the page
+  ground and fails WCAG 1.4.11 there - see `reference/standalone-apps-check.md`),
+  body text `#26262A` (was `#130D0A`), muted `#56565E`,
   text on dark `#F2F2F3`. Never pure black/white; **sans-serif only** (Barlow Condensed
   display, DM Sans body). Fixed dark panels (nav/footer/hero) use literal hex plus
   `#F2F2F3` because `--wine`/`--cream` both resolve to the light value in dark mode.

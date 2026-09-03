@@ -88,10 +88,22 @@ moved from warm to gray.
 | Surface | `#D8D8DE` | Subtle fills, table headers, badges |
 | Card | `#FFFFFF` | Cards and panels sitting on Page |
 | Line | `#BFBFC7` | Decorative borders and dividers |
-| Line strong | `#86868F` | Borders of inputs and controls (WCAG 1.4.11 needs 3:1) |
+| Line strong | `#767680` | Borders of inputs and controls (WCAG 1.4.11 needs 3:1) |
 | Ink | `#26262A` | Body text |
 | Muted | `#56565E` | Secondary text |
 | On wine | `#F2F2F3` | Any text on Wine or another dark ground |
+
+**Correction on record — control borders.** The brand guide gives `#86868F` for
+the borders of inputs and controls. It reaches 3.61:1 on a white card but only
+**2.95:1 on the page ground `#E8E8EC`** — and controls that sit directly on the
+page ground (a search field, for example) therefore fail WCAG 1.4.11, which
+requires 3:1 for the boundary of a UI component. **Use `#767680`**, which clears
+3:1 on all three surfaces: 4.49 on Card, 3.68 on Page, 3.17 on Surface. Applied
+in `scripts/directory/userdirectory.html` as of 2026-09-03.
+
+Keep the two border roles separate. `Line` is decorative — dividers and hairline
+rules, where sub-3:1 is fine and expected. `Line strong` is the boundary of
+something a person operates. Only the second one is governed by 1.4.11.
 
 **Correction on record:** the brand guide's claim that `#C9972C` on Warm Snow is
 4.6:1 is wrong — the true value is **2.49:1**. Gold has never met WCAG AA as

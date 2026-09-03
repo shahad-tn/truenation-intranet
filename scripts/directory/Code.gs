@@ -189,9 +189,18 @@ function getDropdowns() {
 
 /**
  * Returns the Google Maps API key from Script Properties.
- * Called by profilesetup.html to load the Maps JS API.
+ *
+ * Admin-only. The only caller in userdirectory.html is the address-autocomplete
+ * field inside the admin edit modal, so members have no use for the key and are
+ * returned null rather than an error (the client already no-ops on a null key).
+ *
+ * NOTE: this narrows the surface, it does not secure the key. doGet() still
+ * injects MAPS_API_KEY into the profilesetup templates for every member, so the
+ * key is readable from that page's source. The actual control is the HTTP
+ * referrer restriction on the key in Google Cloud.
  */
 function getMapsApiKey() {
+  if (!isAdmin()) return null;
   return PropertiesService.getScriptProperties().getProperty('MAPS_API_KEY') || null;
 }
 
@@ -1711,8 +1720,13 @@ function addToGoogleContacts(targetEmail, displayName) {
 /**
  * Returns an array of member email addresses for a given Google Group.
  * Used by the group filter in the staff directory.
+ *
+ * Admin-only: the group filter is rendered only for admins, and without a guard
+ * any signed-in member could enumerate the membership of any group in the
+ * domain, including tn-admin@.
  */
 function getGroupMembers(groupEmail) {
+  if (!isAdmin()) throw new Error("Admin access required.");
   var members = [];
   var pageToken = null;
   do {

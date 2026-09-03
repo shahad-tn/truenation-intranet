@@ -1,0 +1,295 @@
+<!--
+  brand-styles.html — True Nation Shared Brand CSS
+  Included via <?!= include('brand-styles') ?> in index.html and profilesetup.html
+
+  What lives here:
+    - Google Fonts preconnect + link
+    - CSS reset
+    - :root design tokens (canonical names + backward-compat aliases)
+    - body base
+    - nav (shared markup structure: nav-brand, nav-mark, nav-title, nav-sub, nav-user, nav-badge, nav-right, nav-logout)
+    - .btn base + all color variants
+    - .msg feedback banners
+    - @keyframes spin + .loading-spinner
+    - Mobile nav media query baseline
+
+  What does NOT live here:
+    - Page-specific layout (toolbar, cards, form panels, modals)
+    - Page-specific component sizing overrides
+    - Anything that only one page needs
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  /* ── DESIGN TOKENS ───────────────────────────────────────────
+     Canonical names follow the brand guide exactly.
+     Legacy aliases keep both pages working without a full
+     find-and-replace on their page-specific stylesheets.
+  ──────────────────────────────────────────────────────────── */
+  :root {
+    /* Brand guide primaries */
+    --wine:        #7C1316;   /* Dark Wine — nav, headers, primary interactive */
+    --wine-dk:     #5e0f12;   /* Darkened wine for hover states */
+    --wine-lt:     #9e1f23;   /* Lightened wine for hover accents */
+    --gold:        #C9972C;   /* Sovereign Gold — UI accents, borders, dividers */
+    --gold-lt:     #e0b845;   /* Gold hover */
+    --gold-dk:     #8a6b18;   /* Gold text on light bg (section labels) */
+
+    /* Surfaces */
+    --snow:        #FAF8F4;   /* Warm Snow — all page backgrounds */
+    --bone:        #E8DDD0;   /* Warm Bone — card/modal surfaces on Warm Snow */
+    --warm-100:    #f0e8d2;   /* Tinted surface — tags, hover fills */
+    --warm-200:    #e2d0a8;   /* Borders, dividers, skeleton */
+
+    /* Text */
+    --brown:       #130D0A;   /* Deep Brown-Black — body text on light */
+    --on-dark:     #F2EDE4;   /* Warm Cream — ALL text on Wine/dark backgrounds */
+    --muted:       rgba(19,13,10,0.52); /* Secondary text on light */
+
+    /* Utility */
+    --border:      #ddd3be;
+    --white:       #ffffff;   /* Input/card surfaces (not page bg) */
+    --shadow:      0 2px 12px rgba(80,50,20,0.10);
+    --shadow-lg:   0 8px 40px rgba(80,50,20,0.18);
+    --radius:      10px;
+
+    /* Typography */
+    --font-hd:     'Barlow Condensed', sans-serif;  /* H1/H2/H3 — uppercase */
+    --font-body:   'DM Sans', system-ui, sans-serif; /* Body, captions, buttons */
+    --font:        'DM Sans', system-ui, sans-serif; /* Alias */
+
+    /* ── Backward-compat aliases ──────────────────────────────
+       index.html uses --red, --slate, --cream (as background),
+       --warm-50, --font-display.
+       profilesetup.html uses --snow, --brown, --cream (as on-dark text).
+       We define both so neither page needs its internals changed.
+    ────────────────────────────────────────────────────────── */
+    --red:         #7C1316;
+    --red-dk:      #5e0f12;
+    --red-lt:      #9e1f23;
+    --slate:       #130D0A;
+    --cream:       #FAF8F4;   /* index.html uses --cream as background */
+    --warm-bone:   #E8DDD0;   /* alias */
+    --warm-50:     #FAF8F4;
+    --font-display:'Barlow Condensed', sans-serif;
+  }
+
+  /* ── RESET ───────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+
+  /* ── BODY BASE ───────────────────────────────────────────── */
+  body {
+    font-family: var(--font-body);
+    background: var(--snow);
+    color: var(--brown);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── NAV ─────────────────────────────────────────────────── */
+  nav {
+    background: var(--wine);
+    padding: 0 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 16px rgba(80,10,12,0.35);
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* Gold mark badge — TN monogram */
+  .nav-mark {
+    width: 32px;
+    height: 32px;
+    background: var(--gold);
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-hd);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--wine-dk);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .nav-title {
+    font-family: var(--font-hd);
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--on-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1.15;
+    display: block;
+  }
+
+  .nav-sub {
+    font-size: 9.5px;
+    font-weight: 500;
+    color: rgba(242,237,228,0.6);
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    display: block;
+    margin-top: 1px;
+  }
+
+  /* Right side — user email + admin badge (directory only) */
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-user {
+    font-size: 12px;
+    color: rgba(242,237,228,0.65);
+    font-weight: 400;
+  }
+
+  .nav-badge {
+    background: var(--gold);
+    color: var(--wine-dk);
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+
+  /* Logout link (profile setup only) */
+  .nav-logout {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(242,237,228,0.75);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    transition: color 0.15s;
+  }
+  .nav-logout:hover { color: var(--on-dark); }
+
+  /* ── BUTTONS — color variants only ──────────────────────────
+     Sizing (padding, font-size, min-height) is set per-page
+     since directory uses compact 32px toolbar buttons while
+     profile setup uses 48px mobile-first touch targets.
+  ────────────────────────────────────────────────────────── */
+  .btn {
+    font-family: var(--font-body);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  /* Primary — Wine fill, Warm Cream text */
+  .btn-primary,
+  .btn-red {
+    background: var(--wine);
+    color: var(--on-dark);
+  }
+  .btn-primary:hover:not(:disabled),
+  .btn-red:hover:not(:disabled) { background: var(--wine-dk); }
+
+  /* Gold — Gold fill, Wine text (light bg only — never on wine) */
+  .btn-gold {
+    background: var(--gold);
+    color: var(--wine-dk);
+  }
+  .btn-gold:hover:not(:disabled) { background: var(--gold-lt); }
+
+  /* Ghost — subtle warm fill */
+  .btn-ghost {
+    background: var(--warm-100);
+    color: var(--brown);
+    border: 1.5px solid var(--border);
+  }
+  .btn-ghost:hover:not(:disabled) {
+    background: var(--warm-200);
+    border-color: var(--brown);
+  }
+
+  /* Outline */
+  .btn-outline {
+    background: transparent;
+    color: var(--wine);
+    border: 1.5px solid var(--wine);
+  }
+  .btn-outline:hover:not(:disabled) { background: rgba(124,19,22,0.06); }
+
+  /* Semantic states */
+  .btn-danger { background: #fff0f0; color: #c0392b; border: 1.5px solid #fdc5c5; }
+  .btn-danger:hover:not(:disabled) { background: #ffe4e4; }
+  .btn-warn   { background: #fff8e6; color: #c07a00; border: 1.5px solid #fde0a0; }
+  .btn-warn:hover:not(:disabled)   { background: #fff0c8; }
+  .btn-ok     { background: #edfaf1; color: #1a7a3a; border: 1.5px solid #b2e6c4; }
+  .btn-ok:hover:not(:disabled)     { background: #d8f4e3; }
+
+  .btn-sm { padding: 5px 11px; font-size: 11px; }
+
+  /* ── FEEDBACK MESSAGES ───────────────────────────────────── */
+  .msg {
+    font-size: 13px;
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    margin-bottom: 14px;
+    display: none;
+    line-height: 1.5;
+  }
+  .msg-success { background: #edfaf1; color: #1a7a3a; border: 1px solid #b2e6c4; }
+  .msg-error   { background: #fef2f2; color: #c0392b; border: 1px solid #fdc5c5; }
+
+  /* ── SPINNER ─────────────────────────────────────────────── */
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid var(--warm-200);
+    border-top-color: var(--wine);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin: 0 auto 16px;
+  }
+
+  .loading-text {
+    font-size: 14px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  /* ── MOBILE NAV BASELINE ─────────────────────────────────── */
+  @media (max-width: 640px) {
+    nav { padding: 0 14px; height: 50px; }
+    .nav-user { display: none; }
+    .nav-title { font-size: 17px; }
+    .nav-mark  { width: 28px; height: 28px; font-size: 13px; }
+  }
+</style>

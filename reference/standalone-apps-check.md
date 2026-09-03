@@ -40,27 +40,88 @@ device — test on the real Sites page, not just `/exec`).
 
 ---
 
-## 2. NOT swept — needs its own pass
+## 2. Swept 2026-09-03 — needs paste + redeploy
 
 ### `userdirectory.html` — highest traffic page on the intranet
 
-**This file does not exist in this folder.** It lives only as an Apps Script
-deployment and as a doc in the Claude Project. It still uses the warm palette
-throughout, so the directory will visibly clash with every other page once the
-embeds go live.
+**Now in the repo** at `scripts/directory/userdirectory.html`, alongside
+`brand-styles.html`. Both were pulled from the Apps Script project and committed
+unmodified first, so the palette change diffs against a real baseline.
 
-Known values to change (from the class documentation in `CLAUDE.md`):
+> **The plan that used to be in this section was wrong.** It listed `.di-wrap`
+> and the five `.badge-bi`/`-ap`/`-de`/`-ju` branch badges as the things to
+> change. None of those classes exist in `userdirectory.html` — they are from
+> the Sites-era embeds documented in `CLAUDE.md`. The plan had been written from
+> a description of the file instead of the file. It is replaced by what was
+> actually done, below.
 
-- `.di-wrap` background `#FAF8F4` → `#E8E8EC`
-- Badge text `color: #FAF8F4` → `#F2F2F3` on all five branch badges
-  (backgrounds `#8C1C1C`, `#1E3A8A`, `#1A5C2A`, `#8B6200`, `#130D0A` are branch
-  identity colours and stay as they are)
-- Body text `#130D0A` → `#26262A`, secondary `#3D2E28` → `#56565E`
-- Card borders `#F2EDE4` → `#BFBFC7`; control borders → `#86868F`
-- Any gold used as **text** → `#785710` (see the correction note below)
+**The live file is self-contained.** It carries its own `:root` block and does
+**not** `include('brand-styles')`. The copy of `userdirectory.html` in the Claude
+Project doc is a *different, older lineage* that does include it — do not treat
+that doc as current. Sweeping this page therefore touched nothing else: profile
+setup, Hub and Alms were unaffected.
 
-To do this properly, pull the file into this folder first so the sweep is
-reviewable and repeatable rather than hand-edited in the Apps Script editor.
+What changed in the token block:
+
+| Token | Was | Now | Role |
+|---|---|---|---|
+| `--snow` / `--warm-50` | `#FAF8F4` | `#E8E8EC` | page ground |
+| `--surface` | *(new)* | `#D8D8DE` | chips, disabled fields |
+| `--cream` | `#F2EDE4` | `#BFBFC7` | dividers (decorative) |
+| `--cream-dk` | `#E8DDD2` | `#767680` | **control borders** |
+| `--brown` / `--bark` / `--slate` | `#130D0A` / `#3D2E28` | `#26262A` | ink |
+| `--muted` | `#9a8e87` | `#56565E` | secondary text |
+| `--border` | `#F2EDE4` | `#BFBFC7` | decorative border |
+| `--gold-dk` | `#A07820` | `#785710` | gold as text |
+| shadows | `rgba(19,13,10,…)` | `rgba(20,20,24,…)` | neutral |
+
+Plus 25 hardcoded `#F2EDE4` → `#F2F2F3` (text on wine), the avatar placeholder
+ground `#8B7A72` → `#6E6E78`, and the warm `rgba()` values neutralised.
+
+**Six AA failures were found and fixed along the way — none of them caused by
+the gray change.** They were live defects in the warm palette:
+
+| What | Was | Measured | Now | New |
+|---|---|---|---|---|
+| `--muted` secondary text (45 uses) | `#9a8e87` | 3.19 | `#56565E` | 7.27 |
+| `--gold-dk` section labels (9 uses) | `#A07820` | 4.04 | `#785710` | 6.63 |
+| Gold text | `#B5852A` | 3.31 | `#785710` | 6.63 |
+| Avatar initials ground | `#8B7A72` | 3.51 | `#6E6E78` | 4.51 |
+| Control borders | `#E8DDD2` | 1.34 | `#767680` | 4.49 |
+| `.btn-ok` fill | `#16a34a` | 2.95 | `#14743a` | 5.23 |
+
+Also darkened: `.btn-danger` `#dc2626`→`#c41f1f` (4.32→5.27), `.clear-btn`
+active `#dc2626`→`#c81e1e` (4.41→5.24), `.remove-btn:hover` `#dc2626`→`#a81717`
+(3.34→5.18), the load-failure message `#c0392b`→`#b32e22` (4.45→5.16), and the
+completeness ring's `mid` stroke from `--gold` to `--gold-dk` (2.64→6.63 against
+the 3:1 that WCAG 1.4.11 requires of graphical objects). The ring track moved
+from `--cream-dk` to `--border` so it reads as a track rather than out-darkening
+its own fill.
+
+**Note on `#767680` vs the `#86868F` in the brand guide.** `#86868F` reaches
+3.61:1 on white but only **2.95:1** on the page ground — and `.search-input` sits
+on the page ground, so the documented value fails WCAG 1.4.11 exactly where this
+page uses it. `#767680` clears 3:1 on all three surfaces (4.49 / 3.68 / 3.17).
+
+**Verified:** 38 foreground/background pairs measured, 0 failing. CSS braces
+balanced, no undefined `var(--…)` references.
+
+**Still to do on this page:** the birthday render hook
+(`MEMBER_VISIBLE_BIRTHDAY` is `false`; flipping it adds `MM-DD` to the payload
+but the card needs a render change to show it).
+
+### `brand-styles.html` — not swept
+
+Now in the repo at `scripts/directory/brand-styles.html`, unmodified. It still
+carries the warm palette. **Its consumers are unverified** — its own header
+comment claims `index.html` and `profilesetup.html`, but the live
+`userdirectory.html` (which is the Main project's directory page) does not
+include it. Confirm what actually includes it before sweeping, or the change
+lands somewhere unexpected.
+
+One measurement worth recording: `--gold-dk: #8a6b18` in that file is **5.00:1
+on white and already passes AA.** It is not one of the gold-as-text defects.
+
 
 ### Member Hub eyebrow labels
 

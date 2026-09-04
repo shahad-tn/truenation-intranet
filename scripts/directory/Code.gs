@@ -190,17 +190,23 @@ function getDropdowns() {
 /**
  * Returns the Google Maps API key from Script Properties.
  *
- * Admin-only. The only caller in userdirectory.html is the address-autocomplete
- * field inside the admin edit modal, so members have no use for the key and are
- * returned null rather than an error (the client already no-ops on a null key).
+ * NOT guarded, deliberately. An isAdmin() guard was added here on 2026-09-03 and
+ * reverted the same day: profilesetup.html calls this function from the client to
+ * load the Maps script, so the guard broke address autocomplete for every
+ * non-admin member — the exact people the profile form exists for.
  *
- * NOTE: this narrows the surface, it does not secure the key. doGet() still
- * injects MAPS_API_KEY into the profilesetup templates for every member, so the
- * key is readable from that page's source. The actual control is the HTTP
- * referrer restriction on the key in Google Cloud.
+ * The guard also bought nothing. doGet() injects the same key into the
+ * profilesetup templates for every member regardless, so it is readable from that
+ * page's source either way. Restricting a key that is necessarily published to
+ * every signed-in member is theatre.
+ *
+ * The controls that actually cap the exposure are all Cloud-side: per-API quota
+ * caps, a billing budget with alerts, and an API restriction limiting the key to
+ * Maps JavaScript + Places. An HTTP referrer restriction is impractical here
+ * because Apps Script serves these pages from a randomized
+ * *.googleusercontent.com sandbox origin.
  */
 function getMapsApiKey() {
-  if (!isAdmin()) return null;
   return PropertiesService.getScriptProperties().getProperty('MAPS_API_KEY') || null;
 }
 

@@ -2159,7 +2159,12 @@
         var place = ac.getPlace();
         if (place && place.formatted_address) input.value = place.formatted_address;
       });
-    } catch(e) { /* fallback to plain text */ }
+    } catch(e) {
+      // Do not swallow this. An empty catch here hid a BillingNotEnabledMapError
+      // for an unknown length of time — the field silently degraded to a plain
+      // text input with nothing logged anywhere.
+      console.error('[TN] Address autocomplete failed to initialise:', e);
+    }
   }
 
   function saveUser() {

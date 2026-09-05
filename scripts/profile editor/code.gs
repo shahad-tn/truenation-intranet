@@ -155,14 +155,15 @@ function buildIdentityHtml_(userData, email) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://portal.truenation.org/brand.css">
 <style>
   html, body { margin: 0; padding: 0; background: transparent; }
   .dash-id {
     font-family: 'DM Sans', sans-serif;
-    background: linear-gradient(135deg, #7C1316 0%, #5a0e10 100%);
+    background: linear-gradient(135deg, var(--wine) 0%, var(--wine-dk) 100%);
     border-radius: 14px;
     padding: 28px 24px 24px;
-    color: #F2F2F3;
+    color: var(--onwine);
     position: relative;
     overflow: hidden;
   }
@@ -264,11 +265,12 @@ function buildDepartmentHtml_(userData, email) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://portal.truenation.org/brand.css">
 <style>
   html, body { margin: 0; padding: 0; background: transparent; }
   .dept-wrap {
     font-family: 'DM Sans', sans-serif;
-    background: #E8E8EC;
+    background: var(--page);
     border-radius: 10px;
     padding: 16px 16px 20px;
     box-sizing: border-box;
@@ -276,7 +278,7 @@ function buildDepartmentHtml_(userData, email) {
   }
   .dept-card {
     background: white;
-    border: 1px solid #BFBFC7;
+    border: 1px solid var(--line);
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 2px 6px rgba(19,13,10,0.05);
@@ -284,8 +286,8 @@ function buildDepartmentHtml_(userData, email) {
   .dept-row { display: flex; align-items: flex-start; gap: 14px; }
   .dept-icon {
     width: 48px; height: 48px;
-    background: #E8E8EC;
-    border: 1px solid #BFBFC7;
+    background: var(--page);
+    border: 1px solid var(--line);
     border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
     font-size: 24px;
@@ -299,12 +301,12 @@ function buildDepartmentHtml_(userData, email) {
     font-size: 1rem;
     text-transform: uppercase;
     letter-spacing: 0.03em;
-    color: #7C1316;
+    color: var(--wine);
     margin-bottom: 4px;
   }
   .dept-role {
     font-size: 13px;
-    color: #56565E;
+    color: var(--muted);
     font-weight: 500;
     margin-bottom: 4px;
   }
@@ -315,9 +317,9 @@ function buildDepartmentHtml_(userData, email) {
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: #C9972C;
+    color: var(--gold-text);
     background: white;
-    border: 1px solid #BFBFC7;
+    border: 1px solid var(--line);
     padding: 2px 8px;
     border-radius: 100px;
   }
@@ -338,11 +340,11 @@ function buildDepartmentHtml_(userData, email) {
   }
   .dept-btn:hover { opacity: 0.85; }
   .dept-btn:focus-visible {
-    outline: 2px solid #C9972C;
+    outline: 3px solid var(--focus);
     outline-offset: 2px;
   }
-  .dept-btn-primary { background: #7C1316; color: #F2F2F3; }
-  .dept-btn-secondary { background: white; border: 1px solid #BFBFC7; color: #56565E; }
+  .dept-btn-primary { background: var(--wine); color: var(--onwine); }
+  .dept-btn-secondary { background: white; border: 1px solid var(--line); color: var(--muted); }
   @media (max-width: 480px) {
     .dept-links { flex-direction: column; }
     .dept-btn { justify-content: center; }

@@ -4,21 +4,38 @@
 <base target="_top">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- ── CASCADE ORDER MATTERS ─────────────────────────────────────────────
+     1. FOUC guard BEFORE the link, so brand.css overrides it once loaded.
+        Putting it after would pin the body to the light ground and break
+        dark mode.
+     2. brand.css - tokens, reset, type, buttons, focus ring.
+     3. Page-specific styles AFTER the link, so they win where intended.
+     Edit portal.truenation.org/brand.css and this page updates with no
+     Apps Script redeploy. If Vercel is unreachable the page renders
+     unstyled but still works.
+─────────────────────────────────────────────────────────────────────── -->
 <style>
-  body{margin:0;background:#E8E8EC;color:#26262A;font-family:'DM Sans',Helvetica,Arial,sans-serif;
-    font-size:16px;line-height:1.55;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;}
-  .box{background:#fff;border:1px solid #BFBFC7;border-radius:12px;max-width:520px;padding:38px 34px;text-align:center;}
-  .mark{width:60px;height:60px;border-radius:50%;background:#D8D8DE;color:#7C1316;font-size:30px;
-    display:flex;align-items:center;justify-content:center;margin:0 auto 18px;}
-  h1{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.05em;
-    font-size:25px;color:#7C1316;margin:0 0 10px;}
-  p{margin:0 0 14px;}
-  .who{background:#D8D8DE;border-radius:8px;padding:12px 15px;font-size:13.5px;color:#56565E;margin:20px 0 0;}
-  .who b{color:#26262A;}
-  a.btn{display:inline-block;background:#7C1316;color:#F2F2F3;text-decoration:none;font-weight:700;
-    padding:12px 26px;border-radius:8px;margin-top:18px;}
-  a.btn:hover{background:#5E0E10;}
+  body{background:#E8E8EC;color:#26262A;font-family:'DM Sans',Helvetica,Arial,sans-serif;}
+  @media (prefers-color-scheme:dark){ body{background:#1A181E;color:#EDEBF0;} }
+</style>
+
+<link rel="stylesheet" href="https://portal.truenation.org/brand.css">
+
+<style>
+  /* Page-specific: a centred single-card layout. */
+  body{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:12px;
+    max-width:520px;padding:38px 34px;text-align:center;}
+  .mark{width:60px;height:60px;border-radius:50%;background:var(--surface);color:var(--accent);
+    font-size:30px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;}
+  .box h1{font-size:25px;letter-spacing:.05em;color:var(--accent);margin:0 0 10px;}
+  .box p{margin:0 0 14px;}
+  .note{font-size:14px;color:var(--muted);}
+  .who{background:var(--surface);border:1px solid var(--line);border-radius:8px;
+    padding:12px 15px;font-size:13.5px;color:var(--muted);margin:20px 0 0;}
+  .who b{color:var(--ink);}
+  a.btn{text-decoration:none;margin-top:18px;}
 </style>
 </head>
 <body>
@@ -26,7 +43,7 @@
     <div class="mark" aria-hidden="true">&#9679;</div>
     <h1>Access Needed</h1>
     <p><?= message ?></p>
-    <p style="font-size:14px;color:#56565E;">Access to intranet pages is managed through Google Groups. If you should have this access, ask IT to add you to the right group &mdash; no one needs to change any code.</p>
+    <p class="note">Access to intranet pages is managed through Google Groups. If you should have this access, ask IT to add you to the right group &mdash; no one needs to change any code.</p>
     <a class="btn" href="mailto:<?= contact ?>?subject=Intranet%20access%20request">Request access</a>
     <div class="who">
       Signed in as <b><?= email ? email : 'not signed in' ?></b><? if (page) { ?> &middot; page: <b><?= page ?></b><? } ?>

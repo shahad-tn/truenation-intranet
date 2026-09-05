@@ -4,16 +4,8 @@
 <base target="_top">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<?!= include('styles') ?>
 <style>
-  :root{--wine:#7C1316;--wine-dk:#5E0E10;--gold:#C9972C;--gold-text:#785710;--gold-on-wine:#D4A94D;--page:#E8E8EC;--surface:#D8D8DE;
-    --line:#BFBFC7;--line-strong:#86868F;--onwine:#F2F2F3;--ink:#26262A;--muted:#56565E;--ok:#2F6B3F;--ok-bg:#E4EFE7;
-    --err:#8A1F16;--err-bg:#F6E3E1;}
-  *{box-sizing:border-box;}
-  body{margin:0;background:var(--page);color:var(--ink);
-    font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:16px;line-height:1.5;}
-  h1,h2,h3{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;margin:0;}
-  :focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
   .ac-top{background:var(--wine);color:var(--onwine);padding:20px 22px;}
   .ac-in{max-width:940px;margin:0 auto;}
   .ac-kick{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:12px;
@@ -52,7 +44,7 @@
   .ac-yes{color:var(--ok);font-weight:700;}
   .ac-no{color:var(--muted);}
   .ac-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(140%);
-    background:#131316;color:var(--onwine);padding:12px 22px;border-radius:8px;font-size:14px;
+    background:var(--ink-dk);color:#F2F2F3;padding:12px 22px;border-radius:8px;font-size:14px;
     transition:transform .25s ease;z-index:50;max-width:90vw;text-align:center;}
   .ac-toast.show{transform:translateX(-50%) translateY(0);}
   .ac-toast.bad{background:var(--err);}

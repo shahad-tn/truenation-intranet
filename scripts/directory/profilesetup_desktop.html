@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>True Nation — Complete Your Profile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red:      #781215;
+      --red-dk:   #5a0d0f;
+      --gold:     #d4a62a;
+      --gold-dk:  #a8821e;
+      --cream:    #fdf8f0;
+      --warm-50:  #faf6ee;
+      --warm-100: #f5eddb;
+      --slate:    #3a3530;
+      --muted:    #7a7068;
+      --border:   #e8dece;
+      --white:    #ffffff;
+      --radius:   14px;
+      --font:     'Source Sans 3', system-ui, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font); background: var(--cream); color: var(--slate); min-height: 100vh; }
+
+    /* ── NAV ── */
+    nav { background: var(--red); padding: 0 28px; display: flex; justify-content: space-between; align-items: center; height: 56px; box-shadow: 0 2px 16px rgba(80,10,12,0.3); }
+    .nav-brand { display: flex; align-items: center; gap: 12px; }
+    .nav-title { font-size: 17px; font-weight: 700; color: #fff; }
+    .nav-sub { font-size: 10px; color: rgba(255,255,255,0.55); letter-spacing: .08em; text-transform: uppercase; display: block; margin-top: -2px; }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .nav-user { font-size: 12px; color: rgba(255,255,255,0.65); }
+    .nav-logout { font-size: 13px; color: rgba(255,255,255,0.75); text-decoration: none; }
+    .nav-logout:hover { color: #fff; }
+
+    /* ── STEPPER ── */
+    .stepper-wrap { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 20px; overflow-x: auto; }
+    .stepper { display: flex; align-items: center; max-width: 800px; margin: 0 auto; min-width: 540px; }
+    .step-item { display: flex; align-items: center; flex: 1; }
+    .step-item:last-child { flex: none; }
+    .step-circle { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; border: 2px solid var(--border); background: var(--white); color: var(--muted); transition: all .2s; cursor: pointer; }
+    .step-circle.active { border-color: var(--red); background: var(--red); color: #fff; }
+    .step-circle.done   { border-color: var(--gold); background: var(--gold); color: var(--red-dk); }
+    .step-label { font-size: 10px; font-weight: 500; color: var(--muted); white-space: nowrap; margin-left: 5px; }
+    .step-label.active { color: var(--red); font-weight: 700; }
+    .step-line { flex: 1; height: 2px; background: var(--border); margin: 0 4px; }
+    .step-line.done { background: var(--gold); }
+
+    /* ── FORM CARD ── */
+    .form-wrap { max-width: 680px; margin: 28px auto; padding: 0 16px 80px; }
+    .form-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 36px 40px; box-shadow: 0 2px 20px rgba(80,50,20,.07); }
+    .step-panel { display: none; }
+    .step-panel.active { display: block; }
+
+    h2 { font-size: 22px; font-weight: 700; color: var(--red); margin-bottom: 4px; }
+    .step-desc { color: var(--muted); font-size: 14px; line-height: 1.55; margin-bottom: 28px; }
+
+    /* ── FIELDS ── */
+    .field-row { margin-bottom: 18px; }
+    .field-row label {
+      display: block; font-size: 11.5px; font-weight: 700; color: var(--slate);
+      margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;
+      transition: color .15s;
+    }
+    .field-row label.err-label { color: #dc2626; }
+    .opt { font-weight: 400; color: var(--muted); font-size: 11px; text-transform: none; letter-spacing: 0; }
+    .field-row input,
+    .field-row select,
+    .field-row textarea {
+      width: 100%; padding: 10px 13px; border-radius: 10px;
+      border: 1.5px solid var(--border); font-family: var(--font);
+      font-size: 14px; color: var(--slate); background: var(--warm-50);
+      outline: none; transition: border-color .15s, box-shadow .15s, background .15s;
+    }
+    .field-row input:focus,
+    .field-row select:focus,
+    .field-row textarea:focus { border-color: var(--red); background: #fff; box-shadow: 0 0 0 3px rgba(120,18,21,0.08); }
+    .field-row input.err-field,
+    .field-row select.err-field { border-color: #dc2626 !important; background: #fff8f8; box-shadow: 0 0 0 3px rgba(220,38,38,0.1) !important; }
+    .field-row textarea { resize: vertical; min-height: 80px; }
+    .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+
+    /* ── SECTION DIVIDER ── */
+    .sec-div {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.07em; color: var(--gold-dk);
+      border-bottom: 1px solid var(--border); padding-bottom: 8px;
+      margin: 26px 0 16px;
+    }
+
+    /* ── MINISTRY PILLS ── */
+    .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+    .pill { padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 500; border: 1.5px solid var(--border); background: var(--cream); cursor: pointer; color: var(--muted); transition: all .15s; user-select: none; }
+    .pill.selected { border-color: var(--red); background: #f9eded; color: var(--red); font-weight: 600; }
+
+    /* ── MEMBER BLOCKS ── */
+    .member-block { background: var(--warm-50); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; margin-bottom: 10px; position: relative; }
+    .member-block-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 12px; }
+    .tn-wrap { position: relative; }
+    .tn-status { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 14px; pointer-events: none; }
+    .tn-found { font-size: 12px; color: #15803d; margin-top: 4px; display: none; font-weight: 600; }
+    .manual-label { font-size: 12px; color: var(--muted); font-style: italic; margin-bottom: 12px; margin-top: -4px; }
+    .remove-btn { position: absolute; top: 12px; right: 12px; width: 26px; height: 26px; border-radius: 50%; border: none; background: #fee2e2; color: #b91c1c; cursor: pointer; font-size: 13px; line-height: 26px; text-align: center; padding: 0; }
+    .add-link { color: var(--red); font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: underline; border: none; background: none; padding: 0; margin-top: 6px; display: inline-block; }
+
+    /* ── UPLOAD ZONES ── */
+    .upload-zone { border: 2px dashed var(--border); border-radius: 12px; padding: 20px 16px; text-align: center; cursor: pointer; background: var(--warm-50); transition: border-color .15s, background .15s; }
+    .upload-zone:hover, .upload-zone.over { border-color: var(--red); background: #fdf2f2; }
+    .upload-zone .uz-icon { font-size: 26px; margin-bottom: 6px; }
+    .upload-zone p { color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .upload-preview { max-width: 100%; max-height: 160px; border-radius: 8px; margin-top: 10px; border: 2px solid var(--gold); object-fit: contain; display: none; }
+    .photo-preview-img { border-radius: 50%; width: 100px; height: 100px; object-fit: cover; }
+    .upload-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    /* ── BUTTONS ── */
+    .form-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); }
+    .btn { padding: 11px 28px; border-radius: 10px; font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: all .15s; }
+    .btn:disabled { opacity: .5; cursor: default; }
+    .btn-primary { background: var(--red); color: #fff; }
+    .btn-primary:hover:not(:disabled) { background: var(--red-dk); color: var(--gold); }
+    .btn-ghost { background: none; color: var(--muted); border: 1.5px solid var(--border); }
+    .btn-ghost:hover:not(:disabled) { border-color: var(--slate); color: var(--slate); }
+
+    /* ── REVIEW ── */
+    .rv-section { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--gold-dk); border-bottom: 1px solid var(--border); padding-bottom: 6px; margin: 20px 0 10px; }
+    .rv-row { display: flex; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--warm-100); font-size: 14px; }
+    .rv-label { min-width: 160px; flex-shrink: 0; color: var(--muted); font-size: 13px; }
+    .rv-value { font-weight: 500; color: var(--slate); }
+
+    /* ── DONE ── */
+    #done-screen { display: none; text-align: center; padding: 48px 24px; }
+    #done-screen .check { font-size: 52px; margin-bottom: 16px; }
+    #done-screen h2 { color: var(--red); font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+    #done-screen p  { color: var(--muted); font-size: 15px; line-height: 1.7; }
+    #done-screen a  { color: var(--red); font-weight: 600; }
+
+    /* ── MAPS ── */
+    .pac-container { z-index: 10000 !important; font-family: var(--font) !important; border-radius: 10px !important; border: 1.5px solid var(--border) !important; box-shadow: 0 4px 20px rgba(80,50,20,0.12) !important; margin-top: 2px !important; }
+    .pac-item { font-family: var(--font) !important; font-size: 13px !important; padding: 8px 12px !important; cursor: pointer; }
+    .pac-item-query { font-size: 13px !important; }
+    .pac-matched { font-size: 13px !important; }
+    .pac-item span { font-size: 13px !important; }
+    .pac-item:hover, .pac-item-selected { background: var(--warm-50) !important; }
+
+    /* ── MESSAGES ── */
+    #msg-error { display: none; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 999; min-width: 280px; max-width: 480px; text-align: center; background: #b91c1c; color: #fff; padding: 12px 20px; border-radius: 10px; font-size: 14px; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <img src="data:image/png;base64,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" alt="True Nation" style="width:36px;height:36px;object-fit:contain;flex-shrink:0">
+    <div>
+      <span class="nav-title">True Nation</span>
+      <span class="nav-sub">Profile Setup</span>
+    </div>
+  </div>
+  <div class="nav-right">
+    <span class="nav-user" id="nav-user-email"></span>
+    <a id="logout-link" href="#" class="nav-logout">Sign out</a>
+  </div>
+</nav>
+
+<!-- STEPPER -->
+<div class="stepper-wrap">
+  <div class="stepper" id="stepper"></div>
+</div>
+
+<!-- FORM -->
+<div class="form-wrap">
+  <div class="form-card">
+
+    <!-- ─── Step 1: Personal & Contact ──────────────────────────────── -->
+    <div class="step-panel active" id="panel-1">
+      <h2>Personal &amp; Contact</h2>
+      <p class="step-desc">Your basic contact and personal details.</p>
+
+      <div class="field-row">
+        <label>Home Address</label>
+        <input type="text" id="home-address" placeholder="Start typing your address…" autocomplete="off">
+      </div>
+
+      <div class="g2">
+        <div class="field-row">
+          <label>Phone Number</label>
+          <input type="tel" id="phone" placeholder="(000) 000-0000" maxlength="14" oninput="fmtPhone(this)">
+        </div>
+        <div class="field-row">
+          <label>Date of Birth</label>
+          <input type="date" id="dob">
+        </div>
+      </div>
+
+      <div class="g2">
+        <div class="field-row">
+          <label>Gender</label>
+          <select id="gender">
+            <option value="">Select…</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <label>School Location</label>
+          <select id="school-location">
+            <option value="">Select a location…</option>
+            <option>Los Angeles, CA</option>
+            <option>Macon, GA</option>
+            <option>Detroit, MI</option>
+            <option>Cebu, Philippines</option>
+            <option>Manila, Philippines</option>
+            <option>Accra, Ghana</option>
+            <option>Kumasi, Ghana</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <label for="occupation">Occupation / Source of Income <span class="opt">(optional)</span></label>
+        <input type="text" id="occupation" placeholder="e.g. Teacher, Self-employed, Retired…">
+      </div>
+    </div>
+
+    <!-- ─── Step 2: Legal Name ────────────────────────────────────────── -->
+    <div class="step-panel" id="panel-2">
+      <h2>Legal Name</h2>
+      <p class="step-desc">Your name as it appears on official documents.</p>
+
+      <div class="g3">
+        <div class="field-row">
+          <label id="lbl-legal-first">Legal First Name <span class="opt">*</span></label>
+          <input type="text" id="legal-first" placeholder="First">
+        </div>
+        <div class="field-row">
+          <label>Middle Name <span class="opt">(optional)</span></label>
+          <input type="text" id="legal-middle" placeholder="Middle">
+        </div>
+        <div class="field-row">
+          <label id="lbl-legal-last">Legal Last Name <span class="opt">*</span></label>
+          <input type="text" id="legal-last" placeholder="Last">
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Step 3: Household ────────────────────────────────────────── -->
+    <div class="step-panel" id="panel-3">
+      <h2>Household Information</h2>
+      <p class="step-desc">Link family members who have True Nation accounts, or enter their details manually. <span class="opt">All fields optional.</span></p>
+
+      <div class="sec-div">Spouse</div>
+      <div id="spouse-list"></div>
+      <button type="button" class="add-link" onclick="addSpouse()">+ Add spouse</button>
+
+      <div class="sec-div">Children</div>
+      <div id="children-list"></div>
+      <button type="button" class="add-link" onclick="addChild()">+ Add child</button>
+    </div>
+
+    <!-- ─── Step 4: Medical ──────────────────────────────────────────── -->
+    <div class="step-panel" id="panel-4">
+      <h2>Medical Information</h2>
+      <p class="step-desc">Health insurance details and any conditions we should know about. <span class="opt">All optional.</span></p>
+
+      <div class="field-row">
+        <label>Insurance Provider <span class="opt">(optional)</span></label>
+        <input type="text" id="ins-provider" placeholder="e.g. YHWH Total Healthcare">
+      </div>
+      <div class="g2">
+        <div class="field-row">
+          <label>Subscriber ID <span class="opt">(optional)</span></label>
+          <input type="text" id="ins-subscriber-id" placeholder="Member / Subscriber ID">
+        </div>
+        <div class="field-row">
+          <label>Group # <span class="opt">(optional)</span></label>
+          <input type="text" id="ins-group" placeholder="Group number">
+        </div>
+      </div>
+      <div class="field-row">
+        <label>Medical Conditions <span class="opt">(optional)</span></label>
+        <textarea id="medical-conditions" rows="4" placeholder="List any conditions, allergies, or notes relevant for emergencies…"></textarea>
+      </div>
+
+      <div class="g2">
+        <div class="field-row">
+          <label id="lbl-circumcised" for="circumcised">Are you circumcised? <span class="opt" style="color:#dc2626">*</span></label>
+          <select id="circumcised">
+            <option value="">Select…</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <label id="lbl-sons-circumcised" for="sons-circumcised">Are your sons circumcised? <span class="opt" style="color:#dc2626">*</span></label>
+          <select id="sons-circumcised">
+            <option value="">Select…</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+            <option value="N/A">Not applicable</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Step 5: Emergency Contacts ──────────────────────────────── -->
+    <div class="step-panel" id="panel-5">
+      <h2>Emergency Contacts</h2>
+      <p class="step-desc">Who should we contact in an emergency?</p>
+
+      <div class="sec-div">Primary Emergency Contact</div>
+      <div class="field-row">
+        <label id="lbl-ec1-name">Full Name</label>
+        <input type="text" id="ec1-name" placeholder="Full name">
+      </div>
+      <div class="g2">
+        <div class="field-row">
+          <label id="lbl-ec1-phone">Phone Number</label>
+          <input type="tel" id="ec1-phone" placeholder="(000) 000-0000" maxlength="14" oninput="fmtPhone(this)">
+        </div>
+        <div class="field-row">
+          <label>Relationship</label>
+          <input type="text" id="ec1-rel" placeholder="e.g. Spouse, Parent, Sibling">
+        </div>
+      </div>
+
+      <div class="sec-div">Secondary Emergency Contact <span class="opt" style="text-transform:none;letter-spacing:0">(optional)</span></div>
+      <div class="field-row">
+        <label>Full Name <span class="opt">(optional)</span></label>
+        <input type="text" id="ec2-name" placeholder="Full name">
+      </div>
+      <div class="g2">
+        <div class="field-row">
+          <label>Phone Number <span class="opt">(optional)</span></label>
+          <input type="tel" id="ec2-phone" placeholder="(000) 000-0000" maxlength="14" oninput="fmtPhone(this)">
+        </div>
+        <div class="field-row">
+          <label>Relationship <span class="opt">(optional)</span></label>
+          <input type="text" id="ec2-rel" placeholder="e.g. Sibling, Friend">
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Step 6: Identification & Photo ──────────────────────────── -->
+    <div class="step-panel" id="panel-6">
+      <h2>Identification &amp; Photo</h2>
+      <p class="step-desc">Upload your government ID and a profile headshot. <span class="opt">All optional — you can add these later.</span></p>
+
+      <div class="sec-div">Government ID</div>
+      <div class="upload-2col">
+        <div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--slate);margin-bottom:8px">Front</div>
+          <div class="upload-zone" id="id-front-zone" onclick="document.getElementById('id-front-input').click()">
+            <div class="uz-icon">🪪</div>
+            <p>Click or drag to upload</p>
+            <img id="id-front-preview" class="upload-preview" alt="ID Front">
+          </div>
+          <input type="file" id="id-front-input" accept="image/jpeg,image/png,image/webp" style="display:none">
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--slate);margin-bottom:8px">Back</div>
+          <div class="upload-zone" id="id-back-zone" onclick="document.getElementById('id-back-input').click()">
+            <div class="uz-icon">🪪</div>
+            <p>Click or drag to upload</p>
+            <img id="id-back-preview" class="upload-preview" alt="ID Back">
+          </div>
+          <input type="file" id="id-back-input" accept="image/jpeg,image/png,image/webp" style="display:none">
+        </div>
+      </div>
+
+      <div class="sec-div" style="margin-top:26px">Profile Photo</div>
+      <div class="upload-zone" id="photo-zone" onclick="document.getElementById('photo-input').click()" style="max-width:220px">
+        <div class="uz-icon">📷</div>
+        <p>Click or drag a headshot</p>
+        <p>JPG or PNG · max 5 MB</p>
+        <img id="photo-preview" class="upload-preview photo-preview-img" alt="Profile Photo">
+      </div>
+      <input type="file" id="photo-input" accept="image/jpeg,image/png" style="display:none">
+    </div>
+
+    <!-- ─── Step 7: Skills & Ministry ───────────────────────────────── -->
+    <div class="step-panel" id="panel-7">
+      <h2>Skills &amp; Ministry</h2>
+      <p class="step-desc">Help us connect your gifts to where they're needed most.</p>
+
+      <div class="field-row">
+        <label>Skills &amp; Gifts <span class="opt">(optional)</span></label>
+        <textarea id="skills" rows="3" placeholder="e.g. graphic design, carpentry, teaching, counseling…"></textarea>
+      </div>
+
+      <div class="field-row">
+        <label>Ministry Interests</label>
+        <div class="pills" id="ministry-pills">
+          <div class="pill" data-value="Worship">Worship</div>
+          <div class="pill" data-value="Youth">Youth</div>
+          <div class="pill" data-value="Outreach">Outreach</div>
+          <div class="pill" data-value="Intercession">Intercession</div>
+          <div class="pill" data-value="Administration">Administration</div>
+          <div class="pill" data-value="Media & Tech">Media &amp; Tech</div>
+          <div class="pill" data-value="Hospitality">Hospitality</div>
+          <div class="pill" data-value="Counseling">Counseling</div>
+          <div class="pill" data-value="Teaching">Teaching</div>
+          <div class="pill" data-value="Children's Ministry">Children's Ministry</div>
+          <div class="pill" data-value="Community Outreach">Community Outreach</div>
+          <div class="pill" data-value="Finance">Finance</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Step 8: Review & Submit ─────────────────────────────────── -->
+    <div class="step-panel" id="panel-8">
+      <h2>Review &amp; Submit</h2>
+      <p class="step-desc">Everything look right? You can always update your profile later from the staff directory.</p>
+      <div id="review-content"></div>
+    </div>
+
+    <!-- NAV BUTTONS -->
+    <div class="form-nav">
+      <button class="btn btn-ghost" id="btn-back" onclick="goBack()" style="visibility:hidden">← Back</button>
+      <button class="btn btn-primary" id="btn-next" onclick="goNext()">Next →</button>
+    </div>
+
+  </div><!-- /form-card -->
+
+  <!-- DONE -->
+  <div id="done-screen">
+    <div class="check">✅</div>
+    <h2>Profile Complete!</h2>
+    <p>Your profile has been saved and the True Nation team has been notified.<br>
+    Head to the <a href="https://sites.google.com/truenation.org/intranet" target="_top">staff intranet</a> to explore the directory.</p>
+  </div>
+
+</div><!-- /form-wrap -->
+
+<div id="msg-error"></div>
+
+<script>
+  // ── State ─────────────────────────────────────────────────────────────────────
+  var TOTAL_STEPS      = 8;
+  var currentStep      = 1;
+  var selectedMinistry = [];
+  var photoDataUrl     = null;
+  var idFrontDataUrl   = null;
+  var idBackDataUrl    = null;
+  var childCount       = 0;
+  var spouseCount      = 0;
+  var tnCache          = {};
+  var tnTimers         = {};
+  var _mapsInited      = false;
+  var _mapsReady       = false;
+
+  var STEP_LABELS = ['Contact','Legal Name','Household','Medical','Emergency','ID & Photo','Ministry','Review'];
+
+  // ── Bootstrap ─────────────────────────────────────────────────────────────────
+  setTimeout(function() {
+    buildStepper();
+    renderStep(1);
+
+    google.script.run
+      .withSuccessHandler(function(url) { document.getElementById('logout-link').href = url; })
+      .getLogoutUrl();
+
+    google.script.run
+      .withSuccessHandler(function(email) {
+        var el = document.getElementById('nav-user-email');
+        if (el && email) el.textContent = email;
+      })
+      .getCurrentUser();
+
+    google.script.run
+      .withSuccessHandler(function(key) {
+        if (!key) return;
+        window.initMaps = function() {
+          _mapsReady = true;
+          if (currentStep === 1) attachMapsAutocomplete();
+        };
+        var s = document.createElement('script');
+        s.src = 'https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(key)
+              + '&libraries=places&loading=async&callback=initMaps';
+        document.head.appendChild(s);
+      })
+      .getMapsApiKey();
+
+    // Pre-fill from saved profile data
+    google.script.run
+      .withSuccessHandler(function(profile) {
+        if (!profile) return;
+        function sv(id, val) { var el = document.getElementById(id); if (el && val) el.value = val; }
+        sv('home-address',      profile.home_address);
+        sv('phone',             profile.phone);
+        sv('dob',               profile.date_of_birth);
+        sv('gender',            profile.gender);
+        sv('school-location',   profile.location);
+        sv('occupation',        profile.occupation);
+        sv('legal-first',       profile.legal_first);
+        sv('legal-middle',      profile.legal_middle);
+        sv('legal-last',        profile.legal_last);
+        sv('ins-provider',      profile.insurance_provider);
+        sv('ins-subscriber-id', profile.insurance_policy);
+        sv('ins-group',         profile.ins_group);
+        sv('medical-conditions',profile.medical_conditions);
+        sv('circumcised',       profile.circumcised);
+        sv('sons-circumcised',  profile.sons_circumcised);
+        sv('ec1-name',          profile.emergency_name);
+        sv('ec1-phone',         profile.emergency_phone);
+        sv('ec1-rel',           profile.emergency_relationship);
+        sv('ec2-name',          profile.ec2_name);
+        sv('ec2-phone',         profile.ec2_phone);
+        sv('ec2-rel',           profile.ec2_relationship);
+        sv('skills',            profile.skills);
+        if (profile.ministry_interests) {
+          var mi = profile.ministry_interests.split(',').map(function(s) { return s.trim(); });
+          document.querySelectorAll('#ministry-pills .pill').forEach(function(p) {
+            if (mi.indexOf(p.dataset.value) !== -1) {
+              p.classList.add('selected');
+              selectedMinistry.push(p.dataset.value);
+            }
+          });
+        }
+        if (profile.spouse_email || profile.spouse_legal_first) {
+          addSpouse({ tnEmail: profile.spouse_email, govFirst: profile.spouse_legal_first, govLast: profile.spouse_legal_last, hebFirst: profile.spouse_hebrew_first, hebLast: profile.spouse_hebrew_last });
+        }
+        if (profile.family_members) {
+          try {
+            var fm = JSON.parse(profile.family_members);
+            if (Array.isArray(fm)) fm.forEach(function(m) { addChild(m); });
+          } catch(e) {}
+        }
+      })
+      .getMyProfile();
+
+    document.getElementById('ministry-pills').addEventListener('click', function(e) {
+      var p = e.target.closest('.pill');
+      if (!p) return;
+      p.classList.toggle('selected');
+      var v = p.dataset.value, i = selectedMinistry.indexOf(v);
+      if (i === -1) selectedMinistry.push(v); else selectedMinistry.splice(i, 1);
+    });
+
+    wireUpload('photo-input',    'photo-zone',    'photo-preview',    function(d) { photoDataUrl   = d; }, true);
+    wireUpload('id-front-input', 'id-front-zone', 'id-front-preview', function(d) { idFrontDataUrl = d; }, false);
+    wireUpload('id-back-input',  'id-back-zone',  'id-back-preview',  function(d) { idBackDataUrl  = d; }, false);
+  }, 0);
+
+  // ── Maps autocomplete ─────────────────────────────────────────────────────────
+  function attachMapsAutocomplete() {
+    if (_mapsInited) return;
+    _mapsInited = true;
+    try {
+      var input = document.getElementById('home-address');
+      var ac = new google.maps.places.Autocomplete(input, { types: ['address'], fields: ['formatted_address'] });
+      ac.addListener('place_changed', function() {
+        var place = ac.getPlace();
+        if (place && place.formatted_address) {
+          input.value = place.formatted_address;
+          clearFieldErr('home-address');
+        }
+      });
+    } catch(e) {}
+  }
+
+  // ── Stepper ───────────────────────────────────────────────────────────────────
+  function buildStepper() {
+    var html = '';
+    for (var i = 1; i <= TOTAL_STEPS; i++) {
+      if (i > 1) html += '<div class="step-line" id="line-' + (i-1) + '"></div>';
+      html += '<div class="step-item">'
+        + '<div class="step-circle" id="sc' + i + '" onclick="jumpToStep(' + i + ')" title="' + STEP_LABELS[i-1] + '">' + i + '</div>'
+        + '<span class="step-label" id="sl' + i + '">' + STEP_LABELS[i-1] + '</span>'
+        + '</div>';
+    }
+    document.getElementById('stepper').innerHTML = html;
+  }
+
+  function updateStepper() {
+    for (var i = 1; i <= TOTAL_STEPS; i++) {
+      var c = document.getElementById('sc' + i);
+      var l = document.getElementById('sl' + i);
+      if (c) { c.className = 'step-circle' + (i < currentStep ? ' done' : i === currentStep ? ' active' : ''); c.textContent = i < currentStep ? '✓' : i; }
+      if (l)  l.className  = 'step-label'  + (i === currentStep ? ' active' : '');
+      var line = document.getElementById('line-' + i);
+      if (line) line.className = 'step-line' + (i < currentStep ? ' done' : '');
+    }
+  }
+
+  // ── Navigation ────────────────────────────────────────────────────────────────
+  function renderStep(n) {
+    document.querySelectorAll('.step-panel').forEach(function(p) { p.classList.remove('active'); });
+    document.getElementById('panel-' + n).classList.add('active');
+    var back = document.getElementById('btn-back');
+    var next = document.getElementById('btn-next');
+    if (back) back.style.visibility = n === 1 ? 'hidden' : 'visible';
+    if (next) next.textContent = n === TOTAL_STEPS ? 'Submit Profile' : 'Next →';
+    if (n === TOTAL_STEPS) buildReview();
+    updateStepper();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (n === 1 && _mapsReady) attachMapsAutocomplete();
+  }
+
+  function jumpToStep(n) {
+    if (n < currentStep) { currentStep = n; renderStep(n); }
+  }
+
+  function goNext() {
+    if (!validate(currentStep)) return;
+    if (currentStep === TOTAL_STEPS) { submit(); return; }
+    currentStep++;
+    renderStep(currentStep);
+  }
+
+  function goBack() {
+    if (currentStep > 1) { currentStep--; renderStep(currentStep); }
+  }
+
+  // ── Validation ────────────────────────────────────────────────────────────────
+  function setFieldErr(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.classList.add('err-field');
+    var label = document.getElementById('lbl-' + id);
+    if (label) label.classList.add('err-label');
+    el.addEventListener('input', function() { clearFieldErr(id); }, { once: true });
+  }
+
+  function clearFieldErr(id) {
+    var el = document.getElementById(id);
+    if (el) el.classList.remove('err-field');
+    var label = document.getElementById('lbl-' + id);
+    if (label) label.classList.remove('err-label');
+  }
+
+  function validate(step) {
+    var ok = true;
+    if (step === 2) {
+      if (!g('legal-first')) { setFieldErr('legal-first'); ok = false; }
+      if (!g('legal-last'))  { setFieldErr('legal-last');  ok = false; }
+    }
+    if (step === 4) {
+      if (!g('circumcised'))      { setFieldErr('circumcised');      ok = false; }
+      if (!g('sons-circumcised')) { setFieldErr('sons-circumcised'); ok = false; }
+    }
+    if (step === 5) {
+      if (!g('ec1-name'))  { setFieldErr('ec1-name');  ok = false; }
+      if (!g('ec1-phone')) { setFieldErr('ec1-phone'); ok = false; }
+    }
+    if (!ok) {
+      var first = document.querySelector('.err-field');
+      if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    return ok;
+  }
+
+  // ── Review ────────────────────────────────────────────────────────────────────
+  function buildReview() {
+    var sections = [
+      { t: 'Personal & Contact', rows: [
+        ['Home Address',  g('home-address')],
+        ['Phone',         g('phone')],
+        ['Date of Birth', g('dob')],
+        ['Gender',        g('gender')],
+        ['School',        g('school-location')],
+        ['Occupation / Source of Income', g('occupation')]
+      ]},
+      { t: 'Legal Name', rows: [
+        ['First',  g('legal-first')],
+        ['Middle', g('legal-middle')],
+        ['Last',   g('legal-last')]
+      ]},
+      { t: 'Emergency Contacts', rows: [
+        ['Primary',   [g('ec1-name'), g('ec1-phone'), g('ec1-rel')].filter(Boolean).join(' · ')],
+        ['Secondary', [g('ec2-name'), g('ec2-phone'), g('ec2-rel')].filter(Boolean).join(' · ')]
+      ]},
+      { t: 'Medical', rows: [
+        ['Provider',      g('ins-provider')],
+        ['Subscriber ID', g('ins-subscriber-id')],
+        ['Group #',       g('ins-group')],
+        ['Circumcised',        g('circumcised')],
+        ['Sons Circumcised',   g('sons-circumcised')]
+      ]},
+      { t: 'Skills & Ministry', rows: [
+        ['Skills',    g('skills')],
+        ['Ministry',  selectedMinistry.join(', ')]
+      ]},
+      { t: 'ID & Photo', rows: [
+        ['ID Front', idFrontDataUrl ? '✓ Uploaded' : '—'],
+        ['ID Back',  idBackDataUrl  ? '✓ Uploaded' : '—'],
+        ['Photo',    photoDataUrl   ? '✓ Uploaded' : '—']
+      ]}
+    ];
+    var html = '';
+    sections.forEach(function(sec) {
+      html += '<div class="rv-section">' + sec.t + '</div>';
+      sec.rows.forEach(function(row) {
+        if (row[1]) html += '<div class="rv-row"><span class="rv-label">' + row[0] + '</span><span class="rv-value">' + row[1] + '</span></div>';
+      });
+    });
+    document.getElementById('review-content').innerHTML = html || '<p style="color:var(--muted);font-size:14px">No information entered yet.</p>';
+  }
+
+  // ── Submit ────────────────────────────────────────────────────────────────────
+  function submit() {
+    var btn = document.getElementById('btn-next');
+    btn.disabled = true;
+    btn.textContent = 'Saving…';
+
+    var spouses  = collectSpouses();
+    var children = [];
+    document.querySelectorAll('#children-list .member-block').forEach(function(bl) {
+      var id = bl.id;
+      children.push({ tnEmail: _g(id+'-tn'), govFirst: _g(id+'-gf'), govLast: _g(id+'-gl') });
+    });
+
+    var data = {
+      homeAddress:          g('home-address'),
+      phone:                g('phone'),
+      dateOfBirth:          g('dob'),
+      gender:               g('gender'),
+      location:             g('school-location'),
+      occupation:           g('occupation'),
+      legalFirst:           g('legal-first'),
+      legalMiddle:          g('legal-middle'),
+      legalLast:            g('legal-last'),
+      emergencyName:        g('ec1-name'),
+      emergencyPhone:       g('ec1-phone'),
+      emergencyRelationship:g('ec1-rel'),
+      ec2Name:              g('ec2-name'),
+      ec2Phone:             g('ec2-phone'),
+      ec2Relationship:      g('ec2-rel'),
+      insuranceProvider:    g('ins-provider'),
+      insurancePolicy:      g('ins-subscriber-id'),
+      insGroup:             g('ins-group'),
+      medicalConditions:    g('medical-conditions'),
+      circumcised:          g('circumcised'),
+      sonsCircumcised:      g('sons-circumcised'),
+      skills:               g('skills'),
+      ministryInterests:    selectedMinistry.join(', '),
+      spouses:              spouses,
+      familyMembers:        JSON.stringify(children),
+      photoDataUrl:         photoDataUrl,
+      idFrontDataUrl:       idFrontDataUrl,
+      idBackDataUrl:        idBackDataUrl
+    };
+
+    google.script.run
+      .withSuccessHandler(function() {
+        btn.textContent = 'Saved ✓';
+        document.querySelector('.form-card').style.display    = 'none';
+        document.querySelector('.stepper-wrap').style.display = 'none';
+        document.getElementById('done-screen').style.display  = 'block';
+      })
+      .withFailureHandler(function(err) {
+        btn.disabled = false;
+        btn.textContent = 'Submit Profile';
+        showErr('Save failed: ' + (err.message || err));
+      })
+      .saveProfile(data);
+  }
+
+  // ── Spouse (dynamic) ──────────────────────────────────────────────────────────
+  function addSpouse(data) {
+    data = data || {};
+    spouseCount++;
+    var id  = 'spouse-' + spouseCount;
+    var div = document.createElement('div');
+    div.className = 'member-block';
+    div.id = id;
+    div.innerHTML =
+      '<div class="member-block-title">Spouse</div>'
+      + '<button type="button" class="remove-btn" onclick="document.getElementById(\'' + id + '\').remove()">×</button>'
+      + '<div class="field-row"><label>TN Email <span class="opt">(if they have a truenation.org account)</span></label>'
+      +   '<div class="tn-wrap">'
+      +     '<input type="email" id="' + id + '-tn" value="' + (data.tnEmail||'') + '" placeholder="spouse@truenation.org" autocomplete="off"'
+      +       ' oninput="tnLookup(\'' + id + '-tn\',\'' + id + '-status\',\'' + id + '-found\')">'
+      +     '<span class="tn-status" id="' + id + '-status"></span>'
+      +   '</div>'
+      +   '<div class="tn-found" id="' + id + '-found"></div>'
+      + '</div>'
+      + '<p class="manual-label">Or enter manually if not a TN member:</p>'
+      + '<div class="g2">'
+      +   '<div class="field-row"><label>First Name (Gov\'t)</label><input type="text" id="' + id + '-gf" value="' + (data.govFirst||'') + '" placeholder="First"></div>'
+      +   '<div class="field-row"><label>Last Name (Gov\'t)</label><input type="text" id="' + id + '-gl" value="' + (data.govLast||'') + '" placeholder="Last"></div>'
+      +   '<div class="field-row"><label>Hebrew First <span class="opt">(optional)</span></label><input type="text" id="' + id + '-hf" value="' + (data.hebFirst||'') + '" placeholder="e.g. Rivkah"></div>'
+      +   '<div class="field-row"><label>Hebrew Last <span class="opt">(optional)</span></label><input type="text" id="' + id + '-hl" value="' + (data.hebLast||'') + '" placeholder="e.g. Yasharahla"></div>'
+      + '</div>';
+    document.getElementById('spouse-list').appendChild(div);
+  }
+
+  function collectSpouses() {
+    var spouses = [];
+    document.querySelectorAll('#spouse-list .member-block').forEach(function(bl) {
+      var id = bl.id;
+      spouses.push({ tnEmail: _g(id+'-tn'), govFirst: _g(id+'-gf'), govLast: _g(id+'-gl'), hebFirst: _g(id+'-hf'), hebLast: _g(id+'-hl') });
+    });
+    return spouses;
+  }
+
+  // ── Children (dynamic) ────────────────────────────────────────────────────────
+  function addChild(data) {
+    data = data || {};
+    childCount++;
+    var id  = 'child-' + childCount;
+    var div = document.createElement('div');
+    div.className = 'member-block';
+    div.id = id;
+    div.innerHTML =
+      '<div class="member-block-title">Child ' + childCount + '</div>'
+      + '<button type="button" class="remove-btn" onclick="document.getElementById(\'' + id + '\').remove()">×</button>'
+      + '<div class="field-row"><label>TN Email <span class="opt">(if they have an account)</span></label>'
+      +   '<div class="tn-wrap">'
+      +     '<input type="email" id="' + id + '-tn" value="' + (data.tnEmail||'') + '" placeholder="child@truenation.org" autocomplete="off"'
+      +       ' oninput="tnLookup(\'' + id + '-tn\',\'' + id + '-status\',\'' + id + '-found\')">'
+      +     '<span class="tn-status" id="' + id + '-status"></span>'
+      +   '</div>'
+      +   '<div class="tn-found" id="' + id + '-found"></div>'
+      + '</div>'
+      + '<div class="g2">'
+      +   '<div class="field-row"><label>First Name (Gov\'t)</label><input type="text" id="' + id + '-gf" value="' + (data.govFirst||'') + '" placeholder="First"></div>'
+      +   '<div class="field-row"><label>Last Name (Gov\'t)</label><input type="text" id="' + id + '-gl" value="' + (data.govLast||'') + '" placeholder="Last"></div>'
+      +   '<div class="field-row"><label>Hebrew First <span class="opt">(optional)</span></label><input type="text" id="' + id + '-hf" value="' + (data.hebFirst||'') + '" placeholder="e.g. Yosef"></div>'
+      +   '<div class="field-row"><label>Hebrew Last <span class="opt">(optional)</span></label><input type="text" id="' + id + '-hl" value="' + (data.hebLast||'') + '" placeholder="e.g. Ben Israel"></div>'
+      + '</div>';
+    document.getElementById('children-list').appendChild(div);
+  }
+
+  // ── TN Lookup ─────────────────────────────────────────────────────────────────
+  function tnLookup(inputId, statusId, foundId) {
+    var val    = document.getElementById(inputId).value.trim().toLowerCase();
+    var status = document.getElementById(statusId);
+    var found  = document.getElementById(foundId);
+    if (tnTimers[inputId]) clearTimeout(tnTimers[inputId]);
+    if (!val || !val.endsWith('@truenation.org')) { status.textContent = ''; found.style.display = 'none'; return; }
+    if (tnCache[val] !== undefined) {
+      status.textContent = tnCache[val] ? '✅' : '❌';
+      found.style.display = tnCache[val] ? 'block' : 'none';
+      if (tnCache[val]) found.textContent = tnCache[val].name || val;
+      return;
+    }
+    status.textContent = '⏳';
+    tnTimers[inputId] = setTimeout(function() {
+      google.script.run
+        .withSuccessHandler(function(u) {
+          tnCache[val] = u || false;
+          status.textContent = u ? '✅' : '❌';
+          found.style.display = u ? 'block' : 'none';
+          if (u) found.textContent = u.name || val;
+        })
+        .withFailureHandler(function() { status.textContent = '❓'; })
+        .lookupTNUser(val);
+    }, 600);
+  }
+
+  // ── Upload helper ─────────────────────────────────────────────────────────────
+  function wireUpload(inputId, zoneId, previewId, onDone, isPhoto) {
+    var input   = document.getElementById(inputId);
+    var zone    = document.getElementById(zoneId);
+    var preview = document.getElementById(previewId);
+    if (!input) return;
+    input.addEventListener('change', function() {
+      var file = input.files[0];
+      if (!file) return;
+      var MAX = isPhoto ? 1400 : 2000;
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var img = new Image();
+        img.onload = function() {
+          var canvas = document.createElement('canvas');
+          var scale  = Math.min(1, MAX / Math.max(img.width, img.height));
+          canvas.width  = Math.round(img.width  * scale);
+          canvas.height = Math.round(img.height * scale);
+          canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+          var dataUrl = canvas.toDataURL('image/jpeg', 0.82);
+          onDone(dataUrl);
+          preview.src = dataUrl;
+          preview.style.display = 'block';
+          zone.classList.add('over');
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+    zone.addEventListener('dragover',  function(e) { e.preventDefault(); zone.classList.add('over'); });
+    zone.addEventListener('dragleave', function()  { zone.classList.remove('over'); });
+    zone.addEventListener('drop', function(e) {
+      e.preventDefault(); zone.classList.remove('over');
+      var file = e.dataTransfer.files[0];
+      if (file) { input.files = e.dataTransfer.files; input.dispatchEvent(new Event('change')); }
+    });
+  }
+
+  // ── Phone format ──────────────────────────────────────────────────────────────
+  function fmtPhone(input) {
+    var raw = input.value.replace(/\D/g, '');
+    if (raw.length === 0) { input.value = ''; return; }
+    if      (raw.length <= 3)  input.value = '(' + raw;
+    else if (raw.length <= 6)  input.value = '(' + raw.slice(0,3) + ') ' + raw.slice(3);
+    else if (raw.length <= 10) input.value = '(' + raw.slice(0,3) + ') ' + raw.slice(3,6) + '-' + raw.slice(6);
+    else                       input.value = '+' + raw.slice(0, raw.length-10) + ' (' + raw.slice(-10,-7) + ') ' + raw.slice(-7,-4) + '-' + raw.slice(-4);
+  }
+
+  // ── Helpers ───────────────────────────────────────────────────────────────────
+  function g(id)  { var el = document.getElementById(id); return el ? el.value.trim() : ''; }
+  function _g(id) { return g(id); }
+  function showErr(msg) {
+    var el = document.getElementById('msg-error');
+    if (!el) return;
+    el.textContent = msg; el.style.display = 'block';
+    setTimeout(function() { el.style.display = 'none'; }, 5000);
+  }
+</script>
+</body>
+</html>

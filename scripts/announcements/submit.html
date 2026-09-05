@@ -86,6 +86,12 @@
   .sb-steps ol{margin:0;padding-left:20px;font-size:14.5px;}
   .sb-steps li{margin-bottom:8px;}.sb-steps li:last-child{margin-bottom:0;}
   .sb-load{max-width:600px;margin:60px auto;text-align:center;color:var(--muted);font-size:15px;}
+  /* The hidden attribute must beat any author display: rule. Without this,
+     .sb-wrap{display:grid} overrides the UA stylesheet's [hidden]{display:none}
+     and the element stays visible. Toggle with el.hidden, never style.display.
+     NOTE: this page does NOT include('styles') - it carries its own sheet, so
+     the matching rule in styles.html does not reach it. */
+  [hidden]{display:none !important;}
 </style>
 </head>
 <body>
@@ -192,7 +198,7 @@
   </aside>
 </div>
 
-<div class="sb-wrap" id="doneView" hidden style="display:block;">
+<div class="sb-wrap" id="doneView" hidden>
   <div class="sb-done">
     <div class="tick" aria-hidden="true">&#10003;</div>
     <h2>Submitted for review</h2>
@@ -315,7 +321,7 @@ $('theForm').addEventListener('submit', function(e){
     .withSuccessHandler(function(res){
       $('doneDate').textContent = res.service;
       $('doneId').textContent = res.id;
-      $('formView').hidden = true; $('formView').style.display = 'none';
+      $('formView').hidden = true;
       $('doneView').hidden = false;
       window.scrollTo({top:0,behavior:'smooth'});
     })
@@ -341,7 +347,7 @@ $('btnAgain').addEventListener('click', function(){
   $('theForm').reset(); $('errBox').hidden = true;
   $('btnSubmit').disabled = false; $('btnSubmit').textContent = 'Submit for review';
   updatePreview();
-  $('doneView').hidden = true; $('formView').hidden = false; $('formView').style.display = 'grid';
+  $('doneView').hidden = true; $('formView').hidden = false;
   window.scrollTo({top:0,behavior:'smooth'});
 });
 </script>

@@ -100,6 +100,14 @@ the request only fires on real typing.
 
 - **Apps Script deploy:** paste whole file → Save → Deploy → **Manage deployments** →
   pencil → New version. Never "New deployment" (mints a new URL).
+- **Repo/deployment drift is the recurring failure here — it has cost a round trip
+  three times.** The repo is the source of record; the running app is NOT. When a
+  change spans more than one file, ALL of them must be pasted together, and `Code.gs`
+  first: a template that references a server variable the deployed `Code.gs` never
+  set is a hard `ReferenceError` in Apps Script and takes the whole page down, not
+  just the feature. Before deploying, verify with Cmd+F in the Apps Script editor for
+  a token unique to the newest edit (e.g. `appUrl_`, `getUsersFull_`). Hand Shahad
+  that token to search for, and never assume a paste landed — wait for him to confirm.
 - **Only a TRAILING underscore** hides a function from `google.script.run`.
 - **In-app GAS links:** build from `appUrl_()`, read params from the server template,
   never from `window.location` — these pages render in a sandbox frame with no query

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { margin: 0; background: #fdf8f0; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: system-ui, sans-serif; }
+    .loader { text-align: center; color: #7a7068; font-size: 15px; }
+    .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #781215; margin: 0 3px; animation: bounce 1.2s infinite; }
+    .dot:nth-child(2) { animation-delay: 0.2s; }
+    .dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-8px)} }
+  </style>
+</head>
+<body>
+  <div class="loader">
+    <div style="margin-bottom:14px">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    </div>
+    Loading your profile setup…
+  </div>
+  <script>
+    // Detect device type client-side and redirect with ua param so
+    // GAS doGet can serve the correct version (mobile vs desktop).
+    var ua = navigator.userAgent || '';
+    var isMobile = /android|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile|tablet/i.test(ua);
+
+    // Build the destination URL — same script, ?page=profilesetup, add mobile flag
+    var base = window.location.href.split('?')[0];
+    // Preserve any existing params except 'page' so we can re-add cleanly
+    var dest = base + '?page=profilesetup&pli=1&mobile=' + (isMobile ? '1' : '0');
+
+    // Small delay so the loader is briefly visible (avoids flash)
+    setTimeout(function() {
+      window.location.replace(dest);
+    }, 300);
+  </script>
+</body>
+</html>

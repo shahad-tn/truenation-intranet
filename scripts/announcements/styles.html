@@ -50,4 +50,9 @@
   .tn-toast.bad{background:var(--no);}
   .tn-load{text-align:center;color:var(--muted);padding:50px 20px;font-size:15px;}
   .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+  /* The hidden attribute must beat any author display: rule. Without this, a
+     class like .sb-wrap{display:grid} or .rs-bar-row{display:flex} overrides
+     the UA stylesheet's [hidden]{display:none} and the element stays visible.
+     Toggle visibility with el.hidden - never with inline style.display. */
+  [hidden]{display:none !important;}
 </style>

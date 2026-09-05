@@ -23,18 +23,22 @@
   .sb-lede{font-size:14.5px;margin:0;max-width:58ch;opacity:.93;}
   .sb-wrap{max-width:1080px;margin:0 auto;padding:24px 22px 70px;
     display:grid;grid-template-columns:1fr 380px;gap:0 24px;align-items:start;}
-  /* Desktop: form fills the left column, the two panels stack in the right,
-     the button sits under the form. Placement is explicit so the panels can be
-     reordered on mobile without disturbing this. */
-  #theForm    {grid-column:1;grid-row:1;}
-  #btnSubmit  {grid-column:1;grid-row:2;}
-  #sidePreview{grid-column:2;grid-row:1;margin:0 0 16px;}
-  #sideGuide  {grid-column:2;grid-row:2;}
-  /* Mobile: guidance first (it is what to check BEFORE writing), then the form,
-     then the preview, and the button last so nothing sits below the action. */
+  /* Desktop: form and button fill the left column; the rail is ONE grid item in
+     the right column holding both panels, stacked with flex. The panels must not
+     be separate grid items here - in rows they would wait for the form's row to
+     end and drop level with the submit button. */
+  #theForm  {grid-column:1;grid-row:1;}
+  #btnSubmit{grid-column:1;grid-row:2;}
+  #sideRail {grid-column:2;grid-row:1 / span 2;
+    display:flex;flex-direction:column;gap:16px;position:sticky;top:20px;}
+  /* Mobile: the rail dissolves (display:contents) so its two panels become grid
+     items in their own right and can be ordered around the form. Guidance first
+     - it is what to check BEFORE writing - then the form, the preview, and the
+     button last so nothing sits below the action. */
   @media (max-width:900px){
     .sb-wrap{grid-template-columns:1fr;gap:0;}
     .sb-side{position:static !important;}
+    #sideRail{display:contents;}
     #theForm,#btnSubmit,#sidePreview,#sideGuide{grid-column:1;grid-row:auto;}
     #sideGuide  {order:1;margin:0 0 16px;}
     #theForm    {order:2;}
@@ -195,6 +199,7 @@
 
   </form>
 
+  <div class="sb-rail" id="sideRail">
   <aside class="sb-side" id="sidePreview">
     <div class="sb-prev-head">
       <h3>Live preview</h3>
@@ -221,6 +226,7 @@
       </ul>
     </div>
   </aside>
+  </div>
 
   <!-- Outside the form on purpose, so it can sit below the preview on mobile.
        form="theForm" keeps it a native submit button, and the submit handler

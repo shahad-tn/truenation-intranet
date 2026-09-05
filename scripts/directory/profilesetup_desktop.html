@@ -59,6 +59,7 @@
     .step-desc { color: var(--muted); font-size: 14px; line-height: 1.55; margin-bottom: 28px; }
 
     /* ── FIELDS ── */
+    [hidden] { display: none !important; }
     .field-row { margin-bottom: 18px; }
     .field-row label {
       display: block; font-size: 11.5px; font-weight: 700; color: var(--slate);
@@ -199,8 +200,8 @@
 
       <div class="g2">
         <div class="field-row">
-          <label>Gender</label>
-          <select id="gender">
+          <label id="lbl-gender" for="gender">Gender <span class="opt" style="color:#dc2626">*</span></label>
+          <select id="gender" onchange="syncCircumcision()">
             <option value="">Select…</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
@@ -287,7 +288,7 @@
       </div>
 
       <div class="g2">
-        <div class="field-row">
+        <div class="field-row" id="fld-circumcised">
           <label id="lbl-circumcised" for="circumcised">Are you circumcised? <span class="opt" style="color:#dc2626">*</span></label>
           <select id="circumcised">
             <option value="">Select…</option>
@@ -505,6 +506,7 @@
         sv('medical-conditions',profile.medical_conditions);
         sv('circumcised',       profile.circumcised);
         sv('sons-circumcised',  profile.sons_circumcised);
+        syncCircumcision();
         sv('ec1-name',          profile.emergency_name);
         sv('ec1-phone',         profile.emergency_phone);
         sv('ec1-rel',           profile.emergency_relationship);
@@ -546,20 +548,59 @@
     wireUpload('id-back-input',  'id-back-zone',  'id-back-preview',  function(d) { idBackDataUrl  = d; }, false);
   }, 0);
 
+  var _addr = blankAddr();
+  function blankAddr() { return { address1: '', address2: '', city: '', state: '', zip: '' }; }
+
+  /* Split address columns are filled only when the member picks a Maps
+     suggestion. Freehand typing leaves them empty rather than storing a guess;
+     home_address still holds whatever was typed. */
+  function parseAddr(p) {
+    var out = blankAddr();
+    if (!p || !p.address_components) return out;
+    var num = '', route = '';
+    p.address_components.forEach(function(c) {
+      var t = c.types || [];
+      if (t.indexOf('street_number') > -1)                         num = c.long_name;
+      else if (t.indexOf('route') > -1)                            route = c.long_name;
+      else if (t.indexOf('subpremise') > -1)                       out.address2 = c.long_name;
+      else if (t.indexOf('locality') > -1)                         out.city = c.long_name;
+      else if (t.indexOf('sublocality_level_1') > -1 && !out.city) out.city = c.long_name;
+      else if (t.indexOf('administrative_area_level_1') > -1)      out.state = c.short_name;
+      else if (t.indexOf('postal_code') > -1)                      out.zip = c.long_name;
+    });
+    out.address1 = [num, route].filter(Boolean).join(' ');
+    return out;
+  }
+
+  function isFemale() { return g('gender') === 'Female'; }
+
+  /* "Are you circumcised?" does not apply to women: hidden, and stored as N/A
+     so the sheet reads as asked-and-not-applicable rather than unanswered.
+     "Are your sons circumcised?" stays visible for everyone. */
+  function syncCircumcision() {
+    var fld = document.getElementById('fld-circumcised');
+    if (!fld) return;
+    var hide = isFemale();
+    fld.hidden = hide;
+    if (hide) { clearFieldErr('circumcised'); }
+  }
+
   // ── Maps autocomplete ─────────────────────────────────────────────────────────
   function attachMapsAutocomplete() {
     if (_mapsInited) return;
     _mapsInited = true;
     try {
       var input = document.getElementById('home-address');
-      var ac = new google.maps.places.Autocomplete(input, { types: ['address'], fields: ['formatted_address'] });
+      var ac = new google.maps.places.Autocomplete(input, { types: ['address'], fields: ['formatted_address', 'address_components'] });
       ac.addListener('place_changed', function() {
         var place = ac.getPlace();
         if (place && place.formatted_address) {
           input.value = place.formatted_address;
           clearFieldErr('home-address');
         }
+        _addr = parseAddr(place);
       });
+      input.addEventListener('input', function() { _addr = blankAddr(); });
     } catch(e) {}
   }
 
@@ -639,8 +680,11 @@
       if (!g('legal-first')) { setFieldErr('legal-first'); ok = false; }
       if (!g('legal-last'))  { setFieldErr('legal-last');  ok = false; }
     }
+    if (step === 1) {
+      if (!g('gender')) { setFieldErr('gender'); ok = false; }
+    }
     if (step === 4) {
-      if (!g('circumcised'))      { setFieldErr('circumcised');      ok = false; }
+      if (!isFemale() && !g('circumcised')) { setFieldErr('circumcised'); ok = false; }
       if (!g('sons-circumcised')) { setFieldErr('sons-circumcised'); ok = false; }
     }
     if (step === 5) {
@@ -678,7 +722,7 @@
         ['Provider',      g('ins-provider')],
         ['Subscriber ID', g('ins-subscriber-id')],
         ['Group #',       g('ins-group')],
-        ['Circumcised',        g('circumcised')],
+        ['Circumcised',        isFemale() ? 'N/A' : g('circumcised')],
         ['Sons Circumcised',   g('sons-circumcised')]
       ]},
       { t: 'Skills & Ministry', rows: [
@@ -716,6 +760,11 @@
 
     var data = {
       homeAddress:          g('home-address'),
+      address1:             _addr.address1,
+      address2:             _addr.address2,
+      city:                 _addr.city,
+      state:                _addr.state,
+      zip:                  _addr.zip,
       phone:                g('phone'),
       dateOfBirth:          g('dob'),
       gender:               g('gender'),
@@ -734,7 +783,7 @@
       insurancePolicy:      g('ins-subscriber-id'),
       insGroup:             g('ins-group'),
       medicalConditions:    g('medical-conditions'),
-      circumcised:          g('circumcised'),
+      circumcised:          isFemale() ? 'N/A' : g('circumcised'),
       sonsCircumcised:      g('sons-circumcised'),
       skills:               g('skills'),
       ministryInterests:    selectedMinistry.join(', '),

@@ -28,7 +28,8 @@ var COST_CENTERS     = ["General", "Youth Ministry", "Worship Arts", "Outreach",
 var EMPLOYMENT_TYPES = ["Volunteer", "Part-Time", "Full-Time", "Contractor", "Intern"];
 
 // Columns added by Stage 2 that may not yet exist in the sheet
-var EXTRA_COLS = ['ins_group', 'medical_conditions', 'occupation', 'circumcised', 'sons_circumcised'];
+var EXTRA_COLS = ['ins_group', 'medical_conditions', 'occupation', 'circumcised', 'sons_circumcised',
+                 'address1', 'address2', 'city', 'state', 'zip'];
 
 
 // ── Entry Point ───────────────────────────────────────────────────────────────
@@ -195,10 +196,11 @@ function getDropdowns() {
  * load the Maps script, so the guard broke address autocomplete for every
  * non-admin member — the exact people the profile form exists for.
  *
- * The guard also bought nothing. doGet() injects the same key into the
- * profilesetup templates for every member regardless, so it is readable from that
- * page's source either way. Restricting a key that is necessarily published to
- * every signed-in member is theatre.
+ * Do NOT re-add the guard. Note that an earlier version of this comment claimed
+ * the guard "bought nothing" because doGet() publishes the key anyway. That was
+ * wrong: doGet() sets tmpl.mapsApiKey, but neither profilesetup template ever
+ * reads it, so this function is in fact the only path to the key. The guard did
+ * restrict access - it also broke the feature, which is the real reason it went.
  *
  * The controls that actually cap the exposure are all Cloud-side: per-API quota
  * caps, a billing budget with alerts, and an API restriction limiting the key to
@@ -458,6 +460,11 @@ function saveProfile(data) {
 
   var updates = {
     home_address:            s(data.homeAddress),
+    address1:                s(data.address1),
+    address2:                s(data.address2),
+    city:                    s(data.city),
+    state:                   s(data.state),
+    zip:                     s(data.zip),
     date_of_birth:           s(data.dateOfBirth),
     gender:                  s(data.gender),
     location:                s(data.location),

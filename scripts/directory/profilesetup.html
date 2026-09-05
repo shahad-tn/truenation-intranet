@@ -55,6 +55,7 @@
     .step-card { background: #ffffff; border-radius: 34px; padding: 59px 59px 49px; box-shadow: 0 2px 39px rgba(80,50,20,0.08); border: 2px solid #e8dece; }
 
     /* FIELD */
+    [hidden] { display: none !important; }
     .field { margin-bottom: 39px; }
     .field:last-of-type { margin-bottom: 0; }
     .field label { display: block; font-size: 27px; font-weight: 600; color: #130D0A; margin-bottom: 14px; letter-spacing: 0.01em; }
@@ -190,8 +191,8 @@
         <input type="date" id="dob">
       </div>
       <div class="field">
-        <label for="gender">Gender</label>
-        <select id="gender">
+        <label id="lbl-gender" for="gender">Gender <span class="req">*</span></label>
+        <select id="gender" onchange="syncCircumcision()">
           <option value="">Select…</option>
           <option>Male</option>
           <option>Female</option>
@@ -300,7 +301,7 @@
         <label>Medical Conditions / Allergies</label>
         <textarea id="medical-conditions" placeholder="Any conditions, allergies, or notes relevant for emergencies…"></textarea>
       </div>
-      <div class="field">
+      <div class="field" id="fld-circumcised">
         <label id="lbl-circumcised" for="circumcised">Are you circumcised? <span class="req">*</span></label>
         <select id="circumcised">
           <option value="">Select…</option>
@@ -530,6 +531,7 @@
         sv('medical-conditions', p.medical_conditions);
         sv('circumcised', p.circumcised);
         sv('sons-circumcised', p.sons_circumcised);
+        syncCircumcision();
         sv('ec1-name', p.emergency_name);
         sv('ec1-phone', p.emergency_phone);
         sv('ec1-rel', p.emergency_relationship);
@@ -561,11 +563,54 @@
     wireUpload('id-back-input',  'id-back-zone',  'id-back-preview',  function(d) { idBackDataUrl  = d; }, false);
   }, 0);
 
+  var _addr = blankAddr();
+  function blankAddr() { return { address1: '', address2: '', city: '', state: '', zip: '' }; }
+
+  /* Maps returns the address as typed components. Anything the member types by
+     hand (no suggestion picked) leaves _addr blank and only home_address is
+     stored - the split columns stay empty rather than holding a bad guess. */
+  function parseAddr(p) {
+    var out = blankAddr();
+    if (!p || !p.address_components) return out;
+    var num = '', route = '';
+    p.address_components.forEach(function(c) {
+      var t = c.types || [];
+      if (t.indexOf('street_number') > -1)                       num = c.long_name;
+      else if (t.indexOf('route') > -1)                          route = c.long_name;
+      else if (t.indexOf('subpremise') > -1)                     out.address2 = c.long_name;
+      else if (t.indexOf('locality') > -1)                       out.city = c.long_name;
+      else if (t.indexOf('sublocality_level_1') > -1 && !out.city) out.city = c.long_name;
+      else if (t.indexOf('administrative_area_level_1') > -1)    out.state = c.short_name;
+      else if (t.indexOf('postal_code') > -1)                    out.zip = c.long_name;
+    });
+    out.address1 = [num, route].filter(Boolean).join(' ');
+    return out;
+  }
+
+  function isFemale() { return g('gender') === 'Female'; }
+
+  /* "Are you circumcised?" does not apply to women. Hidden and stored as N/A
+     rather than blank, so the sheet reads as asked-and-not-applicable.
+     "Are your sons circumcised?" stays for everyone. */
+  function syncCircumcision() {
+    var fld = document.getElementById('fld-circumcised');
+    if (!fld) return;
+    var hide = isFemale();
+    fld.hidden = hide;
+    if (hide) { clearErr('circumcised'); }
+  }
+
   function attachMaps() {
     if (_mapsInited) return; _mapsInited = true;
     try {
-      var ac = new google.maps.places.Autocomplete(document.getElementById('home-address'), { types: ['address'], fields: ['formatted_address'] });
-      ac.addListener('place_changed', function() { var p = ac.getPlace(); if (p && p.formatted_address) { document.getElementById('home-address').value = p.formatted_address; clearErr('home-address'); } });
+      var input = document.getElementById('home-address');
+      var ac = new google.maps.places.Autocomplete(input, { types: ['address'], fields: ['formatted_address', 'address_components'] });
+      ac.addListener('place_changed', function() {
+        var p = ac.getPlace();
+        if (p && p.formatted_address) { input.value = p.formatted_address; clearErr('home-address'); }
+        _addr = parseAddr(p);
+      });
+      input.addEventListener('input', function() { _addr = blankAddr(); });
     } catch(e) {}
   }
 
@@ -600,7 +645,8 @@
   function validate(step) {
     var ok = true;
     if (step === 2) { if (!g('legal-first')) { setErr('legal-first'); ok = false; } if (!g('legal-last')) { setErr('legal-last'); ok = false; } }
-    if (step === 4) { if (!g('circumcised')) { setErr('circumcised'); ok = false; } if (!g('sons-circumcised')) { setErr('sons-circumcised'); ok = false; } }
+    if (step === 1) { if (!g('gender')) { setErr('gender'); ok = false; } }
+    if (step === 4) { if (!isFemale() && !g('circumcised')) { setErr('circumcised'); ok = false; } if (!g('sons-circumcised')) { setErr('sons-circumcised'); ok = false; } }
     if (step === 5) { if (!g('ec1-name')) { setErr('ec1-name'); ok = false; } if (!g('ec1-phone')) { setErr('ec1-phone'); ok = false; } }
     if (!ok) { var f = document.querySelector('.err-field'); if (f) f.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
     return ok;
@@ -611,7 +657,7 @@
       { t: 'Personal & Contact', rows: [['Home Address', g('home-address')], ['Phone', g('phone')], ['Date of Birth', g('dob')], ['Gender', g('gender')], ['School', g('school-location')], ['Occupation / Source of Income', g('occupation')]] },
       { t: 'Legal Name', rows: [['First', g('legal-first')], ['Middle', g('legal-middle')], ['Last', g('legal-last')]] },
       { t: 'Emergency Contacts', rows: [['Primary', [g('ec1-name'), g('ec1-phone'), g('ec1-rel')].filter(Boolean).join(' · ')], ['Secondary', [g('ec2-name'), g('ec2-phone')].filter(Boolean).join(' · ')]] },
-      { t: 'Medical', rows: [['Provider', g('ins-provider')], ['Subscriber ID', g('ins-subscriber-id')], ['Group #', g('ins-group')], ['Circumcised', g('circumcised')], ['Sons Circumcised', g('sons-circumcised')]] },
+      { t: 'Medical', rows: [['Provider', g('ins-provider')], ['Subscriber ID', g('ins-subscriber-id')], ['Group #', g('ins-group')], ['Circumcised', isFemale() ? 'N/A' : g('circumcised')], ['Sons Circumcised', g('sons-circumcised')]] },
       { t: 'Skills & Ministry', rows: [['Skills', g('skills')], ['Ministry', selectedMinistry.join(', ')]] },
       { t: 'ID & Photo', rows: [['ID Front', idFrontDataUrl ? '✓ Uploaded' : '—'], ['ID Back', idBackDataUrl ? '✓ Uploaded' : '—'], ['Photo', photoDataUrl ? '✓ Uploaded' : '—']] }
     ];
@@ -633,14 +679,17 @@
       children.push({ tnEmail: _g(bl.id + '-tn'), govFirst: _g(bl.id + '-gf'), govLast: _g(bl.id + '-gl') });
     });
     var data = {
-      homeAddress: g('home-address'), phone: g('phone'), dateOfBirth: g('dob'),
+      homeAddress: g('home-address'),
+      address1: _addr.address1, address2: _addr.address2,
+      city: _addr.city, state: _addr.state, zip: _addr.zip,
+      phone: g('phone'), dateOfBirth: g('dob'),
       gender: g('gender'), location: g('school-location'), occupation: g('occupation'),
       legalFirst: g('legal-first'), legalMiddle: g('legal-middle'), legalLast: g('legal-last'),
       emergencyName: g('ec1-name'), emergencyPhone: g('ec1-phone'), emergencyRelationship: g('ec1-rel'),
       ec2Name: g('ec2-name'), ec2Phone: g('ec2-phone'), ec2Relationship: g('ec2-rel'),
       insuranceProvider: g('ins-provider'), insurancePolicy: g('ins-subscriber-id'),
       insGroup: g('ins-group'), medicalConditions: g('medical-conditions'),
-      circumcised: g('circumcised'), sonsCircumcised: g('sons-circumcised'),
+      circumcised: isFemale() ? 'N/A' : g('circumcised'), sonsCircumcised: g('sons-circumcised'),
       skills: g('skills'), ministryInterests: selectedMinistry.join(', '),
       spouses: collectSpouses(), familyMembers: JSON.stringify(children),
       photoDataUrl: photoDataUrl, idFrontDataUrl: idFrontDataUrl, idBackDataUrl: idBackDataUrl

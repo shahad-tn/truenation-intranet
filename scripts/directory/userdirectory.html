@@ -1073,6 +1073,7 @@
             <option value="">Select…</option>
             <option>Yes</option>
             <option>No</option>
+            <option value="N/A">Not applicable</option>
           </select>
         </div>
         <div class="field-group">
@@ -2100,6 +2101,7 @@
     // Details tab
     setVal('a-dob',           sd.date_of_birth  || '');
     setVal('a-address',       sd.home_address   || '');
+    window._adminAddr = null;
     setVal('a-occupation',    sd.occupation     || '');
     setVal('a-legal-first',   sd.legal_first    || '');
     setVal('a-legal-middle',  sd.legal_middle   || '');
@@ -2155,6 +2157,27 @@
     _initAdminAddressAC();
   }
 
+  /* Mirrors parseAddr() in profilesetup.html / profilesetup_desktop.html.
+     Only set when an admin picks a Maps suggestion; a hand-typed address
+     leaves it null and the split columns are left untouched on save. */
+  function _parseAdminAddr(p) {
+    if (!p || !p.address_components) return null;
+    var out = { address1: '', address2: '', city: '', state: '', zip: '' };
+    var num = '', route = '';
+    p.address_components.forEach(function(c) {
+      var t = c.types || [];
+      if (t.indexOf('street_number') > -1)                         num = c.long_name;
+      else if (t.indexOf('route') > -1)                            route = c.long_name;
+      else if (t.indexOf('subpremise') > -1)                       out.address2 = c.long_name;
+      else if (t.indexOf('locality') > -1)                         out.city = c.long_name;
+      else if (t.indexOf('sublocality_level_1') > -1 && !out.city) out.city = c.long_name;
+      else if (t.indexOf('administrative_area_level_1') > -1)      out.state = c.short_name;
+      else if (t.indexOf('postal_code') > -1)                      out.zip = c.long_name;
+    });
+    out.address1 = [num, route].filter(Boolean).join(' ');
+    return out.address1 ? out : null;
+  }
+
   function _initAdminAddressAC() {
     try {
       window._mapsAdminInited = true;
@@ -2162,12 +2185,14 @@
       if (!input) return;
       var ac = new google.maps.places.Autocomplete(input, {
         types: ['address'],
-        fields: ['formatted_address']
+        fields: ['formatted_address', 'address_components']
       });
       ac.addListener('place_changed', function() {
         var place = ac.getPlace();
         if (place && place.formatted_address) input.value = place.formatted_address;
+        window._adminAddr = _parseAdminAddr(place);
       });
+      input.addEventListener('input', function() { window._adminAddr = null; });
     } catch(e) {
       // Do not swallow this. An empty catch here hid a BillingNotEnabledMapError
       // for an unknown length of time — the field silently degraded to a plain
@@ -2222,6 +2247,14 @@
       ministry_interests:    getVal('a-ministry'),
       notes:                 getVal('a-notes'),
     };
+
+    if (window._adminAddr) {
+      sheetData.address1 = window._adminAddr.address1;
+      sheetData.address2 = window._adminAddr.address2;
+      sheetData.city     = window._adminAddr.city;
+      sheetData.state    = window._adminAddr.state;
+      sheetData.zip      = window._adminAddr.zip;
+    }
 
     google.script.run
       .withSuccessHandler(function() {

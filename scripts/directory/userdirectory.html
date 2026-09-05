@@ -551,6 +551,15 @@
     .bulk-modal-apply-btn:hover { background: var(--wine-dk); }
 
     /* ── Edit modals (admin + self) ───────────────────────────────── */
+    /* Google Places autocomplete dropdown.
+       .pac-container is appended to document.body by the Maps JS API with a
+       default z-index of 1000. The modal overlays here sit at 8000 and 9000, so
+       without this rule the dropdown renders *underneath* the modal: present in
+       the DOM, populated, on screen, and completely invisible. That cost most of
+       a day to diagnose on 2026-09-03. Value must stay above every overlay in
+       this file (8000 modal, 9000 bulk edit, 9900 lightbox, 9999 confirm). */
+    .pac-container { z-index: 10000 !important; }
+
     .modal-overlay {
       display: none; position: fixed; inset: 0;
       background: rgba(20,20,24,0.55); z-index: 8000;

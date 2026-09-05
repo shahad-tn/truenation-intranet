@@ -22,8 +22,25 @@
   .sb-h1{font-weight:700;font-size:31px;letter-spacing:.03em;line-height:1.1;margin-bottom:8px;}
   .sb-lede{font-size:14.5px;margin:0;max-width:58ch;opacity:.93;}
   .sb-wrap{max-width:1080px;margin:0 auto;padding:24px 22px 70px;
-    display:grid;grid-template-columns:1fr 380px;gap:24px;align-items:start;}
-  @media (max-width:900px){.sb-wrap{grid-template-columns:1fr;}.sb-side{position:static !important;}}
+    display:grid;grid-template-columns:1fr 380px;gap:0 24px;align-items:start;}
+  /* Desktop: form fills the left column, the two panels stack in the right,
+     the button sits under the form. Placement is explicit so the panels can be
+     reordered on mobile without disturbing this. */
+  #theForm    {grid-column:1;grid-row:1;}
+  #btnSubmit  {grid-column:1;grid-row:2;}
+  #sidePreview{grid-column:2;grid-row:1;margin:0 0 16px;}
+  #sideGuide  {grid-column:2;grid-row:2;}
+  /* Mobile: guidance first (it is what to check BEFORE writing), then the form,
+     then the preview, and the button last so nothing sits below the action. */
+  @media (max-width:900px){
+    .sb-wrap{grid-template-columns:1fr;gap:0;}
+    .sb-side{position:static !important;}
+    #theForm,#btnSubmit,#sidePreview,#sideGuide{grid-column:1;grid-row:auto;}
+    #sideGuide  {order:1;margin:0 0 16px;}
+    #theForm    {order:2;}
+    #sidePreview{order:3;margin:0 0 16px;}
+    #btnSubmit  {order:4;}
+  }
   .sb-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px;margin:0 0 16px;}
   .sb-card h2{font-size:19px;letter-spacing:.07em;color:var(--wine);margin-bottom:3px;}
   .sb-card .sb-hint{font-size:13px;color:var(--muted);margin:0 0 18px;}
@@ -56,6 +73,12 @@
     border-radius:8px;cursor:pointer;width:100%;}
   .sb-submit:hover{background:var(--wine-dk);border-color:var(--wine-dk);}
   .sb-submit[disabled]{opacity:.6;cursor:default;}
+  .sb-done-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+  .sb-done-actions .sb-submit{max-width:240px;}
+  .sb-close{background:#fff;color:var(--wine);border:2px solid var(--line-strong);
+    font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:17px;letter-spacing:.06em;
+    text-transform:uppercase;padding:14px 28px;border-radius:8px;cursor:pointer;}
+  .sb-close:hover{border-color:var(--wine);background:var(--surface);}
   .sb-side{position:sticky;top:20px;}
   .sb-prev-head{background:var(--wine);color:var(--onwine);border-radius:10px 10px 0 0;padding:13px 18px;}
   .sb-prev-head h3{font-size:15px;letter-spacing:.13em;}
@@ -170,10 +193,9 @@
       <div class="sb-you" id="youBox"></div>
     </section>
 
-    <button class="sb-submit" type="submit" id="btnSubmit">Submit for review</button>
   </form>
 
-  <aside class="sb-side">
+  <aside class="sb-side" id="sidePreview">
     <div class="sb-prev-head">
       <h3>Live preview</h3>
       <p>How the reader will see it on their phone.</p>
@@ -186,6 +208,9 @@
       </div>
       <p class="sb-prev-foot" id="pvFoot">Choose a service to see where this lands.</p>
     </div>
+  </aside>
+
+  <aside class="sb-side" id="sideGuide">
     <div class="sb-tips">
       <h3>What gets approved</h3>
       <ul>
@@ -196,6 +221,11 @@
       </ul>
     </div>
   </aside>
+
+  <!-- Outside the form on purpose, so it can sit below the preview on mobile.
+       form="theForm" keeps it a native submit button, and the submit handler
+       is bound to the form itself, so nothing about submission changes. -->
+  <button class="sb-submit" type="submit" id="btnSubmit" form="theForm">Submit for review</button>
 </div>
 
 <div class="sb-wrap" id="doneView" hidden>
@@ -212,7 +242,10 @@
       </ol>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin:0 0 20px;">Reference: <b id="doneId"></b></p>
-    <button class="sb-submit" type="button" id="btnAgain" style="max-width:280px;">Submit another</button>
+    <div class="sb-done-actions">
+      <button class="sb-submit" type="button" id="btnAgain">Submit another</button>
+      <button class="sb-close" type="button" id="btnClose">Close</button>
+    </div>
   </div>
 </div>
 </main>
@@ -342,6 +375,15 @@ function showErr(html){
   b.hidden = false; b.className = 'sb-err'; b.setAttribute('role','alert'); b.innerHTML = html;
   b.scrollIntoView({behavior:'smooth', block:'center'});
 }
+
+/* Close the tab. A tab opened from a link cannot always be closed by script,
+   so if the browser refuses we send them back to the portal instead - never a
+   button that appears to do nothing. */
+$('btnClose').addEventListener('click', function(){
+  var portal = 'https://portal.truenation.org';
+  window.setTimeout(function(){ window.top.location.href = portal; }, 150);
+  try { window.top.close(); } catch(e) { /* cross-origin refusal - fallback runs */ }
+});
 
 $('btnAgain').addEventListener('click', function(){
   $('theForm').reset(); $('errBox').hidden = true;

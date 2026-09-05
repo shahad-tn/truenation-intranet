@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<style>
+  /* Literals only. This block precedes the shared stylesheet,
+     so no token is defined yet. */
+  body{background:#E8E8EC;color:#26262A;font-family:'DM Sans',Helvetica,Arial,sans-serif;}
+</style>
+<link rel="stylesheet" href="https://portal.truenation.org/brand.css">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -9,13 +15,13 @@
 <style>
   html { scroll-behavior: smooth; }
   body { margin: 0; }
-  a { color: #7C1316; }
-  a:hover { color: #C9972C; }
-  ::selection { background: #C9972C; color: #130D0A; }
+  a { color: var(--wine); }
+  a:hover { color:var(--gold-text); }
+  ::selection { background: var(--gold); color: var(--ink); }
 
   /* ===== Mobile-first responsiveness (added) ===== */
   a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
-    outline: 3px solid #C9972C; outline-offset: 2px; border-radius: 4px;
+    outline: 3px solid var(--gold); outline-offset: 2px; border-radius: 4px;
   }
   #navToggle { display: none; }
   @media (max-width: 767px) {
@@ -23,14 +29,14 @@
     #navToggle {
       display: inline-flex; align-items: center; justify-content: center;
       margin-left: auto; width: 46px; height: 46px; flex: none;
-      background: transparent; border: 1px solid #C9972C; border-radius: 8px;
-      color: #F2EDE4; cursor: pointer;
+      background: transparent; border: 1px solid var(--gold); border-radius: 8px;
+      color:var(--onwine); cursor: pointer;
     }
     #primaryNav {
       position: absolute; left: 0; right: 0; top: 100%;
       display: none !important; flex-direction: column !important;
       align-items: stretch !important; gap: 0 !important;
-      background: #7C1316; border-top: 1px solid #C9972C;
+      background: var(--wine); border-top: 1px solid var(--gold);
       padding: 6px 0 !important; box-shadow: 0 10px 26px rgba(30,6,6,.4);
     }
     #primaryNav.open { display: flex !important; }
@@ -38,7 +44,7 @@
       padding: 14px 24px !important; margin: 0 !important; width: 100%;
       border: 0 !important; border-radius: 0 !important;
       min-height: 44px; display: flex; align-items: center;
-      background: transparent !important; color: #F2EDE4 !important;
+      background: transparent !important; color:var(--onwine) !important;
     }
     /* Halve heavy section padding */
     [style*="padding:80px 24px 72px;"] { padding: 44px 20px 40px !important; }
@@ -53,97 +59,97 @@
     [style*="padding:26px;"]      { padding: 20px !important; }
     [style*="padding:24px;"]      { padding: 18px !important; }
     /* Restack the class schedule rows (day / time / class) */
-    [style*="border-left:5px solid #C9972C"][style*="align-items:center"] {
+    [style*="border-left:5px solid var(--gold)"][style*="align-items:center"] {
       flex-direction: column !important; align-items: flex-start !important; gap: 3px !important;
     }
-    [style*="border-left:5px solid #C9972C"][style*="align-items:center"] > div { min-width: 0 !important; }
+    [style*="border-left:5px solid var(--gold)"][style*="align-items:center"] > div { min-width: 0 !important; }
   }
 </style>
 </head>
 <body>
-<div style="background:#FAF8F4;color:#130D0A;font-family:'DM Sans',sans-serif;min-height:100vh;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;">
+<div style="background:var(--page);color:var(--ink);font-family:'DM Sans',sans-serif;min-height:100vh;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;">
 
-  <header style="position:sticky;top:0;z-index:100;background:#7C1316;border-bottom:2px solid #C9972C;">
+  <header style="position:sticky;top:0;z-index:100;background:var(--wine);border-bottom:2px solid var(--gold);">
     <div style="max-width:1120px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px;">
       <img src="<?= logo ?>" alt="True Nation" onerror="this.style.display='none'" style="width:46px;height:auto;flex:none;">
       <div style="flex:none;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;letter-spacing:.05em;color:#F2EDE4;text-transform:uppercase;line-height:1;">True Nation</div>
-        <div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:9px;letter-spacing:.28em;color:#C9972C;text-transform:uppercase;margin-top:3px;">Awaken · Restore · Unite</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;letter-spacing:.05em;color:var(--onwine);text-transform:uppercase;line-height:1;">True Nation</div>
+        <div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:9px;letter-spacing:.28em;color:var(--gold-on-wine);text-transform:uppercase;margin-top:3px;">Awaken · Restore · Unite</div>
       </div>
-      <button id="navToggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="primaryNav"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F2EDE4" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+      <button id="navToggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="primaryNav"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--surface)" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
       <nav id="primaryNav" style="margin-left:auto;display:flex;align-items:center;gap:2px;flex-wrap:wrap;justify-content:flex-end;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.11em;text-transform:uppercase;">
-        <a href="#welcome" style="color:#F2EDE4;text-decoration:none;padding:7px 10px;border-radius:6px;">Welcome</a>
-        <a href="#basics" style="color:#F2EDE4;text-decoration:none;padding:7px 10px;border-radius:6px;">Basics</a>
-        <a href="#schedule" style="color:#F2EDE4;text-decoration:none;padding:7px 10px;border-radius:6px;">Classes</a>
-        <a href="#leadership" style="color:#F2EDE4;text-decoration:none;padding:7px 10px;border-radius:6px;">Leaders</a>
-        <a href="#prayer" style="color:#F2EDE4;text-decoration:none;padding:7px 10px;border-radius:6px;">Prayer</a>
-        <a href="#believe" style="color:#F2EDE4;text-decoration:none;padding:7px 10px;border-radius:6px;">Beliefs</a>
-        <a href="#remarks" style="color:#F2EDE4;text-decoration:none;padding:7px 10px;border-radius:6px;">Resources</a>
-        <a href="#contact" style="color:#F2EDE4;text-decoration:none;padding:7px 10px;border-radius:6px;">Contact</a>
-        <a href="#join" style="color:#7C1316;background:#C9972C;text-decoration:none;padding:8px 15px;border-radius:6px;font-weight:700;margin-left:6px;">Next Steps</a>
-        <a href="https://portal.truenation.org" target="_blank" style="color:#F2EDE4;text-decoration:none;padding:8px 13px;border:1px solid #C9972C;border-radius:6px;margin-left:2px;">Portal</a>
+        <a href="#welcome" style="color:var(--onwine);text-decoration:none;padding:7px 10px;border-radius:6px;">Welcome</a>
+        <a href="#basics" style="color:var(--onwine);text-decoration:none;padding:7px 10px;border-radius:6px;">Basics</a>
+        <a href="#schedule" style="color:var(--onwine);text-decoration:none;padding:7px 10px;border-radius:6px;">Classes</a>
+        <a href="#leadership" style="color:var(--onwine);text-decoration:none;padding:7px 10px;border-radius:6px;">Leaders</a>
+        <a href="#prayer" style="color:var(--onwine);text-decoration:none;padding:7px 10px;border-radius:6px;">Prayer</a>
+        <a href="#believe" style="color:var(--onwine);text-decoration:none;padding:7px 10px;border-radius:6px;">Beliefs</a>
+        <a href="#remarks" style="color:var(--onwine);text-decoration:none;padding:7px 10px;border-radius:6px;">Resources</a>
+        <a href="#contact" style="color:var(--onwine);text-decoration:none;padding:7px 10px;border-radius:6px;">Contact</a>
+        <a href="#join" style="color:var(--wine);background:var(--gold);text-decoration:none;padding:8px 15px;border-radius:6px;font-weight:700;margin-left:6px;">Next Steps</a>
+        <a href="https://portal.truenation.org" target="_blank" style="color:var(--onwine);text-decoration:none;padding:8px 13px;border:1px solid var(--gold);border-radius:6px;margin-left:2px;">Portal</a>
       </nav>
     </div>
   </header>
 
-  <section id="welcome" style="scroll-margin-top:88px;background:#7C1316;color:#F2EDE4;padding:80px 24px 72px;">
+  <section id="welcome" style="scroll-margin-top:88px;background:var(--wine);color:var(--onwine);padding:80px 24px 72px;">
     <div style="max-width:940px;margin:0 auto;text-align:center;">
       <img src="<?= logo ?>" alt="True Nation" onerror="this.style.display='none'" style="width:130px;height:auto;margin-bottom:26px;">
-      <div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.34em;color:#C9972C;text-transform:uppercase;">Shalom, <?= memberName ?></div>
+      <div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.34em;color:var(--gold-on-wine);text-transform:uppercase;">Shalom, <?= memberName ?></div>
       <h1 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:clamp(40px,6vw,68px);letter-spacing:.01em;text-transform:uppercase;line-height:.98;margin:14px 0 0;">Awaken Your Identity.<br>Walk In Your Purpose.</h1>
-      <p style="max-width:620px;margin:22px auto 0;font-size:17px;line-height:1.6;color:#F2EDE4;opacity:.92;">We use Scripture-based education to heal trauma, reconnect our people to purpose, and guide them toward righteousness through private classes, youth training, and spiritual development.</p>
+      <p style="max-width:620px;margin:22px auto 0;font-size:17px;line-height:1.6;color:var(--onwine);opacity:.92;">We use Scripture-based education to heal trauma, reconnect our people to purpose, and guide them toward righteousness through private classes, youth training, and spiritual development.</p>
       <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px;">
-        <a href="#basics" style="background:#C9972C;color:#7C1316;text-decoration:none;font-family:'DM Sans',sans-serif;font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase;padding:15px 30px;border-radius:9px;">Start Here</a>
-        <a href="#join" style="border:1px solid #C9972C;color:#F2EDE4;text-decoration:none;font-family:'DM Sans',sans-serif;font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase;padding:15px 30px;border-radius:9px;">Next Steps</a>
+        <a href="#basics" style="background:var(--gold);color:var(--wine);text-decoration:none;font-family:'DM Sans',sans-serif;font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase;padding:15px 30px;border-radius:9px;">Start Here</a>
+        <a href="#join" style="border:1px solid var(--gold);color:var(--onwine);text-decoration:none;font-family:'DM Sans',sans-serif;font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase;padding:15px 30px;border-radius:9px;">Next Steps</a>
       </div>
       <div style="max-width:760px;margin:52px auto 0;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">
-        <span style="border:1px solid rgba(201,151,44,.55);color:#C9972C;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:7px 14px;border-radius:100px;">Excellence</span>
-        <span style="border:1px solid rgba(201,151,44,.55);color:#C9972C;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:7px 14px;border-radius:100px;">Accountability</span>
-        <span style="border:1px solid rgba(201,151,44,.55);color:#C9972C;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:7px 14px;border-radius:100px;">Faith</span>
-        <span style="border:1px solid rgba(201,151,44,.55);color:#C9972C;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:7px 14px;border-radius:100px;">Holiness</span>
-        <span style="border:1px solid rgba(201,151,44,.55);color:#C9972C;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:7px 14px;border-radius:100px;">Order</span>
-        <span style="border:1px solid rgba(201,151,44,.55);color:#C9972C;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:7px 14px;border-radius:100px;">Perseverance</span>
+        <span style="border:1px solid rgba(201,151,44,.55);color:var(--gold-on-wine);font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:7px 14px;border-radius:100px;">Excellence</span>
+        <span style="border:1px solid rgba(201,151,44,.55);color:var(--gold-on-wine);font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:7px 14px;border-radius:100px;">Accountability</span>
+        <span style="border:1px solid rgba(201,151,44,.55);color:var(--gold-on-wine);font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:7px 14px;border-radius:100px;">Faith</span>
+        <span style="border:1px solid rgba(201,151,44,.55);color:var(--gold-on-wine);font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:7px 14px;border-radius:100px;">Holiness</span>
+        <span style="border:1px solid rgba(201,151,44,.55);color:var(--gold-on-wine);font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:7px 14px;border-radius:100px;">Order</span>
+        <span style="border:1px solid rgba(201,151,44,.55);color:var(--gold-on-wine);font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:7px 14px;border-radius:100px;">Perseverance</span>
       </div>
     </div>
   </section>
 
   <section id="basics" style="scroll-margin-top:88px;max-width:1080px;margin:0 auto;padding:72px 24px 20px;">
-    <div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.24em;color:#8A6D1A;text-transform:uppercase;">Our Vision</div>
-    <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:clamp(30px,4.5vw,46px);letter-spacing:.01em;text-transform:uppercase;color:#7C1316;line-height:1;margin:8px 0 6px;">P.O.W.E.R.</h2>
-    <div style="width:64px;height:4px;background:#C9972C;border-radius:2px;margin-bottom:20px;"></div>
-    <p style="max-width:760px;margin:0 0 34px;font-size:16px;color:#130D0A;">Our vision is P.O.W.E.R. — Plan, Organize, Work, Execute, Relax. <span style="color:#7C1316;font-weight:700;">(Acts 2:36-47)</span></p>
+    <div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.24em;color:var(--gold-text);text-transform:uppercase;">Our Vision</div>
+    <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:clamp(30px,4.5vw,46px);letter-spacing:.01em;text-transform:uppercase;color:var(--wine);line-height:1;margin:8px 0 6px;">P.O.W.E.R.</h2>
+    <div style="width:64px;height:4px;background:var(--gold);border-radius:2px;margin-bottom:20px;"></div>
+    <p style="max-width:760px;margin:0 0 34px;font-size:16px;color:var(--ink);">Our vision is P.O.W.E.R. — Plan, Organize, Work, Execute, Relax. <span style="color:var(--wine);font-weight:700;">(Acts 2:36-47)</span></p>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
-      <div style="background:#E8DDD0;border:1px solid rgba(201,151,44,.5);border-radius:12px;padding:24px;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;letter-spacing:.03em;text-transform:uppercase;color:#7C1316;">Plan</div>
+      <div style="background:var(--surface);border:1px solid rgba(201,151,44,.5);border-radius:12px;padding:24px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;letter-spacing:.03em;text-transform:uppercase;color:var(--wine);">Plan</div>
         <p style="margin:8px 0 10px;font-size:14.5px;">The meditation and calculation to building a nation.</p>
-        <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#7C1316;font-weight:700;">Proverbs 29:18; 24:3</div>
+        <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--wine);font-weight:700;">Proverbs 29:18; 24:3</div>
       </div>
-      <div style="background:#E8DDD0;border:1px solid rgba(201,151,44,.5);border-radius:12px;padding:24px;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;letter-spacing:.03em;text-transform:uppercase;color:#7C1316;">Organize</div>
+      <div style="background:var(--surface);border:1px solid rgba(201,151,44,.5);border-radius:12px;padding:24px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;letter-spacing:.03em;text-transform:uppercase;color:var(--wine);">Organize</div>
         <p style="margin:8px 0 10px;font-size:14.5px;">The structure of those thoughts into a series of phases or steps to accomplish the plan.</p>
-        <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#7C1316;font-weight:700;">2 Esdras 14:13</div>
+        <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--wine);font-weight:700;">2 Esdras 14:13</div>
       </div>
-      <div style="background:#E8DDD0;border:1px solid rgba(201,151,44,.5);border-radius:12px;padding:24px;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;letter-spacing:.03em;text-transform:uppercase;color:#7C1316;">Work</div>
+      <div style="background:var(--surface);border:1px solid rgba(201,151,44,.5);border-radius:12px;padding:24px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;letter-spacing:.03em;text-transform:uppercase;color:var(--wine);">Work</div>
         <p style="margin:8px 0 10px;font-size:14.5px;">The task in front of us that we shall overcome in due season if we faint not.</p>
-        <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#7C1316;font-weight:700;">Ezekiel 3:16-19</div>
+        <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--wine);font-weight:700;">Ezekiel 3:16-19</div>
       </div>
-      <div style="background:#E8DDD0;border:1px solid rgba(201,151,44,.5);border-radius:12px;padding:24px;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;letter-spacing:.03em;text-transform:uppercase;color:#7C1316;">Execute</div>
+      <div style="background:var(--surface);border:1px solid rgba(201,151,44,.5);border-radius:12px;padding:24px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;letter-spacing:.03em;text-transform:uppercase;color:var(--wine);">Execute</div>
         <p style="margin:8px 0 10px;font-size:14.5px;">The collective effort and application needed to accomplish our work.</p>
-        <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#7C1316;font-weight:700;">2 Corinthians 8:11</div>
+        <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--wine);font-weight:700;">2 Corinthians 8:11</div>
       </div>
-      <div style="background:#E8DDD0;border:1px solid rgba(201,151,44,.5);border-radius:12px;padding:24px;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;letter-spacing:.03em;text-transform:uppercase;color:#7C1316;">Relax</div>
+      <div style="background:var(--surface);border:1px solid rgba(201,151,44,.5);border-radius:12px;padding:24px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;letter-spacing:.03em;text-transform:uppercase;color:var(--wine);">Relax</div>
         <p style="margin:8px 0 10px;font-size:14.5px;">The time needed to forge bonds, relationships and recover from our labor to once again put our hands back to the plow in the fight for our kingdom.</p>
-        <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#7C1316;font-weight:700;">2 Esdras 2:24</div>
+        <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--wine);font-weight:700;">2 Esdras 2:24</div>
       </div>
     </div>
 
     <div style="display:grid;grid-template-columns:1fr;gap:22px;margin-top:44px;">
-      <div style="background:#E8DDD0;border:1px solid rgba(201,151,44,.5);border-radius:12px;padding:30px;">
-        <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:21px;letter-spacing:.03em;text-transform:uppercase;color:#7C1316;margin:0 0 12px;">General Protocols</h3>
-        <p style="font-size:14.5px;margin:0 0 16px;">We as congregants strive toward excellency in all that we do and to work smarter not harder. General protocols are placed to keep our organization flowing in an organized manner and to make the experience for all members comfortable and pleasant. Here, we all contribute and are held to the same standards to keep our congregation orderly and unified <span style="color:#7C1316;font-weight:600;">(Colossians 4:5, Hebrews 13:16, Romans 13:3, Matthew 18:15-17)</span>.</p>
+      <div style="background:var(--surface);border:1px solid rgba(201,151,44,.5);border-radius:12px;padding:30px;">
+        <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:21px;letter-spacing:.03em;text-transform:uppercase;color:var(--wine);margin:0 0 12px;">General Protocols</h3>
+        <p style="font-size:14.5px;margin:0 0 16px;">We as congregants strive toward excellency in all that we do and to work smarter not harder. General protocols are placed to keep our organization flowing in an organized manner and to make the experience for all members comfortable and pleasant. Here, we all contribute and are held to the same standards to keep our congregation orderly and unified <span style="color:var(--wine);font-weight:600;">(Colossians 4:5, Hebrews 13:16, Romans 13:3, Matthew 18:15-17)</span>.</p>
         <ul style="margin:0;padding-left:20px;font-size:14.5px;display:flex;flex-direction:column;gap:10px;">
           <li>If anything within the congregation needs improvement or a change, please bring it to the attention of one of the leaders. We want to create and maintain a culture of approachability, openness, respect, and excellency.</li>
           <li>Guests may be orientated after 40 days of consistent attendance via in class or online.</li>
@@ -154,13 +160,13 @@
           <li>Righteousness is an essential part of building the nation, and we at True Nation strive for brotherly and sisterly love exercised through the spirit of meekness, humility and correction. No one is above the law and as such we must all strive for growth mentally and spiritually. If a brother or sister is walking disorderly and the situation cannot be rectified in the mouth of two or three witnesses, then a formal counsel will be called to rectify the situation. In the event a judgement in the form of a suspension is deemed necessary here are the three levels of suspension referenced.</li>
         </ul>
         <div style="margin-top:16px;border-top:1px solid rgba(201,151,44,.5);padding-top:16px;display:flex;flex-direction:column;gap:8px;">
-          <div style="font-size:13px;"><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#7C1316;">Level 1</span> — Can attend class just no extracurricular activities.</div>
-          <div style="font-size:13px;"><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#7C1316;">Level 2</span> — Removed temporarily from the body.</div>
-          <div style="font-size:13px;"><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#7C1316;">Level 3</span> — Removed from body permanently or indefinitely.</div>
+          <div style="font-size:13px;"><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--wine);">Level 1</span> — Can attend class just no extracurricular activities.</div>
+          <div style="font-size:13px;"><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--wine);">Level 2</span> — Removed temporarily from the body.</div>
+          <div style="font-size:13px;"><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--wine);">Level 3</span> — Removed from body permanently or indefinitely.</div>
         </div>
-      </div><div style="background:#E8DDD0;border:1px solid rgba(201,151,44,.5);border-radius:12px;padding:30px;">
-        <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:21px;letter-spacing:.03em;text-transform:uppercase;color:#7C1316;margin:0 0 12px;">Respect the School</h3>
-        <p style="font-size:14.5px;margin:0 0 16px;">As a member, you are now a part of the body of this congregation. With that being said, here are ways all of us contribute to the upkeep of the school, support each other and hold each other accountable <span style="color:#7C1316;font-weight:600;">(2 Corinthians 8:13, 1 Corinthians 14:40, Philippians 2:2)</span>:</p>
+      </div><div style="background:var(--surface);border:1px solid rgba(201,151,44,.5);border-radius:12px;padding:30px;">
+        <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:21px;letter-spacing:.03em;text-transform:uppercase;color:var(--wine);margin:0 0 12px;">Respect the School</h3>
+        <p style="font-size:14.5px;margin:0 0 16px;">As a member, you are now a part of the body of this congregation. With that being said, here are ways all of us contribute to the upkeep of the school, support each other and hold each other accountable <span style="color:var(--wine);font-weight:600;">(2 Corinthians 8:13, 1 Corinthians 14:40, Philippians 2:2)</span>:</p>
         <ul style="margin:0;padding-left:20px;font-size:14.5px;display:flex;flex-direction:column;gap:10px;">
           <li>Help keep the school clean by practicing good housekeeping.</li>
           <li>If you drop something, pick it up. If you spill something, clean it up. If you break something, fix it or inquire as to how it may be fixed or the cost to repair or replace it.</li>
@@ -174,124 +180,124 @@
   </section>
 
   <section id="schedule" style="scroll-margin-top:88px;max-width:1080px;margin:0 auto;padding:60px 24px 20px;">
-    <div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.24em;color:#8A6D1A;text-transform:uppercase;">Weekly Rhythm</div>
-    <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:clamp(30px,4.5vw,46px);letter-spacing:.01em;text-transform:uppercase;color:#7C1316;line-height:1;margin:8px 0 6px;">Class Schedule</h2>
-    <div style="width:64px;height:4px;background:#C9972C;border-radius:2px;margin-bottom:26px;"></div>
+    <div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.24em;color:var(--gold-text);text-transform:uppercase;">Weekly Rhythm</div>
+    <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:clamp(30px,4.5vw,46px);letter-spacing:.01em;text-transform:uppercase;color:var(--wine);line-height:1;margin:8px 0 6px;">Class Schedule</h2>
+    <div style="width:64px;height:4px;background:var(--gold);border-radius:2px;margin-bottom:26px;"></div>
     <div style="display:flex;flex-direction:column;gap:11px;">
-      <div style="display:flex;align-items:center;gap:18px;background:#E8DDD0;border:1px solid rgba(201,151,44,.5);border-left:5px solid #C9972C;border-radius:10px;padding:16px 24px;flex-wrap:wrap;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;letter-spacing:.04em;text-transform:uppercase;color:#7C1316;min-width:180px;">1st Monday</div>
-        <div style="font-weight:700;font-size:14px;color:#130D0A;min-width:150px;">7:30pm – 9:30pm</div>
-        <div style="font-size:15px;color:#130D0A;flex:1;min-width:200px;">Q&amp;A: On The Spot w/ the A-Team</div>
+      <div style="display:flex;align-items:center;gap:18px;background:var(--surface);border:1px solid rgba(201,151,44,.5);border-left:5px solid var(--gold);border-radius:10px;padding:16px 24px;flex-wrap:wrap;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;letter-spacing:.04em;text-transform:uppercase;color:var(--wine);min-width:180px;">1st Monday</div>
+        <div style="font-weight:700;font-size:14px;color:var(--ink);min-width:150px;">7:30pm – 9:30pm</div>
+        <div style="font-size:15px;color:var(--ink);flex:1;min-width:200px;">Q&amp;A: On The Spot w/ the A-Team</div>
       </div>
-      <div style="display:flex;align-items:center;gap:18px;background:#E8DDD0;border:1px solid rgba(201,151,44,.5);border-left:5px solid #C9972C;border-radius:10px;padding:16px 24px;flex-wrap:wrap;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;letter-spacing:.04em;text-transform:uppercase;color:#7C1316;min-width:180px;">2nd &amp; 4th Mondays</div>
-        <div style="font-weight:700;font-size:14px;color:#130D0A;min-width:150px;">7:30pm – 9:30pm</div>
-        <div style="font-size:15px;color:#130D0A;flex:1;min-width:200px;">Los Discípulos de la Palabra</div>
+      <div style="display:flex;align-items:center;gap:18px;background:var(--surface);border:1px solid rgba(201,151,44,.5);border-left:5px solid var(--gold);border-radius:10px;padding:16px 24px;flex-wrap:wrap;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;letter-spacing:.04em;text-transform:uppercase;color:var(--wine);min-width:180px;">2nd &amp; 4th Mondays</div>
+        <div style="font-weight:700;font-size:14px;color:var(--ink);min-width:150px;">7:30pm – 9:30pm</div>
+        <div style="font-size:15px;color:var(--ink);flex:1;min-width:200px;">Los Discípulos de la Palabra</div>
       </div>
-      <div style="display:flex;align-items:center;gap:18px;background:#E8DDD0;border:1px solid rgba(201,151,44,.5);border-left:5px solid #C9972C;border-radius:10px;padding:16px 24px;flex-wrap:wrap;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;letter-spacing:.04em;text-transform:uppercase;color:#7C1316;min-width:180px;">Tuesdays</div>
-        <div style="font-weight:700;font-size:14px;color:#130D0A;min-width:150px;">7:30pm – 9:30pm</div>
-        <div style="font-size:15px;color:#130D0A;flex:1;min-width:200px;">Bible Basics</div>
+      <div style="display:flex;align-items:center;gap:18px;background:var(--surface);border:1px solid rgba(201,151,44,.5);border-left:5px solid var(--gold);border-radius:10px;padding:16px 24px;flex-wrap:wrap;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;letter-spacing:.04em;text-transform:uppercase;color:var(--wine);min-width:180px;">Tuesdays</div>
+        <div style="font-weight:700;font-size:14px;color:var(--ink);min-width:150px;">7:30pm – 9:30pm</div>
+        <div style="font-size:15px;color:var(--ink);flex:1;min-width:200px;">Bible Basics</div>
       </div>
-      <div style="display:flex;align-items:center;gap:18px;background:#E8DDD0;border:1px solid rgba(201,151,44,.5);border-left:5px solid #C9972C;border-radius:10px;padding:16px 24px;flex-wrap:wrap;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;letter-spacing:.04em;text-transform:uppercase;color:#7C1316;min-width:180px;">Wednesdays</div>
-        <div style="font-weight:700;font-size:14px;color:#130D0A;min-width:150px;">7:30pm – 9:30pm</div>
-        <div style="font-size:15px;color:#130D0A;flex:1;min-width:200px;">World History According to the Bible</div>
+      <div style="display:flex;align-items:center;gap:18px;background:var(--surface);border:1px solid rgba(201,151,44,.5);border-left:5px solid var(--gold);border-radius:10px;padding:16px 24px;flex-wrap:wrap;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;letter-spacing:.04em;text-transform:uppercase;color:var(--wine);min-width:180px;">Wednesdays</div>
+        <div style="font-weight:700;font-size:14px;color:var(--ink);min-width:150px;">7:30pm – 9:30pm</div>
+        <div style="font-size:15px;color:var(--ink);flex:1;min-width:200px;">World History According to the Bible</div>
       </div>
-      <div style="display:flex;align-items:center;gap:18px;background:#E8DDD0;border:1px solid rgba(201,151,44,.5);border-left:5px solid #C9972C;border-radius:10px;padding:16px 24px;flex-wrap:wrap;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;letter-spacing:.04em;text-transform:uppercase;color:#7C1316;min-width:180px;">2nd &amp; 4th Thursdays</div>
-        <div style="font-weight:700;font-size:14px;color:#130D0A;min-width:150px;">7:30pm – 9:30pm</div>
-        <div style="font-size:15px;color:#130D0A;flex:1;min-width:200px;">Stick to the Script</div>
+      <div style="display:flex;align-items:center;gap:18px;background:var(--surface);border:1px solid rgba(201,151,44,.5);border-left:5px solid var(--gold);border-radius:10px;padding:16px 24px;flex-wrap:wrap;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;letter-spacing:.04em;text-transform:uppercase;color:var(--wine);min-width:180px;">2nd &amp; 4th Thursdays</div>
+        <div style="font-weight:700;font-size:14px;color:var(--ink);min-width:150px;">7:30pm – 9:30pm</div>
+        <div style="font-size:15px;color:var(--ink);flex:1;min-width:200px;">Stick to the Script</div>
       </div>
-      <div style="display:flex;align-items:center;gap:18px;background:#E8DDD0;border:1px solid rgba(201,151,44,.5);border-left:5px solid #C9972C;border-radius:10px;padding:16px 24px;flex-wrap:wrap;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;letter-spacing:.04em;text-transform:uppercase;color:#7C1316;min-width:180px;">Fridays</div>
-        <div style="font-weight:700;font-size:14px;color:#130D0A;min-width:150px;">5:30 – 7:00pm PST</div>
-        <div style="font-size:15px;color:#130D0A;flex:1;min-width:200px;">Blue Strip w/ Apostle Yashami</div>
+      <div style="display:flex;align-items:center;gap:18px;background:var(--surface);border:1px solid rgba(201,151,44,.5);border-left:5px solid var(--gold);border-radius:10px;padding:16px 24px;flex-wrap:wrap;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;letter-spacing:.04em;text-transform:uppercase;color:var(--wine);min-width:180px;">Fridays</div>
+        <div style="font-weight:700;font-size:14px;color:var(--ink);min-width:150px;">5:30 – 7:00pm PST</div>
+        <div style="font-size:15px;color:var(--ink);flex:1;min-width:200px;">Blue Strip w/ Apostle Yashami</div>
       </div>
-      <div style="display:flex;align-items:center;gap:18px;background:#E8DDD0;border:1px solid rgba(201,151,44,.5);border-left:5px solid #C9972C;border-radius:10px;padding:16px 24px;flex-wrap:wrap;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;letter-spacing:.04em;text-transform:uppercase;color:#7C1316;min-width:180px;">Fridays</div>
-        <div style="font-weight:700;font-size:14px;color:#130D0A;min-width:150px;">7:30pm – 9:30pm</div>
-        <div style="font-size:15px;color:#130D0A;flex:1;min-width:200px;">Room 144</div>
+      <div style="display:flex;align-items:center;gap:18px;background:var(--surface);border:1px solid rgba(201,151,44,.5);border-left:5px solid var(--gold);border-radius:10px;padding:16px 24px;flex-wrap:wrap;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;letter-spacing:.04em;text-transform:uppercase;color:var(--wine);min-width:180px;">Fridays</div>
+        <div style="font-weight:700;font-size:14px;color:var(--ink);min-width:150px;">7:30pm – 9:30pm</div>
+        <div style="font-size:15px;color:var(--ink);flex:1;min-width:200px;">Room 144</div>
       </div>
-      <div style="display:flex;align-items:center;gap:18px;background:#E8DDD0;border:1px solid rgba(201,151,44,.5);border-left:5px solid #C9972C;border-radius:10px;padding:16px 24px;flex-wrap:wrap;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;letter-spacing:.04em;text-transform:uppercase;color:#7C1316;min-width:180px;">Fridays</div>
-        <div style="font-weight:700;font-size:14px;color:#130D0A;min-width:150px;">9:45pm – 11:30pm</div>
-        <div style="font-size:15px;color:#130D0A;flex:1;min-width:200px;">Deaconstruction w/ Deacon Shamar</div>
+      <div style="display:flex;align-items:center;gap:18px;background:var(--surface);border:1px solid rgba(201,151,44,.5);border-left:5px solid var(--gold);border-radius:10px;padding:16px 24px;flex-wrap:wrap;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;letter-spacing:.04em;text-transform:uppercase;color:var(--wine);min-width:180px;">Fridays</div>
+        <div style="font-weight:700;font-size:14px;color:var(--ink);min-width:150px;">9:45pm – 11:30pm</div>
+        <div style="font-size:15px;color:var(--ink);flex:1;min-width:200px;">Deaconstruction w/ Deacon Shamar</div>
       </div>
-      <div style="display:flex;align-items:center;gap:18px;background:#E8DDD0;border:1px solid rgba(201,151,44,.5);border-left:5px solid #C9972C;border-radius:10px;padding:16px 24px;flex-wrap:wrap;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;letter-spacing:.04em;text-transform:uppercase;color:#7C1316;min-width:180px;">Sabbath</div>
-        <div style="font-weight:700;font-size:14px;color:#130D0A;min-width:150px;">2:00pm PST / 5:00pm EST</div>
-        <div style="font-size:15px;color:#130D0A;flex:1;min-width:200px;">War for The Kingdom w/ Bishop Yahzeqel</div>
+      <div style="display:flex;align-items:center;gap:18px;background:var(--surface);border:1px solid rgba(201,151,44,.5);border-left:5px solid var(--gold);border-radius:10px;padding:16px 24px;flex-wrap:wrap;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;letter-spacing:.04em;text-transform:uppercase;color:var(--wine);min-width:180px;">Sabbath</div>
+        <div style="font-weight:700;font-size:14px;color:var(--ink);min-width:150px;">2:00pm PST / 5:00pm EST</div>
+        <div style="font-size:15px;color:var(--ink);flex:1;min-width:200px;">War for The Kingdom w/ Bishop Yahzeqel</div>
       </div>
-      <div style="display:flex;align-items:center;gap:18px;background:#E8DDD0;border:1px solid rgba(201,151,44,.5);border-left:5px solid #C9972C;border-radius:10px;padding:16px 24px;flex-wrap:wrap;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;letter-spacing:.04em;text-transform:uppercase;color:#7C1316;min-width:180px;">Sabbath</div>
-        <div style="font-weight:700;font-size:14px;color:#130D0A;min-width:150px;">4:30pm PST / 7:30pm EST</div>
-        <div style="font-size:15px;color:#130D0A;flex:1;min-width:200px;">Feed The Sheep w/ Bishop Tazayawan</div>
+      <div style="display:flex;align-items:center;gap:18px;background:var(--surface);border:1px solid rgba(201,151,44,.5);border-left:5px solid var(--gold);border-radius:10px;padding:16px 24px;flex-wrap:wrap;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:19px;letter-spacing:.04em;text-transform:uppercase;color:var(--wine);min-width:180px;">Sabbath</div>
+        <div style="font-weight:700;font-size:14px;color:var(--ink);min-width:150px;">4:30pm PST / 7:30pm EST</div>
+        <div style="font-size:15px;color:var(--ink);flex:1;min-width:200px;">Feed The Sheep w/ Bishop Tazayawan</div>
       </div>
     </div>
-    <p style="margin-top:18px;font-size:13px;color:#7C1316;font-weight:500;">True Nation · www.truenation.org · (323) 446-7655 · reachus@truenation.org</p>
+    <p style="margin-top:18px;font-size:13px;color:var(--wine);font-weight:500;">True Nation · www.truenation.org · (323) 446-7655 · reachus@truenation.org</p>
   </section>
 
-  <section id="leadership" style="scroll-margin-top:88px;background:#7C1316;color:#F2EDE4;margin-top:60px;padding:70px 24px;">
+  <section id="leadership" style="scroll-margin-top:88px;background:var(--wine);color:var(--onwine);margin-top:60px;padding:70px 24px;">
     <div style="max-width:1080px;margin:0 auto;">
-      <div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.24em;color:#C9972C;text-transform:uppercase;">Those Who Serve</div>
+      <div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.24em;color:var(--gold-on-wine);text-transform:uppercase;">Those Who Serve</div>
       <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:clamp(30px,4.5vw,46px);letter-spacing:.01em;text-transform:uppercase;line-height:1;margin:8px 0 6px;">True Nation Leaders</h2>
-      <div style="width:64px;height:4px;background:#C9972C;border-radius:2px;margin-bottom:12px;"></div>
-      <p style="font-size:13px;color:#C9972C;margin:0 0 28px;font-style:italic;">Leaders and roles are updated as the congregation grows — names below can be edited at any time.</p><div style="column-width:265px;column-gap:18px;">
-        <div style="background:rgba(250,248,244,.06);border:1px solid #C9972C;border-radius:12px;padding:24px;break-inside:avoid;-webkit-column-break-inside:avoid;display:inline-block;width:100%;box-sizing:border-box;margin-bottom:18px;">
-          <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:19px;letter-spacing:.06em;text-transform:uppercase;color:#C9972C;margin:0 0 16px;">Bishops</h3>
+      <div style="width:64px;height:4px;background:var(--gold);border-radius:2px;margin-bottom:12px;"></div>
+      <p style="font-size:13px;color:var(--gold-on-wine);margin:0 0 28px;font-style:italic;">Leaders and roles are updated as the congregation grows — names below can be edited at any time.</p><div style="column-width:265px;column-gap:18px;">
+        <div style="background:rgba(250,248,244,.06);border:1px solid var(--gold);border-radius:12px;padding:24px;break-inside:avoid;-webkit-column-break-inside:avoid;display:inline-block;width:100%;box-sizing:border-box;margin-bottom:18px;">
+          <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:19px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-on-wine);margin:0 0 16px;">Bishops</h3>
           <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:13px;">
-            <li><div style="font-weight:700;font-size:15px;">Tazayawan Ahrayahla</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Head Bishop · LA</div></li>
-            <li><div style="font-weight:700;font-size:15px;">Banayah Ban Yasharahla</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Bishop · LA</div></li>
-            <li><div style="font-weight:700;font-size:15px;">Izar Ahla</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Bishop · LA</div></li>
-            <li><div style="font-weight:700;font-size:15px;">Yahzeqel Israel</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Bishop · GA/MI</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Tazayawan Ahrayahla</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Head Bishop · LA</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Banayah Ban Yasharahla</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Bishop · LA</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Izar Ahla</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Bishop · LA</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Yahzeqel Israel</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Bishop · GA/MI</div></li>
           </ul>
         </div>
         
-        <div style="background:rgba(250,248,244,.06);border:1px solid #C9972C;border-radius:12px;padding:24px;break-inside:avoid;-webkit-column-break-inside:avoid;display:inline-block;width:100%;box-sizing:border-box;margin-bottom:18px;">
-          <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:19px;letter-spacing:.06em;text-transform:uppercase;color:#C9972C;margin:0 0 16px;">Deacons</h3>
+        <div style="background:rgba(250,248,244,.06);border:1px solid var(--gold);border-radius:12px;padding:24px;break-inside:avoid;-webkit-column-break-inside:avoid;display:inline-block;width:100%;box-sizing:border-box;margin-bottom:18px;">
+          <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:19px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-on-wine);margin:0 0 16px;">Deacons</h3>
           <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:13px;">
-            <li><div style="font-weight:700;font-size:15px;">Kahan Yah Ahla</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Head Deacon · LA</div></li>
-            <li><div style="font-weight:700;font-size:15px;">Y'Liyah Yasharahla</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Deacon · GA/MI</div></li>
-            <li><div style="font-weight:700;font-size:15px;">Ahman Ahla</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Deacon · LA</div></li>
-            <li><div style="font-weight:700;font-size:15px;">Rakab Ahla</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Deacon · LA</div></li>
-            <li><div style="font-weight:700;font-size:15px;">Shamar Yah</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Deacon · LA</div></li>
-            <li><div style="font-weight:700;font-size:15px;">Raiyah Yasharahla</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Deacon · LA</div></li>
-            <li><div style="font-weight:700;font-size:15px;">Shahad Ahmath</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Deacon · LA</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Kahan Yah Ahla</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Head Deacon · LA</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Y'Liyah Yasharahla</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Deacon · GA/MI</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Ahman Ahla</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Deacon · LA</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Rakab Ahla</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Deacon · LA</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Shamar Yah</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Deacon · LA</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Raiyah Yasharahla</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Deacon · LA</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Shahad Ahmath</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Deacon · LA</div></li>
           </ul>
-        </div><div style="background:rgba(250,248,244,.06);border:1px solid #C9972C;border-radius:12px;padding:24px;break-inside:avoid;-webkit-column-break-inside:avoid;display:inline-block;width:100%;box-sizing:border-box;margin-bottom:18px;">
-          <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:19px;letter-spacing:.06em;text-transform:uppercase;color:#C9972C;margin:0 0 16px;">Apostles</h3>
+        </div><div style="background:rgba(250,248,244,.06);border:1px solid var(--gold);border-radius:12px;padding:24px;break-inside:avoid;-webkit-column-break-inside:avoid;display:inline-block;width:100%;box-sizing:border-box;margin-bottom:18px;">
+          <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:19px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-on-wine);margin:0 0 16px;">Apostles</h3>
           <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:13px;">
-            <li><div style="font-weight:700;font-size:15px;">Ash Napash</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Head Apostle</div></li>
-            <li><div style="font-weight:700;font-size:15px;">Yashami</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Apostle</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Ash Napash</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Head Apostle</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Yashami</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Apostle</div></li>
           </ul>
-        </div><div style="background:rgba(250,248,244,.06);border:1px solid #C9972C;border-radius:12px;padding:24px;break-inside:avoid;-webkit-column-break-inside:avoid;display:inline-block;width:100%;box-sizing:border-box;margin-bottom:18px;">
-          <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:19px;letter-spacing:.06em;text-transform:uppercase;color:#C9972C;margin:0 0 16px;">Judges</h3>
+        </div><div style="background:rgba(250,248,244,.06);border:1px solid var(--gold);border-radius:12px;padding:24px;break-inside:avoid;-webkit-column-break-inside:avoid;display:inline-block;width:100%;box-sizing:border-box;margin-bottom:18px;">
+          <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:19px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-on-wine);margin:0 0 16px;">Judges</h3>
           <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:13px;">
-            <li><div style="font-weight:700;font-size:15px;">Tazayawan Ahrayahla</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Bishop</div></li>
-            <li><div style="font-weight:700;font-size:15px;">Yahzeqel Israel</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Bishop</div></li>
-            <li><div style="font-weight:700;font-size:15px;">Banayah Ban Yasharahla</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Bishop</div></li>
-            <li><div style="font-weight:700;font-size:15px;">Izar Ahla</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Bishop</div></li>
-            <li><div style="font-weight:700;font-size:15px;">Ash Napash</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Apostle</div></li>
-            <li><div style="font-weight:700;font-size:15px;">Yashami</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Apostle</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Tazayawan Ahrayahla</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Bishop</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Yahzeqel Israel</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Bishop</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Banayah Ban Yasharahla</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Bishop</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Izar Ahla</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Bishop</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Ash Napash</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Apostle</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Yashami</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Apostle</div></li>
           </ul>
-        </div><div style="background:rgba(250,248,244,.06);border:1px solid #C9972C;border-radius:12px;padding:24px;break-inside:avoid;-webkit-column-break-inside:avoid;display:inline-block;width:100%;box-sizing:border-box;margin-bottom:18px;">
-          <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:19px;letter-spacing:.06em;text-transform:uppercase;color:#C9972C;margin:0 0 16px;">Elders</h3>
+        </div><div style="background:rgba(250,248,244,.06);border:1px solid var(--gold);border-radius:12px;padding:24px;break-inside:avoid;-webkit-column-break-inside:avoid;display:inline-block;width:100%;box-sizing:border-box;margin-bottom:18px;">
+          <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:19px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-on-wine);margin:0 0 16px;">Elders</h3>
           <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:13px;">
-            <li><div style="font-weight:700;font-size:15px;">Charawtaza Benson</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Head Elder</div></li>
-            <li><div style="font-weight:700;font-size:15px;">Azariyah Benaiah Yasharahla</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Elder</div></li>
-            <li><div style="font-weight:700;font-size:15px;">Sha'ahth Yaqar</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Elder</div></li>
-            <li><div style="font-weight:700;font-size:15px;">Shamawah Baldwin</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Elder</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Charawtaza Benson</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Head Elder</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Azariyah Benaiah Yasharahla</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Elder</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Sha'ahth Yaqar</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Elder</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Shamawah Baldwin</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Elder</div></li>
           </ul>
-        </div><div style="background:rgba(250,248,244,.06);border:1px solid #C9972C;border-radius:12px;padding:24px;break-inside:avoid;-webkit-column-break-inside:avoid;display:inline-block;width:100%;box-sizing:border-box;margin-bottom:18px;">
-          <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:19px;letter-spacing:.06em;text-transform:uppercase;color:#C9972C;margin:0 0 6px;">Sanhedrin</h3>
-          <div style="font-size:11px;letter-spacing:.04em;color:#C9972C;opacity:.8;text-transform:uppercase;margin-bottom:16px;">Calendar Council</div>
+        </div><div style="background:rgba(250,248,244,.06);border:1px solid var(--gold);border-radius:12px;padding:24px;break-inside:avoid;-webkit-column-break-inside:avoid;display:inline-block;width:100%;box-sizing:border-box;margin-bottom:18px;">
+          <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:19px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-on-wine);margin:0 0 6px;">Sanhedrin</h3>
+          <div style="font-size:11px;letter-spacing:.04em;color:var(--gold-on-wine);opacity:.8;text-transform:uppercase;margin-bottom:16px;">Calendar Council</div>
           <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:13px;">
-            <li><div style="font-weight:700;font-size:15px;">Tazayawan Ahrayahla</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Bishop</div></li>
-            <li><div style="font-weight:700;font-size:15px;">Banayah Ban Yasharahla</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Bishop</div></li>
-            <li><div style="font-weight:700;font-size:15px;">Izar Ahla</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Bishop</div></li>
-            <li><div style="font-weight:700;font-size:15px;">Ash Napash</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Apostle</div></li>
-            <li><div style="font-weight:700;font-size:15px;">Yashami</div><div style="font-size:12px;letter-spacing:.03em;color:#C9972C;margin-top:2px;">Apostle</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Tazayawan Ahrayahla</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Bishop</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Banayah Ban Yasharahla</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Bishop</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Izar Ahla</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Bishop</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Ash Napash</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Apostle</div></li>
+            <li><div style="font-weight:700;font-size:15px;">Yashami</div><div style="font-size:12px;letter-spacing:.03em;color:var(--gold-on-wine);margin-top:2px;">Apostle</div></li>
           </ul>
         </div>
         
@@ -304,87 +310,87 @@
 
   <section id="prayer" style="scroll-margin-top:88px;max-width:900px;margin:0 auto;padding:72px 24px 20px;">
     <div style="text-align:center;">
-      <div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.24em;color:#8A6D1A;text-transform:uppercase;">Matthew 6:9-13</div>
-      <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:clamp(30px,4.5vw,46px);letter-spacing:.01em;text-transform:uppercase;color:#7C1316;line-height:1;margin:8px 0 6px;">The LORD's Prayer</h2>
-      <div style="width:64px;height:4px;background:#C9972C;border-radius:2px;margin:0 auto 10px;"></div>
-      <p style="font-size:13px;color:#130D0A;opacity:.7;margin:0 0 34px;">Hebrew · English · Spanish</p>
+      <div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.24em;color:var(--gold-text);text-transform:uppercase;">Matthew 6:9-13</div>
+      <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:clamp(30px,4.5vw,46px);letter-spacing:.01em;text-transform:uppercase;color:var(--wine);line-height:1;margin:8px 0 6px;">The LORD's Prayer</h2>
+      <div style="width:64px;height:4px;background:var(--gold);border-radius:2px;margin:0 auto 10px;"></div>
+      <p style="font-size:13px;color:var(--ink);opacity:.7;margin:0 0 34px;">Hebrew · English · Spanish</p>
     </div>
     
-    <div style="background: #E8DDD0; border: 1px solid rgba(201,151,44,.5); border-radius: 16px; padding:12px 24px;max-width:600px;width:100%;margin:0 auto;box-sizing:border-box">
+    <div style="background:var(--surface); border: 1px solid rgba(201,151,44,.5); border-radius: 16px; padding:12px 24px;max-width:600px;width:100%;margin:0 auto;box-sizing:border-box">
               <div style="padding:22px 0;border-top:1px solid rgba(201,151,44,.35);">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:20px;letter-spacing:.02em;color:#7C1316;line-height:1.3;">Ahba nawa shaba shamayam qadash hayah shamka Yahawah</div>
-          <div style="font-size:16px;color:#130D0A;margin-top:6px;line-height:1.5;">Our Father which art in heaven, hallowed be thy name.</div>
-          <div lang="es" style="font-size:14.5px;color:#130D0A;opacity:.68;font-style:italic;margin-top:4px;line-height:1.5;">Padre Nuestro que estás en el cielo, santificado sea tu nombre.</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:20px;letter-spacing:.02em;color:var(--wine);line-height:1.3;">Ahba nawa shaba shamayam qadash hayah shamka Yahawah</div>
+          <div style="font-size:16px;color:var(--ink);margin-top:6px;line-height:1.5;">Our Father which art in heaven, hallowed be thy name.</div>
+          <div lang="es" style="font-size:14.5px;color:var(--ink);opacity:.68;font-style:italic;margin-top:4px;line-height:1.5;">Padre Nuestro que estás en el cielo, santificado sea tu nombre.</div>
         </div>
         <div style="padding:22px 0;border-top:1px solid rgba(201,151,44,.35);">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:20px;letter-spacing:.02em;color:#7C1316;line-height:1.3;">malakwathka thabaah ratazah ka hayah ishah baahrataza</div>
-          <div style="font-size:16px;color:#130D0A;margin-top:6px;line-height:1.5;">Thy kingdom come, thy will be done in earth,</div>
-          <div lang="es" style="font-size:14.5px;color:#130D0A;opacity:.68;font-style:italic;margin-top:4px;line-height:1.5;">Venga tu reino, hágase tu voluntad en la tierra</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:20px;letter-spacing:.02em;color:var(--wine);line-height:1.3;">malakwathka thabaah ratazah ka hayah ishah baahrataza</div>
+          <div style="font-size:16px;color:var(--ink);margin-top:6px;line-height:1.5;">Thy kingdom come, thy will be done in earth,</div>
+          <div lang="es" style="font-size:14.5px;color:var(--ink);opacity:.68;font-style:italic;margin-top:4px;line-height:1.5;">Venga tu reino, hágase tu voluntad en la tierra</div>
         </div>
         <div style="padding:22px 0;border-top:1px solid rgba(201,151,44,.35);">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:20px;letter-spacing:.02em;color:#7C1316;line-height:1.3;">kawa hayah ba shamayam nathan la nawa lachaam zah yawam wa salach</div>
-          <div style="font-size:16px;color:#130D0A;margin-top:6px;line-height:1.5;">as it is in heaven. Give us this day our daily bread. And forgive</div>
-          <div lang="es" style="font-size:14.5px;color:#130D0A;opacity:.68;font-style:italic;margin-top:4px;line-height:1.5;">como en el cielo. Danos hoy nuestro pan de cada día. Y perdona</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:20px;letter-spacing:.02em;color:var(--wine);line-height:1.3;">kawa hayah ba shamayam nathan la nawa lachaam zah yawam wa salach</div>
+          <div style="font-size:16px;color:var(--ink);margin-top:6px;line-height:1.5;">as it is in heaven. Give us this day our daily bread. And forgive</div>
+          <div lang="es" style="font-size:14.5px;color:var(--ink);opacity:.68;font-style:italic;margin-top:4px;line-height:1.5;">como en el cielo. Danos hoy nuestro pan de cada día. Y perdona</div>
         </div>
         <div style="padding:22px 0;border-top:1px solid rgba(201,151,44,.35);">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:20px;letter-spacing:.02em;color:#7C1316;line-height:1.3;">nawa chaawabwath nawa ka salach nawa chaawabwathya nawa wa</div>
-          <div style="font-size:16px;color:#130D0A;margin-top:6px;line-height:1.5;">us our debts, as we forgive our debtors. And</div>
-          <div lang="es" style="font-size:14.5px;color:#130D0A;opacity:.68;font-style:italic;margin-top:4px;line-height:1.5;">nuestras ofensas, como también nosotros perdonamos a los que nos ofenden</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:20px;letter-spacing:.02em;color:var(--wine);line-height:1.3;">nawa chaawabwath nawa ka salach nawa chaawabwathya nawa wa</div>
+          <div style="font-size:16px;color:var(--ink);margin-top:6px;line-height:1.5;">us our debts, as we forgive our debtors. And</div>
+          <div lang="es" style="font-size:14.5px;color:var(--ink);opacity:.68;font-style:italic;margin-top:4px;line-height:1.5;">nuestras ofensas, como también nosotros perdonamos a los que nos ofenden</div>
         </div>
         <div style="padding:22px 0;border-top:1px solid rgba(201,151,44,.35);">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:20px;letter-spacing:.02em;color:#7C1316;line-height:1.3;">laah thabayaah nawa ba nasayawan abal hawashi nawa man ri</div>
-          <div style="font-size:16px;color:#130D0A;margin-top:6px;line-height:1.5;">lead us not into temptation, but deliver us from evil:</div>
-          <div lang="es" style="font-size:14.5px;color:#130D0A;opacity:.68;font-style:italic;margin-top:4px;line-height:1.5;">no nos dejes caer en tentación y líbranos del mal</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:20px;letter-spacing:.02em;color:var(--wine);line-height:1.3;">laah thabayaah nawa ba nasayawan abal hawashi nawa man ri</div>
+          <div style="font-size:16px;color:var(--ink);margin-top:6px;line-height:1.5;">lead us not into temptation, but deliver us from evil:</div>
+          <div lang="es" style="font-size:14.5px;color:var(--ink);opacity:.68;font-style:italic;margin-top:4px;line-height:1.5;">no nos dejes caer en tentación y líbranos del mal</div>
         </div>
         <div style="padding:22px 0;border-top:1px solid rgba(201,151,44,.35);">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:20px;letter-spacing:.02em;color:#7C1316;line-height:1.3;">kaya la ka ha malakwath wa ha ahla wa ha thapahrath laiwalamyam.</div>
-          <div style="font-size:16px;color:#130D0A;margin-top:6px;line-height:1.5;">For thine is the kingdom, and the power and the glory forever.</div>
-          <div lang="es" style="font-size:14.5px;color:#130D0A;opacity:.68;font-style:italic;margin-top:4px;line-height:1.5;">Porque tuyo es el reino, y el poder y la gloria por todos los siglos</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:20px;letter-spacing:.02em;color:var(--wine);line-height:1.3;">kaya la ka ha malakwath wa ha ahla wa ha thapahrath laiwalamyam.</div>
+          <div style="font-size:16px;color:var(--ink);margin-top:6px;line-height:1.5;">For thine is the kingdom, and the power and the glory forever.</div>
+          <div lang="es" style="font-size:14.5px;color:var(--ink);opacity:.68;font-style:italic;margin-top:4px;line-height:1.5;">Porque tuyo es el reino, y el poder y la gloria por todos los siglos</div>
         </div>
     </div><div style="text-align:center;margin-top:26px;">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:26px;letter-spacing:.06em;text-transform:uppercase;color:#7C1316;">Ahman.</div>
-      <div style="font-size:14px;color:#130D0A;opacity:.72;">So be it. · Amen.</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:26px;letter-spacing:.06em;text-transform:uppercase;color:var(--wine);">Ahman.</div>
+      <div style="font-size:14px;color:var(--ink);opacity:.72;">So be it. · Amen.</div>
     </div>
   </section>
 
   <section id="believe" style="scroll-margin-top:88px;max-width:960px;margin:0 auto;padding:72px 24px 20px;">
-    <div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.24em;color:#8A6D1A;text-transform:uppercase;">Rooted in Scripture</div>
-    <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:clamp(30px,4.5vw,46px);letter-spacing:.01em;text-transform:uppercase;color:#7C1316;line-height:1;margin:8px 0 6px;">What We Believe According to The Bible</h2>
-    <div style="width:64px;height:4px;background:#C9972C;border-radius:2px;margin-bottom:14px;"></div>
-    <p style="max-width:720px;margin:0 0 34px;font-size:15px;color:#130D0A;">Our doctrine rests on the plain reading of Scripture. Each belief below is set beside the passages that establish it — read them for yourself.</p>
+    <div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.24em;color:var(--gold-text);text-transform:uppercase;">Rooted in Scripture</div>
+    <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:clamp(30px,4.5vw,46px);letter-spacing:.01em;text-transform:uppercase;color:var(--wine);line-height:1;margin:8px 0 6px;">What We Believe According to The Bible</h2>
+    <div style="width:64px;height:4px;background:var(--gold);border-radius:2px;margin-bottom:14px;"></div>
+    <p style="max-width:720px;margin:0 0 34px;font-size:15px;color:var(--ink);">Our doctrine rests on the plain reading of Scripture. Each belief below is set beside the passages that establish it — read them for yourself.</p>
 
     <div style="display:flex;flex-direction:column;gap:22px;">
 
       <!-- Belief 1 -->
-      <div style="background:#E8DDD0;border:1px solid rgba(201,151,44,.5);border-radius:14px;padding:32px 34px;">
+      <div style="background:var(--surface);border:1px solid rgba(201,151,44,.5);border-radius:14px;padding:32px 34px;">
         <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:6px;">
-          <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:30px;color:#C9972C;line-height:1;">01</span>
-          <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:24px;letter-spacing:.02em;text-transform:uppercase;color:#7C1316;margin:0;line-height:1.05;">Salvation is only for Israel</h3>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:30px;color:var(--gold-text);line-height:1;">01</span>
+          <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:24px;letter-spacing:.02em;text-transform:uppercase;color:var(--wine);margin:0;line-height:1.05;">Salvation is only for Israel</h3>
         </div>
-        <p style="font-size:14px;color:#130D0A;opacity:.85;margin:0 0 20px;">The Messiah was sent to redeem his own people — the house of Israel — and to grant them repentance and the forgiveness of sins.</p>
+        <p style="font-size:14px;color:var(--ink);opacity:.85;margin:0 0 20px;">The Messiah was sent to redeem his own people — the house of Israel — and to grant them repentance and the forgiveness of sins.</p>
         <div style="display:flex;flex-direction:column;gap:15px;">
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">Matthew 15:24</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">Matthew 15:24</div>
             <div style="font-size:14.5px;line-height:1.55;">But he answered and said, I am not sent but unto the lost sheep of the house of Israel.</div>
           </div>
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">Matthew 1:21</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">Matthew 1:21</div>
             <div style="font-size:14.5px;line-height:1.55;">And she shall bring forth a son, and thou shalt call his name JESUS: for he shall save his people from their sins.</div>
           </div>
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">Luke 1:68</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">Luke 1:68</div>
             <div style="font-size:14.5px;line-height:1.55;">Blessed <em>be</em> the Lord God of Israel; for he hath visited and redeemed his people,</div>
           </div>
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">John 4:22</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">John 4:22</div>
             <div style="font-size:14.5px;line-height:1.55;">Ye worship ye know not what: we know what we worship: for salvation is of the Jews.</div>
           </div>
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">Acts 5:30</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">Acts 5:30</div>
             <div style="font-size:14.5px;line-height:1.55;">The God of our fathers raised up Jesus, whom ye slew and hanged on a tree.</div>
           </div>
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">Acts 5:31</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">Acts 5:31</div>
             <div style="font-size:14.5px;line-height:1.55;">Him hath God exalted with his right hand <em>to be</em> a Prince and a Saviour, for to give repentance to Israel, and forgiveness of sins.</div>
           </div>
         </div>
@@ -394,144 +400,144 @@
       
 
       <!-- Belief 3 -->
-      <div style="background:#E8DDD0;border:1px solid rgba(201,151,44,.5);border-radius:14px;padding:32px 34px;">
+      <div style="background:var(--surface);border:1px solid rgba(201,151,44,.5);border-radius:14px;padding:32px 34px;">
         <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:6px;">
-          <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:30px;color:#C9972C;line-height:1;">02</span>
-          <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:24px;letter-spacing:.02em;text-transform:uppercase;color:#7C1316;margin:0;line-height:1.05;">Blacks, Hispanics &amp; Natives are the Israelites in the Americas</h3>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:30px;color:var(--gold-text);line-height:1;">02</span>
+          <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:24px;letter-spacing:.02em;text-transform:uppercase;color:var(--wine);margin:0;line-height:1.05;">Blacks, Hispanics &amp; Natives are the Israelites in the Americas</h3>
         </div>
-        <p style="font-size:14px;color:#130D0A;opacity:.85;margin:0 0 20px;">The curses foretold in the law fell upon Israel and their seed as a sign — curses our people have borne, and others have not.</p>
+        <p style="font-size:14px;color:var(--ink);opacity:.85;margin:0 0 20px;">The curses foretold in the law fell upon Israel and their seed as a sign — curses our people have borne, and others have not.</p>
         <div style="display:flex;flex-direction:column;gap:15px;">
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">Deuteronomy 28:15</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">Deuteronomy 28:15</div>
             <div style="font-size:14.5px;line-height:1.55;">But it shall come to pass, if thou wilt not hearken unto the voice of the LORD thy God, to observe to do all his commandments and his statutes which I command thee this day; that all these curses shall come upon thee, and overtake thee:</div>
           </div>
           
-          <div style="background:#7C1316;color:#F2EDE4;border-radius:10px;padding:16px 20px;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:18px;letter-spacing:.01em;line-height:1.25;text-align:center;">What curses do Blacks / Hispanics experience that White people have not?</div>
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">Deuteronomy 28:36-37</div>
+          <div style="background:var(--wine);color:var(--onwine);border-radius:10px;padding:16px 20px;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:18px;letter-spacing:.01em;line-height:1.25;text-align:center;">What curses do Blacks / Hispanics experience that White people have not?</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">Deuteronomy 28:36-37</div>
             <div style="font-size:14.5px;line-height:1.55;">The LORD shall bring thee, and thy king which thou shalt set over thee, unto a nation which neither thou nor thy fathers have known; and there shalt thou serve other gods, wood and stone.<br>And thou shalt become an astonishment, a proverb, and a byword, among all the nations whither the LORD shall lead thee.</div>
           </div>
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">Deuteronomy 28:46</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">Deuteronomy 28:46</div>
             <div style="font-size:14.5px;line-height:1.55;">And they shall be upon thee for a sign and for a wonder, and upon thy seed for ever.</div>
           </div>
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">Deuteronomy 28:48</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">Deuteronomy 28:48</div>
             <div style="font-size:14.5px;line-height:1.55;">Therefore shalt thou serve thine enemies which the LORD shall send against thee, in hunger, and in thirst, and in nakedness, and in want of all <em>things:</em> and he shall put a yoke of iron upon thy neck, until he have destroyed thee.</div>
           </div>
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">Deuteronomy 28:68</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">Deuteronomy 28:68</div>
             <div style="font-size:14.5px;line-height:1.55;">And the LORD shall bring thee into Egypt again with ships, by the way whereof I spake unto thee, Thou shalt see it no more again: and there ye shall be sold unto your enemies for bondmen and bondwomen, and no man shall buy <em>you.</em></div>
-            <div style="font-size:13px;font-style:italic;color:#7C1316;opacity:.9;margin-top:7px;">Egypt represents bondage — the book of Exodus.</div>
+            <div style="font-size:13px;font-style:italic;color:var(--wine);opacity:.9;margin-top:7px;">Egypt represents bondage — the book of Exodus.</div>
           </div>
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">Job 9:24</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">Job 9:24</div>
             <div style="font-size:14.5px;line-height:1.55;">The earth is given into the hand of the wicked: he covereth the faces of the judges thereof; if not, where, <em>and</em> who <em>is</em> he?</div>
-            <div style="font-size:13px;font-style:italic;color:#7C1316;opacity:.9;margin-top:7px;">The wicked here points to the border of wickedness — Edom.</div>
+            <div style="font-size:13px;font-style:italic;color:var(--wine);opacity:.9;margin-top:7px;">The wicked here points to the border of wickedness — Edom.</div>
           </div>
 
-          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:17px;letter-spacing:.03em;text-transform:uppercase;color:#7C1316;margin:8px 0 2px;">Israelis (whites in the land now) are not the Israelites</div>
-          <div style="font-size:13.5px;color:#130D0A;"><strong style="color:#7C1316;">Brown brass</strong> — a figure of Christ.</div>
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">Hebrews 7:14</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:17px;letter-spacing:.03em;text-transform:uppercase;color:var(--wine);margin:8px 0 2px;">Israelis (whites in the land now) are not the Israelites</div>
+          <div style="font-size:13.5px;color:var(--ink);"><strong style="color:var(--wine);">Brown brass</strong> — a figure of Christ.</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">Hebrews 7:14</div>
             <div style="font-size:14.5px;line-height:1.55;">For it is evident that our Lord sprang out of Juda; of which tribe Moses spake nothing concerning priesthood.</div>
-            <div style="font-size:13px;font-style:italic;color:#7C1316;opacity:.9;margin-top:7px;">Christ sprang out of Judah.</div>
+            <div style="font-size:13px;font-style:italic;color:var(--wine);opacity:.9;margin-top:7px;">Christ sprang out of Judah.</div>
           </div>
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">Song of Solomon 1:5</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">Song of Solomon 1:5</div>
             <div style="font-size:14.5px;line-height:1.55;">I <em>am</em> black, but comely, O ye daughters of Jerusalem, as the tents of Kedar, as the curtains of Solomon.</div>
-            <div style="font-size:13px;font-style:italic;color:#7C1316;opacity:.9;margin-top:7px;">The Israelites are black / brown.</div>
+            <div style="font-size:13px;font-style:italic;color:var(--wine);opacity:.9;margin-top:7px;">The Israelites are black / brown.</div>
           </div>
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">Proverbs 29:2</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">Proverbs 29:2</div>
             <div style="font-size:14.5px;line-height:1.55;">When the righteous are in authority, the people rejoice: but when the wicked beareth rule, the people mourn.</div>
-            <div style="font-size:13px;font-style:italic;color:#7C1316;opacity:.9;margin-top:7px;">When the saints are back in the land, the world will rejoice.</div>
+            <div style="font-size:13px;font-style:italic;color:var(--wine);opacity:.9;margin-top:7px;">When the saints are back in the land, the world will rejoice.</div>
           </div>
         </div>
-      </div><div style="background:#E8DDD0;border:1px solid rgba(201,151,44,.5);border-radius:14px;padding:32px 34px;">
+      </div><div style="background:var(--surface);border:1px solid rgba(201,151,44,.5);border-radius:14px;padding:32px 34px;">
         <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:6px;">
-          <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:30px;color:#C9972C;line-height:1;">03</span>
-          <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:24px;letter-spacing:.02em;text-transform:uppercase;color:#7C1316;margin:0;line-height:1.05;">The 7th-Day Sabbath — Sundown to Sundown</h3>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:30px;color:var(--gold-text);line-height:1;">03</span>
+          <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:24px;letter-spacing:.02em;text-transform:uppercase;color:var(--wine);margin:0;line-height:1.05;">The 7th-Day Sabbath — Sundown to Sundown</h3>
         </div>
-        <p style="font-size:14px;color:#130D0A;opacity:.85;margin:0 0 20px;">Scripture counts the day from evening to evening: the Sabbath begins when the sun goes down.</p>
+        <p style="font-size:14px;color:var(--ink);opacity:.85;margin:0 0 20px;">Scripture counts the day from evening to evening: the Sabbath begins when the sun goes down.</p>
         <div style="display:flex;flex-direction:column;gap:15px;">
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">Judges 14:12</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">Judges 14:12</div>
             <div style="font-size:14.5px;line-height:1.55;">And Samson said unto them, I will now put forth a riddle unto you: if ye can certainly declare it me within the seven days of the feast, and find <em>it</em> out, then I will give you thirty sheets and thirty change of garments:</div>
           </div>
           
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">Judges 14:18</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">Judges 14:18</div>
             <div style="font-size:14.5px;line-height:1.55;">And the men of the city said unto him on the seventh day before the sun went down, What <em>is</em> sweeter than honey? and what <em>is</em> stronger than a lion? And he said unto them, If ye had not plowed with my heifer, ye had not found out my riddle.</div>
           </div>
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;flex-wrap:wrap;">
-              <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;">Mark 15:42</span>
-              <span style="background:#7C1316;color:#F2EDE4;font-family:'DM Sans',sans-serif;font-weight:700;font-size:9px;letter-spacing:.12em;text-transform:uppercase;padding:2px 7px;border-radius:5px;">KJV</span>
+              <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);">Mark 15:42</span>
+              <span style="background:var(--wine);color:var(--onwine);font-family:'DM Sans',sans-serif;font-weight:700;font-size:9px;letter-spacing:.12em;text-transform:uppercase;padding:2px 7px;border-radius:5px;">KJV</span>
             </div>
             <div style="font-size:14.5px;line-height:1.55;">And now when the even was come, because it was the preparation, that is, the day before the sabbath,</div>
           </div>
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;flex-wrap:wrap;">
-              <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;">Mark 15:42</span>
-              <span style="background:#C9972C;color:#130D0A;font-family:'DM Sans',sans-serif;font-weight:700;font-size:9px;letter-spacing:.12em;text-transform:uppercase;padding:2px 7px;border-radius:5px;">NLT</span>
+              <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);">Mark 15:42</span>
+              <span style="background:var(--gold);color:var(--ink);font-family:'DM Sans',sans-serif;font-weight:700;font-size:9px;letter-spacing:.12em;text-transform:uppercase;padding:2px 7px;border-radius:5px;">NLT</span>
             </div>
             <div style="font-size:14.5px;line-height:1.55;">This all happened on Friday, the day of preparation, the day before the Sabbath. As evening approached,</div>
           </div>
 
-          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:17px;letter-spacing:.03em;text-transform:uppercase;color:#7C1316;margin:8px 0 2px;">A New Day Begins at Sundown</div>
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">John 20:1</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:17px;letter-spacing:.03em;text-transform:uppercase;color:var(--wine);margin:8px 0 2px;">A New Day Begins at Sundown</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">John 20:1</div>
             <div style="font-size:14.5px;line-height:1.55;">The first <em>day</em> of the week cometh Mary Magdalene early, when it was yet dark, unto the sepulchre, and seeth the stone taken away from the sepulchre.</div>
           </div>
           
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">John 20:19</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">John 20:19</div>
             <div style="font-size:14.5px;line-height:1.55;">Then the same day at evening, being the first <em>day</em> of the week, when the doors were shut where the disciples were assembled for fear of the Jews, came Jesus and stood in the midst, and saith unto them, Peace <em>be</em> unto you.</div>
-            <div style="font-size:13px;font-style:italic;color:#7C1316;opacity:.9;margin-top:7px;">A new day begins at sundown — and note it was the doors of the house they hid in, not the gates of Jerusalem.</div>
+            <div style="font-size:13px;font-style:italic;color:var(--wine);opacity:.9;margin-top:7px;">A new day begins at sundown — and note it was the doors of the house they hid in, not the gates of Jerusalem.</div>
           </div>
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;flex-wrap:wrap;">
-              <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;">Nehemiah 13:19</span>
-              <span style="background:#7C1316;color:#F2EDE4;font-family:'DM Sans',sans-serif;font-weight:700;font-size:9px;letter-spacing:.12em;text-transform:uppercase;padding:2px 7px;border-radius:5px;">KJV</span>
+              <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);">Nehemiah 13:19</span>
+              <span style="background:var(--wine);color:var(--onwine);font-family:'DM Sans',sans-serif;font-weight:700;font-size:9px;letter-spacing:.12em;text-transform:uppercase;padding:2px 7px;border-radius:5px;">KJV</span>
             </div>
             <div style="font-size:14.5px;line-height:1.55;">And it came to pass, that when the gates of Jerusalem began to be dark before the sabbath, I commanded that the gates should be shut, and charged that they should not be opened till after the sabbath: and <em>some</em> of my servants set I at the gates, <em>that</em> there should no burden be brought in on the sabbath day.</div>
-            <div style="font-size:13px;font-style:italic;color:#7C1316;opacity:.9;margin-top:7px;">The gates began to be dark <em>before</em> the sabbath — that is, at evening.</div>
+            <div style="font-size:13px;font-style:italic;color:var(--wine);opacity:.9;margin-top:7px;">The gates began to be dark <em>before</em> the sabbath — that is, at evening.</div>
           </div>
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;flex-wrap:wrap;">
-              <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;">Nehemiah 13:19</span>
-              <span style="background:#C9972C;color:#130D0A;font-family:'DM Sans',sans-serif;font-weight:700;font-size:9px;letter-spacing:.12em;text-transform:uppercase;padding:2px 7px;border-radius:5px;">GNT</span>
+              <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);">Nehemiah 13:19</span>
+              <span style="background:var(--gold);color:var(--ink);font-family:'DM Sans',sans-serif;font-weight:700;font-size:9px;letter-spacing:.12em;text-transform:uppercase;padding:2px 7px;border-radius:5px;">GNT</span>
             </div>
             <div style="font-size:14.5px;line-height:1.55;">So I gave orders for the city gates to be shut at the beginning of every Sabbath, as soon as evening began to fall, and not to be opened again until the Sabbath was over. I stationed some of my men at the gates to make sure that nothing was brought into the city on the Sabbath.</div>
-            <div style="font-size:13px;font-style:italic;color:#7C1316;opacity:.9;margin-top:7px;">At the beginning of every Sabbath, as soon as evening began to fall — going into night.</div>
+            <div style="font-size:13px;font-style:italic;color:var(--wine);opacity:.9;margin-top:7px;">At the beginning of every Sabbath, as soon as evening began to fall — going into night.</div>
           </div>
         </div>
       </div>
 
       <!-- Belief 4 -->
-      <div style="background:#E8DDD0;border:1px solid rgba(201,151,44,.5);border-radius:14px;padding:32px 34px;">
+      <div style="background:var(--surface);border:1px solid rgba(201,151,44,.5);border-radius:14px;padding:32px 34px;">
         <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:6px;">
-          <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:30px;color:#C9972C;line-height:1;">04</span>
-          <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:24px;letter-spacing:.02em;text-transform:uppercase;color:#7C1316;margin:0;line-height:1.05;">The New Moon Sabbath — the Crescent Moon</h3>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:30px;color:var(--gold-text);line-height:1;">04</span>
+          <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:24px;letter-spacing:.02em;text-transform:uppercase;color:var(--wine);margin:0;line-height:1.05;">The New Moon Sabbath — the Crescent Moon</h3>
         </div>
-        <p style="font-size:14px;color:#130D0A;opacity:.85;margin:0 0 20px;">The New Moon is a holy convocation, kept from one new moon to another as Scripture and history testify.</p>
+        <p style="font-size:14px;color:var(--ink);opacity:.85;margin:0 0 20px;">The New Moon is a holy convocation, kept from one new moon to another as Scripture and history testify.</p>
         <div style="display:flex;flex-direction:column;gap:15px;">
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">Amos 8:5</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">Amos 8:5</div>
             <div style="font-size:14.5px;line-height:1.55;">Saying, When will the new moon be gone, that we may sell corn? and the sabbath, that we may set forth wheat, making the ephah small, and the shekel great, and falsifying the balances by deceit?</div>
           </div>
-          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:17px;letter-spacing:.03em;text-transform:uppercase;color:#7C1316;margin:8px 0 2px;">A Holy Convocation</div>
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">Isaiah 66:23</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:17px;letter-spacing:.03em;text-transform:uppercase;color:var(--wine);margin:8px 0 2px;">A Holy Convocation</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">Isaiah 66:23</div>
             <div style="font-size:14.5px;line-height:1.55;">And it shall come to pass, <em>that</em> from one new moon to another, and from one sabbath to another, shall all flesh come to worship before me, saith the LORD.</div>
           </div>
           <div style="background:rgba(124,19,22,.06);border:1px dashed rgba(201,151,44,.7);border-radius:10px;padding:16px 20px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#7C1316;margin-bottom:6px;">Historical Witness — The Sanhedrin</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--wine);margin-bottom:6px;">Historical Witness — The Sanhedrin</div>
             <p style="font-size:14px;line-height:1.55;margin:0;">The proclamation of the New Moon — <em>Ḳiddush ha-Ḥodesh</em> — by the president of the Sanhedrin was of the greatest significance. <a href="https://www.jewishencyclopedia.com/articles/11493-new-moon" target="_blank" style="font-weight:700;text-decoration:none;white-space:nowrap;">Jewish Encyclopedia →</a></p>
           </div>
           <div style="background:rgba(124,19,22,.06);border:1px dashed rgba(201,151,44,.7);border-radius:10px;padding:16px 20px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#7C1316;margin-bottom:6px;">Historical Witness — Philo of Alexandria</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--wine);margin-bottom:6px;">Historical Witness — Philo of Alexandria</div>
             <p style="font-size:14px;line-height:1.55;margin:0 0 8px;">Philo (c. 20 BCE – 50 CE), a Jewish philosopher writing before the Messiah, tied the festival cycle to the moon's phases: the moon waxes to the full at the end of the second week after its conjunction with the sun, marking the full moon of the lunar month.</p>
             <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:13px;">
               <a href="http://www.earlychristianwritings.com/yonge/book18.html" target="_blank" style="font-weight:700;text-decoration:none;">On Mating with the Preliminary Studies →</a>
@@ -542,36 +548,36 @@
       </div>
 
       <!-- Belief 5 -->
-      <div style="background:#E8DDD0;border:1px solid rgba(201,151,44,.5);border-radius:14px;padding:32px 34px;">
+      <div style="background:var(--surface);border:1px solid rgba(201,151,44,.5);border-radius:14px;padding:32px 34px;">
         <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:6px;">
-          <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:30px;color:#C9972C;line-height:1;">05</span>
-          <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:24px;letter-spacing:.02em;text-transform:uppercase;color:#7C1316;margin:0;line-height:1.05;">Circumcision</h3>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:30px;color:var(--gold-text);line-height:1;">05</span>
+          <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:24px;letter-spacing:.02em;text-transform:uppercase;color:var(--wine);margin:0;line-height:1.05;">Circumcision</h3>
         </div>
-        <p style="font-size:14px;color:#130D0A;opacity:.85;margin:0 0 20px;">Circumcision matters — you must be circumcised — but it profits only alongside repentance and the keeping of the law. If you are not living as Christ, you do not believe in Christ, and you should still be sacrificing.</p>
+        <p style="font-size:14px;color:var(--ink);opacity:.85;margin:0 0 20px;">Circumcision matters — you must be circumcised — but it profits only alongside repentance and the keeping of the law. If you are not living as Christ, you do not believe in Christ, and you should still be sacrificing.</p>
         <div style="display:flex;flex-direction:column;gap:15px;">
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">Galatians 6:15</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">Galatians 6:15</div>
             <div style="font-size:14.5px;line-height:1.55;">For in Christ Jesus neither circumcision availeth any thing, nor uncircumcision, but a new creature.</div>
-            <div style="font-size:13px;font-style:italic;color:#7C1316;opacity:.9;margin-top:7px;">A new creature signifies repentance.</div>
+            <div style="font-size:13px;font-style:italic;color:var(--wine);opacity:.9;margin-top:7px;">A new creature signifies repentance.</div>
           </div>
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">1 Corinthians 7:19</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">1 Corinthians 7:19</div>
             <div style="font-size:14.5px;line-height:1.55;">Circumcision is nothing, and uncircumcision is nothing, but the keeping of the commandments of God.</div>
           </div>
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">Romans 2:25</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">Romans 2:25</div>
             <div style="font-size:14.5px;line-height:1.55;">For circumcision verily profiteth, if thou keep the law: but if thou be a breaker of the law, thy circumcision is made uncircumcision.</div>
           </div>
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">John 14:15</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">John 14:15</div>
             <div style="font-size:14.5px;line-height:1.55;">If ye love me, keep my commandments.</div>
           </div>
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">Acts 7:8</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">Acts 7:8</div>
             <div style="font-size:14.5px;line-height:1.55;">And he gave him the covenant of circumcision: and so <em>Abraham</em> begat Isaac, and circumcised him the eighth day; and Isaac <em>begat</em> Jacob; and Jacob <em>begat</em> the twelve patriarchs.</div>
           </div>
-          <div style="border-left:4px solid #C9972C;padding:2px 0 2px 18px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:#7C1316;margin-bottom:3px;">Leviticus 12:1–3</div>
+          <div style="border-left:4px solid var(--gold);padding:2px 0 2px 18px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;color:var(--wine);margin-bottom:3px;">Leviticus 12:1–3</div>
             <div style="font-size:14.5px;line-height:1.55;">And the LORD spake unto Moses, saying, Speak unto the children of Israel, saying, If a woman have conceived seed, and born a man child: then she shall be unclean seven days; according to the days of the separation for her infirmity shall she be unclean. And in the eighth day the flesh of his foreskin shall be circumcised.</div>
           </div>
         </div>
@@ -581,15 +587,15 @@
   </section>
 
   <section id="remarks" style="scroll-margin-top:88px;max-width:1080px;margin:0 auto;padding:72px 24px 20px;">
-    <div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.24em;color:#8A6D1A;text-transform:uppercase;">Living the Law</div>
-    <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:clamp(30px,4.5vw,46px);letter-spacing:.01em;text-transform:uppercase;color:#7C1316;line-height:1;margin:8px 0 6px;">General Remarks &amp; Resources</h2>
-    <div style="width:64px;height:4px;background:#C9972C;border-radius:2px;margin-bottom:26px;"></div>
+    <div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.24em;color:var(--gold-text);text-transform:uppercase;">Living the Law</div>
+    <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:clamp(30px,4.5vw,46px);letter-spacing:.01em;text-transform:uppercase;color:var(--wine);line-height:1;margin:8px 0 6px;">General Remarks &amp; Resources</h2>
+    <div style="width:64px;height:4px;background:var(--gold);border-radius:2px;margin-bottom:26px;"></div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;">
-      <div style="background:#E8DDD0;border:1px solid rgba(201,151,44,.5);border-radius:12px;padding:26px;">
-        <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:18px;letter-spacing:.03em;text-transform:uppercase;color:#7C1316;margin:0 0 6px;">Unclean Foods</h3>
-        <div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#7C1316;font-weight:700;margin-bottom:12px;">Leviticus 11 · Deuteronomy 14</div>
+      <div style="background:var(--surface);border:1px solid rgba(201,151,44,.5);border-radius:12px;padding:26px;">
+        <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:18px;letter-spacing:.03em;text-transform:uppercase;color:var(--wine);margin:0 0 6px;">Unclean Foods</h3>
+        <div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--wine);font-weight:700;margin-bottom:12px;">Leviticus 11 · Deuteronomy 14</div>
         <p style="font-size:14px;margin:0 0 12px;">For a detailed list of references and ingredients, see the linked guide. When in doubt, call and check it out.</p>
-        <p style="font-size:13px;font-weight:700;margin:0 0 6px;color:#7C1316;">Beware of:</p>
+        <p style="font-size:13px;font-weight:700;margin:0 0 6px;color:var(--wine);">Beware of:</p>
         <ul style="margin:0 0 12px;padding-left:18px;font-size:13.5px;display:flex;flex-direction:column;gap:4px;">
           <li>Pork Casing</li>
           <li>Gelatin (may or may not be pork — call to verify)</li>
@@ -600,9 +606,9 @@
         </ul>
         <a href="https://www.theisraelofgodrc.com/CUPL.html" target="_blank" style="font-size:13px;font-weight:700;text-decoration:none;">theisraelofgodrc.com — Full list →</a>
       </div>
-      <div style="background:#E8DDD0;border:1px solid rgba(201,151,44,.5);border-radius:12px;padding:26px;">
-        <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:18px;letter-spacing:.03em;text-transform:uppercase;color:#7C1316;margin:0 0 6px;">Fringes</h3>
-        <div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#7C1316;font-weight:700;margin-bottom:12px;">Numbers 15:38-39 · Matthew 9:20 · Zephaniah 1:8</div>
+      <div style="background:var(--surface);border:1px solid rgba(201,151,44,.5);border-radius:12px;padding:26px;">
+        <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:18px;letter-spacing:.03em;text-transform:uppercase;color:var(--wine);margin:0 0 6px;">Fringes</h3>
+        <div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--wine);font-weight:700;margin-bottom:12px;">Numbers 15:38-39 · Matthew 9:20 · Zephaniah 1:8</div>
         <ul style="margin:0;padding-left:18px;font-size:13.5px;display:flex;flex-direction:column;gap:6px;">
           <li>8th St. and Maple Ave. (outlets/stores up and down Maple Ave.)</li>
           <li>Debs Lace and Trim</li>
@@ -610,16 +616,16 @@
           <li>Hobby Lobby</li>
           <li>Amazon</li>
         </ul>
-        <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:18px;letter-spacing:.03em;text-transform:uppercase;color:#7C1316;margin:22px 0 6px;">Modest Swimwear</h3>
-        <div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#7C1316;font-weight:700;margin-bottom:10px;">Deuteronomy 22:5 · Judith 9:2 · 1 Timothy 2:9</div>
+        <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:18px;letter-spacing:.03em;text-transform:uppercase;color:var(--wine);margin:22px 0 6px;">Modest Swimwear</h3>
+        <div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--wine);font-weight:700;margin-bottom:10px;">Deuteronomy 22:5 · Judith 9:2 · 1 Timothy 2:9</div>
         <a href="https://www.koshercasual.com" target="_blank" style="font-size:13px;font-weight:700;text-decoration:none;">koshercasual.com →</a>
       </div>
-      <div style="background:#E8DDD0;border:1px solid rgba(201,151,44,.5);border-radius:12px;padding:26px;">
-        <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:18px;letter-spacing:.03em;text-transform:uppercase;color:#7C1316;margin:0 0 6px;">Circumcision</h3>
-        <div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#7C1316;font-weight:700;margin-bottom:12px;">Genesis 17:7-14, 24 · Exodus 12:43-49</div>
+      <div style="background:var(--surface);border:1px solid rgba(201,151,44,.5);border-radius:12px;padding:26px;">
+        <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:18px;letter-spacing:.03em;text-transform:uppercase;color:var(--wine);margin:0 0 6px;">Circumcision</h3>
+        <div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--wine);font-weight:700;margin-bottom:12px;">Genesis 17:7-14, 24 · Exodus 12:43-49</div>
         <p style="font-size:14px;margin:0 0 4px;font-weight:700;">Leonard W. Liang, MD</p>
         <p style="font-size:13.5px;margin:0;">1513 S Grand Ave #300<br>Los Angeles, CA 90015<br><a href="tel:2137490662" style="text-decoration:none;font-weight:700;">(213) 749-0662</a></p>
-        <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:18px;letter-spacing:.03em;text-transform:uppercase;color:#7C1316;margin:22px 0 10px;">Monthly Assemblies</h3>
+        <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:18px;letter-spacing:.03em;text-transform:uppercase;color:var(--wine);margin:22px 0 10px;">Monthly Assemblies</h3>
         <ul style="margin:0;padding-left:18px;font-size:13.5px;display:flex;flex-direction:column;gap:5px;">
           <li>General Assembly — 1st Sabbath @ 11:00am</li>
           <li>Circle of Trust Marriage Discussion — <br>New Moon's @ 12:00pm</li>
@@ -627,7 +633,7 @@
           
           
         </ul>
-        <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:18px;letter-spacing:.03em;text-transform:uppercase;color:#7C1316;margin:22px 0 10px;">Feast Days</h3>
+        <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:18px;letter-spacing:.03em;text-transform:uppercase;color:var(--wine);margin:22px 0 10px;">Feast Days</h3>
         <ul style="margin:0;padding-left:18px;font-size:13.5px;display:flex;flex-direction:column;gap:5px;">
           <li>3 Mandatory Feasts for all Males (Deuteronomy 16:16)</li>
           <li>Sabbath Refreshment Weekly Rotation</li>
@@ -638,64 +644,64 @@
   </section>
 
   <section id="join" style="scroll-margin-top:88px;max-width:1080px;margin:0 auto;padding:72px 24px 20px;">
-    <div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.24em;color:#8A6D1A;text-transform:uppercase;">Welcome to the Body</div>
-    <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:clamp(30px,4.5vw,46px);letter-spacing:.01em;text-transform:uppercase;color:#7C1316;line-height:1;margin:8px 0 6px;">Your Next Steps</h2>
-    <div style="width:64px;height:4px;background:#C9972C;border-radius:2px;margin-bottom:22px;"></div>
-    <p style="max-width:720px;margin:0 0 26px;font-size:15px;color:#130D0A;">Your account is created. Two things to take care of as you settle into the congregation — start with your commitment of alms, then set up your member profile.</p>
+    <div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.24em;color:var(--gold-text);text-transform:uppercase;">Welcome to the Body</div>
+    <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:clamp(30px,4.5vw,46px);letter-spacing:.01em;text-transform:uppercase;color:var(--wine);line-height:1;margin:8px 0 6px;">Your Next Steps</h2>
+    <div style="width:64px;height:4px;background:var(--gold);border-radius:2px;margin-bottom:22px;"></div>
+    <p style="max-width:720px;margin:0 0 26px;font-size:15px;color:var(--ink);">Your account is created. Two things to take care of as you settle into the congregation — start with your commitment of alms, then set up your member profile.</p>
 
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;">
-      <div style="background:#7C1316;color:#F2EDE4;border-radius:14px;padding:30px;display:flex;flex-direction:column;">
+      <div style="background:var(--wine);color:var(--onwine);border-radius:14px;padding:30px;display:flex;flex-direction:column;">
         <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:24px;letter-spacing:.03em;text-transform:uppercase;">Commitment of Alms</div>
-        <p style="margin:10px 0 22px;font-size:14.5px;opacity:.9;flex:1;">Alms of $150 per adult congregant sustains the nation. Complete and sign your commitment of alms. <span style="color:#C9972C;font-weight:600;">(Numbers 1:3, 20)</span></p>
-        <a href="https://sites.google.com/truenation.org/portal/resources/members-hub/alms-commitment?authuser=0" target="_top" style="align-self:flex-start;background:#C9972C;color:#7C1316;text-decoration:none;font-family:'DM Sans',sans-serif;font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase;padding:14px 26px;border-radius:9px;">Alms Commitment →</a>
+        <p style="margin:10px 0 22px;font-size:14.5px;opacity:.9;flex:1;">Alms of $150 per adult congregant sustains the nation. Complete and sign your commitment of alms. <span style="color:var(--gold-on-wine);font-weight:600;">(Numbers 1:3, 20)</span></p>
+        <a href="https://sites.google.com/truenation.org/portal/resources/members-hub/alms-commitment?authuser=0" target="_top" style="align-self:flex-start;background:var(--gold);color:var(--wine);text-decoration:none;font-family:'DM Sans',sans-serif;font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase;padding:14px 26px;border-radius:9px;">Alms Commitment →</a>
       </div>
-      <div style="background:#E8DDD0;border:1px solid rgba(201,151,44,.5);border-radius:14px;padding:30px;display:flex;flex-direction:column;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:24px;letter-spacing:.03em;text-transform:uppercase;color:#7C1316;">Profile Setup</div>
-        <p style="margin:10px 0 22px;font-size:14.5px;color:#130D0A;flex:1;">Complete your member profile so we can welcome you properly and keep the congregation directory current.</p>
-        <a href="https://truenation.vercel.app/setup" target="_blank" style="align-self:flex-start;background:#7C1316;color:#F2EDE4;text-decoration:none;font-family:'DM Sans',sans-serif;font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase;padding:14px 26px;border-radius:9px;">Set Up Profile →</a>
+      <div style="background:var(--surface);border:1px solid rgba(201,151,44,.5);border-radius:14px;padding:30px;display:flex;flex-direction:column;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:24px;letter-spacing:.03em;text-transform:uppercase;color:var(--wine);">Profile Setup</div>
+        <p style="margin:10px 0 22px;font-size:14.5px;color:var(--ink);flex:1;">Complete your member profile so we can welcome you properly and keep the congregation directory current.</p>
+        <a href="https://truenation.vercel.app/setup" target="_blank" style="align-self:flex-start;background:var(--wine);color:var(--onwine);text-decoration:none;font-family:'DM Sans',sans-serif;font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase;padding:14px 26px;border-radius:9px;">Set Up Profile →</a>
       </div>
     </div>
   </section>
 
-  <footer id="contact" style="scroll-margin-top:88px;background:#7C1316;color:#F2EDE4;margin-top:64px;padding:64px 24px 40px;">
+  <footer id="contact" style="scroll-margin-top:88px;background:var(--wine);color:var(--onwine);margin-top:64px;padding:64px 24px 40px;">
     <div style="max-width:1080px;margin:0 auto;">
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:32px;">
         <div>
           <img src="<?= logo ?>" alt="True Nation" onerror="this.style.display='none'" style="width:72px;height:auto;margin-bottom:14px;">
           <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;letter-spacing:.05em;text-transform:uppercase;">True Nation</div>
-          <div style="font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:#C9972C;margin-top:4px;">Awaken · Restore · Unite</div>
+          <div style="font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold-on-wine);margin-top:4px;">Awaken · Restore · Unite</div>
         </div>
         <div>
-          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:16px;letter-spacing:.06em;text-transform:uppercase;color:#C9972C;margin-bottom:12px;">Give Alms · $150</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:16px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-on-wine);margin-bottom:12px;">Give Alms · $150</div>
           <ul style="list-style:none;margin:0;padding:0;font-size:14px;display:flex;flex-direction:column;gap:7px;">
-            <li>Zeffy - <a href="https://truenation.org/alms" style="color:#F2EDE4;text-decoration:none;" target="_blank" rel="noopener noreferrer">truenation.org/alms</a></li>
+            <li>Zeffy - <a href="https://truenation.org/alms" style="color:var(--onwine);text-decoration:none;" target="_blank" rel="noopener noreferrer">truenation.org/alms</a></li>
             <li>Zelle - maryb@truenation.org</li>
             <li>Envelope — drop box near Bulletin Board</li>
           </ul>
         </div>
         <div>
-          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:16px;letter-spacing:.06em;text-transform:uppercase;color:#C9972C;margin-bottom:12px;">Connect</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:16px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-on-wine);margin-bottom:12px;">Connect</div>
           <ul style="list-style:none;margin:0;padding:0;font-size:14px;display:flex;flex-direction:column;gap:7px;">
             <li>Conference Line — (302) 202-1108 · Code 918618</li>
             <li>Security — (310) 773-1465</li>
             <li>Main — (323) 446-7655</li>
-            <li><a href="mailto:reachus@truenation.org" style="color:#F2EDE4;text-decoration:none;">reachus@truenation.org</a></li>
+            <li><a href="mailto:reachus@truenation.org" style="color:var(--onwine);text-decoration:none;">reachus@truenation.org</a></li>
           </ul>
         </div>
         <div>
-          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:16px;letter-spacing:.06em;text-transform:uppercase;color:#C9972C;margin-bottom:12px;">Follow</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:16px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-on-wine);margin-bottom:12px;">Follow</div>
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-            <a href="https://www.facebook.com/TrueNationIsraeliteCongregation" target="_blank" title="Facebook — True Nation Israelite Congregation" style="display:inline-flex;text-decoration:none;"><svg width="34" height="34" viewBox="0 0 24 24" fill="#F2EDE4" role="img" aria-label="Facebook" style="display:block;"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.9h2.54V9.85c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56v1.87h2.78l-.44 2.9h-2.34V22c4.78-.79 8.44-4.94 8.44-9.94z"/></svg></a>
-            <a href="https://www.instagram.com/truenationlosangeles/" target="_blank" title="Instagram — truenationlosangeles" style="display:inline-flex;text-decoration:none;"><svg width="34" height="34" viewBox="0 0 24 24" fill="#F2EDE4" role="img" aria-label="Instagram" style="display:block;"><path d="M12 2c2.72 0 3.06.01 4.12.06 1.07.05 1.8.22 2.43.47.66.25 1.22.6 1.77 1.15.55.55.9 1.11 1.15 1.77.25.63.42 1.36.47 2.43.05 1.06.06 1.4.06 4.12s-.01 3.06-.06 4.12c-.05 1.07-.22 1.8-.47 2.43-.25.66-.6 1.22-1.15 1.77-.55.55-1.11.9-1.77 1.15-.63.25-1.36.42-2.43.47-1.06.05-1.4.06-4.12.06s-3.06-.01-4.12-.06c-1.07-.05-1.8-.22-2.43-.47-.66-.25-1.22-.6-1.77-1.15-.55-.55-.9-1.11-1.15-1.77-.25-.63-.42-1.36-.47-2.43C2.01 15.06 2 14.72 2 12s.01-3.06.06-4.12c.05-1.07.22-1.8.47-2.43.25-.66.6-1.22 1.15-1.77.55-.55 1.11-.9 1.77-1.15.63-.25 1.36-.42 2.43-.47C8.94 2.01 9.28 2 12 2zm0 1.8c-2.67 0-2.99.01-4.04.06-.98.04-1.51.21-1.86.35-.47.18-.8.4-1.15.75-.35.35-.57.68-.75 1.15-.14.35-.31.88-.35 1.86-.05 1.05-.06 1.37-.06 4.04s.01 2.99.06 4.04c.04.98.21 1.51.35 1.86.18.47.4.8.75 1.15.35.35.68.57 1.15.75.35.14.88.31 1.86.35 1.05.05 1.37.06 4.04.06s2.99-.01 4.04-.06c.98-.04 1.51-.21 1.86-.35.47-.18.8-.4 1.15-.75.35-.35.57-.68.75-1.15.14-.35.31-.88.35-1.86.05-1.05.06-1.37.06-4.04s-.01-2.99-.06-4.04c-.04-.98-.21-1.51-.35-1.86-.18-.47-.4-.8-.75-1.15-.35-.35-.68-.57-1.15-.75-.35-.14-.88-.31-1.86-.35-1.05-.05-1.37-.06-4.04-.06zm0 3.06a5.14 5.14 0 110 10.28 5.14 5.14 0 010-10.28zm0 1.8a3.34 3.34 0 100 6.68 3.34 3.34 0 000-6.68zm5.34-.65a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"/></svg></a>
-            <a href="https://www.youtube.com/truenationlosangeles" target="_blank" title="YouTube — True Nation Israelite Congregation" style="display:inline-flex;text-decoration:none;"><svg width="34" height="34" viewBox="0 0 24 24" fill="#F2EDE4" role="img" aria-label="YouTube" style="display:block;"><path d="M23.5 6.2a3.02 3.02 0 00-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.51A3.02 3.02 0 00.5 6.2 31.5 31.5 0 000 12a31.5 31.5 0 00.5 5.8 3.02 3.02 0 002.12 2.14c1.88.51 9.38.51 9.38.51s7.5 0 9.38-.51a3.02 3.02 0 002.12-2.14A31.5 31.5 0 0024 12a31.5 31.5 0 00-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg></a>
+            <a href="https://www.facebook.com/TrueNationIsraeliteCongregation" target="_blank" title="Facebook — True Nation Israelite Congregation" style="display:inline-flex;text-decoration:none;"><svg width="34" height="34" viewBox="0 0 24 24" fill="var(--surface)" role="img" aria-label="Facebook" style="display:block;"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.9h2.54V9.85c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56v1.87h2.78l-.44 2.9h-2.34V22c4.78-.79 8.44-4.94 8.44-9.94z"/></svg></a>
+            <a href="https://www.instagram.com/truenationlosangeles/" target="_blank" title="Instagram — truenationlosangeles" style="display:inline-flex;text-decoration:none;"><svg width="34" height="34" viewBox="0 0 24 24" fill="var(--surface)" role="img" aria-label="Instagram" style="display:block;"><path d="M12 2c2.72 0 3.06.01 4.12.06 1.07.05 1.8.22 2.43.47.66.25 1.22.6 1.77 1.15.55.55.9 1.11 1.15 1.77.25.63.42 1.36.47 2.43.05 1.06.06 1.4.06 4.12s-.01 3.06-.06 4.12c-.05 1.07-.22 1.8-.47 2.43-.25.66-.6 1.22-1.15 1.77-.55.55-1.11.9-1.77 1.15-.63.25-1.36.42-2.43.47-1.06.05-1.4.06-4.12.06s-3.06-.01-4.12-.06c-1.07-.05-1.8-.22-2.43-.47-.66-.25-1.22-.6-1.77-1.15-.55-.55-.9-1.11-1.15-1.77-.25-.63-.42-1.36-.47-2.43C2.01 15.06 2 14.72 2 12s.01-3.06.06-4.12c.05-1.07.22-1.8.47-2.43.25-.66.6-1.22 1.15-1.77.55-.55 1.11-.9 1.77-1.15.63-.25 1.36-.42 2.43-.47C8.94 2.01 9.28 2 12 2zm0 1.8c-2.67 0-2.99.01-4.04.06-.98.04-1.51.21-1.86.35-.47.18-.8.4-1.15.75-.35.35-.57.68-.75 1.15-.14.35-.31.88-.35 1.86-.05 1.05-.06 1.37-.06 4.04s.01 2.99.06 4.04c.04.98.21 1.51.35 1.86.18.47.4.8.75 1.15.35.35.68.57 1.15.75.35.14.88.31 1.86.35 1.05.05 1.37.06 4.04.06s2.99-.01 4.04-.06c.98-.04 1.51-.21 1.86-.35.47-.18.8-.4 1.15-.75.35-.35.57-.68.75-1.15.14-.35.31-.88.35-1.86.05-1.05.06-1.37.06-4.04s-.01-2.99-.06-4.04c-.04-.98-.21-1.51-.35-1.86-.18-.47-.4-.8-.75-1.15-.35-.35-.68-.57-1.15-.75-.35-.14-.88-.31-1.86-.35-1.05-.05-1.37-.06-4.04-.06zm0 3.06a5.14 5.14 0 110 10.28 5.14 5.14 0 010-10.28zm0 1.8a3.34 3.34 0 100 6.68 3.34 3.34 0 000-6.68zm5.34-.65a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"/></svg></a>
+            <a href="https://www.youtube.com/truenationlosangeles" target="_blank" title="YouTube — True Nation Israelite Congregation" style="display:inline-flex;text-decoration:none;"><svg width="34" height="34" viewBox="0 0 24 24" fill="var(--surface)" role="img" aria-label="YouTube" style="display:block;"><path d="M23.5 6.2a3.02 3.02 0 00-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.51A3.02 3.02 0 00.5 6.2 31.5 31.5 0 000 12a31.5 31.5 0 00.5 5.8 3.02 3.02 0 002.12 2.14c1.88.51 9.38.51 9.38.51s7.5 0 9.38-.51a3.02 3.02 0 002.12-2.14A31.5 31.5 0 0024 12a31.5 31.5 0 00-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg></a>
             <a href="https://twitter.com/truenation" target="_blank" title="Twitter" style="display:inline-flex;text-decoration:none;"></a>
           </div>
-          <a href="https://truenation.org" target="_blank" style="color:#F2EDE4;text-decoration:none;font-size:14px;">truenation.org</a>
+          <a href="https://truenation.org" target="_blank" style="color:var(--onwine);text-decoration:none;font-size:14px;">truenation.org</a>
         </div>
       </div>
-      <div style="border-top:1px solid rgba(201,151,44,.4);margin-top:36px;padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12px;color:#F2EDE4;opacity:.7;">
+      <div style="border-top:1px solid rgba(201,151,44,.4);margin-top:36px;padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--onwine);opacity:.7;">
         <span>© True Nation Israelite Congregation. Confidential — for members.</span>
-        <a href="https://portal.truenation.org" target="_blank" style="color:#C9972C;text-decoration:none;">Member Portal →</a>
+        <a href="https://portal.truenation.org" target="_blank" style="color:var(--gold-on-wine);text-decoration:none;">Member Portal →</a>
       </div>
     </div>
   </footer>

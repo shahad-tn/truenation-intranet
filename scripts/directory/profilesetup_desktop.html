@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<style>
+  /* Literals only. This block precedes the shared stylesheet,
+     so no token is defined yet. */
+  body{background:#E8E8EC;color:#26262A;font-family:'DM Sans',Helvetica,Arial,sans-serif;}
+</style>
+<link rel="stylesheet" href="https://portal.truenation.org/brand.css">
   <base target="_top">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,79 +14,64 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --red:      #781215;
-      --red-dk:   #5a0d0f;
-      --gold:     #d4a62a;
-      --gold-dk:  #a8821e;
-      --cream:    #fdf8f0;
-      --warm-50:  #faf6ee;
-      --warm-100: #f5eddb;
-      --slate:    #3a3530;
-      --muted:    #7a7068;
-      --border:   #e8dece;
-      --white:    #ffffff;
-      --radius:   14px;
-      --font:     'Source Sans 3', system-ui, sans-serif;
-    }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: var(--font); background: var(--cream); color: var(--slate); min-height: 100vh; }
+    body { font-family: var(--font-body); background: var(--page); color: var(--ink); min-height: 100vh; }
 
     /* ── NAV ── */
-    nav { background: var(--red); padding: 0 28px; display: flex; justify-content: space-between; align-items: center; height: 56px; box-shadow: 0 2px 16px rgba(80,10,12,0.3); }
+    nav { background: var(--wine); padding: 0 28px; display: flex; justify-content: space-between; align-items: center; height: 56px; box-shadow: 0 2px 16px rgba(80,10,12,0.3); }
     .nav-brand { display: flex; align-items: center; gap: 12px; }
-    .nav-title { font-size: 17px; font-weight: 700; color: #fff; }
+    .nav-title { font-size: 17px; font-weight: 700; color: var(--card); }
     .nav-sub { font-size: 10px; color: rgba(255,255,255,0.55); letter-spacing: .08em; text-transform: uppercase; display: block; margin-top: -2px; }
     .nav-right { display: flex; align-items: center; gap: 12px; }
     .nav-user { font-size: 12px; color: rgba(255,255,255,0.65); }
     .nav-logout { font-size: 13px; color: rgba(255,255,255,0.75); text-decoration: none; }
-    .nav-logout:hover { color: #fff; }
+    .nav-logout:hover { color: var(--card); }
 
     /* ── STEPPER ── */
-    .stepper-wrap { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 20px; overflow-x: auto; }
+    .stepper-wrap { background: var(--card); border-bottom: 1px solid var(--line); padding: 16px 20px; overflow-x: auto; }
     .stepper { display: flex; align-items: center; max-width: 800px; margin: 0 auto; min-width: 540px; }
     .step-item { display: flex; align-items: center; flex: 1; }
     .step-item:last-child { flex: none; }
-    .step-circle { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; border: 2px solid var(--border); background: var(--white); color: var(--muted); transition: all .2s; cursor: pointer; }
-    .step-circle.active { border-color: var(--red); background: var(--red); color: #fff; }
-    .step-circle.done   { border-color: var(--gold); background: var(--gold); color: var(--red-dk); }
+    .step-circle { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; border: 2px solid var(--line); background: var(--card); color: var(--muted); transition: all .2s; cursor: pointer; }
+    .step-circle.active { border-color: var(--wine); background: var(--wine); color: var(--card); }
+    .step-circle.done   { border-color: var(--gold); background: var(--gold); color: var(--wine-dk); }
     .step-label { font-size: 10px; font-weight: 500; color: var(--muted); white-space: nowrap; margin-left: 5px; }
-    .step-label.active { color: var(--red); font-weight: 700; }
-    .step-line { flex: 1; height: 2px; background: var(--border); margin: 0 4px; }
+    .step-label.active { color: var(--wine); font-weight: 700; }
+    .step-line { flex: 1; height: 2px; background: var(--line); margin: 0 4px; }
     .step-line.done { background: var(--gold); }
 
     /* ── FORM CARD ── */
     .form-wrap { max-width: 680px; margin: 28px auto; padding: 0 16px 80px; }
-    .form-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 36px 40px; box-shadow: 0 2px 20px rgba(80,50,20,.07); }
+    .form-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 36px 40px; box-shadow: 0 2px 20px rgba(80,50,20,.07); }
     .step-panel { display: none; }
     .step-panel.active { display: block; }
 
-    h2 { font-size: 22px; font-weight: 700; color: var(--red); margin-bottom: 4px; }
+    h2 { font-size: 22px; font-weight: 700; color: var(--wine); margin-bottom: 4px; }
     .step-desc { color: var(--muted); font-size: 14px; line-height: 1.55; margin-bottom: 28px; }
 
     /* ── FIELDS ── */
     [hidden] { display: none !important; }
     .field-row { margin-bottom: 18px; }
     .field-row label {
-      display: block; font-size: 11.5px; font-weight: 700; color: var(--slate);
+      display: block; font-size: 11.5px; font-weight: 700; color: var(--ink);
       margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;
       transition: color .15s;
     }
-    .field-row label.err-label { color: #dc2626; }
+    .field-row label.err-label { color: var(--err); }
     .opt { font-weight: 400; color: var(--muted); font-size: 11px; text-transform: none; letter-spacing: 0; }
     .field-row input,
     .field-row select,
     .field-row textarea {
       width: 100%; padding: 10px 13px; border-radius: 10px;
-      border: 1.5px solid var(--border); font-family: var(--font);
-      font-size: 14px; color: var(--slate); background: var(--warm-50);
+      border: 1.5px solid var(--line); font-family: var(--font-body);
+      font-size: 14px; color: var(--ink); background: var(--page);
       outline: none; transition: border-color .15s, box-shadow .15s, background .15s;
     }
     .field-row input:focus,
     .field-row select:focus,
-    .field-row textarea:focus { border-color: var(--red); background: #fff; box-shadow: 0 0 0 3px rgba(120,18,21,0.08); }
+    .field-row textarea:focus { border-color: var(--wine); background: var(--card); box-shadow: 0 0 0 3px rgba(120,18,21,0.08); }
     .field-row input.err-field,
-    .field-row select.err-field { border-color: #dc2626 !important; background: #fff8f8; box-shadow: 0 0 0 3px rgba(220,38,38,0.1) !important; }
+    .field-row select.err-field { border-color: var(--err) !important; background: var(--err-bg); box-shadow: 0 0 0 3px rgba(220,38,38,0.1) !important; }
     .field-row textarea { resize: vertical; min-height: 80px; }
     .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
@@ -88,29 +79,29 @@
     /* ── SECTION DIVIDER ── */
     .sec-div {
       font-size: 11px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.07em; color: var(--gold-dk);
-      border-bottom: 1px solid var(--border); padding-bottom: 8px;
+      letter-spacing: 0.07em; color: var(--gold-text);
+      border-bottom: 1px solid var(--line); padding-bottom: 8px;
       margin: 26px 0 16px;
     }
 
     /* ── MINISTRY PILLS ── */
     .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
-    .pill { padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 500; border: 1.5px solid var(--border); background: var(--cream); cursor: pointer; color: var(--muted); transition: all .15s; user-select: none; }
-    .pill.selected { border-color: var(--red); background: #f9eded; color: var(--red); font-weight: 600; }
+    .pill { padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 500; border: 1.5px solid var(--line); background: var(--page); cursor: pointer; color: var(--muted); transition: all .15s; user-select: none; }
+    .pill.selected { border-color: var(--wine); background: var(--err-bg); color: var(--wine); font-weight: 600; }
 
     /* ── MEMBER BLOCKS ── */
-    .member-block { background: var(--warm-50); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; margin-bottom: 10px; position: relative; }
+    .member-block { background: var(--page); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; margin-bottom: 10px; position: relative; }
     .member-block-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 12px; }
     .tn-wrap { position: relative; }
     .tn-status { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 14px; pointer-events: none; }
-    .tn-found { font-size: 12px; color: #15803d; margin-top: 4px; display: none; font-weight: 600; }
+    .tn-found { font-size: 12px; color: var(--ok); margin-top: 4px; display: none; font-weight: 600; }
     .manual-label { font-size: 12px; color: var(--muted); font-style: italic; margin-bottom: 12px; margin-top: -4px; }
-    .remove-btn { position: absolute; top: 12px; right: 12px; width: 26px; height: 26px; border-radius: 50%; border: none; background: #fee2e2; color: #b91c1c; cursor: pointer; font-size: 13px; line-height: 26px; text-align: center; padding: 0; }
-    .add-link { color: var(--red); font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: underline; border: none; background: none; padding: 0; margin-top: 6px; display: inline-block; }
+    .remove-btn { position: absolute; top: 12px; right: 12px; width: 26px; height: 26px; border-radius: 50%; border: none; background: var(--err-bg); color: var(--err); cursor: pointer; font-size: 13px; line-height: 26px; text-align: center; padding: 0; }
+    .add-link { color: var(--wine); font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: underline; border: none; background: none; padding: 0; margin-top: 6px; display: inline-block; }
 
     /* ── UPLOAD ZONES ── */
-    .upload-zone { border: 2px dashed var(--border); border-radius: 12px; padding: 20px 16px; text-align: center; cursor: pointer; background: var(--warm-50); transition: border-color .15s, background .15s; }
-    .upload-zone:hover, .upload-zone.over { border-color: var(--red); background: #fdf2f2; }
+    .upload-zone { border: 2px dashed var(--line); border-radius: 12px; padding: 20px 16px; text-align: center; cursor: pointer; background: var(--page); transition: border-color .15s, background .15s; }
+    .upload-zone:hover, .upload-zone.over { border-color: var(--wine); background: var(--err-bg); }
     .upload-zone .uz-icon { font-size: 26px; margin-bottom: 6px; }
     .upload-zone p { color: var(--muted); font-size: 12px; line-height: 1.5; }
     .upload-preview { max-width: 100%; max-height: 160px; border-radius: 8px; margin-top: 10px; border: 2px solid var(--gold); object-fit: contain; display: none; }
@@ -118,37 +109,37 @@
     .upload-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
     /* ── BUTTONS ── */
-    .form-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); }
-    .btn { padding: 11px 28px; border-radius: 10px; font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: all .15s; }
+    .form-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--line); }
+    .btn { padding: 11px 28px; border-radius: 10px; font-family: var(--font-body); font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: all .15s; }
     .btn:disabled { opacity: .5; cursor: default; }
-    .btn-primary { background: var(--red); color: #fff; }
-    .btn-primary:hover:not(:disabled) { background: var(--red-dk); color: var(--gold); }
-    .btn-ghost { background: none; color: var(--muted); border: 1.5px solid var(--border); }
-    .btn-ghost:hover:not(:disabled) { border-color: var(--slate); color: var(--slate); }
+    .btn-primary { background: var(--wine); color: var(--card); }
+    .btn-primary:hover:not(:disabled) { background: var(--wine-dk); color: var(--gold); }
+    .btn-ghost { background: none; color: var(--muted); border: 1.5px solid var(--line); }
+    .btn-ghost:hover:not(:disabled) { border-color: var(--ink); color: var(--ink); }
 
     /* ── REVIEW ── */
-    .rv-section { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--gold-dk); border-bottom: 1px solid var(--border); padding-bottom: 6px; margin: 20px 0 10px; }
-    .rv-row { display: flex; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--warm-100); font-size: 14px; }
+    .rv-section { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--gold-text); border-bottom: 1px solid var(--line); padding-bottom: 6px; margin: 20px 0 10px; }
+    .rv-row { display: flex; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--surface); font-size: 14px; }
     .rv-label { min-width: 160px; flex-shrink: 0; color: var(--muted); font-size: 13px; }
-    .rv-value { font-weight: 500; color: var(--slate); }
+    .rv-value { font-weight: 500; color: var(--ink); }
 
     /* ── DONE ── */
     #done-screen { display: none; text-align: center; padding: 48px 24px; }
     #done-screen .check { font-size: 52px; margin-bottom: 16px; }
-    #done-screen h2 { color: var(--red); font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+    #done-screen h2 { color: var(--wine); font-size: 24px; font-weight: 700; margin-bottom: 10px; }
     #done-screen p  { color: var(--muted); font-size: 15px; line-height: 1.7; }
-    #done-screen a  { color: var(--red); font-weight: 600; }
+    #done-screen a  { color: var(--wine); font-weight: 600; }
 
     /* ── MAPS ── */
-    .pac-container { z-index: 10000 !important; font-family: var(--font) !important; border-radius: 10px !important; border: 1.5px solid var(--border) !important; box-shadow: 0 4px 20px rgba(80,50,20,0.12) !important; margin-top: 2px !important; }
-    .pac-item { font-family: var(--font) !important; font-size: 13px !important; padding: 8px 12px !important; cursor: pointer; }
+    .pac-container { z-index: 10000 !important; font-family: var(--font-body) !important; border-radius: 10px !important; border: 1.5px solid var(--line) !important; box-shadow: 0 4px 20px rgba(80,50,20,0.12) !important; margin-top: 2px !important; }
+    .pac-item { font-family: var(--font-body) !important; font-size: 13px !important; padding: 8px 12px !important; cursor: pointer; }
     .pac-item-query { font-size: 13px !important; }
     .pac-matched { font-size: 13px !important; }
     .pac-item span { font-size: 13px !important; }
-    .pac-item:hover, .pac-item-selected { background: var(--warm-50) !important; }
+    .pac-item:hover, .pac-item-selected { background: var(--page) !important; }
 
     /* ── MESSAGES ── */
-    #msg-error { display: none; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 999; min-width: 280px; max-width: 480px; text-align: center; background: #b91c1c; color: #fff; padding: 12px 20px; border-radius: 10px; font-size: 14px; font-weight: 600; }
+    #msg-error { display: none; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 999; min-width: 280px; max-width: 480px; text-align: center; background: var(--err); color: var(--card); padding: 12px 20px; border-radius: 10px; font-size: 14px; font-weight: 600; }
   </style>
 </head>
 <body>
@@ -200,7 +191,7 @@
 
       <div class="g2">
         <div class="field-row">
-          <label id="lbl-gender" for="gender">Gender <span class="opt" style="color:#dc2626">*</span></label>
+          <label id="lbl-gender" for="gender">Gender <span class="opt" style="color:var(--err)">*</span></label>
           <select id="gender" onchange="syncCircumcision()">
             <option value="">Select…</option>
             <option value="Male">Male</option>
@@ -289,7 +280,7 @@
 
       <div class="g2">
         <div class="field-row" id="fld-circumcised">
-          <label id="lbl-circumcised" for="circumcised">Are you circumcised? <span class="opt" style="color:#dc2626">*</span></label>
+          <label id="lbl-circumcised" for="circumcised">Are you circumcised? <span class="opt" style="color:var(--err)">*</span></label>
           <select id="circumcised">
             <option value="">Select…</option>
             <option value="Yes">Yes</option>
@@ -297,7 +288,7 @@
           </select>
         </div>
         <div class="field-row">
-          <label id="lbl-sons-circumcised" for="sons-circumcised">Are your sons circumcised? <span class="opt" style="color:#dc2626">*</span></label>
+          <label id="lbl-sons-circumcised" for="sons-circumcised">Are your sons circumcised? <span class="opt" style="color:var(--err)">*</span></label>
           <select id="sons-circumcised">
             <option value="">Select…</option>
             <option value="Yes">Yes</option>
@@ -354,7 +345,7 @@
       <div class="sec-div">Government ID</div>
       <div class="upload-2col">
         <div>
-          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--slate);margin-bottom:8px">Front</div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--ink);margin-bottom:8px">Front</div>
           <div class="upload-zone" id="id-front-zone" onclick="document.getElementById('id-front-input').click()">
             <div class="uz-icon">🪪</div>
             <p>Click or drag to upload</p>
@@ -363,7 +354,7 @@
           <input type="file" id="id-front-input" accept="image/jpeg,image/png,image/webp" style="display:none">
         </div>
         <div>
-          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--slate);margin-bottom:8px">Back</div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--ink);margin-bottom:8px">Back</div>
           <div class="upload-zone" id="id-back-zone" onclick="document.getElementById('id-back-input').click()">
             <div class="uz-icon">🪪</div>
             <p>Click or drag to upload</p>

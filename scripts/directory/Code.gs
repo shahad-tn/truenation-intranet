@@ -54,6 +54,10 @@ function doGet(e) {
   // Desktop only when ?mobile=0 is explicitly set.
   var isMobile     = !forceDesktop;
 
+  if (page === 'quicklinks') {
+    return ql_doGet_(e);
+  }
+
   if (page === 'profilesetup_router') {
     return HtmlService.createHtmlOutputFromFile('profilesetup_router')
       .setTitle('True Nation — Profile Setup')

@@ -65,7 +65,14 @@ const QL_CONFIG = {
 
 
 // ── WEB APP ENTRY ──────────────────────────────────────────────────────────
-function doGet(e) {
+/**
+ * NOT named doGet. Every .gs file in an Apps Script project shares one global
+ * scope, so a second doGet() here silently overwrote the router in Code.gs and
+ * took down the directory, Hub, Alms and profile setup - every page the
+ * Operations web app serves. Reached via Code.gs as ?page=quicklinks.
+ * Never define doGet outside Code.gs in this project.
+ */
+function ql_doGet_(e) {
   return HtmlService.createHtmlOutput(ql_buildHtml_())
     .setTitle('My Quick Links — True Nation')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);

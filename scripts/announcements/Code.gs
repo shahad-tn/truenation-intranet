@@ -164,7 +164,11 @@ function audit_(itemId, from, to, note) {
       when: new Date(), who: ACL.me(), item_id: itemId,
       from_status: from || '', to_status: to || '', note: note || ''
     });
-  } catch (err) { /* auditing must never block the action */ }
+  } catch (err) {
+    // Auditing must never block the action - but a silently missing audit trail
+    // is worse than a noisy log.
+    Logger.log('audit_ FAILED for ' + itemId + ' (' + from + ' -> ' + to + '): ' + err.message);
+  }
 }
 
 // ----------------------------- SUBMIT -----------------------------
@@ -270,8 +274,10 @@ function submitAnnouncement(data) {
   });
 
   audit_(id, '', 'Submitted', 'Submitted by ' + email);
-  notifyReviewers_({ id: id, title: title, body: body, name: name, email: email,
-                     service: match.label, section: sect, channel: chan });
+  var notice = { id: id, title: title, body: body, name: name, email: email,
+                 service: match.label, section: sect, channel: chan };
+  notifyReviewers_(notice);
+  confirmSubmission_(notice);
 
   return { ok: true, id: id, service: match.label };
 }
@@ -301,7 +307,52 @@ function notifyReviewers_(a) {
       htmlBody: html,
       name: CFG.orgName + ' Intranet'
     });
-  } catch (err) { /* a failed notification must not lose the submission */ }
+  } catch (err) {
+    // A failed notification must never lose the submission - but it must not
+    // vanish either. This line is why the Executions dashboard can be trusted.
+    Logger.log('notifyReviewers_ FAILED for ' + a.id + ': ' + err.message);
+  }
+}
+
+/**
+ * Receipt to the person who submitted. Sent on submission, separate from the
+ * status emails in Manage.gs, which only fire on Approved / Denied / Needs Info.
+ *
+ * Worth keeping: a submitter who is also a member of CFG.notifyGroup never sees
+ * the reviewer notice, because Gmail does not deliver a group post back to its
+ * own sender. Without this receipt they have no email record of what they sent.
+ */
+function confirmSubmission_(a) {
+  var html =
+    '<div style="font-family:Arial,Helvetica,sans-serif;color:#26262A;max-width:560px">' +
+    '<p style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#7C1316;margin:0 0 6px">' +
+      CFG.orgName + ' &middot; Announcements</p>' +
+    '<h2 style="margin:0 0 10px;color:#7C1316;font-size:20px">We have your announcement</h2>' +
+    '<p style="font-size:15px;line-height:1.5;margin:0 0 14px">' +
+      'It is with the review team now. You will get another email when it is approved, ' +
+      'denied, or if they need more detail from you.</p>' +
+    '<p style="font-size:15px;line-height:1.5;background:#F4F4F5;padding:14px 16px;' +
+      'border-left:5px solid #C9972C;margin:0 0 14px">' + escHtml_(a.body) + '</p>' +
+    '<table style="font-size:13px;color:#56565E" cellpadding="3">' +
+      '<tr><td><b>Service</b></td><td>' + escHtml_(a.service) + '</td></tr>' +
+      '<tr><td><b>Section</b></td><td>' + escHtml_(a.section) + '</td></tr>' +
+      '<tr><td><b>Where it appears</b></td><td>' + escHtml_(a.channel) + '</td></tr>' +
+      '<tr><td><b>Reference</b></td><td>' + escHtml_(a.id) + '</td></tr>' +
+    '</table>' +
+    '<p style="font-size:14px;color:#56565E;margin:18px 0 0">' +
+      'Reply to this email or contact ' + CFG.notifyGroup + ' with questions.</p>' +
+    '</div>';
+  try {
+    MailApp.sendEmail({
+      to: a.email,
+      replyTo: CFG.notifyGroup,
+      subject: 'We have your announcement - ' + a.title,   // plain hyphen, never an em dash
+      htmlBody: html,
+      name: CFG.orgName + ' Intranet'
+    });
+  } catch (err) {
+    Logger.log('confirmSubmission_ FAILED for ' + a.id + ': ' + err.message);
+  }
 }
 
 function escHtml_(s) {

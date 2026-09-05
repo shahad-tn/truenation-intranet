@@ -189,7 +189,10 @@ function notifySubmitter_(item, status, note) {
       htmlBody: body,
       name: CFG.orgName + ' Intranet'
     });
-  } catch (err) { /* never block the review action on a mail failure */ }
+  } catch (err) {
+    // Never block the review action on a mail failure - but leave a trace.
+    Logger.log('notifySubmitter_ FAILED for ' + item.item_id + ' -> ' + to + ': ' + err.message);
+  }
 }
 
 // ----------------------------- STANDING TEXT -----------------------------

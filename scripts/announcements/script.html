@@ -19,11 +19,11 @@
   .rs-lbl{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.72em;
     letter-spacing:.14em;text-transform:uppercase;color:var(--ink);margin-right:4px;}
   .rs-tab{font-size:.78em;font-weight:500;padding:8px 14px;border:2px solid var(--line-strong);
-    background:#fff;color:var(--ink);border-radius:999px;cursor:pointer;}
+    background:var(--card);color:var(--ink);border-radius:999px;cursor:pointer;}
   .rs-tab:hover{border-color:var(--gold);}
   .rs-tab[aria-selected="true"]{background:var(--wine);border-color:var(--wine);color:var(--onwine);font-weight:700;}
   .rs-btn{font-size:.78em;font-weight:500;padding:8px 14px;border:2px solid var(--line-strong);
-    background:#fff;color:var(--ink);border-radius:6px;cursor:pointer;}
+    background:var(--card);color:var(--ink);border-radius:6px;cursor:pointer;}
   .rs-btn:hover{border-color:var(--gold);}
   .rs-prog{margin-left:auto;display:flex;align-items:center;gap:10px;font-size:.75em;color:var(--ink);}
   .rs-track{width:110px;height:8px;background:var(--surface);border-radius:999px;overflow:hidden;}
@@ -35,7 +35,7 @@
     letter-spacing:.18em;text-transform:uppercase;color:var(--wine);text-align:center;
     margin:34px 0 18px;padding:10px 0;border-top:3px solid var(--gold);border-bottom:3px solid var(--gold);}
   .rs-part:first-of-type{margin-top:8px;}
-  .rs-sec{background:#fff;border:1px solid var(--line);border-left:6px solid var(--wine);
+  .rs-sec{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--wine);
     border-radius:8px;padding:18px 20px;margin:0 0 16px;}
   .rs-sec-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:0 0 12px;}
   .rs-sec-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.25em;
@@ -47,7 +47,7 @@
   .rs-line{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--surface);}
   .rs-line:first-of-type{border-top:none;padding-top:0;}
   .rs-check{flex:0 0 auto;width:26px;height:26px;margin-top:2px;border:2px solid var(--gold);
-    border-radius:6px;background:#fff;cursor:pointer;display:flex;align-items:center;
+    border-radius:6px;background:var(--card);cursor:pointer;display:flex;align-items:center;
     justify-content:center;font-size:15px;line-height:1;color:var(--wine);padding:0;}
   .rs-check[aria-pressed="true"]{background:var(--wine);border-color:var(--wine);color:var(--onwine);}
   .rs-text{flex:1 1 auto;margin:0;}
@@ -159,7 +159,7 @@ function render(d){
     });
   });
   if(!d.parts.length){
-    html = '<div class="db-empty" style="background:#fff;border:2px dashed var(--line);border-radius:10px;padding:34px 20px;text-align:center;color:var(--muted);">' +
+    html = '<div class="db-empty" style="background:var(--card);border:2px dashed var(--line);border-radius:10px;padding:34px 20px;text-align:center;color:var(--muted);">' +
       'No standing text has been set up for this service type yet.</div>';
   }
   html += '<p class="rs-end">End of announcements</p>';

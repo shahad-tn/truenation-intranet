@@ -16,7 +16,6 @@
 ──────────────────────────────────────────────────────────────────────── -->
 <style>
   body{background:#E8E8EC;color:#26262A;font-family:'DM Sans',Helvetica,Arial,sans-serif;}
-  @media (prefers-color-scheme:dark){ body{background:#1A181E;color:#EDEBF0;} }
 </style>
 
 <link rel="stylesheet" href="https://portal.truenation.org/brand.css">
@@ -30,12 +29,6 @@
        table row hover. Hardcoded near-whites here would render as light
        blocks under light text in dark mode. */
     --edit-bg:#FFFDF6; --row-hover:#F4F4F6;
-  }
-  @media (prefers-color-scheme:dark){
-    :root:not([data-theme="light"]){
-      --no:#EC9A92; --no-bg:#3A1E1B;
-      --edit-bg:#2E2818; --row-hover:#332F3B;
-    }
   }
   :root[data-theme="dark"]{
     --no:#EC9A92; --no-bg:#3A1E1B;

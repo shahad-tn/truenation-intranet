@@ -6,22 +6,26 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root{--wine:#7C1316;--gold:#C9972C;--snow:#FAF8F4;--cream:#F2EDE4;--bark:#3D2E28;--ink:#130D0A;--line:#E4DCCE}
+  /* Literals: this runs BEFORE brand.css, so no token exists yet. */
+  body{background:#E8E8EC;color:#26262A;font-family:'DM Sans',Helvetica,Arial,sans-serif;}
+</style>
+<link rel="stylesheet" href="https://portal.truenation.org/brand.css">
+<style>
   *{box-sizing:border-box}
-  body{margin:0;background:var(--snow);color:var(--ink);font-family:'DM Sans',system-ui,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6}
+  body{margin:0;background:var(--page);color:var(--ink);font-family:'DM Sans',system-ui,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6}
   .wrap{max-width:760px;margin:0 auto;padding:24px 20px 50px}
   h2{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.03em;font-size:24px;font-weight:700;color:var(--wine);margin:26px 0 12px}
-  .row{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:14px;margin-bottom:9px}
-  .datebox{flex:none;width:60px;text-align:center;background:var(--wine);color:var(--cream);border-radius:10px;padding:7px 4px}
+  .row{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:14px;margin-bottom:9px}
+  .datebox{flex:none;width:60px;text-align:center;background:var(--wine);color:var(--onwine);border-radius:10px;padding:7px 4px}
   .datebox .mo{font-family:'Barlow Condensed',sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:.06em}
   .datebox .dy{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;line-height:1}
   .info{flex:1;min-width:0}
   .info .t{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:600;color:var(--ink);text-transform:uppercase}
-  .info .m{font-size:13px;color:var(--bark)}
-  .pill{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:3px 9px;border-radius:20px;background:var(--cream);color:var(--bark)}
+  .info .m{font-size:13px;color:var(--muted)}
+  .pill{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:3px 9px;border-radius:20px;background:var(--surface);color:var(--muted)}
   .pill.cx{background:#F7C1C1;color:#791F1F}
-  .loading{text-align:center;padding:50px;color:var(--bark)}
-  .spin{width:30px;height:30px;border:4px solid var(--cream);border-top-color:var(--gold);border-radius:50%;animation:sp 1s linear infinite;margin:0 auto 12px}@keyframes sp{to{transform:rotate(360deg)}}
+  .loading{text-align:center;padding:50px;color:var(--muted)}
+  .spin{width:30px;height:30px;border:4px solid var(--line);border-top-color:var(--gold);border-radius:50%;animation:sp 1s linear infinite;margin:0 auto 12px}@keyframes sp{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
@@ -47,7 +51,7 @@
       });
     });
     document.getElementById('out').innerHTML=h||'<p>No schedule available.</p>';
-  }).withFailureHandler(function(e){document.getElementById('loading').innerHTML='<p style="color:#7C1316">'+esc(e.message||e)+'</p>';}).getPublicSchedule(CLASS_KEY);
+  }).withFailureHandler(function(e){document.getElementById('loading').innerHTML='<p style="color:var(--wine)">'+esc(e.message||e)+'</p>';}).getPublicSchedule(CLASS_KEY);
 </script>
 </body>
 </html>

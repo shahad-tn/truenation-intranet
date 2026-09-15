@@ -78,6 +78,26 @@ review, four calendars, and a 10-step build sequence.
   and the groups library — one area per session, best written when touching that code.
   `SYSTEM-MAP.md` carries enough to work safely in the meantime.
 
-### Open question
-The groups+members Apps Script **library** (v5) is declared as a dependency by no manifest in
-this project. Either something not captured here consumes it, or it is orphaned.
+### The groups + members library
+Not yet wired as a dependency by anything — that is expected, not a bug. Shahad built it to
+generate lists from live Workspace data and intends to use it in future work. **It is in good
+standing and stays part of this project.** Do not archive or remove it.
+
+### Outstanding staff-data entry (confirmed not done, 2026-09-15)
+Data entry, not code — the migration did not invalidate it:
+- Assign all staff to departments (Bulk Edit in the directory)
+- Fill Branch, Cost Center and Employment Type for every staff member
+  (use the LIVE lists: Branch `Congregant/Deacon/Apostle/Judge/Bishop`;
+  Cost Center `General/Youth Ministry/Worship Arts/Outreach/Administration/Operations`;
+  Employment `Volunteer/Part-Time/Full-Time/Contractor/Intern`)
+- Add family links via matching `family_id` values and reciprocal `spouse_email`
+
+This blocks nothing in the class-scheduling build, but the directory is incomplete until done.
+
+### Do NOT trust `TrueNation-Intranet-Complete-Guide.md`
+It is a pre-migration snapshot. Verified 2026-09-15: its `ADMIN_EMAILS` array does not exist in
+the live code (admin is by `tn-admin@` group membership), its branch/cost-centre lists and
+13-column sheet schema are all wrong, it serves a non-existent `index.html`, it describes the
+retired Google Sites embed as primary, and its sample HTML is off-brand blue. `SYSTEM-MAP.md`
+section 8 has the full discrepancy table. The only thing it contributed was the complete
+directory `/exec` URL, now recorded in `SYSTEM-MAP.md` section 1.1.

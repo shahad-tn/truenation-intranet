@@ -16,7 +16,7 @@ the announcements portal and the groups library.
 | | |
 |---|---|
 | **scriptId** | `15p_Tu-W2PTzp0iep9UHaNeXmle0X4mhFAqfqFBl2Y8U8U_5odNrYLFax` |
-| **Deployment** | `https://script.google.com/a/macros/truenation.org/s/AKfycbxrRxV7RHgt9m7F…/exec` |
+| **Deployment** | `https://script.google.com/a/macros/truenation.org/s/AKfycbxrRxV7RHgt9m7F-y7nV9pptxf8eEvSsSEoNd45pV8zTD-ZNettg0-ZsDCZQK8YgmDO/exec` |
 | **Source** | `scripts/directory/` |
 | **Access** | `DOMAIN`, `executeAs: USER_DEPLOYING` |
 | **Size** | `Code.gs` 75 KB / 57 functions · `userdirectory.html` 160 KB · `Hub.html` 86 KB |
@@ -195,3 +195,43 @@ Vercel: the user runs `git add -A && git commit && git push`. Claude never runs 
 - `portal-status.md` says "the three deployments" — there are five (§1).
 - `CLAUDE.md` names the Teacher Portal folder `scripts/bible-basics-portal/`; it is
   `scripts/teachers portal/`.
+
+
+---
+
+## 8. Superseded documents — do NOT use as reference
+
+### `TrueNation-Intranet-Complete-Guide.md`
+A setup guide describing a Google Sites-embedded directory. **It predates the August 2026
+migration and almost every specific in it is now wrong.** Verified against
+`scripts/directory/Code.gs` on 2026-09-15:
+
+| Guide claims | Live reality |
+|---|---|
+| `ADMIN_EMAILS` array of 6 addresses; "update it and redeploy" | **No such array exists** (0 occurrences). `isAdmin()` line 166 calls `AdminDirectory.Members.get(ADMIN_GROUP, email)` against `tn-admin@`, cached in `CacheService`. The guide's list also includes `kabashyah@` — **Kabash has left the congregation.** |
+| `BRANCHES = ['Congregants','Bishops','Deacons','Apostles']` | `["Congregant","Deacon","Apostle","Judge","Bishop"]` — 5, singular, includes **Judge** |
+| 10 cost centers incl. Pastoral Care, Missions, Finance | 6: `General, Youth Ministry, Worship Arts, Outreach, Administration, Operations` |
+| `Part-time` / `Full-time` | `Part-Time` / `Full-Time` — capitalisation matters for dropdown matching |
+| 13 sheet columns A-M, hardcoded | **No hardcoded header array.** Headers are read from the sheet at runtime (~39 columns) |
+| `doGet()` serving `index.html` | `doGet(e)` routes by `?page=`; **there is no `index.html`** — it is `userdirectory.html` |
+| Google Sites embed at `portal.truenation.org/people` is "Primary" | **Sites is retired.** `portal.truenation.org` is the Vercel app; GAS pages are first-party, never iframed |
+| Vercel app is "Version 1 / original / standalone" | The Vercel app **is** the portal; `truenation.vercel.app` serves onboarding + `brand.css` |
+| Redirect URI `truenation-intranet-directory.vercel.app/...` | `https://portal.truenation.org/api/auth/callback/google` |
+| 2 delegated scopes | 8 granted on the service account |
+| `index.html` styled blue `#2563eb`, `-apple-system` font | `userdirectory.html` contains **zero** occurrences of either colour — it loads `brand.css` (5 refs). Pasting the guide's HTML would destroy the brand system. |
+| `getActiveSheet()` | `getSheets()[0]` — matches the documented "always index 0" rule |
+| Single sheet implied | Tabs: `data`, `Former Staff` (archive, line 1813 — nothing is permanently deleted), `Audit Log` (line 652) |
+
+**The one thing the guide contributed:** the complete directory `/exec` URL. Every other doc
+records only the `AKfycbxrRxV7RHgt9m7F` prefix. The prefix matches, so it is very likely the
+same deployment — but confirm in the Apps Script UI before relying on it, since the URL changes
+if anyone ever used "New deployment" instead of "New version".
+
+**Unverifiable from the repo, plausible:** Workspace for Nonprofits / Business Starter has no
+custom user attributes, which is why extended fields live in a Sheet. Consistent with the
+architecture. The Cloud-project setup steps in Part 1 are generic and the service account name
+matches.
+
+### Also still present
+`<base target="_top">` remains in `scripts/directory/userdirectory.html` (1 occurrence). It is
+dead Google Sites iframe machinery — already on the open queue for removal.

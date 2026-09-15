@@ -233,37 +233,51 @@ function submitAnnouncement(data) {
   var svc   = String(data.serviceIso || '').trim();
   var sect  = String(data.section || '').trim();
 
+  // Resolve the channel first: it decides which of the fields below are
+  // required. A home-page-only announcement is not tied to a service, so
+  // asking the submitter to pick one is asking for wrong data.
+  var chan  = ['Read aloud', 'Read aloud + Home page', 'Home page'].indexOf(String(data.channel)) > -1
+                ? String(data.channel) : 'Read aloud';
+  var isRead = chan.indexOf('Read aloud') > -1;
+  var isHome = chan.indexOf('Home page') > -1;
+
   if (!title) throw new Error('Add a short title.');
   if (!body)  throw new Error('Write what should be said.');
   if (body.length > 600) throw new Error('That is too long to read aloud — please shorten it to about 600 characters.');
-  if (!svc)   throw new Error('Choose which service this is for.');
+  if (isRead && !svc) throw new Error('Choose which service this is for.');
   if (!sect)  throw new Error('Choose where it belongs.');
 
-  var services = getUpcomingServices();
-  var match = services.filter(function (s) { return s.iso === svc; })[0];
-  if (!match) throw new Error('That service is no longer on the calendar. Pick another one.');
+  // Only a read-aloud item has a service row. match stays null for home-only.
+  var match = null;
+  if (isRead) {
+    match = getUpcomingServices().filter(function (s) { return s.iso === svc; })[0];
+    if (!match) throw new Error('That service is no longer on the calendar. Pick another one.');
+  }
 
   var email = ACL.me();
   var name  = ACL.displayName(email);
-  var chan  = ['Read aloud', 'Read aloud + Home page', 'Home page'].indexOf(String(data.channel)) > -1
-                ? String(data.channel) : 'Read aloud';
   var id = newId_('ANN');
+
+  // A read-aloud item expires the day after its service. A home-only item has
+  // no such anchor, so a blank end date means it runs until a reviewer takes
+  // it down - deliberate, not an oversight.
+  var ends = String(data.expiresOn || (match ? match.expiresDefault : ''));
 
   appendRow_(TABS.items, {
     item_id: id,
     submitted_by: email,
     submitted_name: name,
     submitted_at: new Date(),
-    service_date: match.iso,
-    service_label: match.label,
+    service_date: match ? match.iso : '',
+    service_label: match ? match.label : '',
     section: sect,
     title: title,
     body: body,
     channel: chan,
     contact: String(data.contact || name).trim(),
-    expires_on: String(data.expiresOn || match.expiresDefault),
-    home_from: '',
-    home_until: String(data.expiresOn || match.expiresDefault),
+    expires_on: ends,
+    home_from: isHome ? String(data.homeFrom || '') : '',
+    home_until: ends,
     home_order: 999,
     home_pin: 'no',
     status: 'Submitted',
@@ -275,11 +289,11 @@ function submitAnnouncement(data) {
 
   audit_(id, '', 'Submitted', 'Submitted by ' + email);
   var notice = { id: id, title: title, body: body, name: name, email: email,
-                 service: match.label, section: sect, channel: chan };
+                 service: match ? match.label : '', section: sect, channel: chan };
   notifyReviewers_(notice);
   confirmSubmission_(notice);
 
-  return { ok: true, id: id, service: match.label };
+  return { ok: true, id: id, service: match ? match.label : 'the home page' };
 }
 
 function notifyReviewers_(a) {
@@ -293,7 +307,7 @@ function notifyReviewers_(a) {
       escHtml_(a.body) + '</p>' +
     '<table style="font-size:13px;color:#56565E" cellpadding="3">' +
       '<tr><td><b>From</b></td><td>' + escHtml_(a.name) + ' (' + escHtml_(a.email) + ')</td></tr>' +
-      '<tr><td><b>Service</b></td><td>' + escHtml_(a.service) + '</td></tr>' +
+      (a.service ? '<tr><td><b>Service</b></td><td>' + escHtml_(a.service) + '</td></tr>' : '') +
       '<tr><td><b>Section</b></td><td>' + escHtml_(a.section) + '</td></tr>' +
       '<tr><td><b>Channel</b></td><td>' + escHtml_(a.channel) + '</td></tr>' +
     '</table>' +
@@ -334,7 +348,7 @@ function confirmSubmission_(a) {
     '<p style="font-size:15px;line-height:1.5;background:#F4F4F5;padding:14px 16px;' +
       'border-left:5px solid #C9972C;margin:0 0 14px">' + escHtml_(a.body) + '</p>' +
     '<table style="font-size:13px;color:#56565E" cellpadding="3">' +
-      '<tr><td><b>Service</b></td><td>' + escHtml_(a.service) + '</td></tr>' +
+      (a.service ? '<tr><td><b>Service</b></td><td>' + escHtml_(a.service) + '</td></tr>' : '') +
       '<tr><td><b>Section</b></td><td>' + escHtml_(a.section) + '</td></tr>' +
       '<tr><td><b>Where it appears</b></td><td>' + escHtml_(a.channel) + '</td></tr>' +
       '<tr><td><b>Reference</b></td><td>' + escHtml_(a.id) + '</td></tr>' +

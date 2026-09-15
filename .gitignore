@@ -12,3 +12,6 @@
 *.swp
 *.bak
 _clasp-pull/
+
+# FUSE bridge artifacts
+.fuse_hidden*

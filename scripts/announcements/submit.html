@@ -171,10 +171,19 @@ NOTE: converted 2026-09-05 - this page now includes styles, which
             <span class="sb-radio-txt"><strong>Home page only</strong><span>Posted on the intranet, not read from the podium.</span></span></label>
         </div>
       </div>
-      <div class="sb-field">
-        <label class="sb-label" for="inExp">Stop showing it after</label>
-        <span class="sb-help">Defaults to the day after the service. Only matters for home page posts.</span>
-        <input class="sb-in" id="inExp" type="date">
+      <div id="homeDates" hidden>
+        <div class="sb-row">
+          <div class="sb-field">
+            <label class="sb-label" for="inFrom">Start showing it on</label>
+            <span class="sb-help">Leave blank to start as soon as it is approved.</span>
+            <input class="sb-in" id="inFrom" type="date">
+          </div>
+          <div class="sb-field">
+            <label class="sb-label" for="inExp">Stop showing it after</label>
+            <span class="sb-help" id="expHelp">Leave blank and it runs until a reviewer takes it down.</span>
+            <input class="sb-in" id="inExp" type="date">
+          </div>
+        </div>
       </div>
     </section>
 
@@ -236,7 +245,7 @@ NOTE: converted 2026-09-05 - this page now includes styles, which
       <ol>
         <li><strong>Now</strong> — the review team is notified.</li>
         <li><strong>Before the service</strong> — they approve it, edit the wording, ask you for more detail, or let you know it is not a fit.</li>
-        <li><strong>If approved</strong> — it goes into the reader's script for <span id="doneDate">that service</span>, and onto the home page if you chose that.</li>
+        <li id="doneWhat"><strong>If approved</strong> — it goes into the reader's script for <span id="doneDate">that service</span>, and onto the home page if you chose that.</li>
       </ol>
     </div>
     <p style="font-size:12.5px;color:var(--muted);margin:0 0 20px;">Reference: <b id="doneId"></b></p>
@@ -286,10 +295,25 @@ function boot(ctx){
   }
   $('loading').hidden = true;
   $('formView').hidden = false;
-  updatePreview();
+  applyChannel();
 }
 
 function chan(){ var r = document.querySelector('input[name="chan"]:checked'); return r ? r.value : 'Read aloud'; }
+
+/* The channel decides which fields are relevant. A home-page-only item has no
+   service, so the picker is hidden rather than left there inviting a wrong
+   answer - and its value is cleared so a stale pick cannot be submitted. The
+   category stays required either way: it is the tag on the home page card. */
+function applyChannel(){
+  var c = chan(), isRead = c.indexOf('Read aloud') > -1, isHome = c.indexOf('Home page') > -1;
+  $('f-date').hidden = !isRead;
+  if(!isRead){ $('inDate').value = ''; $('f-date').classList.remove('bad'); }
+  $('homeDates').hidden = !isHome;
+  $('expHelp').textContent = isRead
+    ? 'Leave blank and it runs until the day after the service.'
+    : 'Leave blank and it runs until a reviewer takes it down.';
+  updatePreview();
+}
 
 function updatePreview(){
   var b = $('inBody').value.trim(), n = $('inBody').value.length;
@@ -310,10 +334,14 @@ function updatePreview(){
   $('pvSec').textContent = (!s || s === 'Not sure') ? 'Announcements' : s;
 
   var c = chan(), dsel = $('inDate');
-  if(dsel.value){
-    var extra = c === 'Home page' ? 'Home page only — it will not be read aloud.'
-      : (c === 'Read aloud + Home page' ? 'Read aloud at this service, and posted on the home page.'
-      : 'Read aloud at this service only.');
+  if(c === 'Home page'){
+    $('pvFoot').textContent = $('inFrom').value
+      ? 'Home page only, from ' + $('inFrom').value + ' — it will not be read aloud.'
+      : 'Home page only, as soon as it is approved — it will not be read aloud.';
+  } else if(dsel.value){
+    var extra = c === 'Read aloud + Home page'
+      ? 'Read aloud at this service, and posted on the home page.'
+      : 'Read aloud at this service only.';
     $('pvFoot').textContent = dsel.options[dsel.selectedIndex].text + ' · ' + extra;
   } else {
     $('pvFoot').textContent = 'Choose a service to see where this lands.';
@@ -321,9 +349,9 @@ function updatePreview(){
 }
 
 ['input','change'].forEach(function(ev){
-  ['inBody','inSec','inDate','inContact'].forEach(function(id){ $(id).addEventListener(ev, updatePreview); });
+  ['inBody','inSec','inDate','inContact','inFrom'].forEach(function(id){ $(id).addEventListener(ev, updatePreview); });
 });
-document.querySelectorAll('input[name="chan"]').forEach(function(r){ r.addEventListener('change', updatePreview); });
+document.querySelectorAll('input[name="chan"]').forEach(function(r){ r.addEventListener('change', applyChannel); });
 
 $('inDate').addEventListener('change', function(){
   var o = this.options[this.selectedIndex];
@@ -339,7 +367,7 @@ $('theForm').addEventListener('submit', function(e){
   if(!$('inTitle').value.trim()){ problems.push('Add a short title.'); $('f-title').classList.add('bad'); }
   if(!$('inBody').value.trim()){ problems.push('Write what should be said.'); $('f-body').classList.add('bad'); }
   else if($('inBody').value.length > 600){ problems.push('Shorten the announcement.'); $('f-body').classList.add('bad'); }
-  if(!$('inDate').value){ problems.push('Choose which service this is for.'); $('f-date').classList.add('bad'); }
+  if(chan().indexOf('Read aloud') > -1 && !$('inDate').value){ problems.push('Choose which service this is for.'); $('f-date').classList.add('bad'); }
   if(!$('inSec').value){ problems.push('Choose where it belongs.'); $('f-sec').classList.add('bad'); }
 
   if(problems.length){ return showErr('Before this can be submitted:<br>&bull; ' + problems.join('<br>&bull; ')); }
@@ -350,7 +378,10 @@ $('theForm').addEventListener('submit', function(e){
 
   google.script.run
     .withSuccessHandler(function(res){
-      $('doneDate').textContent = res.service;
+      $('doneWhat').innerHTML = (chan() === 'Home page')
+        ? '<strong>If approved</strong> — it goes onto the intranet home page. It will not be read from the podium.'
+        : '<strong>If approved</strong> — it goes into the reader\'s script for <b>' + esc(res.service) +
+          '</b>, and onto the home page if you chose that.';
       $('doneId').textContent = res.id;
       $('formView').hidden = true;
       $('doneView').hidden = false;
@@ -364,7 +395,8 @@ $('theForm').addEventListener('submit', function(e){
     .submitAnnouncement({
       title: $('inTitle').value, body: $('inBody').value,
       serviceIso: $('inDate').value, section: $('inSec').value,
-      channel: chan(), contact: $('inContact').value, expiresOn: $('inExp').value
+      channel: chan(), contact: $('inContact').value,
+      expiresOn: $('inExp').value, homeFrom: $('inFrom').value
     });
 });
 

@@ -1,6 +1,9 @@
 # True Nation Intranet — Claude Code Project Context
 
-> **Read `portal-status.md` first.** It is the master handoff and the single source
+> **Read `claude/SYSTEM-MAP.md` first** - every deployed project, scriptId, deployment URL,
+> sheet and group in one place. Then `portal-status.md` for the Vercel portal.
+>
+> Then **`portal-status.md`** - the master handoff and the single source
 > of truth for the live portal. This file covers *this folder* — what lives here,
 > the brand tokens, and the org structure. Where the two disagree,
 > `portal-status.md` wins.
@@ -32,7 +35,7 @@ only as a DNS-level rollback path.
 
 | Repo | Local path | Contents |
 |---|---|---|
-| `shahad-tn/truenation` | `~/truenation-intranet-directory` | The Next.js portal + onboarding. Auto-deploys to Vercel on push to `main`. **Not in this folder.** |
+| `shahad-tn/truenation` | `~/[vercel] truenation-intranet-directory` | The Next.js portal + onboarding. Auto-deploys to Vercel on push to `main`. **Not in this folder.** |
 | `shahad-tn/truenation-intranet` | `~/Documents/Claude/Projects/True Nation Intranet Project Build` | This folder: Apps Script sources, reference docs, legacy Sites embeds. |
 
 ## What lives in this folder
@@ -45,7 +48,7 @@ True Nation Intranet Project Build/
 ├── scripts/                   ← Apps Script sources (source of record)
 │   ├── directory/Code.gs      ← Staff directory + profile setup + Hub + Alms
 │   ├── announcements/         ← Announcements portal page templates
-│   ├── bible-basics-portal/   ← Teacher Portal (moreh@ gated)
+│   ├── teachers portal/   ← Teacher Portal (moreh@ gated)
 │   ├── profile-editor.gs / profile-editor-ui.html
 │   ├── quick-links.gs
 │   └── staff-directory-sync.js  ← Daily Workspace → Sheet sync

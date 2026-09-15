@@ -4,7 +4,10 @@
 Google Sites). The DNS cutover is complete. This doc is the single source of truth for
 a new chat — read it first.
 
-Repo: `github.com/shahad-tn/truenation` · local `~/truenation-intranet-directory`
+Repo: `github.com/shahad-tn/truenation` · local `~/[vercel] truenation-intranet-directory`
+
+> **Note:** `~/truenation-intranet-directory` (no prefix) is an EMPTY leftover folder - ignore it.
+> Apps Script sources live in `~/Documents/Claude/Projects/True Nation Intranet Project Build`.
 Production branch: **`main`** (auto-deploys to Vercel on push). The old
 `feat/portal-auth` branch was merged into `main` at go-live.
 
@@ -170,7 +173,7 @@ YT `/truenationlosangeles`. Member-facing contact is always `it@truenation.org`,
   `npm audit fix --force`.
 - **Verify before commit (static):** esbuild JSX parse, CSS brace balance, and
   styles.X→CSS class-ref checks. The authoritative build test is the Vercel deploy.
-- **Device access:** connected folders are `~/truenation-intranet-directory/app` and
+- **Device access:** connected folders are `~/[vercel] truenation-intranet-directory/app` and
   `/lib`. The rest of the repo root (e.g. `middleware.js`) is outside the connected
   folders. If the desktop sign-in goes stale, staging is denied ("untrusted device") —
   the user re-signs-in the Claude desktop app, then it works.

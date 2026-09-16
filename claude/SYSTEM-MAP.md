@@ -8,8 +8,8 @@ previously existed only inside `_clasp-pull/*/.clasp.json`, which is now archive
 
 ## 1. Apps Script projects (5)
 
-There are **five**, not three. `portal-status.md` says "the three deployments" and predates
-the announcements portal and the groups library.
+There are **five**: four web apps plus the groups + members library. (Older docs said
+"three"; they predated the announcements portal and the library. Corrected 2026-09-16.)
 
 ### 1.1 Operations / Directory — the main web app
 
@@ -46,12 +46,14 @@ Also in this folder but belonging to **other efforts**: `ride_for_my_brews.gs`,
 | | |
 |---|---|
 | **scriptId** | `1IXpetrVjjJ3E0LN93LuaFw-9yqBnlequeHbt5LNkEhyv1zcUdcOYvYjI` |
-| **Deployment** | `https://script.google.com/a/macros/truenation.org/s/AKfycbz5VcMauDkek…/exec` |
+| **Deployment** | `https://script.google.com/a/macros/truenation.org/s/AKfycbz5VcMauDkekIwESjo2UAvlvHjPLDE3jHRTSCUer8NYQI0qyYx5z4OF10_BmrsyilhC/exec` |
 | **Source** | `scripts/teachers portal/` (note: **lowercase** `code.gs`) |
 | **Access** | `DOMAIN`, `executeAs: USER_DEPLOYING` |
 | **Gating** | `moreh@truenation.org`; admins `tn-admin@`, `apostles@`, `bishops@` |
 
-`?view=public` → `public.html` (no auth) · in `moreh@` → `index.html` · else `denied.html`.
+`?view=public` → `public.html` · in `moreh@` → `index.html` · else `denied.html`.
+
+**Correction (2026-09-15):** `?view=public` means *no `moreh@` check* — it is **not anonymous**. The manifest sets `"access": "DOMAIN"`, so every route still requires a signed-in `truenation.org` account. Verified: an unauthenticated browser is redirected to `accounts.google.com`. If a genuinely public class schedule is wanted, that is the public **Classes calendar**, not this route.
 
 Sheet `1fmbURWbBGIFbWiUZubpY4_KR7RhnCZUGLZOsGHytoV0`, tabs `bible_basics_topics`,
 `world_history_topics`, `class_config`, overrides. `WEEKS_AHEAD = 16`.
@@ -59,7 +61,9 @@ Sheet `1fmbURWbBGIFbWiUZubpY4_KR7RhnCZUGLZOsGHytoV0`, tabs `bible_basics_topics`
 **Its manifest declares no `oauthScopes` at all** — it relies on auto-scoping. Adding
 CalendarApp will need either an explicit block or a re-authorisation.
 
-**2026-09-15:** all 31 private helpers renamed from `_foo` to `foo_`. A leading underscore
+**2026-09-15 - FIXED AND DEPLOYED.** All 31 private helpers renamed from `_foo` to `foo_`.
+Verified: repo shows 17 exposed / 31 hidden and passes `node --check`; the deployed source no
+longer contains `_upsertOverride`; a new deployment version was cut. A leading underscore
 does not hide a function from `google.script.run`; only a trailing one does. Before the fix,
 `upsertOverride`, `deleteOverride`, `writeClaim` and `clearClaim` were callable by any
 `moreh@` member, bypassing the admin gate. 17 functions remain intentionally public.
@@ -101,8 +105,9 @@ Config object `PE_CONFIG` at `code.gs:37`.
 | **Library URL** | `https://script.google.com/macros/library/d/1IM0-e9Ihi91qOyBZAgJmw-eUYVM_cLr0Kxji_JgfXY3JBxwJoPgEh2HC/5` (version 5) |
 | **Source** | `scripts/groups + members/` — `Code.gs`, 3 functions, **no `doGet`** |
 
-**Open question:** no manifest in this project declares it as a library dependency, so either
-it is consumed by something not captured here, or it is orphaned. Resolve before relying on it.
+**Status: in good standing - keep it.** No manifest declares it as a dependency yet, and that is
+expected, not a bug. Shahad built it to generate lists from live Workspace data and intends to use
+it in future work. Do not archive or remove it. (Resolved 2026-09-15.)
 
 ---
 
@@ -189,12 +194,12 @@ Vercel: the user runs `git add -A && git commit && git push`. Claude never runs 
 
 ## 7. Known stale references
 
-- `portal-status.md` lines 7 and 173, and `CLAUDE.md` line 35, still point the Next.js repo at
-  `~/truenation-intranet-directory`. **That folder is empty.** The live repo is
-  `~/[vercel] truenation-intranet-directory`.
-- `portal-status.md` says "the three deployments" — there are five (§1).
-- `CLAUDE.md` names the Teacher Portal folder `scripts/bible-basics-portal/`; it is
-  `scripts/teachers portal/`.
+All resolved as of 2026-09-16:
+
+- Repo path: `portal-status.md` and `CLAUDE.md` now point at `~/[vercel] truenation-intranet-directory`.
+  `~/truenation-intranet-directory` (no prefix) is an empty leftover - ignore it.
+- "Three deployments" corrected to five in `portal-status.md` and `CLAUDE.md`.
+- `CLAUDE.md` now names the Teacher Portal folder `scripts/teachers portal/`.
 
 
 ---

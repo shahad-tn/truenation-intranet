@@ -26,9 +26,10 @@ only as a DNS-level rollback path.
   - `app/page.js` is host-aware and routes by hostname.
 - **Google Apps Script pages are standalone.** They open in a new tab as
   first-party Google pages and rely on the live Google session. They are never
-  iframed, never embedded, never wrapped. Three deployments today: Main
-  (directory / profile setup / Member Hub / Alms), Profile Editor, and the
-  Teacher Portal (`moreh@` only).
+  iframed, never embedded, never wrapped. Five Apps Script projects: four web
+  apps - Main (directory / profile setup / Member Hub / Alms), Teacher Portal
+  (`moreh@` only), Announcements Portal, Profile Editor - plus the groups +
+  members **library**. scriptIds and URLs: `claude/SYSTEM-MAP.md` §1.
 - **Permissions are always by Google Group, never by individual.**
 
 ### Two repos — don't confuse them
@@ -46,12 +47,15 @@ True Nation Intranet Project Build/
 ├── portal-status.md           ← MASTER HANDOFF — read first
 │
 ├── scripts/                   ← Apps Script sources (source of record)
-│   ├── directory/Code.gs      ← Staff directory + profile setup + Hub + Alms
-│   ├── announcements/         ← Announcements portal page templates
-│   ├── teachers portal/   ← Teacher Portal (moreh@ gated)
-│   ├── profile-editor.gs / profile-editor-ui.html
-│   ├── quick-links.gs
+│   ├── directory/             ← Main web app: directory, profile setup, Hub, Alms
+│   │                             (also holds quick-links.gs and other efforts' .gs)
+│   ├── announcements/         ← Announcements Portal
+│   ├── teachers portal/       ← Teacher Portal (moreh@ gated; lowercase code.gs)
+│   ├── profile editor/        ← Profile Editor (code.gs, profile-editor-ui.html)
+│   ├── groups + members/      ← Library, no doGet - kept for future work
 │   └── staff-directory-sync.js  ← Daily Workspace → Sheet sync
+│
+├── claude/                    ← SYSTEM-MAP, CONTINUE-HERE, build plans
 │
 ├── reference/                 ← Project docs, org charts, guides
 ├── embeds/                    ← LEGACY Google Sites HTML embeds (see below)

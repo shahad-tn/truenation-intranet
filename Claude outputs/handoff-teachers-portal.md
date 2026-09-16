@@ -44,7 +44,7 @@ My Dashboard and from `/portal/teachers`.
 |---|---|---|
 | `code.gs` | 25 KB | All server logic. Note the **lowercase** filename — the other projects use `Code.gs`. |
 | `index.html` | 28 KB | The portal itself. Tabs are built client-side from `STATE.classes`. |
-| `public.html` | 3.8 KB | Read-only schedule view, no login. |
+| `public.html` | 3.8 KB | Read-only schedule view. Skips the `moreh@` check but still needs a signed-in `truenation.org` account. |
 | `denied.html` | 1.4 KB | Shown to anyone not in `moreh@`. |
 
 There is **no `.clasp.json`** in this folder — it was never cloned via clasp. Changes go in
@@ -53,12 +53,16 @@ by paste.
 ### Routing (`doGet`)
 
 ```
-?view=public[&class=<key>]  -> public.html   (no auth)
+?view=public[&class=<key>]  -> public.html   (no moreh@ check - still domain sign-in)
 in moreh@ group             -> index.html
 anything else               -> denied.html
 ```
 
-`_page()` sets `XFrameOptionsMode.ALLOWALL`, so it can be embedded.
+`page_()` sets `XFrameOptionsMode.ALLOWALL`, so it can be embedded.
+
+**Not anonymous.** The manifest sets `"access": "DOMAIN"`, so every route, including
+`?view=public`, requires a signed-in `truenation.org` account (verified 2026-09-15). A truly
+public schedule is the planned public **Classes** calendar, not this route.
 
 ### Configuration block (top of `code.gs`, lines 27–52)
 
@@ -108,7 +112,11 @@ getPublicSchedule(classKey)
 reopenCompletedCycle()
 ```
 
-Admin functions all call `_assertAdmin()`. `_MEMO` caches group lookups per execution.
+Admin functions all call `assertAdmin_()`.
+
+**Private helpers end in `_` (fixed and deployed 2026-09-15).** 31 helpers were renamed from
+`_foo` to `foo_`; only a trailing underscore hides a function from `google.script.run`. 17
+functions remain intentionally public. `_MEMO` is a variable, not a function, so it is unaffected. `_MEMO` caches group lookups per execution.
 
 ### Front end
 
@@ -140,10 +148,12 @@ block. He has asked three separate times to keep it off. **Do not turn it on wit
 asking.** Re-enabling is one media block in `brand.css` plus the matching one in
 `userdirectory.html`.
 
-Palette: Dark Wine `#7C1316`, Sovereign Gold `#C9972C` (accents and borders only — never
-body text, never gold-on-wine), Warm Snow `#FAF8F4`, Warm Cream `#F2EDE4` (the only text
-color on dark grounds), Deep Brown-Black `#130D0A`. Never pure black or white. Barlow
-Condensed for display, DM Sans for body.
+Palette (gray surfaces since 2026-08-29; full table in `CLAUDE.md`): Dark Wine `#7C1316`,
+Sovereign Gold `#C9972C` (borders and fills only - never text; gold text is `#785710` on
+light, `#D4A94D` on wine), Page `#E8E8EC`, Surface `#D8D8DE`, Card `#FFFFFF`, Line
+`#BFBFC7`, control borders `#767680`, Ink `#26262A`, Muted `#56565E`, On wine `#F2F2F3`
+(the only text colour on dark grounds). Warm Snow / Warm Cream / `#130D0A` are retired.
+Never pure black or white. Barlow Condensed for display, DM Sans for body.
 
 ---
 

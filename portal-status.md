@@ -51,16 +51,18 @@ anything else (the vercel.app domain) → `/onboarding`.
 
 ---
 
-## Google Apps Script (GAS) — the three deployments
+## Google Apps Script (GAS) — five projects
 
-The GAS side (`Code.gs`, `userdirectory.html`, `profilesetup*.html`, `Hub.html`,
-`Alms.html`) is maintained in this Project but deployed separately in Apps Script.
+There are five Apps Script projects: the four web apps below plus the groups + members
+**library** (no web page). Full scriptIds and URLs: `claude/SYSTEM-MAP.md` §1.
+They are maintained in this Project but deployed separately in Apps Script.
 
 | Purpose | Exec URL (prefix) | How it's reached |
 |---|---|---|
 | **Main** — directory (Our People), profile setup, Member Hub, Alms | `…/s/AKfycbxrRxV7RHgt9m7F…/exec` | bare = directory; `?page=profilesetup`, `?page=hub`, `?page=alms` |
 | **Profile editor** (self-service) | `…/s/AKfycbzvYnsSNAUz…/exec` | linked from My Dashboard |
 | **Teacher Portal** (moreh@ only) | `…/s/AKfycbz5VcMauDkek…/exec` | Dashboard + `/portal/teachers` |
+| **Announcements Portal** | `…/s/AKfycby2MkKLYx…/exec` | review/submit; home feed mirrored by `lib/announcements.js` |
 
 `Code.gs` `doGet(e)` routes by `?page=`: `alms` → `Alms.html`, `hub` → `Hub.html`,
 `profilesetup` → mobile/desktop profile form, default → `userdirectory.html`.
@@ -173,9 +175,9 @@ YT `/truenationlosangeles`. Member-facing contact is always `it@truenation.org`,
   `npm audit fix --force`.
 - **Verify before commit (static):** esbuild JSX parse, CSS brace balance, and
   styles.X→CSS class-ref checks. The authoritative build test is the Vercel deploy.
-- **Device access:** connected folders are `~/[vercel] truenation-intranet-directory/app` and
-  `/lib`. The rest of the repo root (e.g. `middleware.js`) is outside the connected
-  folders. If the desktop sign-in goes stale, staging is denied ("untrusted device") —
+- **Device access:** request the whole repo `~/[vercel] truenation-intranet-directory` and
+  `~/Documents/Claude/Projects/True Nation Intranet Project Build` together at the start of
+  each session (grants last one session). See `claude/device-access.md`. If the desktop sign-in goes stale, staging is denied ("untrusted device") —
   the user re-signs-in the Claude desktop app, then it works.
 - Don't paste rendered Google Sites HTML — it's noise; the clean source embeds / current
   code are the inputs to build from.

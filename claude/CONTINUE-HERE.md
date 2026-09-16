@@ -47,15 +47,22 @@ the cadence rules, teacher rotations, teacher->reader pairing tables, flagged-no
 status model, the two reminder clocks, per-class postpone semantics, Feast-day conflict
 review, four calendars, and a 10-step build sequence.
 
-**Step 1 is ready to start:** convert the Teacher Portal's hardcoded column maps
-(`CLAIM_COLS`, `ASSIGNED_COLS`, `OV_COLS`) to header-name lookup, and migrate
-`bible_basics_topics` + `world_history_topics` into one shared `sessions` tab.
+**Step 1 is split in two.**
+- **1a - written 2026-09-16, awaiting Shahad's paste and deploy.** The Teacher Portal finds
+  columns by header name, `reopenCompletedCycle` is admin-only, and there is a new admin-only
+  `checkColumns()`. See `SYSTEM-MAP.md` §1.2 for the deploy checks.
+- **1b - next.** Migrate `bible_basics_topics` + `world_history_topics` into one shared
+  `sessions` tab with a `class_key` column. Needs the header row of each tab from Shahad
+  before writing the one-time migration function. Old tabs stay untouched for rollback.
 
 ### Done on 2026-09-15, not yet committed
 - Teacher Portal security fix: 31 private helpers renamed `_foo` -> `foo_`. A leading
   underscore does not hide a function from `google.script.run`; only a trailing one does.
   Verified with `node --check`, all internal calls resolve, 17 intended public functions
-  untouched. **Not yet pasted into the Apps Script editor or deployed.**
+  untouched. **Pasted and deployed 2026-09-15** - the live source no longer contains
+  `_upsertOverride`. Note: a leading-underscore probe from the browser console must be run
+  inside the `userCodeAppPanel` iframe; at the `top` frame `google` is undefined, which is
+  expected and proves nothing either way.
 - `claude/SYSTEM-MAP.md` written — the scriptIds existed only in `_clasp-pull/*/.clasp.json`
 - Stale repo paths fixed in `portal-status.md` and `CLAUDE.md`
 - `scripts/Members Hub/` archived (dead — unfilled `PASTE_` placeholders; live Alms is

@@ -94,10 +94,16 @@ A feature that makes sense for one mode often makes no sense for the other.
 
 ### Sheet tabs and column maps
 
-All column positions are **hardcoded index maps** in `code.gs` (`CLAIM_COLS`,
-`ASSIGNED_COLS`, `OV_COLS`) — unlike the rest of the intranet, which reads the header row
-by name. **Reordering a column in that Sheet will silently corrupt data.** Worth fixing if
-you touch this area; flag it to him before doing it as its own change.
+**Columns are found by header name (Step 1a, written 2026-09-16).** The old hardcoded
+index maps (`CLAIM_COLS`, `ASSIGNED_COLS`, `OV_COLS`) are gone. Required headers are listed
+in `MODE_COLS` (topic tabs, by class mode) and `TAB_COLS` (`class_config`, `overrides`);
+`cols_(tab)` reads row 1 once per request, ignores case and surrounding spaces, and
+**throws a clear error if a required header is missing or duplicated** rather than writing
+to the wrong column. Column order no longer matters and extra columns are ignored. The first
+header in each list is the row key: rows where it is blank are skipped.
+
+After pasting, and after any change to a header row, run **`checkColumns()`** from the
+editor (admin-only). It logs one OK/FAIL line per tab with the column letter of each header.
 
 ### Public API surface (what `index.html` calls)
 
@@ -108,11 +114,18 @@ grabDate / releaseDate               assigned-mode
 getAdminData(classKey)
 adminSetRotation / adminReorder
 adminSetOverride / adminClearOverride / adminAssignClaim
-getPublicSchedule(classKey)
-reopenCompletedCycle()
+getPublicSchedule(classKey)           public.html
+reopenCompletedCycle()               admin-only; no page calls it (cycle reset)
+checkColumns()                       admin-only; run from the editor
 ```
 
-Admin functions all call `assertAdmin_()`.
+`adminSetRotation`, `adminReorder` and `adminAssignClaim` are called **by name** through the
+`adminRun(fn, args, ...)` helper in `index.html`, so a text search for `.adminReorder(` will
+not find them. `include`, `isAdmin` and `isMorehMember` are also callable from the browser.
+
+Admin functions all call `assertAdmin_()`, and so do `reopenCompletedCycle` and
+`checkColumns` (Step 1a). Before that, any `moreh@` member could run `reopenCompletedCycle`
+from the browser console. A time-driven trigger runs as its owner, who must be an admin.
 
 **Private helpers end in `_` (fixed and deployed 2026-09-15).** 31 helpers were renamed from
 `_foo` to `foo_`; only a trailing underscore hides a function from `google.script.run`. 17
@@ -136,8 +149,12 @@ them.**
 All four Apps Script projects and the Vercel portal now load one shared stylesheet:
 
 ```
-https://truenation.vercel.app/brand.css     (served from the Next.js repo's public/)
+https://portal.truenation.org/brand.css     (served from the Next.js repo's public/)
 ```
+
+Every Apps Script page links the `portal.truenation.org` address (verified in the source
+2026-09-16). `truenation.vercel.app/brand.css` is the same file from the same app. It stays
+public because `middleware.js` only gates `/portal/*` and `/directory`.
 
 Editing it needs **no Apps Script redeploy** — that was the whole point. 317 lines:
 canonical tokens plus `tn-`-prefixed painting classes.
@@ -237,8 +254,8 @@ its service. Splitting those is a separate change if he wants it.
   it is still building — check that before theorizing.
 - Email subjects: **plain hyphens only**, never em dashes (mojibake).
 - Sheet writes elsewhere in this project: read the header row first, add missing columns,
-  write by name. Always sheet index 0, never a named tab. (The Teacher Portal is the
-  exception — it uses hardcoded index maps. See §1.)
+  write by name. Always sheet index 0, never a named tab. (The Teacher Portal reads by
+  header name too since Step 1a, but uses named tabs. See §1.)
 
 ---
 

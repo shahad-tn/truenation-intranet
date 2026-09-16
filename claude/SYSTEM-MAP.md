@@ -68,6 +68,14 @@ does not hide a function from `google.script.run`; only a trailing one does. Bef
 `upsertOverride`, `deleteOverride`, `writeClaim` and `clearClaim` were callable by any
 `moreh@` member, bypassing the admin gate. 17 functions remain intentionally public.
 
+**2026-09-16 - Step 1a written, NOT YET DEPLOYED.** Columns are now found by header name
+(`cols_`, `MODE_COLS`, `TAB_COLS`); a missing or duplicated header stops the action with a
+clear message. `reopenCompletedCycle` is now admin-only (it had no check). New admin-only
+`checkColumns()` to run from the editor. 18 functions public. Tested locally against a fake
+spreadsheet: identical results to the old code, and identical again with every tab's columns
+shuffled. Deploy: paste `code.gs`, run `checkColumns`, check Triggers for any trigger on
+`reopenCompletedCycle` (its owner must be in an admin group), then New version.
+
 ### 1.3 Announcements Portal
 
 | | |
@@ -117,10 +125,13 @@ Repo `shahad-tn/truenation` · local `~/[vercel] truenation-intranet-directory` 
 branch `main` auto-deploys.
 
 - `portal.truenation.org` → staff portal `/portal/*`, NextAuth Google login
-- `truenation.vercel.app` → public onboarding (Stage 1) + serves `public/brand.css`
+- `truenation.vercel.app` → public onboarding (Stage 1)
 - `app/page.js` is host-aware
 
-`public/brand.css` is the shared stylesheet **all four Apps Script web apps load**. Editing it
+`public/brand.css` is the shared stylesheet **all four Apps Script web apps load**, from
+`https://portal.truenation.org/brand.css` (the address in every page's `<link>`; the same file
+is also reachable on `truenation.vercel.app`). It is public because `middleware.js` only gates
+`/portal/*` and `/directory`. Editing it
 needs no Apps Script redeploy — that was the point.
 
 Env vars that must stay: `GOOGLE_OAUTH_CLIENT_ID` / `GOOGLE_OAUTH_CLIENT_SECRET` (the

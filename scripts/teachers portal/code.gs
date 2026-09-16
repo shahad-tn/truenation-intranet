@@ -10,6 +10,10 @@
  * and a ?view=public read-only schedule for member-facing pages.
  *
  * SHEET TABS (import the matching CSVs from /reference):
+ *   Columns are found by HEADER NAME in row 1, so column order does not matter
+ *   and extra columns are ignored. A missing required header stops the action
+ *   with a clear message. Run checkColumns() from the editor after any change
+ *   to a header row.
  *   bible_basics_topics   topic_id, topic_name, scripture_refs, description,
  *                         status, claimed_by_email, claimed_by_name, claimed_at,
  *                         teach_date, notes
@@ -45,10 +49,21 @@ var CLASSES = [
 ];
 // ===============================================================
 
-var CLAIM_COLS = { topic_id:0, topic_name:1, scripture_refs:2, description:3, status:4,
-                   claimed_by_email:5, claimed_by_name:6, claimed_at:7, teach_date:8, notes:9 };
-var ASSIGNED_COLS = { topic_id:0, topic_name:1, teach_order:2, scripture_refs:3, description:4 };
-var OV_COLS = { class_key:0, date_iso:1, teacher_email:2, topic_id:3, canceled:4, note:5, updated_by:6, updated_at:7 };
+// Required headers. Topic tabs use the list for their class mode; the other tabs
+// use their own. The FIRST header in each list is the row key: rows where it is
+// blank are skipped.
+var MODE_COLS = {
+  claim:    ['topic_id', 'topic_name', 'scripture_refs', 'description', 'status',
+             'claimed_by_email', 'claimed_by_name', 'claimed_at', 'teach_date'],
+  assigned: ['topic_id', 'topic_name', 'teach_order']
+};
+var TAB_COLS = {
+  class_config: ['class_key', 'nth', 'teacher_email'],
+  overrides:    ['class_key', 'date_iso', 'teacher_email', 'topic_id', 'canceled',
+                 'note', 'updated_by', 'updated_at']
+};
+// Cleared together when a claim is released or a cycle resets.
+var CLAIM_CLEAR = ['claimed_by_email', 'claimed_by_name', 'claimed_at', 'teach_date'];
 
 // ----------------------------- ROUTING -----------------------------
 
@@ -99,7 +114,7 @@ function assertAdmin_() { if (!isAdmin(me_())) throw new Error('Admin access req
 // ----------------------------- READ (portal) -----------------------------
 
 function getPortalState() {
-  _MEMO.tabs = {};                 // always read fresh (this often runs right after a write)
+  _MEMO.tabs = {}; _MEMO.cols = {}; // always read fresh (this often runs right after a write)
   var email = me_();
   var admin = isAdmin(email);
   var classes = CLASSES.map(function (c) { return classState_(c, email); });
@@ -124,14 +139,14 @@ function classState_(c, email) {
   var out = { key: c.key, name: c.name, mode: c.mode, day: c.day, rotation: rotation };
 
   if (c.mode === 'claim') {
-    var rows = readTab_(c.tab);
+    var rows = readTab_(c.tab), K = cols_(c.tab);
     var topics = rows.map(function (r) {
-      return { id: r[CLAIM_COLS.topic_id], name: r[CLAIM_COLS.topic_name],
-        ref: r[CLAIM_COLS.scripture_refs] || '', desc: r[CLAIM_COLS.description] || '',
-        status: r[CLAIM_COLS.status] || 'Open',
-        claimedByEmail: (r[CLAIM_COLS.claimed_by_email] || '').toLowerCase(),
-        claimedByName: r[CLAIM_COLS.claimed_by_name] || '',
-        teachDate: fmtDate_(r[CLAIM_COLS.teach_date]) };
+      return { id: r[K.topic_id], name: r[K.topic_name],
+        ref: r[K.scripture_refs] || '', desc: r[K.description] || '',
+        status: r[K.status] || 'Open',
+        claimedByEmail: (r[K.claimed_by_email] || '').toLowerCase(),
+        claimedByName: r[K.claimed_by_name] || '',
+        teachDate: fmtDate_(r[K.teach_date]) };
     });
     var byDate = {}; topics.forEach(function (t) { if (t.teachDate) byDate[t.teachDate] = t; });
     out.topics = topics;
@@ -192,14 +207,14 @@ function claimTopic(classKey, topicId, dateISO) {
     var email = me_();
     if (!isMorehMember(email)) return fail_('You are not authorized to claim topics.');
     if (!isValidDay_(c.day, dateISO)) return fail_('That is not a valid upcoming class date.');
-    var sheet = sheet_(c.tab), data = sheet.getDataRange().getValues();
+    var sheet = sheet_(c.tab), data = sheet.getDataRange().getValues(), K = cols_(c.tab, data[0]);
     for (var i = 1; i < data.length; i++)
-      if (fmtDate_(data[i][CLAIM_COLS.teach_date]) === dateISO)
-        return fail_('That date was just taken by ' + (data[i][CLAIM_COLS.claimed_by_name] || 'another teacher') + '. Pick another.');
-    var r = findRow_(data, CLAIM_COLS.topic_id, topicId);
+      if (fmtDate_(data[i][K.teach_date]) === dateISO)
+        return fail_('That date was just taken by ' + (data[i][K.claimed_by_name] || 'another teacher') + '. Pick another.');
+    var r = findRow_(data, K.topic_id, topicId);
     if (r === -1) return fail_('Topic not found.');
-    if ((data[r][CLAIM_COLS.status] || 'Open') !== 'Open')
-      return fail_('“' + data[r][CLAIM_COLS.topic_name] + '” was just claimed by ' + (data[r][CLAIM_COLS.claimed_by_name] || 'another teacher') + '.');
+    if ((data[r][K.status] || 'Open') !== 'Open')
+      return fail_('“' + data[r][K.topic_name] + '” was just claimed by ' + (data[r][K.claimed_by_name] || 'another teacher') + '.');
     writeClaim_(sheet, r, email, displayName_(email), dateISO);
     return { ok: true, state: getPortalState() };
   } finally { lock.releaseLock(); }
@@ -210,13 +225,13 @@ function releaseTopic(classKey, topicId) {
   var lock = LockService.getScriptLock(); lock.waitLock(20000);
   try {
     var email = me_(), admin = isAdmin(email);
-    var sheet = sheet_(c.tab), data = sheet.getDataRange().getValues();
-    var r = findRow_(data, CLAIM_COLS.topic_id, topicId);
+    var sheet = sheet_(c.tab), data = sheet.getDataRange().getValues(), K = cols_(c.tab, data[0]);
+    var r = findRow_(data, K.topic_id, topicId);
     if (r === -1) return fail_('Topic not found.');
-    var owner = (data[r][CLAIM_COLS.claimed_by_email] || '').toLowerCase();
+    var owner = (data[r][K.claimed_by_email] || '').toLowerCase();
     if (owner && owner !== email && !admin)
-      return fail_('Only ' + (data[r][CLAIM_COLS.claimed_by_name] || owner) + ' or an admin can release this.');
-    var freedDate = fmtDate_(data[r][CLAIM_COLS.teach_date]);
+      return fail_('Only ' + (data[r][K.claimed_by_name] || owner) + ' or an admin can release this.');
+    var freedDate = fmtDate_(data[r][K.teach_date]);
     clearClaim_(sheet, r);
     if (freedDate) deleteOverride_(classKey, freedDate); // don't leave a substitute override on a now-empty date
     return { ok: true, state: getPortalState() };
@@ -266,11 +281,11 @@ function releaseDate(classKey, dateISO) {
 
 /** Blank the teacher on an override; delete the row if nothing else remains on it. */
 function clearOverrideTeacher_(classKey, dateISO) {
-  var sheet = sheet_('overrides'), data = sheet.getDataRange().getValues();
+  var sheet = sheet_('overrides'), data = sheet.getDataRange().getValues(), V = cols_('overrides', data[0]);
   for (var i = 1; i < data.length; i++) {
-    if (data[i][OV_COLS.class_key] === classKey && fmtDate_(data[i][OV_COLS.date_iso]) === dateISO) {
-      var hasTopic = !!data[i][OV_COLS.topic_id], canceled = String(data[i][OV_COLS.canceled]).toLowerCase() === 'true';
-      if (hasTopic || canceled) sheet.getRange(i + 1, OV_COLS.teacher_email + 1).setValue('');
+    if (data[i][V.class_key] === classKey && fmtDate_(data[i][V.date_iso]) === dateISO) {
+      var hasTopic = !!data[i][V.topic_id], canceled = String(data[i][V.canceled]).toLowerCase() === 'true';
+      if (hasTopic || canceled) sheet.getRange(i + 1, V.teacher_email + 1).setValue('');
       else sheet.deleteRow(i + 1);
       SpreadsheetApp.flush(); return true;
     }
@@ -293,14 +308,14 @@ function getAdminData(classKey) {
 /** Change who teaches an nth slot (add/remove/replace a teacher). email '' clears the slot. */
 function adminSetRotation(classKey, nth, teacherEmail) {
   assertAdmin_();
-  var sheet = sheet_('class_config'), data = sheet.getDataRange().getValues();
+  var sheet = sheet_('class_config'), data = sheet.getDataRange().getValues(), G = cols_('class_config', data[0]);
   nth = Number(nth); teacherEmail = (teacherEmail || '').toLowerCase();
   for (var i = 1; i < data.length; i++)
-    if (data[i][0] === classKey && Number(data[i][1]) === nth) {
-      sheet.getRange(i + 1, 3).setValue(teacherEmail); SpreadsheetApp.flush();
+    if (data[i][G.class_key] === classKey && Number(data[i][G.nth]) === nth) {
+      sheet.getRange(i + 1, G.teacher_email + 1).setValue(teacherEmail); SpreadsheetApp.flush();
       return { ok: true, state: getPortalState() };
     }
-  sheet.appendRow([classKey, nth, teacherEmail]); SpreadsheetApp.flush();
+  sheet.appendRow(rowFor_(sheet, G, { class_key: classKey, nth: nth, teacher_email: teacherEmail })); SpreadsheetApp.flush();
   return { ok: true, state: getPortalState() };
 }
 
@@ -309,10 +324,10 @@ function adminReorder(classKey, topicId, newOrder) {
   assertAdmin_();
   var c = class_(classKey);
   if (c.mode !== 'assigned') return fail_('Reordering applies to auto-assigned classes only.');
-  var sheet = sheet_(c.tab), data = sheet.getDataRange().getValues();
-  var r = findRow_(data, ASSIGNED_COLS.topic_id, topicId);
+  var sheet = sheet_(c.tab), data = sheet.getDataRange().getValues(), K = cols_(c.tab, data[0]);
+  var r = findRow_(data, K.topic_id, topicId);
   if (r === -1) return fail_('Topic not found.');
-  sheet.getRange(r + 1, ASSIGNED_COLS.teach_order + 1).setValue(Number(newOrder));
+  sheet.getRange(r + 1, K.teach_order + 1).setValue(Number(newOrder));
   SpreadsheetApp.flush();
   return { ok: true, state: getPortalState() };
 }
@@ -331,9 +346,9 @@ function adminClearOverride(classKey, dateISO) {
   return { ok: true, state: getPortalState() };
 }
 function deleteOverride_(classKey, dateISO) {
-  var sheet = sheet_('overrides'), data = sheet.getDataRange().getValues();
+  var sheet = sheet_('overrides'), data = sheet.getDataRange().getValues(), V = cols_('overrides', data[0]);
   for (var i = data.length - 1; i >= 1; i--)
-    if (data[i][OV_COLS.class_key] === classKey && fmtDate_(data[i][OV_COLS.date_iso]) === dateISO)
+    if (data[i][V.class_key] === classKey && fmtDate_(data[i][V.date_iso]) === dateISO)
       sheet.deleteRow(i + 1);
   SpreadsheetApp.flush();
 }
@@ -346,11 +361,11 @@ function adminAssignClaim(classKey, topicId, dateISO, teacherEmail) {
   if (!isValidDay_(c.day, dateISO)) return fail_('That is not a valid class date.');
   var lock = LockService.getScriptLock(); lock.waitLock(20000);
   try {
-    var sheet = sheet_(c.tab), data = sheet.getDataRange().getValues();
+    var sheet = sheet_(c.tab), data = sheet.getDataRange().getValues(), K = cols_(c.tab, data[0]);
     for (var i = 1; i < data.length; i++)
-      if (fmtDate_(data[i][CLAIM_COLS.teach_date]) === dateISO && String(data[i][CLAIM_COLS.topic_id]) !== String(topicId))
+      if (fmtDate_(data[i][K.teach_date]) === dateISO && String(data[i][K.topic_id]) !== String(topicId))
         return fail_('That date is already taken. Release it first.');
-    var r = findRow_(data, CLAIM_COLS.topic_id, topicId);
+    var r = findRow_(data, K.topic_id, topicId);
     if (r === -1) return fail_('Topic not found.');
     writeClaim_(sheet, r, (teacherEmail || '').toLowerCase(), displayName_(teacherEmail), dateISO);
     deleteOverride_(classKey, dateISO); // a prior substitute override would otherwise mask the assignment
@@ -375,21 +390,24 @@ function getPublicSchedule(classKey) {
 
 // ----------------------------- CYCLE RESET (claim classes) -----------------------------
 
+// Admin-only: without this check any moreh@ member could run it from the browser
+// console. A time-driven trigger runs as its owner, who must be an admin.
 function reopenCompletedCycle() {
+  assertAdmin_();
   CLASSES.filter(function (c) { return c.mode === 'claim'; }).forEach(function (c) {
-    var sheet = sheet_(c.tab), data = sheet.getDataRange().getValues(), today = mid_(new Date());
+    var sheet = sheet_(c.tab), data = sheet.getDataRange().getValues(), K = cols_(c.tab, data[0]), today = mid_(new Date());
     var allTaught = true, anyClaimed = false;
     for (var i = 1; i < data.length; i++) {
-      if ((data[i][CLAIM_COLS.status] || 'Open') === 'Claimed') {
+      if ((data[i][K.status] || 'Open') === 'Claimed') {
         anyClaimed = true;
-        var td = data[i][CLAIM_COLS.teach_date] ? mid_(dateFromISO_(fmtDate_(data[i][CLAIM_COLS.teach_date]))) : null;
+        var td = data[i][K.teach_date] ? mid_(dateFromISO_(fmtDate_(data[i][K.teach_date]))) : null;
         if (!td || td >= today) { allTaught = false; break; }
       } else { allTaught = false; break; }
     }
     if (anyClaimed && allTaught) {
       for (var r = 2; r <= sheet.getLastRow(); r++) {
-        sheet.getRange(r, CLAIM_COLS.status + 1).setValue('Open');
-        sheet.getRange(r, CLAIM_COLS.claimed_by_email + 1, 1, 4).clearContent();
+        sheet.getRange(r, K.status + 1).setValue('Open');
+        clearClaimCells_(sheet, r, K);
       }
       SpreadsheetApp.flush();
       MailApp.sendEmail(ADMIN_NOTIFY, c.name + ': new cycle started',
@@ -401,68 +419,147 @@ function reopenCompletedCycle() {
 // ----------------------------- HELPERS -----------------------------
 
 // Per-execution memo (each server call is a fresh execution, so this resets naturally).
-var _MEMO = { tabs: {}, names: {} };
+var _MEMO = { tabs: {}, names: {}, cols: {} };
 
 function class_(key) { for (var i = 0; i < CLASSES.length; i++) if (CLASSES[i].key === key) return CLASSES[i]; throw new Error('Unknown class: ' + key); }
 function sheet_(tab) { var s = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(tab); if (!s) throw new Error('Tab "' + tab + '" not found.'); return s; }
 function readTab_(tab) {
   if (_MEMO.tabs[tab]) return _MEMO.tabs[tab];
   var d = sheet_(tab).getDataRange().getValues();
-  var rows = d.slice(1).filter(function (r) { return r[0] !== '' && r[0] != null; });
+  var key = cols_(tab, d[0])[colsFor_(tab)[0]];
+  var rows = d.slice(1).filter(function (r) { return r[key] !== '' && r[key] != null; });
   _MEMO.tabs[tab] = rows; return rows;
 }
 function findRow_(data, col, val) { for (var i = 1; i < data.length; i++) if (String(data[i][col]) === String(val)) return i; return -1; }
 
 function rotation_(classKey) {
-  var map = {}, rows = readTab_('class_config');
-  rows.forEach(function (r) { if (r[0] === classKey) map[Number(r[1])] = (r[2] || '').toLowerCase(); });
+  var map = {}, rows = readTab_('class_config'), G = cols_('class_config');
+  rows.forEach(function (r) { if (r[G.class_key] === classKey) map[Number(r[G.nth])] = (r[G.teacher_email] || '').toLowerCase(); });
   return map;
 }
 function orderedTopics_(c) {
+  var K = cols_(c.tab);
   return readTab_(c.tab).map(function (r) {
-    return { id: r[ASSIGNED_COLS.topic_id], name: r[ASSIGNED_COLS.topic_name], order: Number(r[ASSIGNED_COLS.teach_order]) || 0 };
+    return { id: r[K.topic_id], name: r[K.topic_name], order: Number(r[K.teach_order]) || 0 };
   }).sort(function (a, b) { return a.order - b.order; });
 }
 function indexOfTopic_(ordered, id) { for (var i = 0; i < ordered.length; i++) if (ordered[i].id === id) return i; return 0; }
 function topicName_(c, id) {
-  var rows = readTab_(c.tab), col = (c.mode === 'claim') ? CLAIM_COLS.topic_name : ASSIGNED_COLS.topic_name;
-  for (var i = 0; i < rows.length; i++) if (String(rows[i][0]) === String(id)) return rows[i][col];
+  var rows = readTab_(c.tab), K = cols_(c.tab);
+  for (var i = 0; i < rows.length; i++) if (String(rows[i][K.topic_id]) === String(id)) return rows[i][K.topic_name];
   return '';
 }
 function overridesFor_(classKey) {
-  var map = {}, rows = readTab_('overrides');
+  var map = {}, rows = readTab_('overrides'), V = cols_('overrides');
   rows.forEach(function (r) {
-    if (r[OV_COLS.class_key] === classKey) map[fmtDate_(r[OV_COLS.date_iso])] = {
-      teacherEmail: (r[OV_COLS.teacher_email] || '').toLowerCase(), topicId: r[OV_COLS.topic_id] || '',
-      canceled: String(r[OV_COLS.canceled]).toLowerCase() === 'true' };
+    if (r[V.class_key] === classKey) map[fmtDate_(r[V.date_iso])] = {
+      teacherEmail: (r[V.teacher_email] || '').toLowerCase(), topicId: r[V.topic_id] || '',
+      canceled: String(r[V.canceled]).toLowerCase() === 'true' };
   });
   return map;
 }
 function upsertOverride_(classKey, dateISO, teacherEmail, topicId, canceled) {
-  var sheet = sheet_('overrides'), data = sheet.getDataRange().getValues(), me = me_(), now = new Date();
+  var sheet = sheet_('overrides'), data = sheet.getDataRange().getValues(), V = cols_('overrides', data[0]), me = me_(), now = new Date();
   for (var i = 1; i < data.length; i++)
-    if (data[i][OV_COLS.class_key] === classKey && fmtDate_(data[i][OV_COLS.date_iso]) === dateISO) {
-      sheet.getRange(i + 1, 3, 1, 6).setValues([[teacherEmail, topicId, canceled, data[i][OV_COLS.note] || '', me, now]]);
+    if (data[i][V.class_key] === classKey && fmtDate_(data[i][V.date_iso]) === dateISO) {
+      setCells_(sheet, i + 1, V, { teacher_email: teacherEmail, topic_id: topicId, canceled: canceled, updated_by: me, updated_at: now });
       SpreadsheetApp.flush(); return;
     }
-  sheet.appendRow([classKey, dateISO, teacherEmail, topicId, canceled, '', me, now]);
+  sheet.appendRow(rowFor_(sheet, V, { class_key: classKey, date_iso: dateISO, teacher_email: teacherEmail,
+    topic_id: topicId, canceled: canceled, note: '', updated_by: me, updated_at: now }));
   SpreadsheetApp.flush();
 }
 function writeClaim_(sheet, rowIdx, email, name, dateISO) {
-  var r = rowIdx + 1;
-  sheet.getRange(r, CLAIM_COLS.status + 1).setValue('Claimed');
-  sheet.getRange(r, CLAIM_COLS.claimed_by_email + 1).setValue(email);
-  sheet.getRange(r, CLAIM_COLS.claimed_by_name + 1).setValue(name);
-  sheet.getRange(r, CLAIM_COLS.claimed_at + 1).setValue(new Date());
-  sheet.getRange(r, CLAIM_COLS.teach_date + 1).setValue(dateISO);
+  var r = rowIdx + 1, K = cols_(sheet.getName());
+  sheet.getRange(r, K.status + 1).setValue('Claimed');
+  sheet.getRange(r, K.claimed_by_email + 1).setValue(email);
+  sheet.getRange(r, K.claimed_by_name + 1).setValue(name);
+  sheet.getRange(r, K.claimed_at + 1).setValue(new Date());
+  sheet.getRange(r, K.teach_date + 1).setValue(dateISO);
   SpreadsheetApp.flush();
 }
 function clearClaim_(sheet, rowIdx) {
-  var r = rowIdx + 1;
-  sheet.getRange(r, CLAIM_COLS.status + 1).setValue('Open');
-  sheet.getRange(r, CLAIM_COLS.claimed_by_email + 1, 1, 4).clearContent();
+  var r = rowIdx + 1, K = cols_(sheet.getName());
+  sheet.getRange(r, K.status + 1).setValue('Open');
+  clearClaimCells_(sheet, r, K);
   SpreadsheetApp.flush();
 }
+function clearClaimCells_(sheet, r, K) {
+  CLAIM_CLEAR.forEach(function (n) { sheet.getRange(r, K[n] + 1).clearContent(); });
+}
+function setCells_(sheet, r, K, values) {
+  Object.keys(values).forEach(function (n) { sheet.getRange(r, K[n] + 1).setValue(values[n]); });
+}
+/** A full-width row for appendRow, with each value placed under its header. */
+function rowFor_(sheet, K, values) {
+  var row = [];
+  for (var i = 0; i < sheet.getLastColumn(); i++) row.push('');
+  Object.keys(values).forEach(function (n) { row[K[n]] = values[n]; });
+  return row;
+}
+
+// ----------------------------- COLUMNS BY HEADER NAME -----------------------------
+
+/** The required headers for a tab (by its own name, or by its class mode). */
+function colsFor_(tab) {
+  if (TAB_COLS[tab]) return TAB_COLS[tab];
+  for (var i = 0; i < CLASSES.length; i++) if (CLASSES[i].tab === tab) return MODE_COLS[CLASSES[i].mode];
+  throw new Error('No column list for tab "' + tab + '".');
+}
+
+/**
+ * Header name -> 0-based column index for a tab, read from row 1 once per request.
+ * Matching ignores case and surrounding spaces. Throws if a required header is
+ * missing or appears twice, so a bad header row stops the action instead of
+ * silently writing to the wrong column. Pass headerRow when it is already in hand.
+ */
+function cols_(tab, headerRow) {
+  if (_MEMO.cols[tab]) return _MEMO.cols[tab];
+  if (!headerRow) {
+    var s = sheet_(tab);
+    headerRow = s.getRange(1, 1, 1, Math.max(s.getLastColumn(), 1)).getValues()[0];
+  }
+  var map = Object.create(null), dup = Object.create(null);
+  headerRow.forEach(function (h, i) {
+    var k = String(h == null ? '' : h).trim().toLowerCase();
+    if (!k) return;
+    if (k in map) dup[k] = true; else map[k] = i;
+  });
+  colsFor_(tab).forEach(function (n) {
+    if (!(n in map)) throw new Error('Tab "' + tab + '" is missing column "' + n + '". Check its header row.');
+    if (dup[n]) throw new Error('Tab "' + tab + '" has column "' + n + '" more than once. Remove the duplicate.');
+  });
+  _MEMO.cols[tab] = map;
+  return map;
+}
+
+function colLetter_(i) {
+  var s = ''; i = i + 1;
+  while (i > 0) { var m = (i - 1) % 26; s = String.fromCharCode(65 + m) + s; i = Math.floor((i - 1) / 26); }
+  return s;
+}
+
+/**
+ * Admin-only. Run from the Apps Script editor after pasting, and after any change
+ * to a header row. Logs one line per tab: OK with where each column was found,
+ * or FAIL with what is wrong.
+ */
+function checkColumns() {
+  assertAdmin_();
+  var tabs = ['class_config', 'overrides'].concat(CLASSES.map(function (c) { return c.tab; }));
+  var lines = tabs.map(function (tab) {
+    try {
+      var K = cols_(tab);
+      return 'OK    ' + tab + ': ' + colsFor_(tab).map(function (n) { return n + '=' + colLetter_(K[n]); }).join(', ');
+    } catch (e) {
+      return 'FAIL  ' + tab + ': ' + e.message;
+    }
+  });
+  var report = lines.join('\n');
+  Logger.log(report);
+  return report;
+}
+
 function displayName_(email) {
   email = (email || '').toLowerCase();
   if (!email || email === '__public__') return '';

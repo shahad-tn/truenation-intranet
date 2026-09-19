@@ -53,7 +53,35 @@ review, four calendars, and a 10-step build sequence.
   `checkColumns()`. See `SYSTEM-MAP.md` §1.2 for the deploy checks.
 - **1a is DEPLOYED (2026-09-18).** `checkColumns` reported OK on all four tabs, no trigger
   existed on `reopenCompletedCycle`, the portal loads.
-- **1b is ON HOLD by Shahad's decision (2026-09-19).** He asked whether the migration accounted
+- **Where scheduling code lives (Shahad, 2026-09-19): the Teacher Portal project.** He wants the
+  portals kept as separate Apps Script projects as much as possible, so step 2's generation,
+  reminder and calendar code goes there too - not into a new project, not into `directory`. The
+  rename of the Teachers Portal is NOT pending; it keeps its name.
+- **1b migration RUN AND VERIFIED 2026-09-19.** `migrationApply()` then `migrationVerify()`:
+  all checks passed, no warnings. The eight new tabs exist and hold 279 topics (150 Bible Basics
+  + 129 World History), 10 classes, 14 rotation rows, 14 reader pairings, 10 sessions and 13
+  config rows. **The portal still reads the OLD tabs** - see the drift warning below.
+
+  **DRIFT WARNING:** `sessions` is a snapshot taken 2026-09-19. Every claim or substitute made in
+  the portal from now on writes to the old tabs only, and `sessions` silently falls behind. Either
+  switch the portal to the new tabs next, or delete the `sessions` tab and re-run
+  `migrationApply()` when the switch happens. Do not let anything depend on `sessions` until then.
+  Also still blank: `config` row `cycle_started_on.bible-basics`, which the reworked cycle reset
+  needs.
+
+- **1b migration written 2026-09-19.** `scripts/teachers portal/
+  migrate_scheduling.gs` - a NEW file, `code.gs` untouched. **Self-contained**: it borrows
+  nothing from `code.gs` (its own spreadsheet id, admin check, date format and header lookup, all
+  `mig_`-prefixed), so it runs in the Teacher Portal project or in a project of its own. The admin
+  check uses the Admin SDK when the advanced service is enabled and falls back to GroupsApp when
+  it is not; if neither can answer it refuses. `migrationPreview()` /
+  `migrationApply()` / `migrationVerify()`, all admin-only, all run from the editor. Read-only on
+  every existing tab; refuses to run twice. Tested against a fake spreadsheet: 24 checks including
+  claim+override merged to one session, substitute reader re-resolved, unknown class and missing
+  date warned, idempotency, and verify catching a seeded duplicate. **Step 2 must add the new tabs
+  to `TAB_COLS` in `code.gs`** - `cols_()` does not know them yet, which is why the migration
+  carries its own `mig_cols_()`.
+- **1b was ON HOLD by Shahad's decision (2026-09-19).** He asked whether the migration accounted
   for the other eight classes. It did not, so the full ten-class schema is being settled first:
   `claude/sheet-schema.md` (proposal, awaiting his answers to its seven open questions). It
   supersedes step 1's "one shared `sessions` tab" wording. Nothing moves until it is agreed.
@@ -79,9 +107,11 @@ review, four calendars, and a 10-step build sequence.
 ### Blockers
 1. **The service account has no Calendar scope.** Nothing calendar-related works until granted.
    See `claude/migration-checklist.md` Phase 4 for both routes.
-2. **Staff emails** for every named teacher and reader still need pulling from the staff sheet
-   `1b88y_ic5vYHwcITXblYRMUFGtOOYbyvnQBupvVBVBIk` and verifying with Shahad. On the old account
-   Drive was connected as a personal gmail and could not see it — connect as `truenation.org`.
+2. ~~Staff emails~~ **RESOLVED 2026-09-19.** All 20 teachers and readers matched to
+   `@truenation.org` addresses from the staff sheet and confirmed name by name with Shahad. The
+   table is in `claude/sheet-schema.md`. Shahad exported the `data` tab to a CSV in this folder
+   for the match - **it holds staff personal data and should not be committed** (`.gitignore` it
+   or remove it once done).
 
 ### Deferred by decision
 - Reader policy for World History and War for The Kingdom — slots stay empty, flag suppressed

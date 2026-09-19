@@ -214,7 +214,9 @@ its service. Splitting those is a separate change if he wants it.
 
 ## 4. Open queue (not Teacher Portal — carry forward)
 
-1. **Teachers Portal rename** — he wants it renamed. Name not yet decided.
+1. ~~Teachers Portal rename~~ **DROPPED 2026-09-19** - "no name change pending". It keeps its
+   name, and it is where the scheduling code lives; Shahad wants the portals kept as separate
+   Apps Script projects as much as possible.
 2. **Proximity map** — blocked on five unanswered questions.
 3. **Birthday render hook** — not started.
 4. Remove `TrueNation_CommunityBrandGuide_Final_5.pdf` from the Claude Project. **He must

@@ -60,7 +60,56 @@ review, four calendars, and a 10-step build sequence.
   `zz_old_overrides` (0). Nothing deleted; `class_config` kept. The drift warning is closed -
   the portal now reads and writes `topics`, `sessions`, `class_config` and `config` only.
 
-  **NEXT: step 2** - slot generation and the session record (see `class-scheduling-plan.md` §10).
+  **STEP 2a IS DONE - RUN AND VERIFIED 2026-09-19.** `sessions` now holds **139 rows**: the 11
+  that existed plus 128 generated. Verify: every class has all its dates to the 16-week horizon,
+  0 missing, 0 duplicate class+date, 0 rows without a seq_no. The apply finished in seconds after
+  the performance fix below. **`code.gs` was re-pasted with the `rowFor_` fix - deploy a new
+  version so the live portal gets it too** (the portal works either way; it is just slow to save
+  a claim without it).
+
+  **NEXT: step 2b** - empty calendar events per session, four calendars. Needs the four calendars
+  to exist and the deploying account to have edit rights; the public Classes calendar still has to
+  be created (plan §7). Apps Script auto-scopes, so the Calendar permission is a re-authorisation
+  prompt, not an admin console change.
+
+  **Step 2a as built (2026-09-19).** `scripts/teachers portal/
+  generate_slots.gs` (new file, runs in the Teacher Portal project, uses `code.gs` helpers):
+  `generateSlotsPreview()` / `generateSlotsApply()` / `generateSlotsVerify()`, admin-only. Creates
+  one session row per class per date to the horizon (16 weeks), for all TEN classes. Never
+  overwrites an existing row; re-running reports 0 new. Assignments are written once and never
+  recomputed. `code.gs` gained `classes`, `class_teachers` and `reader_pairs` in `TAB_COLS`, so it
+  must be re-pasted with it. Rotation anchors from Shahad: Los Discipulos starts Ash, Stick to the
+  Script Banayah, Room 144 Izar Ahla (position 2); written back to the `classes` rows on apply so
+  they cannot drift. 24 checks pass, including: the dates match an independently written cadence
+  calculation for all ten classes; no 5th-Thursday for a 2nd-and-4th class; rotations walk in
+  order; readers resolve fixed and paired; the panel class stays empty; World History topics are
+  unchanged by generation; migrated claims untouched; seq_no runs 1..n in date order; a second run
+  adds nothing; and a skipped session costs only that teacher his turn while nobody else moves
+  (Decision C, Reading B, demonstrated on the migrated Feast-day row).
+
+  **PERFORMANCE BUG, found the hard way 2026-09-19 and fixed. Measured: 4,107 API calls -> 15.**
+  The first `generateSlotsApply()` ran three minutes before Shahad cancelled it, and had written
+  NOTHING (the sheet still held its 11 rows). Two causes, both now fixed and both measured:
+  1. `rowFor_` (in `code.gs`, also used by `writeSession_` and `setCfg_`) called
+     `sheet.getLastColumn()` **in the loop condition** - one API read per column per row, ~4,000
+     calls for 128 rows. Hoisted out of the loop.
+  2. The generator asked the sheet for its width once per row, and filled `seq_no` one cell at a
+     time. Both batched: the width is read once, `seq_no` is one whole-column `setValues`.
+  Now: **11 reads + 4 writes** for 128 rows. A teacher's claim costs 9 reads + 6 writes.
+
+  The fake-spreadsheet tests missed it because mock calls are instant, so the harness now COUNTS
+  reads AND writes and fails above 40 / 12. Apply also runs the `seq_no` and anchor writes even
+  when it appends nothing, so an interrupted run is finished by re-running it. **Lesson for any
+  future Sheet code here: a sheet call inside a loop - especially a loop CONDITION - is a bug at
+  this scale. Batch it, and count the calls in the harness.**
+
+  **Note:** generation fills teacher gaps the old `class_config` week-of-month table left blank -
+  that is the intended move to `class_teachers`. The portal still shows only its two class tabs;
+  rows for the other eight exist for the calendars (2b) and the Next.js views (step 8).
+
+  **NEXT after 2a: step 2b** - empty calendar events (see `class-scheduling-plan.md` §10).
+  The Calendar blocker is largely dissolved: Apps Script auto-scopes, so it is a re-authorisation,
+  not an admin console change. See `migration-checklist.md` Phase 4, corrected 2026-09-19.
   That is where dates stop being computed on the fly, `seq_no` gets assigned, rotation moves from
   `class_config` (nth) to `class_teachers` (session order), and the other eight classes appear.
   The Calendar scope blocker matters from here on.

@@ -63,7 +63,13 @@ var TAB_COLS = {
   sessions:     ['session_id', 'class_key', 'date_iso', 'topic_id', 'teacher_email', 'owner_email',
                  'reader_email', 'state', 'updated_by', 'updated_at'],
   class_config: ['class_key', 'nth', 'teacher_email'],
-  config:       ['key', 'value', 'note']
+  config:       ['key', 'value', 'note'],
+  // read by the slot generator (generate_slots.gs)
+  classes:        ['class_key', 'class_name', 'weekday', 'weeks', 'start_time', 'teacher_mode',
+                   'topic_mode', 'reader_mode', 'fixed_reader_email', 'rotation_anchor_seq',
+                   'rotation_anchor_position', 'active'],
+  class_teachers: ['class_key', 'position', 'teacher_email', 'active'],
+  reader_pairs:   ['class_key', 'teacher_email', 'reader_email', 'active']
 };
 
 // ----------------------------- ROUTING -----------------------------
@@ -615,7 +621,8 @@ function setCells_(sheet, r, K, values) {
 /** A full-width row for appendRow, with each value placed under its header. */
 function rowFor_(sheet, K, values) {
   var row = [];
-  for (var i = 0; i < sheet.getLastColumn(); i++) row.push('');
+  var width = sheet.getLastColumn();          // once, not once per column
+  for (var i = 0; i < width; i++) row.push('');
   Object.keys(values).forEach(function (n) { row[K[n]] = values[n]; });
   return row;
 }

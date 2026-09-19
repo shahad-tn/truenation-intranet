@@ -213,8 +213,9 @@ Ten UI tabs will not fit on a phone; the current front end builds one tab per cl
 
 ## 10. Build sequence
 
-1. **De-risk the Sheet** *(1a header-name lookup: written 2026-09-16, awaiting deploy;
-   1b sessions tab: not started)* — column maps (`CLAIM_COLS`, `ASSIGNED_COLS`, `OV_COLS`) to
+1. **De-risk the Sheet** *(1a header-name lookup: DEPLOYED 2026-09-18. 1b on hold: the
+   schema for all ten classes is being settled first - see `sheet-schema.md`, which supersedes
+   the one-shared-`sessions`-tab wording below.)* — column maps (`CLAIM_COLS`, `ASSIGNED_COLS`, `OV_COLS`) to
    header-name lookup; migrate `bible_basics_topics` + `world_history_topics` into one shared
    `sessions` tab with a `class_key` column. Ten classes cannot be ten named tabs.
 2. **Slot generation and the session record** — cadence rules, blackout reads, full field set

@@ -51,9 +51,14 @@ review, four calendars, and a 10-step build sequence.
 - **1a - written 2026-09-16, awaiting Shahad's paste and deploy.** The Teacher Portal finds
   columns by header name, `reopenCompletedCycle` is admin-only, and there is a new admin-only
   `checkColumns()`. See `SYSTEM-MAP.md` §1.2 for the deploy checks.
-- **1b - next.** Migrate `bible_basics_topics` + `world_history_topics` into one shared
-  `sessions` tab with a `class_key` column. Needs the header row of each tab from Shahad
-  before writing the one-time migration function. Old tabs stay untouched for rollback.
+- **1a is DEPLOYED (2026-09-18).** `checkColumns` reported OK on all four tabs, no trigger
+  existed on `reopenCompletedCycle`, the portal loads.
+- **1b is ON HOLD by Shahad's decision (2026-09-19).** He asked whether the migration accounted
+  for the other eight classes. It did not, so the full ten-class schema is being settled first:
+  `claude/sheet-schema.md` (proposal, awaiting his answers to its seven open questions). It
+  supersedes step 1's "one shared `sessions` tab" wording. Nothing moves until it is agreed.
+  Confirmed header rows: `bible_basics_topics` A-J ending `notes` (151 rows),
+  `world_history_topics` A-E ending `description` (130 rows).
 
 ### Done on 2026-09-15, not yet committed
 - Teacher Portal security fix: 31 private helpers renamed `_foo` -> `foo_`. A leading

@@ -384,3 +384,88 @@ function migrationVerify() {
   Logger.log(report);
   return report;
 }
+
+// ----------------------------- CYCLE START (Bible Basics) -----------------------------
+//
+// The old model marked a topic Claimed in a status column. The new model has no such column:
+// a topic is Open unless a session references it on or after the cycle's start date. That date
+// has to come from somewhere, and nobody remembers when the current cycle began, so derive it:
+// the earliest teaching date currently claimed.
+//
+//   cycleStartPreview()  - admin only, writes nothing. Proposes the date and PROVES it by
+//                          comparing what it makes Open against today's status column.
+//   cycleStartApply()    - admin only. Writes the proposed date into config.
+
+function cycleStartPreview() { return mig_cycle_(false); }
+function cycleStartApply() { return mig_cycle_(true); }
+
+function mig_cycle_(apply) {
+  mig_assertAdmin_();
+  var ss = SpreadsheetApp.openById(MIG_SPREADSHEET_ID);
+  var CLASS_KEY = 'bible-basics', SRC = mig_sourceTab_(CLASS_KEY);
+  var out = [];
+
+  var src = ss.getSheetByName(SRC);
+  if (!src) return 'Cannot find "' + SRC + '".';
+  var d = src.getDataRange().getValues();
+  var K = mig_headerMap_(d[0], SRC, ['topic_id', 'status', 'claimed_by_email', 'teach_date']);
+
+  var takenOld = {}, dates = [], noDate = [];
+  for (var i = 1; i < d.length; i++) {
+    var id = String(d[i][K.topic_id] || '').trim();
+    if (!id) continue;
+    var claimed = String(d[i][K.status] || '').trim().toLowerCase() === 'claimed' ||
+                  !!String(d[i][K.claimed_by_email] || '').trim();
+    if (!claimed) continue;
+    takenOld[id] = true;
+    var t = mig_fmtDate_(d[i][K.teach_date]);
+    if (t) dates.push(t); else noDate.push(id);
+  }
+  if (!dates.length) return 'No claimed topic has a teaching date, so there is nothing to derive a cycle start from.';
+  dates.sort();
+  var proposed = dates[0];
+
+  // What the new rule makes taken: any topic with a session on or after the proposed date.
+  var takenNew = {}, sess = ss.getSheetByName('sessions');
+  if (!sess) return 'No "sessions" tab - run migrationApply() first.';
+  var sd = sess.getDataRange().getValues(), S = mig_headerMap_(sd[0], 'sessions', MIG_HEADERS.sessions);
+  for (var j = 1; j < sd.length; j++) {
+    if (String(sd[j][S.class_key] || '').trim() !== CLASS_KEY) continue;
+    var tid = String(sd[j][S.topic_id] || '').trim();
+    if (tid && mig_fmtDate_(sd[j][S.date_iso]) >= proposed) takenNew[tid] = true;
+  }
+
+  var onlyOld = Object.keys(takenOld).filter(function (k) { return !takenNew[k]; });
+  var onlyNew = Object.keys(takenNew).filter(function (k) { return !takenOld[k]; });
+  var totalTopics = 0, tp = ss.getSheetByName('topics');
+  if (tp) {
+    var td = tp.getDataRange().getValues(), T = mig_headerMap_(td[0], 'topics', MIG_HEADERS.topics);
+    for (var m = 1; m < td.length; m++)
+      if (String(td[m][T.class_key] || '').trim() === CLASS_KEY && String(td[m][T.topic_id] || '').trim()) totalTopics++;
+  }
+
+  out.push('Proposed cycle start for ' + CLASS_KEY + ': ' + proposed + ' (earliest claimed teaching date)');
+  out.push('  topics in this class: ' + totalTopics);
+  out.push('  taken under the OLD status column: ' + Object.keys(takenOld).length);
+  out.push('  taken under the NEW rule:          ' + Object.keys(takenNew).length);
+  out.push('  would become Open: ' + (totalTopics - Object.keys(takenNew).length));
+  if (noDate.length) out.push('  ! claimed but no teaching date, so not represented as a session: ' + noDate.join(', '));
+  if (onlyOld.length) out.push('  ! taken today but Open under the new rule: ' + onlyOld.slice(0, 12).join(', ') + (onlyOld.length > 12 ? ' (+' + (onlyOld.length - 12) + ')' : ''));
+  if (onlyNew.length) out.push('  ! Open today but taken under the new rule: ' + onlyNew.slice(0, 12).join(', ') + (onlyNew.length > 12 ? ' (+' + (onlyNew.length - 12) + ')' : ''));
+  if (!onlyOld.length && !onlyNew.length) out.push('  MATCH - the new rule reproduces the current Open/Claimed split exactly.');
+
+  if (apply) {
+    var cfg = ss.getSheetByName('config');
+    if (!cfg) return 'No "config" tab - run migrationApply() first.';
+    var cd = cfg.getDataRange().getValues(), C = mig_headerMap_(cd[0], 'config', MIG_HEADERS.config);
+    var key = 'cycle_started_on.' + CLASS_KEY, row = -1;
+    for (var r = 1; r < cd.length; r++) if (String(cd[r][C.key] || '').trim() === key) { row = r + 1; break; }
+    if (row === -1) { cfg.appendRow([key, proposed, 'Derived from the earliest claimed teaching date']); }
+    else { cfg.getRange(row, C.value + 1).setValue(proposed); }
+    SpreadsheetApp.flush();
+    out.push('WRITTEN to config: ' + key + ' = ' + proposed);
+  } else {
+    out.push('Nothing written. Run cycleStartApply() to store it.');
+  }
+  var report = out.join('\n'); Logger.log(report); return report;
+}

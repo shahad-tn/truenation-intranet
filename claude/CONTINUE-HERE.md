@@ -66,9 +66,15 @@ review, four calendars, and a 10-step build sequence.
   the portal from now on writes to the old tabs only, and `sessions` silently falls behind. Either
   switch the portal to the new tabs next, or delete the `sessions` tab and re-run
   `migrationApply()` when the switch happens. Do not let anything depend on `sessions` until then.
-  Also still blank: `config` row `cycle_started_on.bible-basics`, which the reworked cycle reset
-  needs.
+  `cycle_started_on.bible-basics` = **2026-08-04**, written 2026-09-19. The preview reported
+  MATCH on live data: 10 topics taken under the old `status` column, the same 10 under the new
+  rule, 140 of 150 Open. Switching the portal changes nobody's Open/Claimed state.
 
+- **Cycle start derived, not remembered (2026-09-19).** Shahad does not know when the current
+  Bible Basics cycle began, so `cycleStartPreview()` / `cycleStartApply()` in
+  `migrate_scheduling.gs` derive it: the earliest claimed teaching date. The preview proves the
+  choice by comparing what the new rule makes Open against today's `status` column and reporting
+  any topic the two disagree on - on clean data it reports MATCH.
 - **1b migration written 2026-09-19.** `scripts/teachers portal/
   migrate_scheduling.gs` - a NEW file, `code.gs` untouched. **Self-contained**: it borrows
   nothing from `code.gs` (its own spreadsheet id, admin check, date format and header lookup, all

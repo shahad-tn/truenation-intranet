@@ -53,6 +53,41 @@ review, four calendars, and a 10-step build sequence.
   `checkColumns()`. See `SYSTEM-MAP.md` §1.2 for the deploy checks.
 - **1a is DEPLOYED (2026-09-18).** `checkColumns` reported OK on all four tabs, no trigger
   existed on `reopenCompletedCycle`, the portal loads.
+- **STEP 1 IS COMPLETE. The switch is DEPLOYED and verified (2026-09-19).** `owner_email` added
+  and backfilled on 10 claim rows, `checkColumns` OK on all four tabs, new version deployed,
+  portal confirmed working by Shahad. `retireOldTabsApply()` renamed the dead tabs:
+  `zz_old_bible_basics_topics` (150 rows), `zz_old_world_history_topics` (129),
+  `zz_old_overrides` (0). Nothing deleted; `class_config` kept. The drift warning is closed -
+  the portal now reads and writes `topics`, `sessions`, `class_config` and `config` only.
+
+  **NEXT: step 2** - slot generation and the session record (see `class-scheduling-plan.md` §10).
+  That is where dates stop being computed on the fly, `seq_no` gets assigned, rotation moves from
+  `class_config` (nth) to `class_teachers` (session order), and the other eight classes appear.
+  The Calendar scope blocker matters from here on.
+
+  **What the switch was (2026-09-19).** `code.gs` now reads and writes
+  the new tabs: topics from `topics`, claims as `sessions` rows, Open/Claimed derived from
+  `cycle_started_on`, substitutes as `teacher_email` against `owner_email`, and
+  `reopenCompletedCycle` moves the cycle start instead of clearing columns. Public API unchanged
+  (18 functions, byte-identical list); `index.html` untouched. Rotation still reads `class_config`
+  and dates are still computed on the fly - that is step 2, deliberately not in this paste.
+
+  **Order matters - see the paste order in the chat/commit, but in short:** paste
+  `migrate_scheduling.gs` first, run `upgradeHeadersApply()` (adds `sessions.owner_email` and
+  backfills it from `teacher_email` on claim rows - the new code needs it), then paste `code.gs`,
+  run `checkColumns()`, deploy, verify the portal, and only then `retireOldTabsApply()` which
+  renames the three dead tabs `zz_old_*` (keeps `class_config`, deletes nothing).
+
+  **Tested: 22 equivalence checks + 35 migration checks.** The old code on the old tabs and the
+  new code on the new tabs return identical state across 24 actions. Three differences are
+  deliberate and asserted as such: (1) the claimant's name is resolved from the directory at
+  display time instead of read from a stored column; (2) a claim with no teaching date reads
+  Claimed in the old model and Open in the new - none exist in the live sheet, which is what the
+  cycleStart MATCH proved; (3) when an admin moves a claim to another date, the old code strands
+  the substitute teacher on the vacated date and the new code clears it. Two behaviours were
+  changed back to match the old code exactly: releasing an unclaimed topic is a silent no-op, and
+  moving a claim forwards is allowed (moving one that was already taught is refused).
+
 - **Where scheduling code lives (Shahad, 2026-09-19): the Teacher Portal project.** He wants the
   portals kept as separate Apps Script projects as much as possible, so step 2's generation,
   reminder and calendar code goes there too - not into a new project, not into `directory`. The

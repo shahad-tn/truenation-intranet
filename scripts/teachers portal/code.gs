@@ -9,21 +9,28 @@
  * Plus an Admin tab (tn-admin / apostles / bishops) that governs both classes,
  * and a ?view=public read-only schedule for member-facing pages.
  *
- * SHEET TABS (import the matching CSVs from /reference):
- *   Columns are found by HEADER NAME in row 1, so column order does not matter
- *   and extra columns are ignored. A missing required header stops the action
- *   with a clear message. Run checkColumns() from the editor after any change
- *   to a header row.
- *   bible_basics_topics   topic_id, topic_name, scripture_refs, description,
- *                         status, claimed_by_email, claimed_by_name, claimed_at,
- *                         teach_date, notes
- *   world_history_topics  topic_id, topic_name, teach_order, scripture_refs, description
- *   class_config          class_key, nth, teacher_email        (rotation; admin-editable)
- *   overrides             class_key, date_iso, teacher_email, topic_id, canceled,
- *                         note, updated_by, updated_at
+ * DATA (2026-09-19, step 1b): this file reads the SHARED scheduling tabs.
+ *   topics        class_key, topic_id, topic_name, teach_order, scripture_refs,
+ *                 description, notes, retired          <- both classes' catalogues
+ *   sessions      one row per class per date. Who teaches it, which topic, its state.
+ *                 owner_email is whose slot it is (the claimant); teacher_email is who
+ *                 is actually teaching, which differs when a substitute takes it.
+ *   class_config  class_key, nth, teacher_email        <- rotation, unchanged for now
+ *   config        key, value, note                     <- incl. cycle_started_on.<class>
+ *
+ * A topic is OPEN unless a session references it on or after its class's
+ * cycle_started_on date. There is no status column any more, and nothing is
+ * ever cleared to reopen a cycle - the cycle start moves forward instead, so
+ * every past session stays on the record.
+ *
+ * The old `bible_basics_topics`, `world_history_topics` and `overrides` tabs are
+ * NOT read or written by this file. They were renamed `zz_old_*` after the switch.
+ *
+ * Columns are found by HEADER NAME in row 1: order does not matter, extra columns
+ * are ignored, and a missing required header stops the action with a clear message.
+ * Run checkColumns() from the editor after any change to a header row.
  *
  * DEPLOY: Execute as ME (an account that can read the groups); Access = domain.
- * See reference/bible-basics-portal-setup.md.
  * ===========================================================================
  */
 
@@ -34,39 +41,32 @@ var ADMIN_GROUPS   = ['tn-admin@truenation.org', 'apostles@truenation.org', 'bis
 var ADMIN_NOTIFY   = 'it@truenation.org';
 var WEEKS_AHEAD    = 16;
 
-// Structural per-class config. Rotation (WHO) lives in the class_config tab.
+// Structural per-class config. Rotation (WHO) lives in the class_config tab;
+// topics live in the shared topics tab, keyed by class_key.
 var CLASSES = [
   {
-    key: 'bible-basics', name: 'Bible Basics', day: 2 /* Tue */,
-    tab: 'bible_basics_topics', mode: 'claim'
+    key: 'bible-basics', name: 'Bible Basics', day: 2 /* Tue */, mode: 'claim'
   },
   {
-    key: 'world-history', name: 'World History', day: 3 /* Wed */,
-    tab: 'world_history_topics', mode: 'assigned',
+    key: 'world-history', name: 'World History', day: 3 /* Wed */, mode: 'assigned',
     startTopicId: 'WH-029',        // "Saul, David, and Solomon in World Context"
-    startDateISO: '2026-07-29'      // first class-day of the cycle (a Wednesday) — edit to go-live
+    startDateISO: '2026-07-29'      // first class-day of the cycle (a Wednesday)
   }
 ];
 // ===============================================================
 
-// Required headers. Topic tabs use the list for their class mode; the other tabs
-// use their own. The FIRST header in each list is the row key: rows where it is
-// blank are skipped.
-var MODE_COLS = {
-  claim:    ['topic_id', 'topic_name', 'scripture_refs', 'description', 'status',
-             'claimed_by_email', 'claimed_by_name', 'claimed_at', 'teach_date'],
-  assigned: ['topic_id', 'topic_name', 'teach_order']
-};
+// Required headers per tab. The first entry is the row key: rows where it is blank
+// are skipped. Only columns this file actually uses are required, so the tabs may
+// carry more (they do - the full set is in claude/sheet-schema.md).
 var TAB_COLS = {
+  topics:       ['topic_id', 'class_key', 'topic_name', 'teach_order', 'scripture_refs', 'description'],
+  sessions:     ['session_id', 'class_key', 'date_iso', 'topic_id', 'teacher_email', 'owner_email',
+                 'reader_email', 'state', 'updated_by', 'updated_at'],
   class_config: ['class_key', 'nth', 'teacher_email'],
-  overrides:    ['class_key', 'date_iso', 'teacher_email', 'topic_id', 'canceled',
-                 'note', 'updated_by', 'updated_at']
+  config:       ['key', 'value', 'note']
 };
-// Cleared together when a claim is released or a cycle resets.
-var CLAIM_CLEAR = ['claimed_by_email', 'claimed_by_name', 'claimed_at', 'teach_date'];
 
 // ----------------------------- ROUTING -----------------------------
-
 function doGet(e) {
   var view = e && e.parameter && e.parameter.view;
   if (view === 'public') {
@@ -83,7 +83,6 @@ function doGet(e) {
   var t = HtmlService.createTemplateFromFile('index');
   return page_(t, 'TNIC Teacher Portal');
 }
-
 function page_(tmpl, title) {
   return tmpl.evaluate().setTitle(title)
     .addMetaTag('viewport', 'width=device-width, initial-scale=1')
@@ -93,10 +92,9 @@ function include(name) { return HtmlService.createHtmlOutputFromFile(name).getCo
 
 // ----------------------------- AUTH -----------------------------
 
+// ----------------------------- AUTH -----------------------------
 function me_() { return (Session.getActiveUser().getEmail() || '').toLowerCase(); }
-
 function isMorehMember(email) { return inGroup_(MOREH_GROUP, email); }
-
 function isAdmin(email) {
   email = email || me_();
   for (var i = 0; i < ADMIN_GROUPS.length; i++) if (inGroup_(ADMIN_GROUPS[i], email)) return true;
@@ -113,6 +111,7 @@ function assertAdmin_() { if (!isAdmin(me_())) throw new Error('Admin access req
 
 // ----------------------------- READ (portal) -----------------------------
 
+// ----------------------------- STATE -----------------------------
 function getPortalState() {
   _MEMO.tabs = {}; _MEMO.cols = {}; // always read fresh (this often runs right after a write)
   var email = me_();
@@ -132,69 +131,196 @@ function getPortalState() {
   return { me: email, myName: displayName_(email), isAdmin: admin, classes: classes, mine: mine };
 }
 
+// ----------------------------- READ (portal) -----------------------------
+
 function classState_(c, email) {
   var rotation = rotation_(c.key);
-  var overrides = overridesFor_(c.key);
-  var tuesdays = upcomingDays_(c.day, WEEKS_AHEAD);
+  var sessions = sessionsFor_(c.key);
+  var days = upcomingDays_(c.day, WEEKS_AHEAD);
   var out = { key: c.key, name: c.name, mode: c.mode, day: c.day, rotation: rotation };
 
   if (c.mode === 'claim') {
-    var rows = readTab_(c.tab), K = cols_(c.tab);
-    var topics = rows.map(function (r) {
-      return { id: r[K.topic_id], name: r[K.topic_name],
-        ref: r[K.scripture_refs] || '', desc: r[K.description] || '',
-        status: r[K.status] || 'Open',
-        claimedByEmail: (r[K.claimed_by_email] || '').toLowerCase(),
-        claimedByName: r[K.claimed_by_name] || '',
-        teachDate: fmtDate_(r[K.teach_date]) };
+    var taken = takenTopics_(c.key, sessions);
+    var topics = topicsFor_(c.key).map(function (t) {
+      var hit = taken[t.id];
+      return { id: t.id, name: t.name, ref: t.ref, desc: t.desc,
+        status: hit ? 'Claimed' : 'Open',
+        claimedByEmail: hit ? hit.owner : '',
+        claimedByName: hit ? displayName_(hit.owner) : '',
+        teachDate: hit ? hit.iso : '' };
     });
-    var byDate = {}; topics.forEach(function (t) { if (t.teachDate) byDate[t.teachDate] = t; });
     out.topics = topics;
     out.counts = { total: topics.length,
       claimed: topics.filter(function (t) { return t.status === 'Claimed'; }).length,
       open: topics.filter(function (t) { return t.status === 'Open'; }).length };
-    out.openDates = tuesdays.filter(function (d) { return !byDate[iso_(d)]; }).map(function (d) {
+    out.openDates = days.filter(function (d) {
+      var s = sessions[iso_(d)];
+      return !(s && (s.topicId || s.owner));
+    }).map(function (d) {
       var nth = nth_(d);
       return { iso: iso_(d), label: pretty_(d), nth: nth, mine: rotation[nth] === email };
     });
-    out.schedule = tuesdays.map(function (d) {
-      var iso = iso_(d), nth = nth_(d), t = byDate[iso] || null, ov = overrides[iso];
-      var teacher = t ? t.claimedByEmail : (rotation[nth] || '');
-      var topicName = t ? t.name : '';
-      var canceled = false;
-      if (ov) { if (ov.canceled) canceled = true;
-        if (ov.teacherEmail) teacher = ov.teacherEmail;
-        if (ov.topicId) topicName = topicName_(c, ov.topicId); }
-      return { iso: iso, month: mon_(d), day: d.getDate(), nth: nth,
+    out.schedule = days.map(function (d) {
+      var iso = iso_(d), s = sessions[iso] || null;
+      var owner = s ? s.owner : '';
+      var teacher = s ? (s.teacher || s.owner) : (rotation[nth_(d)] || '');
+      return { iso: iso, month: mon_(d), day: d.getDate(), nth: nth_(d),
         teacherEmail: teacher, teacherName: displayName_(teacher),
-        claimedByEmail: t ? t.claimedByEmail : '',   // the topic owner, regardless of who's displayed as teacher
-        topicId: t ? t.id : (ov && ov.topicId ? ov.topicId : ''), topicName: topicName,
-        canceled: canceled, overridden: !!ov };
+        claimedByEmail: owner,                       // the slot's owner, whoever is teaching it
+        topicId: s ? s.topicId : '', topicName: s && s.topicId ? topicName_(c, s.topicId) : '',
+        canceled: !!(s && s.state === 'skipped'),
+        overridden: !!(s && (s.state === 'skipped' || (s.teacher && owner && s.teacher !== owner))) };
     });
 
   } else { // assigned
     var ordered = orderedTopics_(c);
     var startIdx = indexOfTopic_(ordered, c.startTopicId);
     var start = dateFromISO_(c.startDateISO);
-    out.schedule = tuesdays.map(function (d) {
-      var iso = iso_(d), nth = nth_(d), ov = overrides[iso];
+    out.schedule = days.map(function (d) {
+      var iso = iso_(d), nth = nth_(d), s = sessions[iso] || null;
       var offset = Math.round((mid_(d) - mid_(start)) / 604800000); // weeks since start
-      var idx = ((startIdx + offset) % ordered.length + ordered.length) % ordered.length;
+      var idx = ordered.length ? ((startIdx + offset) % ordered.length + ordered.length) % ordered.length : 0;
       var topic = ordered[idx];
       var teacher = rotation[nth] || '';
-      var topicName = topic ? topic.name : '';
       var topicId = topic ? topic.id : '';
       var canceled = false;
-      if (ov) { if (ov.canceled) canceled = true;
-        if (ov.teacherEmail) teacher = ov.teacherEmail;
-        if (ov.topicId) { topicId = ov.topicId; topicName = topicName_(c, ov.topicId); } }
+      if (s) {
+        if (s.state === 'skipped') canceled = true;
+        if (s.teacher) teacher = s.teacher;
+        if (s.topicId) topicId = s.topicId;
+      }
       return { iso: iso, month: mon_(d), day: d.getDate(), nth: nth,
         teacherEmail: teacher, teacherName: displayName_(teacher),
-        topicId: topicId, topicName: topicName, canceled: canceled, overridden: !!ov };
+        topicId: topicId, topicName: topicId ? topicName_(c, topicId) : '',
+        canceled: canceled, overridden: !!(s && (s.teacher || s.topicId || s.state === 'skipped')) };
     });
     out.counts = { total: ordered.length };
   }
   return out;
+}
+
+// ----------------------------- TOPICS (shared tab) -----------------------------
+
+function topicsFor_(classKey) {
+  var rows = readTab_('topics'), K = cols_('topics');
+  var out = [];
+  rows.forEach(function (r) {
+    if (String(r[K.class_key]).trim() !== classKey) return;
+    if (String(r[K.retired] === undefined ? '' : r[K.retired]).toLowerCase() === 'true') return;
+    out.push({ id: String(r[K.topic_id]), name: r[K.topic_name] || '',
+      ref: r[K.scripture_refs] || '', desc: r[K.description] || '',
+      order: Number(r[K.teach_order]) || 0 });
+  });
+  return out;
+}
+
+function orderedTopics_(c) {
+  return topicsFor_(c.key).sort(function (a, b) { return a.order - b.order; });
+}
+
+function topicName_(c, id) {
+  var list = topicsFor_(c.key);
+  for (var i = 0; i < list.length; i++) if (String(list[i].id) === String(id)) return list[i].name;
+  return '';
+}
+
+/** topic_id -> {owner, iso} for every topic taught on or after this class's cycle start. */
+function takenTopics_(classKey, sessions) {
+  var cycleStart = cycleStart_(classKey), out = {};
+  Object.keys(sessions).forEach(function (iso) {
+    var s = sessions[iso];
+    if (!s.topicId || iso < cycleStart) return;
+    out[String(s.topicId)] = { owner: s.owner || s.teacher, iso: iso };
+  });
+  return out;
+}
+
+// ----------------------------- SESSIONS -----------------------------
+
+/** dateISO -> session, for one class. Row numbers are 1-based sheet rows. */
+function sessionsFor_(classKey) {
+  var sheet = sheet_('sessions'), data = sheet.getDataRange().getValues();
+  var K = cols_('sessions', data[0]), out = {};
+  for (var i = 1; i < data.length; i++) {
+    var r = data[i];
+    if (String(r[K.class_key] || '').trim() !== classKey) continue;
+    var iso = fmtDate_(r[K.date_iso]);
+    if (!iso) continue;
+    out[iso] = { row: i + 1, iso: iso,
+      topicId: String(r[K.topic_id] || ''),
+      teacher: String(r[K.teacher_email] || '').toLowerCase(),
+      owner: String(r[K.owner_email] || '').toLowerCase(),
+      reader: String(r[K.reader_email] || '').toLowerCase(),
+      state: String(r[K.state] || 'scheduled') };
+  }
+  return out;
+}
+
+/** Create or update one session row, by named column. Returns the sheet row. */
+function writeSession_(classKey, dateISO, values) {
+  var sheet = sheet_('sessions'), data = sheet.getDataRange().getValues();
+  var K = cols_('sessions', data[0]), now = new Date(), me = me_();
+  values.updated_by = me; values.updated_at = now;
+  for (var i = 1; i < data.length; i++) {
+    if (String(data[i][K.class_key] || '').trim() === classKey &&
+        fmtDate_(data[i][K.date_iso]) === dateISO) {
+      setCells_(sheet, i + 1, K, values);
+      SpreadsheetApp.flush();
+      return i + 1;
+    }
+  }
+  values.session_id = classKey + '-' + dateISO;
+  values.class_key = classKey;
+  values.date_iso = dateISO;
+  if (values.state === undefined) values.state = 'scheduled';
+  sheet.appendRow(rowFor_(sheet, K, values));
+  SpreadsheetApp.flush();
+  return sheet.getLastRow();
+}
+
+/** Delete a session row outright. Used when a claim is released - the row existed only for it. */
+function deleteSession_(classKey, dateISO) {
+  var sheet = sheet_('sessions'), data = sheet.getDataRange().getValues();
+  var K = cols_('sessions', data[0]);
+  for (var i = data.length - 1; i >= 1; i--) {
+    if (String(data[i][K.class_key] || '').trim() === classKey &&
+        fmtDate_(data[i][K.date_iso]) === dateISO) {
+      sheet.deleteRow(i + 1); SpreadsheetApp.flush(); return true;
+    }
+  }
+  return false;
+}
+
+/** True when a row carries nothing worth keeping once the teacher override is gone. */
+function sessionIsEmpty_(s) {
+  return !s.topicId && !s.owner && s.state !== 'skipped';
+}
+
+// ----------------------------- CONFIG TAB -----------------------------
+
+function cfg_(key, dflt) {
+  var rows = readTab_('config'), K = cols_('config');
+  for (var i = 0; i < rows.length; i++)
+    if (String(rows[i][K.key]).trim() === key) return rows[i][K.value];
+  return dflt === undefined ? '' : dflt;
+}
+
+function setCfg_(key, value, note) {
+  var sheet = sheet_('config'), data = sheet.getDataRange().getValues();
+  var K = cols_('config', data[0]);
+  for (var i = 1; i < data.length; i++)
+    if (String(data[i][K.key]).trim() === key) {
+      sheet.getRange(i + 1, K.value + 1).setValue(value);
+      SpreadsheetApp.flush(); return;
+    }
+  sheet.appendRow(rowFor_(sheet, K, { key: key, value: value, note: note || '' }));
+  SpreadsheetApp.flush();
+}
+
+/** A topic counts as taken only from this date onwards. Blank means "all of history". */
+function cycleStart_(classKey) {
+  var v = cfg_('cycle_started_on.' + classKey, '');
+  return v ? fmtDate_(v) : '0000-00-00';
 }
 
 // ----------------------------- CLAIM (claim mode, atomic) -----------------------------
@@ -207,15 +333,16 @@ function claimTopic(classKey, topicId, dateISO) {
     var email = me_();
     if (!isMorehMember(email)) return fail_('You are not authorized to claim topics.');
     if (!isValidDay_(c.day, dateISO)) return fail_('That is not a valid upcoming class date.');
-    var sheet = sheet_(c.tab), data = sheet.getDataRange().getValues(), K = cols_(c.tab, data[0]);
-    for (var i = 1; i < data.length; i++)
-      if (fmtDate_(data[i][K.teach_date]) === dateISO)
-        return fail_('That date was just taken by ' + (data[i][K.claimed_by_name] || 'another teacher') + '. Pick another.');
-    var r = findRow_(data, K.topic_id, topicId);
-    if (r === -1) return fail_('Topic not found.');
-    if ((data[r][K.status] || 'Open') !== 'Open')
-      return fail_('“' + data[r][K.topic_name] + '” was just claimed by ' + (data[r][K.claimed_by_name] || 'another teacher') + '.');
-    writeClaim_(sheet, r, email, displayName_(email), dateISO);
+    _MEMO.tabs = {};
+    var sessions = sessionsFor_(classKey), here = sessions[dateISO];
+    if (here && (here.topicId || here.owner))
+      return fail_('That date was just taken by ' + (displayName_(here.owner || here.teacher) || 'another teacher') + '. Pick another.');
+    var topic = topicById_(c, topicId);
+    if (!topic) return fail_('Topic not found.');
+    var taken = takenTopics_(classKey, sessions)[String(topicId)];
+    if (taken)
+      return fail_('“' + topic.name + '” was just claimed by ' + (displayName_(taken.owner) || 'another teacher') + '.');
+    writeSession_(classKey, dateISO, { topic_id: topicId, owner_email: email, teacher_email: email, state: 'scheduled' });
     return { ok: true, state: getPortalState() };
   } finally { lock.releaseLock(); }
 }
@@ -225,15 +352,21 @@ function releaseTopic(classKey, topicId) {
   var lock = LockService.getScriptLock(); lock.waitLock(20000);
   try {
     var email = me_(), admin = isAdmin(email);
-    var sheet = sheet_(c.tab), data = sheet.getDataRange().getValues(), K = cols_(c.tab, data[0]);
-    var r = findRow_(data, K.topic_id, topicId);
-    if (r === -1) return fail_('Topic not found.');
-    var owner = (data[r][K.claimed_by_email] || '').toLowerCase();
+    _MEMO.tabs = {};
+    var sessions = sessionsFor_(classKey), found = null;
+    Object.keys(sessions).forEach(function (iso) {
+      if (String(sessions[iso].topicId) === String(topicId)) found = sessions[iso];
+    });
+    if (!found) {
+      // v1 treated releasing an unclaimed topic as a harmless no-op, and the UI shows any
+      // reason as an error toast. Keep that: nothing to release is not a failure.
+      if (!topicById_(c, topicId)) return fail_('Topic not found.');
+      return { ok: true, state: getPortalState() };
+    }
+    var owner = found.owner || found.teacher;
     if (owner && owner !== email && !admin)
-      return fail_('Only ' + (data[r][K.claimed_by_name] || owner) + ' or an admin can release this.');
-    var freedDate = fmtDate_(data[r][K.teach_date]);
-    clearClaim_(sheet, r);
-    if (freedDate) deleteOverride_(classKey, freedDate); // don't leave a substitute override on a now-empty date
+      return fail_('Only ' + (displayName_(owner) || owner) + ' or an admin can release this.');
+    deleteSession_(classKey, found.iso);   // the row existed only because of the claim
     return { ok: true, state: getPortalState() };
   } finally { lock.releaseLock(); }
 }
@@ -242,8 +375,8 @@ function releaseTopic(classKey, topicId) {
 
 /**
  * Any Moreh teacher takes over teaching a specific upcoming date (substitute).
- * Sets a teacher override on that date only — the standing rotation is NOT changed,
- * and the topic (BB: the claimed topic; WH: the sequence topic) stays the same.
+ * Sets teacher_email on that date's session; owner_email is untouched, so the slot's
+ * owner (the claimant, or the rotation) can take it back.
  */
 function grabDate(classKey, dateISO) {
   var c = class_(classKey);
@@ -252,49 +385,55 @@ function grabDate(classKey, dateISO) {
     var email = me_();
     if (!isMorehMember(email)) return fail_('You are not authorized.');
     if (!isValidDay_(c.day, dateISO)) return fail_('That is not a valid upcoming class date.');
+    _MEMO.tabs = {};
     var row = classState_(c, email).schedule.filter(function (r) { return r.iso === dateISO; })[0];
     if (!row || !row.topicName) return fail_('There is no class scheduled that day to teach.');
     if (row.canceled) return fail_('That class is canceled.');
     if (row.teacherEmail === email) return fail_('You are already teaching that date.');
-    var rot = rotation_(classKey), nth = nth_(dateFromISO_(dateISO)), ov = overridesFor_(classKey)[dateISO];
-    if (ov && ov.teacherEmail && ov.teacherEmail !== email) {
-      // The slot owner (rotation teacher, or the BB topic's claimant) can reclaim it from a substitute.
-      if (rot[nth] === email || row.claimedByEmail === email) { clearOverrideTeacher_(classKey, dateISO); return { ok: true, state: getPortalState() }; }
-      return fail_('That date is already covered by ' + displayName_(ov.teacherEmail) + '.');
+
+    var sessions = sessionsFor_(classKey), s = sessions[dateISO];
+    var rot = rotation_(classKey), nth = nth_(dateFromISO_(dateISO));
+    var owner = s ? s.owner : '';
+    var substitute = s && s.teacher && s.teacher !== (owner || rot[nth] || '');
+    if (substitute && s.teacher !== email) {
+      // The slot's owner - the rotation teacher, or the claimant - can take it back.
+      if (rot[nth] === email || owner === email) { restoreTeacher_(classKey, dateISO); return { ok: true, state: getPortalState() }; }
+      return fail_('That date is already covered by ' + displayName_(s.teacher) + '.');
     }
-    upsertOverride_(classKey, dateISO, email, ov ? ov.topicId : '', ov ? ov.canceled : false);
+    writeSession_(classKey, dateISO, { teacher_email: email });
     return { ok: true, state: getPortalState() };
   } finally { lock.releaseLock(); }
 }
 
-/** Give a grabbed date back to the rotation (only the substitute who took it, or an admin). */
+/** Give a grabbed date back (only the substitute who took it, or an admin). */
 function releaseDate(classKey, dateISO) {
   var lock = LockService.getScriptLock(); lock.waitLock(20000);
   try {
-    var email = me_(), admin = isAdmin(email), ov = overridesFor_(classKey)[dateISO];
-    if (!ov || !ov.teacherEmail) return fail_('Nothing to give back on that date.');
-    if (ov.teacherEmail !== email && !admin) return fail_('Only ' + displayName_(ov.teacherEmail) + ' or an admin can give this date back.');
-    clearOverrideTeacher_(classKey, dateISO);
+    var email = me_(), admin = isAdmin(email);
+    _MEMO.tabs = {};
+    var s = sessionsFor_(classKey)[dateISO];
+    var rot = rotation_(classKey), nth = nth_(dateFromISO_(dateISO));
+    var owner = s ? s.owner : '';
+    if (!s || !s.teacher || s.teacher === (owner || rot[nth] || '')) return fail_('Nothing to give back on that date.');
+    if (s.teacher !== email && !admin) return fail_('Only ' + displayName_(s.teacher) + ' or an admin can give this date back.');
+    restoreTeacher_(classKey, dateISO);
     return { ok: true, state: getPortalState() };
   } finally { lock.releaseLock(); }
 }
 
-/** Blank the teacher on an override; delete the row if nothing else remains on it. */
-function clearOverrideTeacher_(classKey, dateISO) {
-  var sheet = sheet_('overrides'), data = sheet.getDataRange().getValues(), V = cols_('overrides', data[0]);
-  for (var i = 1; i < data.length; i++) {
-    if (data[i][V.class_key] === classKey && fmtDate_(data[i][V.date_iso]) === dateISO) {
-      var hasTopic = !!data[i][V.topic_id], canceled = String(data[i][V.canceled]).toLowerCase() === 'true';
-      if (hasTopic || canceled) sheet.getRange(i + 1, V.teacher_email + 1).setValue('');
-      else sheet.deleteRow(i + 1);
-      SpreadsheetApp.flush(); return true;
-    }
+/** Hand a date back to its owner: the claimant if there is one, otherwise the rotation. */
+function restoreTeacher_(classKey, dateISO) {
+  var s = sessionsFor_(classKey)[dateISO];
+  if (!s) return false;
+  if (sessionIsEmpty_({ topicId: s.topicId, owner: s.owner, state: s.state })) {
+    deleteSession_(classKey, dateISO);      // nothing but the substitute was on it
+  } else {
+    writeSession_(classKey, dateISO, { teacher_email: s.owner || '' });
   }
-  return false;
+  return true;
 }
 
-// ----------------------------- ADMIN -----------------------------
-
+// ----------------------------- ADMIN (rotation) -----------------------------
 function getAdminData(classKey) {
   assertAdmin_();
   var c = class_(classKey);
@@ -305,6 +444,7 @@ function getAdminData(classKey) {
   return out;
 }
 
+/** Change who teaches an nth slot (add/remove/replace a teacher). email '' clears the slot. */
 /** Change who teaches an nth slot (add/remove/replace a teacher). email '' clears the slot. */
 function adminSetRotation(classKey, nth, teacherEmail) {
   assertAdmin_();
@@ -320,37 +460,51 @@ function adminSetRotation(classKey, nth, teacherEmail) {
 }
 
 /** Assigned classes: change a topic's teaching-order position. */
+
+// ----------------------------- ADMIN -----------------------------
+
+/** Assigned classes: change a topic's teaching-order position (in the shared topics tab). */
 function adminReorder(classKey, topicId, newOrder) {
   assertAdmin_();
   var c = class_(classKey);
   if (c.mode !== 'assigned') return fail_('Reordering applies to auto-assigned classes only.');
-  var sheet = sheet_(c.tab), data = sheet.getDataRange().getValues(), K = cols_(c.tab, data[0]);
-  var r = findRow_(data, K.topic_id, topicId);
-  if (r === -1) return fail_('Topic not found.');
-  sheet.getRange(r + 1, K.teach_order + 1).setValue(Number(newOrder));
-  SpreadsheetApp.flush();
-  return { ok: true, state: getPortalState() };
+  var sheet = sheet_('topics'), data = sheet.getDataRange().getValues(), K = cols_('topics', data[0]);
+  for (var i = 1; i < data.length; i++) {
+    if (String(data[i][K.class_key]).trim() === classKey && String(data[i][K.topic_id]) === String(topicId)) {
+      sheet.getRange(i + 1, K.teach_order + 1).setValue(Number(newOrder));
+      SpreadsheetApp.flush();
+      return { ok: true, state: getPortalState() };
+    }
+  }
+  return fail_('Topic not found.');
 }
 
-/** Assigned classes: override the teacher/topic for a date, or cancel it. */
+/** Override the teacher/topic for a date, or cancel it. */
 function adminSetOverride(classKey, dateISO, teacherEmail, topicId, canceled) {
   assertAdmin_();
   var c = class_(classKey);
   if (!isValidDay_(c.day, dateISO)) return fail_('That is not a valid class date.');
-  upsertOverride_(classKey, dateISO, (teacherEmail || '').toLowerCase(), topicId || '', !!canceled);
+  _MEMO.tabs = {};
+  writeSession_(classKey, dateISO, {
+    teacher_email: (teacherEmail || '').toLowerCase(),
+    topic_id: topicId || '',
+    state: canceled ? 'skipped' : 'scheduled'
+  });
   return { ok: true, state: getPortalState() };
 }
+
+/** Undo an admin override: back to the rotation (or the claimant), not cancelled. */
 function adminClearOverride(classKey, dateISO) {
   assertAdmin_();
-  deleteOverride_(classKey, dateISO);
+  _MEMO.tabs = {};
+  var s = sessionsFor_(classKey)[dateISO];
+  if (!s) return { ok: true, state: getPortalState() };
+  if (!s.owner) {
+    deleteSession_(classKey, dateISO);              // assigned class: the row was the override
+  } else {
+    writeSession_(classKey, dateISO, { teacher_email: s.owner, state: 'scheduled' });
+  }
   return { ok: true, state: getPortalState() };
-}
-function deleteOverride_(classKey, dateISO) {
-  var sheet = sheet_('overrides'), data = sheet.getDataRange().getValues(), V = cols_('overrides', data[0]);
-  for (var i = data.length - 1; i >= 1; i--)
-    if (data[i][V.class_key] === classKey && fmtDate_(data[i][V.date_iso]) === dateISO)
-      sheet.deleteRow(i + 1);
-  SpreadsheetApp.flush();
 }
 
 /** Claim classes: admin assigns a topic to a teacher on a date (on their behalf). */
@@ -361,20 +515,62 @@ function adminAssignClaim(classKey, topicId, dateISO, teacherEmail) {
   if (!isValidDay_(c.day, dateISO)) return fail_('That is not a valid class date.');
   var lock = LockService.getScriptLock(); lock.waitLock(20000);
   try {
-    var sheet = sheet_(c.tab), data = sheet.getDataRange().getValues(), K = cols_(c.tab, data[0]);
-    for (var i = 1; i < data.length; i++)
-      if (fmtDate_(data[i][K.teach_date]) === dateISO && String(data[i][K.topic_id]) !== String(topicId))
-        return fail_('That date is already taken. Release it first.');
-    var r = findRow_(data, K.topic_id, topicId);
-    if (r === -1) return fail_('Topic not found.');
-    writeClaim_(sheet, r, (teacherEmail || '').toLowerCase(), displayName_(teacherEmail), dateISO);
-    deleteOverride_(classKey, dateISO); // a prior substitute override would otherwise mask the assignment
+    _MEMO.tabs = {};
+    if (!topicById_(c, topicId)) return fail_('Topic not found.');
+    var sessions = sessionsFor_(classKey), here = sessions[dateISO];
+    if (here && here.topicId && String(here.topicId) !== String(topicId))
+      return fail_('That date is already taken. Release it first.');
+    var taken = takenTopics_(classKey, sessions)[String(topicId)];
+    if (taken && taken.iso !== dateISO) {
+      // Moving a claim to another date is allowed - that is what an admin assigning it means -
+      // but only forwards. A session already taught is history and is not rewritten.
+      if (taken.iso < iso_(new Date()))
+        return fail_('That topic was already taught on ' + taken.iso + '.');
+      deleteSession_(classKey, taken.iso);
+      _MEMO.tabs = {};
+    }
+    var email = (teacherEmail || '').toLowerCase();
+    writeSession_(classKey, dateISO, { topic_id: topicId, owner_email: email, teacher_email: email, state: 'scheduled' });
     return { ok: true, state: getPortalState() };
   } finally { lock.releaseLock(); }
 }
 
-// ----------------------------- PUBLIC -----------------------------
+// ----------------------------- CYCLE RESET (claim classes) -----------------------------
 
+/**
+ * Admin-only. When every topic in a claim class has been taught on or after the current
+ * cycle start, move the cycle start to today: every topic is Open again and nothing is
+ * erased. A time-driven trigger runs as its owner, who must be an admin.
+ */
+function reopenCompletedCycle() {
+  assertAdmin_();
+  CLASSES.filter(function (c) { return c.mode === 'claim'; }).forEach(function (c) {
+    _MEMO.tabs = {};
+    var topics = topicsFor_(c.key);
+    if (!topics.length) return;
+    var taken = takenTopics_(c.key, sessionsFor_(c.key)), today = iso_(new Date());
+    var allTaught = true;
+    for (var i = 0; i < topics.length; i++) {
+      var hit = taken[String(topics[i].id)];
+      if (!hit || hit.iso >= today) { allTaught = false; break; }
+    }
+    if (!allTaught) return;
+    setCfg_('cycle_started_on.' + c.key, today, 'Moved forward when the previous cycle completed');
+    MailApp.sendEmail(ADMIN_NOTIFY, c.name + ': new cycle started',
+      'All topics were taught. The ' + c.name + ' bucket is Open again for the next cycle. ' +
+      'Nothing was erased - the cycle start moved to ' + today + '.');
+  });
+}
+
+// ----------------------------- SMALL HELPERS -----------------------------
+
+function topicById_(c, topicId) {
+  var list = topicsFor_(c.key);
+  for (var i = 0; i < list.length; i++) if (String(list[i].id) === String(topicId)) return list[i];
+  return null;
+}
+
+// ----------------------------- PUBLIC -----------------------------
 function getPublicSchedule(classKey) {
   var c = classKey ? class_(classKey) : null;
   var list = c ? [c] : CLASSES;
@@ -392,35 +588,10 @@ function getPublicSchedule(classKey) {
 
 // Admin-only: without this check any moreh@ member could run it from the browser
 // console. A time-driven trigger runs as its owner, who must be an admin.
-function reopenCompletedCycle() {
-  assertAdmin_();
-  CLASSES.filter(function (c) { return c.mode === 'claim'; }).forEach(function (c) {
-    var sheet = sheet_(c.tab), data = sheet.getDataRange().getValues(), K = cols_(c.tab, data[0]), today = mid_(new Date());
-    var allTaught = true, anyClaimed = false;
-    for (var i = 1; i < data.length; i++) {
-      if ((data[i][K.status] || 'Open') === 'Claimed') {
-        anyClaimed = true;
-        var td = data[i][K.teach_date] ? mid_(dateFromISO_(fmtDate_(data[i][K.teach_date]))) : null;
-        if (!td || td >= today) { allTaught = false; break; }
-      } else { allTaught = false; break; }
-    }
-    if (anyClaimed && allTaught) {
-      for (var r = 2; r <= sheet.getLastRow(); r++) {
-        sheet.getRange(r, K.status + 1).setValue('Open');
-        clearClaimCells_(sheet, r, K);
-      }
-      SpreadsheetApp.flush();
-      MailApp.sendEmail(ADMIN_NOTIFY, c.name + ': new cycle started',
-        'All topics were taught. The ' + c.name + ' bucket has reset to Open for the next cycle.');
-    }
-  });
-}
 
 // ----------------------------- HELPERS -----------------------------
-
 // Per-execution memo (each server call is a fresh execution, so this resets naturally).
 var _MEMO = { tabs: {}, names: {}, cols: {} };
-
 function class_(key) { for (var i = 0; i < CLASSES.length; i++) if (CLASSES[i].key === key) return CLASSES[i]; throw new Error('Unknown class: ' + key); }
 function sheet_(tab) { var s = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(tab); if (!s) throw new Error('Tab "' + tab + '" not found.'); return s; }
 function readTab_(tab) {
@@ -431,65 +602,16 @@ function readTab_(tab) {
   _MEMO.tabs[tab] = rows; return rows;
 }
 function findRow_(data, col, val) { for (var i = 1; i < data.length; i++) if (String(data[i][col]) === String(val)) return i; return -1; }
-
 function rotation_(classKey) {
   var map = {}, rows = readTab_('class_config'), G = cols_('class_config');
   rows.forEach(function (r) { if (r[G.class_key] === classKey) map[Number(r[G.nth])] = (r[G.teacher_email] || '').toLowerCase(); });
   return map;
 }
-function orderedTopics_(c) {
-  var K = cols_(c.tab);
-  return readTab_(c.tab).map(function (r) {
-    return { id: r[K.topic_id], name: r[K.topic_name], order: Number(r[K.teach_order]) || 0 };
-  }).sort(function (a, b) { return a.order - b.order; });
-}
 function indexOfTopic_(ordered, id) { for (var i = 0; i < ordered.length; i++) if (ordered[i].id === id) return i; return 0; }
-function topicName_(c, id) {
-  var rows = readTab_(c.tab), K = cols_(c.tab);
-  for (var i = 0; i < rows.length; i++) if (String(rows[i][K.topic_id]) === String(id)) return rows[i][K.topic_name];
-  return '';
-}
-function overridesFor_(classKey) {
-  var map = {}, rows = readTab_('overrides'), V = cols_('overrides');
-  rows.forEach(function (r) {
-    if (r[V.class_key] === classKey) map[fmtDate_(r[V.date_iso])] = {
-      teacherEmail: (r[V.teacher_email] || '').toLowerCase(), topicId: r[V.topic_id] || '',
-      canceled: String(r[V.canceled]).toLowerCase() === 'true' };
-  });
-  return map;
-}
-function upsertOverride_(classKey, dateISO, teacherEmail, topicId, canceled) {
-  var sheet = sheet_('overrides'), data = sheet.getDataRange().getValues(), V = cols_('overrides', data[0]), me = me_(), now = new Date();
-  for (var i = 1; i < data.length; i++)
-    if (data[i][V.class_key] === classKey && fmtDate_(data[i][V.date_iso]) === dateISO) {
-      setCells_(sheet, i + 1, V, { teacher_email: teacherEmail, topic_id: topicId, canceled: canceled, updated_by: me, updated_at: now });
-      SpreadsheetApp.flush(); return;
-    }
-  sheet.appendRow(rowFor_(sheet, V, { class_key: classKey, date_iso: dateISO, teacher_email: teacherEmail,
-    topic_id: topicId, canceled: canceled, note: '', updated_by: me, updated_at: now }));
-  SpreadsheetApp.flush();
-}
-function writeClaim_(sheet, rowIdx, email, name, dateISO) {
-  var r = rowIdx + 1, K = cols_(sheet.getName());
-  sheet.getRange(r, K.status + 1).setValue('Claimed');
-  sheet.getRange(r, K.claimed_by_email + 1).setValue(email);
-  sheet.getRange(r, K.claimed_by_name + 1).setValue(name);
-  sheet.getRange(r, K.claimed_at + 1).setValue(new Date());
-  sheet.getRange(r, K.teach_date + 1).setValue(dateISO);
-  SpreadsheetApp.flush();
-}
-function clearClaim_(sheet, rowIdx) {
-  var r = rowIdx + 1, K = cols_(sheet.getName());
-  sheet.getRange(r, K.status + 1).setValue('Open');
-  clearClaimCells_(sheet, r, K);
-  SpreadsheetApp.flush();
-}
-function clearClaimCells_(sheet, r, K) {
-  CLAIM_CLEAR.forEach(function (n) { sheet.getRange(r, K[n] + 1).clearContent(); });
-}
 function setCells_(sheet, r, K, values) {
   Object.keys(values).forEach(function (n) { sheet.getRange(r, K[n] + 1).setValue(values[n]); });
 }
+/** A full-width row for appendRow, with each value placed under its header. */
 /** A full-width row for appendRow, with each value placed under its header. */
 function rowFor_(sheet, K, values) {
   var row = [];
@@ -501,12 +623,45 @@ function rowFor_(sheet, K, values) {
 // ----------------------------- COLUMNS BY HEADER NAME -----------------------------
 
 /** The required headers for a tab (by its own name, or by its class mode). */
+function displayName_(email) {
+  email = (email || '').toLowerCase();
+  if (!email || email === '__public__') return '';
+  if (_MEMO.names[email] !== undefined) return _MEMO.names[email];      // within this request
+  var cache = CacheService.getScriptCache(), key = 'nm_' + email;
+  var hit = cache.get(key);
+  if (hit !== null) { _MEMO.names[email] = hit; return hit; }           // across requests (6h)
+  var name = '';
+  try { var u = AdminDirectory.Users.get(email); if (u && u.name && u.name.fullName) name = u.name.fullName; } catch (e) {}
+  if (!name) { var l = email.split('@')[0]; name = l.charAt(0).toUpperCase() + l.slice(1); }
+  cache.put(key, name, 21600);
+  _MEMO.names[email] = name; return name;
+}
+function nth_(d) { return Math.ceil(d.getDate() / 7); }
+function mid_(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+function pad_(n) { return (n < 10 ? '0' : '') + n; }
+function iso_(d) { return d.getFullYear() + '-' + pad_(d.getMonth() + 1) + '-' + pad_(d.getDate()); }
+function dateFromISO_(s) { var p = String(s).split('-'); return new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2])); }
+function fmtDate_(v) {
+  if (!v) return '';
+  if (Object.prototype.toString.call(v) === '[object Date]') return iso_(v);
+  var p = String(v).split('-'); return p.length === 3 ? p[0] + '-' + pad_(Number(p[1])) + '-' + pad_(Number(p[2])) : String(v);
+}
+function upcomingDays_(weekday, n) {
+  var out = [], d = mid_(new Date()); // include today so the class stays visible on its own day
+  while (out.length < n) { if (d.getDay() === weekday) out.push(new Date(d)); d.setDate(d.getDate() + 1); }
+  return out;
+}
+function isValidDay_(weekday, iso) { return upcomingDays_(weekday, WEEKS_AHEAD).some(function (d) { return iso_(d) === iso; }); }
+function mon_(d) { return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()]; }
+function pretty_(d) { return ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][d.getDay()] + ', ' + mon_(d) + ' ' + d.getDate() + ', ' + d.getFullYear(); }
+function fail_(reason) { return { ok: false, reason: reason }; }
+
+// ----------------------------- COLUMNS BY HEADER NAME -----------------------------
+/** The required headers for a tab. */
 function colsFor_(tab) {
   if (TAB_COLS[tab]) return TAB_COLS[tab];
-  for (var i = 0; i < CLASSES.length; i++) if (CLASSES[i].tab === tab) return MODE_COLS[CLASSES[i].mode];
   throw new Error('No column list for tab "' + tab + '".');
 }
-
 /**
  * Header name -> 0-based column index for a tab, read from row 1 once per request.
  * Matching ignores case and surrounding spaces. Throws if a required header is
@@ -532,7 +687,6 @@ function cols_(tab, headerRow) {
   _MEMO.cols[tab] = map;
   return map;
 }
-
 function colLetter_(i) {
   var s = ''; i = i + 1;
   while (i > 0) { var m = (i - 1) % 26; s = String.fromCharCode(65 + m) + s; i = Math.floor((i - 1) / 26); }
@@ -544,9 +698,14 @@ function colLetter_(i) {
  * to a header row. Logs one line per tab: OK with where each column was found,
  * or FAIL with what is wrong.
  */
+/**
+ * Admin-only. Run from the Apps Script editor after pasting, and after any change
+ * to a header row. Logs one line per tab: OK with where each column was found,
+ * or FAIL with what is wrong.
+ */
 function checkColumns() {
   assertAdmin_();
-  var tabs = ['class_config', 'overrides'].concat(CLASSES.map(function (c) { return c.tab; }));
+  var tabs = Object.keys(TAB_COLS);
   var lines = tabs.map(function (tab) {
     try {
       var K = cols_(tab);
@@ -559,37 +718,3 @@ function checkColumns() {
   Logger.log(report);
   return report;
 }
-
-function displayName_(email) {
-  email = (email || '').toLowerCase();
-  if (!email || email === '__public__') return '';
-  if (_MEMO.names[email] !== undefined) return _MEMO.names[email];      // within this request
-  var cache = CacheService.getScriptCache(), key = 'nm_' + email;
-  var hit = cache.get(key);
-  if (hit !== null) { _MEMO.names[email] = hit; return hit; }           // across requests (6h)
-  var name = '';
-  try { var u = AdminDirectory.Users.get(email); if (u && u.name && u.name.fullName) name = u.name.fullName; } catch (e) {}
-  if (!name) { var l = email.split('@')[0]; name = l.charAt(0).toUpperCase() + l.slice(1); }
-  cache.put(key, name, 21600);
-  _MEMO.names[email] = name; return name;
-}
-
-function nth_(d) { return Math.ceil(d.getDate() / 7); }
-function mid_(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
-function pad_(n) { return (n < 10 ? '0' : '') + n; }
-function iso_(d) { return d.getFullYear() + '-' + pad_(d.getMonth() + 1) + '-' + pad_(d.getDate()); }
-function dateFromISO_(s) { var p = String(s).split('-'); return new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2])); }
-function fmtDate_(v) {
-  if (!v) return '';
-  if (Object.prototype.toString.call(v) === '[object Date]') return iso_(v);
-  var p = String(v).split('-'); return p.length === 3 ? p[0] + '-' + pad_(Number(p[1])) + '-' + pad_(Number(p[2])) : String(v);
-}
-function upcomingDays_(weekday, n) {
-  var out = [], d = mid_(new Date()); // include today so the class stays visible on its own day
-  while (out.length < n) { if (d.getDay() === weekday) out.push(new Date(d)); d.setDate(d.getDate() + 1); }
-  return out;
-}
-function isValidDay_(weekday, iso) { return upcomingDays_(weekday, WEEKS_AHEAD).some(function (d) { return iso_(d) === iso; }); }
-function mon_(d) { return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()]; }
-function pretty_(d) { return ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][d.getDay()] + ', ' + mon_(d) + ' ' + d.getDate() + ', ' + d.getFullYear(); }
-function fail_(reason) { return { ok: false, reason: reason }; }

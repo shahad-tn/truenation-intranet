@@ -139,7 +139,9 @@ feast-day title keywords to ignore (so `TN Monthly Alms Due` is not read as a co
 
 ### Retired, kept for rollback
 
-`class_config`, `overrides`, `bible_basics_topics`, `world_history_topics`. Nothing deletes them.
+**Done 2026-09-19:** `bible_basics_topics`, `world_history_topics` and `overrides` are now
+`zz_old_*`. `class_config` is NOT retired - the rotation still reads it until step 2 moves to
+`class_teachers`. Nothing was deleted; renaming back plus the previous `code.gs` is the rollback.
 Once sessions carry the teacher, an "override" is just editing the session row, so the concept
 disappears rather than moving.
 

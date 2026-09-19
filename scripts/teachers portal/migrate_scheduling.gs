@@ -71,7 +71,7 @@ var MIG_HEADERS = {
   reader_pairs: ['class_key','teacher_email','reader_email','active'],
   graphics_owners: ['class_key','designer_email','active'],
   sessions: ['session_id','class_key','date_iso','start_time','seq_no','topic_id','title','description',
-             'anchor_scripture','teacher_email','reader_email','reader_source','image_file_id','thumb_file_id',
+             'anchor_scripture','teacher_email','owner_email','reader_email','reader_source','image_file_id','thumb_file_id',
              'template_id','thumb_status','thumb_approved_by','thumb_approved_at','state','conflict_note',
              'pushed_from_date','push_batch_id','cal_event_teachers','cal_event_readers','cal_event_graphics',
              'cal_event_public','created_at','updated_by','updated_at','notified_48h_at'],
@@ -232,7 +232,7 @@ function mig_build_(ss, warn) {
   function slot(classKey, dateISO) {
     var k = classKey + '|' + dateISO;
     if (!byKey[k]) {
-      byKey[k] = { class_key: classKey, date_iso: dateISO, topic_id: '', teacher: '', state: 'scheduled', note: '' };
+      byKey[k] = { class_key: classKey, date_iso: dateISO, topic_id: '', teacher: '', owner: '', state: 'scheduled', note: '' };
       orderKeys.push(k);
     }
     return byKey[k];
@@ -252,7 +252,7 @@ function mig_build_(ss, warn) {
       if (!d) { warn.push('claim on "' + id + '" by ' + email + ' has no teach_date - not migrated'); continue; }
       var s = slot(c[0], d);
       if (s.topic_id && s.topic_id !== id) warn.push('two topics claim ' + c[0] + ' on ' + d + ': ' + s.topic_id + ' and ' + id);
-      s.topic_id = id; s.teacher = email;
+      s.topic_id = id; s.teacher = email; s.owner = email;   // the claimant owns the slot
     }
   });
 
@@ -279,7 +279,7 @@ function mig_build_(ss, warn) {
     var s = byKey[k], c = mig_class_(s.class_key);
     var reader = mig_reader_(s.class_key, s.teacher);
     return [s.class_key + '-' + s.date_iso, s.class_key, s.date_iso, c ? c[4] : '', '',
-            s.topic_id, '', '', '', s.teacher, reader.email, reader.source,
+            s.topic_id, '', '', '', s.teacher, s.owner, reader.email, reader.source,
             '', '', '', '', '', '', s.state, s.note, '', '', '', '', '', '',
             now, me, now, ''];
   });
@@ -468,4 +468,97 @@ function mig_cycle_(apply) {
     out.push('Nothing written. Run cycleStartApply() to store it.');
   }
   var report = out.join('\n'); Logger.log(report); return report;
+}
+
+// ----------------------------- HEADER UPGRADE -----------------------------
+//
+// Adds any header this file now expects but an already-created tab does not have, and
+// backfills it where the value can be derived. Safe to run repeatedly; it only ever
+// appends columns and fills blanks, never moves or clears anything.
+//
+//   upgradeHeadersPreview() / upgradeHeadersApply()
+
+function upgradeHeadersPreview() { return mig_upgrade_(false); }
+function upgradeHeadersApply() { return mig_upgrade_(true); }
+
+function mig_upgrade_(apply) {
+  mig_assertAdmin_();
+  var ss = SpreadsheetApp.openById(MIG_SPREADSHEET_ID), out = [], touched = 0;
+  Object.keys(MIG_HEADERS).forEach(function (tab) {
+    var sheet = ss.getSheetByName(tab);
+    if (!sheet) { out.push('  ' + tab + ': not present, skipped'); return; }
+    var data = sheet.getDataRange().getValues(), have = {};
+    data[0].forEach(function (h) { var k = String(h == null ? '' : h).trim().toLowerCase(); if (k) have[k] = true; });
+    var missing = MIG_HEADERS[tab].filter(function (n) { return !have[n]; });
+    if (!missing.length) { out.push('  ' + tab + ': up to date'); return; }
+    touched++;
+    out.push('  ' + tab + ': add ' + missing.join(', '));
+    if (!apply) return;
+    var col = Math.max(sheet.getLastColumn(), data[0].length);
+    missing.forEach(function (n) { col++; sheet.getRange(1, col).setValue(n); });
+  });
+
+  // owner_email: whose slot it is. For migrated claims that is whoever was claiming it.
+  var sess = ss.getSheetByName('sessions');
+  if (sess) {
+    if (apply) SpreadsheetApp.flush();                 // pick up any column just added
+    var d = sess.getDataRange().getValues();
+    var hdr = {}; d[0].forEach(function (h, i) { var k = String(h == null ? '' : h).trim().toLowerCase(); if (k && hdr[k] === undefined) hdr[k] = i; });
+    var nBack = 0;
+    for (var i = 1; i < d.length; i++) {
+      var ck = String(d[i][hdr.class_key] || '').trim();
+      if (!ck || !mig_known_(ck)) continue;
+      var c = mig_class_(ck);
+      if (c[7] !== 'claim') continue;                         // only claim classes have an owner
+      if (hdr.owner_email !== undefined && String(d[i][hdr.owner_email] || '').trim()) continue;
+      var t = String(d[i][hdr.teacher_email] || '').trim();
+      if (!t) continue;
+      nBack++;
+      if (apply && hdr.owner_email !== undefined) sess.getRange(i + 1, hdr.owner_email + 1).setValue(t.toLowerCase());
+    }
+    out.push('  sessions: backfill owner_email on ' + nBack + ' claim row(s) from teacher_email');
+    if (nBack) touched++;
+    if (apply && hdr.owner_email === undefined)
+      out.push('  ! sessions: owner_email is still missing - run upgradeHeadersApply() once more');
+  }
+  if (apply) SpreadsheetApp.flush();
+  var head = (apply ? 'APPLY' : 'PREVIEW (nothing written)') + ' - ' + (touched ? touched + ' change(s)' : 'nothing to do');
+  var report = head + '\n' + out.join('\n') + (apply ? '' : '\nNothing written. Run upgradeHeadersApply() to write it.');
+  Logger.log(report); return report;
+}
+
+// ----------------------------- RETIRE THE OLD TABS -----------------------------
+//
+// Run ONLY after the new code.gs is deployed and the portal is confirmed working: once it
+// reads the new tabs, these three stop being updated and a stale tab that looks live is how
+// someone spends an evening editing a file nothing reads. Renaming keeps every row and is
+// reversible - rename them back and re-paste the previous code.gs.
+//
+//   retireOldTabsPreview() / retireOldTabsApply()
+
+var MIG_RETIRE = ['bible_basics_topics', 'world_history_topics', 'overrides', 'class_config'];
+
+function retireOldTabsPreview() { return mig_retire_(false); }
+function retireOldTabsApply() { return mig_retire_(true); }
+
+function mig_retire_(apply) {
+  mig_assertAdmin_();
+  var ss = SpreadsheetApp.openById(MIG_SPREADSHEET_ID), out = [], n = 0;
+  MIG_RETIRE.forEach(function (tab) {
+    if (tab === 'class_config') {
+      out.push('  class_config: KEPT - the rotation still reads it until step 2');
+      return;
+    }
+    var sheet = ss.getSheetByName(tab);
+    if (!sheet) { out.push('  ' + tab + ': not present (already retired?)'); return; }
+    var target = 'zz_old_' + tab;
+    if (ss.getSheetByName(target)) { out.push('  ! ' + target + ' already exists - leaving ' + tab + ' alone'); return; }
+    n++;
+    out.push('  ' + tab + ' -> ' + target + ' (' + Math.max(sheet.getLastRow() - 1, 0) + ' rows kept)');
+    if (apply) sheet.setName(target);
+  });
+  if (apply) SpreadsheetApp.flush();
+  var report = (apply ? 'APPLY' : 'PREVIEW (nothing renamed)') + ' - ' + n + ' tab(s)\n' + out.join('\n') +
+    (apply ? '\nDone. Nothing was deleted. To undo: rename them back.' : '\nNothing renamed. Run retireOldTabsApply() to do it.');
+  Logger.log(report); return report;
 }

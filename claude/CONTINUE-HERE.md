@@ -4,6 +4,45 @@ You are picking up the True Nation intranet project mid-stream, on Shahad's
 `shahad@truenation.org` Claude account. The previous work happened on a different account and
 none of its conversation, memory or artifacts carried over. Everything you need is on disk.
 
+## THE NEXT PIECE: step 2.3 - claiming and substitutes from the portal
+
+2.2 is WRITTEN AND COMMITTED (2026-09-21) but NOT yet verified against a real deploy - see
+"Step 2.2 as built" below for what to check the moment Vercel has it.
+
+**Build:** claiming a topic and standing in as a substitute, from the session page 2.2 just
+added, reusing exactly the same path: browser -> `POST /api/classes/session`-style route ->
+`runAsUser()` in `lib/appsScript.js` -> `claimTopic` / `releaseTopic` / `grabDate` /
+`releaseDate` in `code.gs`. Every one of those is already written, already gated to moreh +
+admin, and already tested. Nothing new is needed on the Apps Script side.
+
+**Copy the shape 2.2 established, do not invent a second one:**
+- `lib/appsScript.js` - `runAsUser(fn, params, email)`. It returns `{ok:true, result}`,
+  `{ok:false, kind:"script", reason}` or `{ok:false, kind:"transport", reason}`. A SCRIPT
+  error is the portal's own rule talking and is safe to show; a TRANSPORT error names
+  internals (deployment, delegation, Cloud project) and must only be logged.
+- `app/api/classes/session/route.js` - NextAuth identity, a moreh/admin pre-check that is
+  convenience only, length limits, then the call. The Apps Script gate is the real boundary.
+- `lib/classes.js` - `shapeSession()` is the ONE definition of a session, used by both the
+  agenda and the detail page. Add to it rather than shaping a row anywhere else.
+
+**After 2.3 the old Apps Script portal UI has no unique job left.** That is the point at
+which retiring `index.html` becomes a real conversation.
+
+**Also outstanding, small:**
+- ~~`submitTitle` returning `getPortalState()`~~ **FIXED 2026-09-21, awaiting paste + deploy.**
+  It now returns `{ ok: true }` alone. Measured in the harness: a title save went from
+  **8 reads / 3 writes to 3 reads / 3 writes**, and it no longer serialises the whole
+  two-class schedule back over `scripts.run`. The read saving is modest - `_MEMO` was already
+  memoising tabs per execution, so this was never a 4,107-call problem - but the payload was
+  real and the work was dead. `submitTitle` is the ONE write function `index.html` never
+  calls, which is why only it could lose the state; **claimTopic, grabDate, releaseTopic and
+  releaseDate must keep returning it** or the old UI stops repainting. In 2.3, ignore their
+  state server-side rather than removing it.
+- `/portal/calendar` still has the ten-class weekly rhythm HARDCODED. Second copy of the
+  `classes` tab; it will drift.
+- The four `_*.mjs` diagnostics in the Vercel repo are deliberately UNTRACKED - they read
+  `.env.local`. Decide once whether they are committed.
+
 ## First, get access
 
 Folder grants last one session. Call `get_device_info`, then request **both** in one call:
@@ -27,6 +66,8 @@ Full detail: `claude/device-access.md`.
 
 - **Claude edits files. Shahad runs every git command himself.** Hand him the bash block;
   never execute git.
+- **Never put a `Co-Authored-By:` line in a commit message.** Shahad's standing rule
+  (2026-09-21). No attribution trailer of any kind unless he asks for one.
 - **No `#` comment lines inside bash blocks** — his zsh has `interactive_comments` off.
 - For anything pasted into Apps Script, hand him **one `pbcopy` one-liner per file**. Never
   dump file contents into chat.
@@ -96,6 +137,50 @@ review, four calendars, and a 10-step build sequence.
   **Known duplication to fix next:** `/portal/calendar` has the ten-class weekly rhythm HARDCODED
   as a list. That is now a second copy of the `classes` tab and will drift - it should read from
   the sheet or link across to `/portal/classes`.
+
+  **STEP 2.2 WRITTEN AND COMMITTED 2026-09-21. NOT yet verified against a deploy.**
+  A teacher can type a title. In `~/[vercel] truenation-intranet-directory`:
+  - `lib/appsScript.js` (new) - `runAsUser(fn, params, email)`: `scripts.run` with the service
+    account impersonating the signed-in person, auth lifted from `_apiproof.mjs`. Holds the
+    script id and the SCOPES list, which must stay in step with the Teacher Portal's
+    `appsscript.json` - the calling token must cover the SCRIPT's scopes, not just the ones the
+    called function touches. Never throws; separates script errors from transport errors.
+  - `app/api/classes/session/route.js` (new) - POST. NextAuth gives the identity, a moreh/admin
+    check saves a round trip, lengths are capped (title 200, anchor 200, description 2000), then
+    `submitTitle`. A refusal from `submitTitle` arrives as a SUCCESSFUL call returning
+    `{ok:false, reason}`, not as a thrown error - the route handles both.
+  - `app/portal/classes/[classKey]/[date]/` (new) - `page.js`, `SessionForm.js` (the only client
+    component), `session.module.css`. Moreh and admin get the form; everyone else gets the same
+    facts read-only. Brand tokens only, AA throughout, dark-mode overrides wherever `--wine`
+    would be used as text.
+  - `app/portal/classes/page.js` + `.module.css` - the agenda title is now the link into each
+    session page, with an accessible name that says which session.
+  - `lib/classes.js` - `getSession({classKey, dateISO})` added, and the row-shaping pulled out
+    of `getSchedule` into ONE `shapeSession()` used by both, so the agenda and the detail page
+    cannot drift about what a session is.
+  - Apps Script side: `submitTitle` no longer returns `getPortalState()` - **`code.gs` must be
+    re-pasted and a New version cut on BOTH deployments.** `tests/api.test.js` now asserts both
+    the absence of the state and a read/write budget, so it cannot creep back.
+    **`bash tests/run.sh` is 112 checks.**
+  - `_classes.test.cjs` - **49 checks now, run `node _classes.test.cjs`.** The original 27 pass
+    unchanged, which is what proves the refactor.
+
+  **Three decisions worth keeping:** the session page is NOT date-windowed, so a link in a
+  calendar or an inbox does not rot after the class (a past or skipped session gets a warning,
+  not a locked form - there are still no timing rules); `storedTitle` is kept separate from
+  `title` so the form never pre-fills a topic name as if a teacher had typed it; and
+  `generateMetadata` and the page body share one read via React's `cache()`, or every view
+  would cost two batched reads of four tabs.
+
+  **NOT verified by a real build,** same as Phase 1: `npx next build` hangs in the desktop VM
+  because `next/font` fetches Google Fonts and that VM has no network. Every file was parsed
+  with esbuild, CSS braces balance, every `styles.x` used exists. **The Vercel deploy is the
+  real test.** `_apiproof.mjs` and `_apimeta.mjs` could not be run from the desktop VM either -
+  it has no route to Google at all (`oauth2.googleapis.com`, `script.googleapis.com` and
+  `sheets.googleapis.com` all fail at the connection level). Run them from a networked shell.
+  **If a save returns the 502 "could not reach the schedule" message, `_apimeta.mjs` is the
+  first thing to run** - it prints each deployment's REAL entry-point type, which is how the
+  EXECUTION_API-vs-Web-app trap shows itself.
 
   **PHASE 2.1 DONE, AND THE TRANSPORT IS SETTLED (2026-09-21). NO SHARED SECRET.**
   The portal's Next.js server calls the Teacher Portal's functions through the **Apps Script

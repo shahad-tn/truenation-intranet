@@ -648,7 +648,12 @@ function submitTitle(classKey, dateISO, fields) {
     if (!Object.keys(values).length) return fail_('Nothing to save.');
 
     writeSession_(classKey, dateISO, values);
-    return { ok: true, state: getPortalState() };
+    // No state. submitTitle is the ONE write function the old two-class UI in
+    // index.html never calls - its only caller is the Next.js session page,
+    // which re-reads the sheet itself and throws a state payload away. Every
+    // other write function here still returns getPortalState(), because
+    // index.html repaints from it. Do not "make this consistent" with them.
+    return { ok: true };
   } finally { lock.releaseLock(); }
 }
 

@@ -75,6 +75,17 @@ function todayIso() { const d = new Date(); return d.toISOString().slice(0, 10) 
   check('an empty edit is refused', as(env, E('shahad'), 'submitTitle', 'room-144', d, {}).reason === 'Nothing to save.')
   check('a title can be cleared deliberately',
     as(env, E('shahad'), 'submitTitle', 'room-144', d, { title: '' }).ok === true && row().title === '')
+
+  // COST. submitTitle is called from the Next.js session page, which has no use
+  // for the Teacher Portal's state - and getPortalState() rebuilds the whole
+  // two-class portal. Step 2a's lesson (4,107 calls -> 15) is that a sheet call
+  // you did not need is a bug at this scale, so the budget is asserted here.
+  env.reads.count = 0; env.writes.count = 0
+  const cost = as(env, E('shahad'), 'submitTitle', 'room-144', d, { title: 'Measured' })
+  check('submitTitle returns no portal state', cost.state === undefined, ser2(cost).slice(0, 120))
+  check(`a title save costs ${env.reads.count} reads / ${env.writes.count} writes`,
+    cost.ok === true && env.reads.count <= 5 && env.writes.count <= 4,
+    env.reads.detail.slice(0, 40).join(', '))
 }
 
 // ── claims ──

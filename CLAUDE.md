@@ -156,7 +156,8 @@ Deacons > Judges > Congregants. **Council** is a separate governance body
 - Bishop Tazayawan — Los Angeles, CA (HQ) · Youth Director (T.E.L.A.) · CBD overseer
 - Bishop Yahzeqel — Detroit, MI & Macon, GA (Satellite) · CoT Macon overseer
 - Bishop Banayah — Manila & Cebu, Philippines · Ministries lead · Tribal Exchange oversight
-- Bishop Izar — Kumasi & Accra, Ghana (Accra = school only, no CoT) · Maintenance overseer
+- Bishop Izar (**Izar Ahla** — same person; he appears under that name in the class schedule)
+  — Kumasi & Accra, Ghana (Accra = school only, no CoT) · Maintenance overseer
 
 ### Apostles Branch (Doctrine)
 Apostles: Ash Napash, Yashami. 6 departments:
@@ -194,7 +195,7 @@ under Safety & Facilities.)
   Fundraising (Ahhabyah), Travel (Shabayah), Tribal Exchange / Marketplace (Banayah).
 - **Holistic Health & Healing** — lead to be announced. Sub-groups: C.A.R.E.
   (Committed to Aid, Restore & Encourage — lead Qawalyah; org-wide incl. TELA),
-  G.R.O.W. With Us (Bayanah).
+  G.R.O.W. With Us (Bayanah — **not** Bayan, who teaches Bible Basics; two different people).
 - **IT** — lead Shahad (asst Sarah, Yedayah). Sub-groups: Infrastructure, Website,
   Applications (includes the PARADOX App platform).
 - **Maintenance** — ops lead Rakab; overseer Bishop Izar. No sub-groups.

@@ -4,44 +4,33 @@ You are picking up the True Nation intranet project mid-stream, on Shahad's
 `shahad@truenation.org` Claude account. The previous work happened on a different account and
 none of its conversation, memory or artifacts carried over. Everything you need is on disk.
 
-## THE NEXT PIECE: step 2.3 - claiming and substitutes from the portal
+## THE NEXT PIECE: step 2b - calendar events, or the calendar duplication
 
-2.2 is WRITTEN AND COMMITTED (2026-09-21) but NOT yet verified against a real deploy - see
-"Step 2.2 as built" below for what to check the moment Vercel has it.
+2.2 and 2.3 are BUILT. Neither has been verified against a real Vercel deploy - that is the
+first thing to do, not more building. See "Step 2.3 as built" below for what to click.
 
-**Build:** claiming a topic and standing in as a substitute, from the session page 2.2 just
-added, reusing exactly the same path: browser -> `POST /api/classes/session`-style route ->
-`runAsUser()` in `lib/appsScript.js` -> `claimTopic` / `releaseTopic` / `grabDate` /
-`releaseDate` in `code.gs`. Every one of those is already written, already gated to moreh +
-admin, and already tested. Nothing new is needed on the Apps Script side.
+**With 2.3 done, the old Apps Script portal UI (`index.html`) has no unique job left.** It
+still works and nothing depends on retiring it; that is now a conversation to have with
+Shahad rather than a task.
 
-**Copy the shape 2.2 established, do not invent a second one:**
-- `lib/appsScript.js` - `runAsUser(fn, params, email)`. It returns `{ok:true, result}`,
-  `{ok:false, kind:"script", reason}` or `{ok:false, kind:"transport", reason}`. A SCRIPT
-  error is the portal's own rule talking and is safe to show; a TRANSPORT error names
-  internals (deployment, delegation, Cloud project) and must only be logged.
-- `app/api/classes/session/route.js` - NextAuth identity, a moreh/admin pre-check that is
-  convenience only, length limits, then the call. The Apps Script gate is the real boundary.
-- `lib/classes.js` - `shapeSession()` is the ONE definition of a session, used by both the
-  agenda and the detail page. Add to it rather than shaping a row anywhere else.
-
-**After 2.3 the old Apps Script portal UI has no unique job left.** That is the point at
-which retiring `index.html` becomes a real conversation.
+**Candidates, in the order they look worth doing:**
+1. **Step 2b - empty calendar events per session, four calendars.** `class-scheduling-plan.md`
+   §10. The Calendar blocker is CLEARED: domain-wide delegation carries `calendar` as of 2.1.
+   The public Classes calendar still has to be created (plan §7), and the deploying account
+   needs edit rights on all four.
+2. **`/portal/calendar` duplication.** The ten-class weekly rhythm is HARDCODED there as a
+   list - a second copy of the `classes` tab that will drift. Either read the sheet or link
+   across to `/portal/classes`. Small, and it removes a known lie from the portal.
+3. **The topic catalogue as a browse view.** 2.3 put claiming inline on the session page
+   (date-first, the grain the whole portal has). A read-only "what has been covered, what is
+   left" screen would serve everyone, not just Moreh, and could gain claim buttons later.
+   Shahad chose inline knowing this; it is an addition, not a correction.
 
 **Also outstanding, small:**
-- ~~`submitTitle` returning `getPortalState()`~~ **FIXED 2026-09-21, awaiting paste + deploy.**
-  It now returns `{ ok: true }` alone. Measured in the harness: a title save went from
-  **8 reads / 3 writes to 3 reads / 3 writes**, and it no longer serialises the whole
-  two-class schedule back over `scripts.run`. The read saving is modest - `_MEMO` was already
-  memoising tabs per execution, so this was never a 4,107-call problem - but the payload was
-  real and the work was dead. `submitTitle` is the ONE write function `index.html` never
-  calls, which is why only it could lose the state; **claimTopic, grabDate, releaseTopic and
-  releaseDate must keep returning it** or the old UI stops repainting. In 2.3, ignore their
-  state server-side rather than removing it.
-- `/portal/calendar` still has the ten-class weekly rhythm HARDCODED. Second copy of the
-  `classes` tab; it will drift.
 - The four `_*.mjs` diagnostics in the Vercel repo are deliberately UNTRACKED - they read
   `.env.local`. Decide once whether they are committed.
+- Three binary `reference/` files show as modified in the Apps Script repo and git cannot
+  index them cleanly ("Resource deadlock avoided"). Left alone; nobody has said what changed.
 
 ## First, get access
 
@@ -137,6 +126,55 @@ review, four calendars, and a 10-step build sequence.
   **Known duplication to fix next:** `/portal/calendar` has the ten-class weekly rhythm HARDCODED
   as a list. That is now a second copy of the `classes` tab and will drift - it should read from
   the sheet or link across to `/portal/classes`.
+
+  **STEP 2.3 BUILT 2026-09-21. Apps Script side is PASTED AND DEPLOYED; the Next.js side is
+  NOT yet verified against a deploy.** Claiming and substitutes, from the session page.
+
+  **Shape, decided with Shahad:** claiming is INLINE on the session page, not on a catalogue
+  screen of its own. The portal is date-first everywhere - the agenda is a list of days and
+  the session page is reached by clicking one - so "I am free on the 14th, what is left?"
+  lands where the date is already fixed and the claim is one decision. A topic-first catalogue
+  inverts it and then needs its own date picker. The trade accepted: ~150 Bible Basics topics
+  behind a disclosure with a filter, capped at 40 rows shown, appearing on ONE class's pages.
+
+  **Apps Script (`code.gs`), pasted and deployed 2026-09-21:**
+  - `claimTopic` and `releaseTopic` now read `classCfg_()` - the `classes` tab - instead of
+    the hardcoded `CLASSES` array. They used to throw "Unknown class" for eight of the ten.
+  - `claimTopic` validates a date the way `grabDate` has since 2.1: **a generated slot exists
+    for it**, PLUS an explicit past-date check via the new `todayISO_()`. That second half is
+    not optional - the old weekday test only ever looked forward, while generated slots run
+    backwards too, so slot-existence alone would newly allow claiming an already-taught class.
+  - `isValidDay_` stays: the old two-tab UI's schedule rendering still uses it. The five
+    remaining `class_()` callers are admin functions plus `getPublicSchedule`, all driven by
+    `index.html`, which knows only the two classes. Leaving them is correct.
+
+  **A test that had to go, and why it must not be "fixed".** Three `claimTopic` steps left
+  `switch.test.js` (21 steps -> 18), for the same reason the World History grab/release steps
+  did: v1 validated by weekday so any future Tuesday worked, while v2 needs a generated slot,
+  and that world has none. **Seeding empty slots does NOT work** - a real row with a blank
+  `teacher_email` beats the `class_config` rotation fallback, so v2 then differs from v1 on
+  rotation display, which has nothing to do with claiming. This was tried and reverted. The
+  three paths are asserted directly in `api.test.js` instead.
+  **`bash tests/run.sh` is 117 checks.**
+
+  **Next.js side, in `~/[vercel] truenation-intranet-directory`:**
+  - `lib/portalWrite.js` (new) - `writeAsSignedIn(fn, params)`: the identity check, the
+    moreh/admin pre-check and the error mapping, in ONE place. Returns a Response on failure
+    or null on success. It does NOT let a caller name an Apps Script function - each route
+    names its own from a literal. The session route was refactored onto it, so the two cannot
+    drift. It discards the `getPortalState()` payload the four functions still return.
+  - `app/api/classes/claim/route.js` (new) - four actions (`claim`, `release-topic`,
+    `substitute`, `release-date`) against a literal map, all on one class + one date.
+  - `app/portal/classes/[classKey]/[date]/ClaimPanel.js` (new) + styles - the disclosure,
+    filter, capped topic list, and the Teach/Give back buttons. Every row's button says
+    "Claim", so the topic name is carried in the accessible name.
+  - `lib/classes.js` - `readTabs` now also reads the `config` tab (same ONE batched call),
+    `indexClasses` carries `topic_mode`, and `topicCatalogue()` marks each topic taken or
+    open. **The cycle rule is copied from `code.gs` on purpose:** `retired` is skipped, and a
+    topic is taken only when a session ON OR AFTER `cycle_started_on.<class>` uses it. If the
+    two ever disagree the portal offers a topic the script refuses - which is why
+    `claimTopic` re-checks, and why that is not a security problem.
+  - `_classes.test.cjs` - **65 checks, run `node _classes.test.cjs`.**
 
   **STEP 2.2 WRITTEN AND COMMITTED 2026-09-21. NOT yet verified against a deploy.**
   A teacher can type a title. In `~/[vercel] truenation-intranet-directory`:

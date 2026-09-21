@@ -41,7 +41,25 @@ through the Mac, which is account-agnostic.
       paste-don't-dump, he runs git, WCAG AA, sans-serif only, visual learner,
       ready-to-use documents over guided instructions
 
-## Phase 4 — the Calendar scope blocker
+## Phase 4 — the Calendar scope blocker  [CLEARED 2026-09-21]
+
+`https://www.googleapis.com/auth/calendar` is now granted to client `105017769716672004648` in
+domain-wide delegation, alongside `groups`, `script.send_mail` and `userinfo.email`. Nothing
+below is outstanding; it is kept for the record of how the decision was reached.
+
+
+**LARGELY DISSOLVED 2026-09-19.** Decision A (see `sheet-schema.md`) put every write in Apps
+Script, so the service-account route below is not the one being taken. Apps Script works out its
+own scopes from the code: the first time `CalendarApp` appears, the editor asks for the calendar
+scope on the next run and a re-authorisation, with no admin console change. What IS still
+required: the account that deploys the web app (`executeAs: USER_DEPLOYING`) must have edit
+rights on each of the four calendars, and the public Classes calendar still has to be created.
+
+**Also on record: the explicit `oauthScopes` block below is INCOMPLETE.** It omits
+`admin.directory.user.readonly`, `admin.directory.group.member.readonly`, `groups` and
+`userinfo.email`, which the portal's admin check and name lookup depend on. Pasting it as written
+would break `isAdmin()` and `displayName_()`. Since auto-scoping already works, the safest option
+is to declare no `oauthScopes` block at all - which is what the manifest does today.
 
 Nothing calendar-related works until this is granted.
 

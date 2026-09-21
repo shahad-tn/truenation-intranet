@@ -67,7 +67,115 @@ review, four calendars, and a 10-step build sequence.
   version so the live portal gets it too** (the portal works either way; it is just slow to save
   a claim without it).
 
-  **NEXT: step 2b** - empty calendar events per session, four calendars. Needs the four calendars
+  **PORTAL PHASE 1 WRITTEN 2026-09-20, NOT YET PUSHED.** Order agreed with Shahad: portal
+  before calendars, and the new UI lives in **Next.js** (the Apps Script iframe is fixed at
+  980px, and ten class tabs do not fit a phone). Phase 1 is READ-ONLY, so it needs no write
+  path and nothing from Shahad but a deploy. In `~/[vercel] truenation-intranet-directory`:
+  - `lib/classes.js` (new, 219 lines) - reads `classes`, `sessions`, `topics` in ONE batched
+    call plus the staff sheet for names, same service account and pattern as `lib/staff.js` and
+    `lib/announcements.js`. Read-only by design: Apps Script stays the only writer (Decision A).
+    Returns the schedule from today forward; filters by class or by one person (teaching OR
+    reading); resolves display names (hebrew, then legal, then the address's local part);
+    marks `expectsTeacher` / `expectsReader` so a panel class or an undecided reader policy is
+    not shown as a gap; returns empty rather than throwing if the sheet cannot be read.
+  - `app/portal/classes/page.js` + `classes.module.css` (new) - agenda list grouped by day,
+    "All classes / My assignments" and per-class filters as links (no client JS), skipped
+    sessions muted, missing titles called out. Brand tokens only, AA contrast, selected filter
+    marked by weight as well as colour, time moves above the class name under 560px.
+  - `app/portal/PortalNav.js` - a "Classes" link for everyone signed in.
+  - `app/portal/teachers/page.js` - points at the new page.
+  - `_classes.test.cjs` (new) - **27 unit tests, run `node _classes.test.cjs`**. Bundles the lib
+    with esbuild and swaps in a fake googleapis: no network, no credentials, no live sheet.
+    Dates are built relative to today so the suite does not rot.
+
+  **NOT verified by a real build.** `npx next build` in the desktop VM hangs: its network is
+  proxied and `next/font` fetches Google Fonts at build time. Every file was parsed with esbuild,
+  the CSS braces balance and every `styles.x` used exists. **The Vercel deploy is the real test**
+  (portal-status.md says the same).
+
+  **Known duplication to fix next:** `/portal/calendar` has the ten-class weekly rhythm HARDCODED
+  as a list. That is now a second copy of the `classes` tab and will drift - it should read from
+  the sheet or link across to `/portal/classes`.
+
+  **PHASE 2.1 DONE, AND THE TRANSPORT IS SETTLED (2026-09-21). NO SHARED SECRET.**
+  The portal's Next.js server calls the Teacher Portal's functions through the **Apps Script
+  API** (`scripts.run`), with the service account **impersonating the signed-in person**.
+  `Session.getActiveUser()` returns that person, so Google enforces identity: there is no secret
+  to leak, no `actor` field to forge, and nothing anonymous exposed. The earlier `doPost`
+  endpoint, its shared secret and the `_ACTOR` shim have all been DELETED.
+
+  **What makes it work (all done, keep it this way):**
+  - The script is attached to the **intranet-truenation** Cloud project (Project Settings > GCP
+    Project). Moving it invalidates the owner's authorisation - re-run any function in the
+    editor once and accept the prompt, or every API call fails with a misleading storage error.
+  - **Apps Script API enabled** in that Cloud project, and ON in the user's own settings at
+    script.google.com/home/usersettings.
+  - A deployment whose **entry point is EXECUTION_API**, access "Anyone within True Nation".
+    **THE TRAP THAT COST AN EVENING:** the type comes from the GEAR ICON in the deploy dialog,
+    not the Description box. A Web app deployment named "API Executable" is still a Web app, and
+    `scripts.run` then fails with "a server error occurred while reading from storage. Error code
+    NOT_FOUND" - which names nothing. `_apimeta.mjs` in the Vercel repo lists deployments and
+    their real entry-point types; it is the fastest way to see this.
+  - Domain-wide delegation for client `105017769716672004648` now also carries: `groups`,
+    `script.send_mail`, `userinfo.email`, **`calendar`** (so the Calendar blocker is CLEARED),
+    plus `script.projects.readonly` and `script.deployments.readonly` for the probes.
+
+  **Diagnostic scripts, all read-only, all in the Vercel repo:** `_apiproof.mjs` (proves identity
+  end to end; `FN=apiEcho` runs the do-nothing function to separate transport from code),
+  `_scopeprobe.mjs` (asks for each scope singly - delegation is all-or-nothing per request, so a
+  batch failure names nothing), `_apimeta.mjs` (project visibility, Cloud project, deployments).
+
+  **Because the API is reachable by any domain user who knows the script id, every write
+  function gates itself** - `submitTitle`, `claimTopic`, `grabDate`, `releaseTopic` and
+  `releaseDate` all require moreh or admin, and the admin functions call `assertAdmin_()`.
+  Tested: a non-member is refused by each one.
+
+  **Tests: `bash tests/run.sh`, 110 checks across four suites.** `endpoint.test.js` was deleted
+  with the endpoint it tested; `api.test.js` replaces it.
+
+  **(Superseded below: the original 2.1 write-up, kept for the scope decisions it records.)**
+  `code.gs` gained `doPost`: the write endpoint the Next.js portal calls. It checks a shared
+  secret, then **re-checks the caller's group membership against the Directory** rather than
+  trusting the email it is handed, then dispatches to `submitTitle` (new), `claimTopic`,
+  `releaseTopic`, `grabDate`, `releaseDate` or `ping`. Every refusal says the same thing,
+  "Not available.", so a caller without the secret cannot use it to test whether an address is
+  a member. `_ACTOR` carries the caller for one execution and `me_()` prefers it; it is cleared
+  in a `finally`, and that is tested including the throwing case.
+
+  **DEPLOYMENT, and why it is a second one:** the existing deployment is `access: DOMAIN`, so a
+  server-to-server call from Vercel - which carries no Google session - would be bounced to a
+  sign-in page. So: Deploy > New deployment > Web app, Execute as **Me**, Who has access
+  **Anyone**. Same script, second URL, useless without the secret. The portal's own DOMAIN
+  deployment is untouched. (The alternative, a service-account Bearer token against the DOMAIN
+  deployment, I could not verify from here - noted rather than guessed.)
+
+  **Scope decisions (Shahad, 2026-09-20):** titles AND claiming AND substitutes; **any moreh
+  member or admin may edit any session**; and **no timing rules yet** - no 2-hour freeze, no
+  48-hour confirm, no notifications. He is content with that while this is being built. The
+  sheet still records `updated_by` / `updated_at` on every write.
+
+  **Two real bugs this step surfaced, both fixed:** `code.gs` only knew the two hardcoded
+  classes, so titles and substitutes failed for the other eight - anything that WRITES now reads
+  the `classes` tab via `classCfg_()`, while the old two-tab UI still uses the `CLASSES` array.
+  And `grabDate` validated dates by weekday, which cannot express a 2nd-and-4th cadence; **a
+  date is now valid when a generated slot exists for it**. That last change is why three
+  World History steps left `switch.test.js` - see the comment there.
+
+  **TESTS ARE NOW IN THE REPO: `scripts/teachers portal/tests/`, run `bash tests/run.sh`.**
+  Four suites, 114 checks, no network or credentials needed. Run them before pasting any `.gs`
+  change. `tests/fixtures/code.v1.gs` is the pre-switch code, kept only so the equivalence
+  suite can still prove the switch.
+
+  **STILL TO DO for 2.2:** the shared secret. Shahad generates it (`openssl rand -base64 32`),
+  puts it in Vercel as `SCHEDULING_SHARED_SECRET` (Production + Preview + Development, then
+  redeploy) and in Apps Script under Project Settings > Script Properties with the same name.
+  Until it is set the endpoint refuses everything, which is the safe default.
+
+  **AFTER Phase 1: Phase 2** - submitting titles and claims from Next.js, which is where the
+  write path gets built (one Apps Script endpoint, shared secret in Vercel env + Script
+  Properties, identity from NextAuth re-checked against the group on the Apps Script side).
+
+  **THEN step 2b** - empty calendar events per session, four calendars. Needs the four calendars
   to exist and the deploying account to have edit rights; the public Classes calendar still has to
   be created (plan §7). Apps Script auto-scopes, so the Calendar permission is a re-authorisation
   prompt, not an admin console change.

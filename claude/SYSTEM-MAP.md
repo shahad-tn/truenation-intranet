@@ -68,6 +68,15 @@ does not hide a function from `google.script.run`; only a trailing one does. Bef
 `upsertOverride`, `deleteOverride`, `writeClaim` and `clearClaim` were callable by any
 `moreh@` member, bypassing the admin gate. 17 functions remain intentionally public.
 
+**2026-09-21 - the portal's write path.** This project is now attached to the
+**intranet-truenation** Cloud project and has an **EXECUTION_API** deployment (access: anyone
+within the domain). The Next.js portal calls its functions with `scripts.run`, the service
+account impersonating the signed-in person, so identity is Google's to enforce - no shared
+secret anywhere. The deployment TYPE is set by the gear icon in the deploy dialog, not the
+description; a mislabelled Web app deployment fails with an opaque storage NOT_FOUND. Also on
+record: the service account's delegation now includes `calendar`, which clears the Calendar
+blocker in `migration-checklist.md` Phase 4.
+
 **2026-09-16 - Step 1a written, NOT YET DEPLOYED.** Columns are now found by header name
 (`cols_`, `MODE_COLS`, `TAB_COLS`); a missing or duplicated header stops the action with a
 clear message. `reopenCompletedCycle` is now admin-only (it had no check). New admin-only

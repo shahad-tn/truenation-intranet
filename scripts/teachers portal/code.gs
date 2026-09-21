@@ -60,8 +60,9 @@ var CLASSES = [
 // carry more (they do - the full set is in claude/sheet-schema.md).
 var TAB_COLS = {
   topics:       ['topic_id', 'class_key', 'topic_name', 'teach_order', 'scripture_refs', 'description'],
-  sessions:     ['session_id', 'class_key', 'date_iso', 'topic_id', 'teacher_email', 'owner_email',
-                 'reader_email', 'state', 'updated_by', 'updated_at'],
+  sessions:     ['session_id', 'class_key', 'date_iso', 'topic_id', 'title', 'description',
+                 'anchor_scripture', 'teacher_email', 'owner_email', 'reader_email', 'state',
+                 'updated_by', 'updated_at'],
   class_config: ['class_key', 'nth', 'teacher_email'],
   config:       ['key', 'value', 'note'],
   // read by the slot generator (generate_slots.gs)
@@ -302,6 +303,28 @@ function sessionIsEmpty_(s) {
   return !s.topicId && !s.owner && s.state !== 'skipped';
 }
 
+// ----------------------------- CLASS CONFIG (all ten classes) -----------------------------
+//
+// CLASSES at the top of this file is the OLD two-class config, and it still drives this
+// portal's own tabbed UI. Everything that WRITES must work for all ten, so it reads the
+// classes tab instead - that is the source of truth since step 2a.
+
+function classCfg_(classKey) {
+  var rows = readTab_('classes'), K = cols_('classes');
+  for (var i = 0; i < rows.length; i++) {
+    if (String(rows[i][K.class_key]).trim() !== classKey) continue;
+    return {
+      key: classKey,
+      name: String(rows[i][K.class_name] || classKey),
+      teacherMode: String(rows[i][K.teacher_mode] || '').trim(),
+      topicMode: String(rows[i][K.topic_mode] || '').trim(),
+      readerMode: String(rows[i][K.reader_mode] || '').trim(),
+      active: String(rows[i][K.active]).toLowerCase() !== 'false'
+    };
+  }
+  throw new Error('Unknown class: ' + classKey);
+}
+
 // ----------------------------- CONFIG TAB -----------------------------
 
 function cfg_(key, dflt) {
@@ -358,6 +381,7 @@ function releaseTopic(classKey, topicId) {
   var lock = LockService.getScriptLock(); lock.waitLock(20000);
   try {
     var email = me_(), admin = isAdmin(email);
+    if (!isMorehMember(email) && !admin) return fail_('You are not authorized.');
     _MEMO.tabs = {};
     var sessions = sessionsFor_(classKey), found = null;
     Object.keys(sessions).forEach(function (iso) {
@@ -385,22 +409,27 @@ function releaseTopic(classKey, topicId) {
  * owner (the claimant, or the rotation) can take it back.
  */
 function grabDate(classKey, dateISO) {
-  var c = class_(classKey);
+  var c = classCfg_(classKey);
   var lock = LockService.getScriptLock(); lock.waitLock(20000);
   try {
     var email = me_();
     if (!isMorehMember(email)) return fail_('You are not authorized.');
-    if (!isValidDay_(c.day, dateISO)) return fail_('That is not a valid upcoming class date.');
     _MEMO.tabs = {};
-    var row = classState_(c, email).schedule.filter(function (r) { return r.iso === dateISO; })[0];
-    if (!row || !row.topicName) return fail_('There is no class scheduled that day to teach.');
-    if (row.canceled) return fail_('That class is canceled.');
-    if (row.teacherEmail === email) return fail_('You are already teaching that date.');
-
+    // A date is valid when a generated slot exists for it (step 2a). That replaces the old
+    // "is it the right weekday" test, which could not express 2nd-and-4th cadences.
     var sessions = sessionsFor_(classKey), s = sessions[dateISO];
+    if (!s) return fail_('There is no class scheduled that day to teach.');
+    // Classes that run a topic catalogue need one chosen before anyone can teach it; the
+    // other eight have no catalogue at all, so the slot alone is enough.
+    if ((c.topicMode === 'claim' || c.topicMode === 'sequence') && !s.topicId)
+      return fail_('There is no class scheduled that day to teach.');
+    if (s.state === 'skipped') return fail_('That class is canceled.');
     var rot = rotation_(classKey), nth = nth_(dateFromISO_(dateISO));
-    var owner = s ? s.owner : '';
-    var substitute = s && s.teacher && s.teacher !== (owner || rot[nth] || '');
+    var currentTeacher = s.teacher || s.owner || rot[nth] || '';
+    if (currentTeacher === email) return fail_('You are already teaching that date.');
+
+    var owner = s.owner;
+    var substitute = s.teacher && s.teacher !== (owner || rot[nth] || '');
     if (substitute && s.teacher !== email) {
       // The slot's owner - the rotation teacher, or the claimant - can take it back.
       if (rot[nth] === email || owner === email) { restoreTeacher_(classKey, dateISO); return { ok: true, state: getPortalState() }; }
@@ -416,6 +445,7 @@ function releaseDate(classKey, dateISO) {
   var lock = LockService.getScriptLock(); lock.waitLock(20000);
   try {
     var email = me_(), admin = isAdmin(email);
+    if (!isMorehMember(email) && !admin) return fail_('You are not authorized.');
     _MEMO.tabs = {};
     var s = sessionsFor_(classKey)[dateISO];
     var rot = rotation_(classKey), nth = nth_(dateFromISO_(dateISO));
@@ -576,6 +606,52 @@ function topicById_(c, topicId) {
   return null;
 }
 
+// ----------------------------- CALLED BY THE PORTAL -----------------------------
+//
+// Apps Script is the ONLY thing that writes this workbook (sheet-schema.md, Decision A):
+// a Sheet has no queue, and a lock taken here is invisible to anything outside Apps Script,
+// so two writers eventually lose an edit to each other silently.
+//
+// The portal in Next.js never writes. Its server calls these functions through the Apps
+// Script API (scripts.run), with the service account impersonating the signed-in person.
+// GOOGLE enforces who that is: Session.getActiveUser() returns them, so there is no shared
+// secret, no actor field to trust, and nothing anonymous exposed on the internet.
+// Proved 2026-09-21; see claude/CONTINUE-HERE.md for the setup that makes it work.
+//
+// Every function reachable this way gates itself - being able to call the API is not
+// permission to do anything in particular.
+
+// ----------------------------- TITLES -----------------------------
+
+/**
+ * Write what a session is about. Any moreh member or admin may edit any session
+ * (Shahad, 2026-09-20 - deliberately open while this is being built out; updated_by
+ * still records who last touched it). Fields are optional: send only what changed.
+ *
+ * The session row must already exist - slots are generated (generate_slots.gs), and a
+ * title without a date on the schedule would be invisible.
+ */
+function submitTitle(classKey, dateISO, fields) {
+  var c = classCfg_(classKey);                       // the classes tab, so all ten work
+  var lock = LockService.getScriptLock(); lock.waitLock(20000);
+  try {
+    var email = me_();
+    if (!isMorehMember(email) && !isAdmin(email)) return fail_('You are not authorized to edit class details.');
+    _MEMO.tabs = {};
+    var s = sessionsFor_(classKey)[dateISO];
+    if (!s) return fail_('There is no session for that class on that date.');
+
+    var values = {};
+    if (fields.title !== undefined)            values.title = String(fields.title).trim();
+    if (fields.description !== undefined)      values.description = String(fields.description).trim();
+    if (fields.anchorScripture !== undefined)  values.anchor_scripture = String(fields.anchorScripture).trim();
+    if (!Object.keys(values).length) return fail_('Nothing to save.');
+
+    writeSession_(classKey, dateISO, values);
+    return { ok: true, state: getPortalState() };
+  } finally { lock.releaseLock(); }
+}
+
 // ----------------------------- PUBLIC -----------------------------
 function getPublicSchedule(classKey) {
   var c = classKey ? class_(classKey) : null;
@@ -724,4 +800,37 @@ function checkColumns() {
   var report = lines.join('\n');
   Logger.log(report);
   return report;
+}
+
+// ----------------------------- IDENTITY PROOF (Apps Script API) -----------------------------
+//
+// Called through the Apps Script API (scripts.run) by the portal's service account, which
+// impersonates one domain user. The whole question this answers: does that impersonated user
+// arrive here as the ACTIVE user? If it does, the portal needs no shared secret and no actor
+// field - Google enforces identity. Proved 2026-09-21, and the shim is now gone.
+//
+//   activeUser    who the call is running AS (the impersonated person, we hope)
+//   effectiveUser whose authorisation the script is using (the deploying account)
+/**
+ * The smallest possible function: touches no service, reads nothing, cannot throw.
+ * If even THIS fails through the Apps Script API, the failure is in loading or running
+ * the project at all, not in anything the code does.
+ */
+function apiEcho() { return 'hello'; }
+
+function apiPing() {
+  var active = '';
+  var effective = '';
+  try { active = (Session.getActiveUser().getEmail() || ''); } catch (e) { active = 'ERROR: ' + e.message; }
+  try { effective = (Session.getEffectiveUser().getEmail() || ''); } catch (e) { effective = 'ERROR: ' + e.message; }
+  return {
+    ok: true,
+    activeUser: active,
+    effectiveUser: effective,
+    isMoreh: active ? isMorehMember(active.toLowerCase()) : false,
+    isAdmin: active ? isAdmin(active.toLowerCase()) : false,
+    sheetReachable: (function () {
+      try { return !!sheet_('sessions').getLastRow(); } catch (e) { return 'ERROR: ' + e.message; }
+    })()
+  };
 }

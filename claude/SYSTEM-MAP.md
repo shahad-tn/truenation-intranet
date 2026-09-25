@@ -77,7 +77,7 @@ description; a mislabelled Web app deployment fails with an opaque storage NOT_F
 record: the service account's delegation now includes `calendar`, which clears the Calendar
 blocker in `migration-checklist.md` Phase 4.
 
-**2026-09-25 - Step 2b written, NOT YET DEPLOYED.** `create_events.gs`: admin-only
+**2026-09-25 - Step 2b DEPLOYED and run, verify clean (484 events).** `create_events.gs`: admin-only
 `setCalendarIds`, `createEventsPreview`, `createEventsApply` (resumable), `createEventsVerify`.
 First use of `CalendarApp` in this project, so the editor asks for the calendar scope once.
 

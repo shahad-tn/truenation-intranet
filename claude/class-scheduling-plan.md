@@ -1,7 +1,7 @@
 # Class Scheduling, Readers & Graphics — Build Plan
 
 **Status (2026-09-25): steps 1 and 2 built.** 1, 2a, 2.1 (write path) and 2.3 (inline claiming) are
-deployed; 2b (empty calendar events, `create_events.gs`) is written and tested, not yet deployed.
+deployed; 2b (empty calendar events, `create_events.gs`) is deployed and verified - 484 events.
 Next: 3, 4, 7, 9, then 5. The §11 Calendar-scope blocker is cleared. `CONTINUE-HERE.md` is the live
 status. Written 2026-09-15.
 Read `SYSTEM-MAP.md` first for the deployed layout.

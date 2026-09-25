@@ -3,13 +3,48 @@
 You are picking up the True Nation intranet project mid-stream, on Shahad's
 `shahad@truenation.org` Claude account. Everything you need is on disk.
 
-## THE NEXT PIECE: deploy and run step 2b, then step 3
+## THE NEXT PIECE: step 3 - status flags ONLY
 
-**Order agreed 2026-09-25:** 2b calendar events -> 3 status and edit rules -> 4 reader resolution ->
-7 calendar sync -> 9 postpone and Feast days. Graphics (5) comes after those. Design:
-`class-scheduling-plan.md` §10.
+**Order agreed 2026-09-25:** 3 status flags -> 4 reader resolution -> 7 calendar sync -> 9 postpone
+and Feast days. Graphics (5) after those. Design: `class-scheduling-plan.md` §3 and §10.
 
-### Step 2b - WRITTEN AND TESTED 2026-09-25, NOT YET DEPLOYED
+**Scope decided by Shahad 2026-09-25: the flags only.** The edit rules (48-hour confirm and
+re-notify, 2-hour title freeze) stay deferred; any moreh member may still edit any session. The
+notification half overlaps step 6 (reminders) and waits for it.
+
+**What a flag is (plan §3).** Derived from completeness, never set by a person, nothing stored:
+- **Complete** - everything the session needs is there
+- **Incomplete** (amber) - names the missing field AND who owes it
+- **At risk** (red) - still incomplete inside `risk_hours` (config, 48) of air; plan says it escalates
+  to leads, but escalation is step 6 - step 3 only SHOWS it
+
+**Where it likely lives: the Next.js portal, not Apps Script.** It is read-only and derived, and the
+portal already reads the sheet (`lib/classes.js`, `getSchedule` / `getSession`) - no status logic
+exists there yet (checked 2026-09-25). One pure function, e.g. `sessionStatus(session, class, now)`,
+used by both the agenda (`/portal/classes`) and the session page, tested in `_classes.test.cjs`.
+Confirm this placement with Shahad before building.
+
+**Open questions to put to Shahad BEFORE building** (do not guess):
+1. **What "complete" requires today.** Plan: title, description OR scripture, reader resolved,
+   thumbnail approved. Thumbnails are step 5, not built - so should "thumbnail approved" be left
+   out until then? (Otherwise every session is amber forever.)
+2. **Who owes what.** Title/description/scripture -> `teacher_email` (blank for Bible Basics until
+   claimed, and for Q&A which is a panel - who owes it then?). Missing reader -> who? (`apostles@`
+   coordinates readers per SYSTEM-MAP §5.)
+3. **Suppression.** `flag_missing_reader` on the `classes` tab is false for World History, War for The
+   Kingdom, Q&A and Feed The Sheep - their missing reader must never raise a flag (plan §3; reader
+   policy deferred). Q&A and Feed The Sheep have no reader at all.
+4. **Who sees flags.** Everyone read-only, or moreh/admin only? And is there a "my incomplete
+   sessions" filter (the agenda already filters "my assignments")?
+5. **Look.** Amber/red must meet WCAG 2.1 AA: text label plus icon, never colour alone; brand tokens
+   in `CLAUDE.md`. Gold is never text.
+
+**Data already there:** `sessions` has `title`, `description`, `anchor_scripture`, `teacher_email`,
+`reader_email`, `reader_source`, `thumb_status`, `state`; `classes` has `reader_mode`,
+`flag_missing_reader`, `teacher_mode`; `config` has `risk_hours` 48 and `freeze_hours` 2.
+Skipped sessions get no flag.
+
+### Step 2b - DONE 2026-09-25: deployed, run, verified
 
 `scripts/teachers portal/create_events.gs`. All four calendars exist; ids are in `SYSTEM-MAP.md` §4
 and in the file's `EV_CALENDAR_IDS` (used only by `setCalendarIds()`, which copies them into the
@@ -27,14 +62,23 @@ and in the file's `EV_CALENDAR_IDS` (used only by `setCalendarIds()`, which copi
   every 20 events under the lock against a fresh read, matched by `session_id`.
 - `ev_render_(role, class, session)` is the ONE place event text is decided. Step 7 reuses it.
 - Tests: `tests/events.test.js`, 45 checks; `bash tests/run.sh` now runs 162.
+- **Live run 2026-09-25:** preview 484 events (Teachers 127, Readers 107, Graphics 123, Public 127).
+  Apply took two runs (368, then 116; ~4.5 min per 368). `createEventsVerify()`: all checks passed.
+  `bible-basics-2026-09-29` (Tabernacles) was left out by both preview and verify, which only
+  happens for a `skipped` row; Shahad to confirm its `state`.
 
-**Two things step 7 must handle, found while building 2b:**
+**Three things step 7 / 9 must handle, found while building 2b:**
 - `displayName_()` in `code.gs` takes the Workspace full name, which is the **legal name**. Before any
   name goes on an event, Apps Script needs the same Hebrew-first order as `nameMap()`, read from
   the staff sheet. Do that first in step 7.
 - `deleteSession_()` still deletes rows (releasing a claim). A deleted row leaves its events behind
   on the calendars; `createEventsVerify()` reports them as "should not be there". The sync has to
   remove the events when their row goes, or stop deleting rows.
+- A session **skipped after its events exist** (step 9's Feast-day skip, or any later cancellation)
+  keeps its events on all four calendars until something deletes them. Removing them belongs to the
+  skip action itself; until then `createEventsVerify()` flags them as "should not be there".
+- New slots: when `generateSlotsApply()` adds rows (the horizon rolls forward), re-run
+  `createEventsApply()` - it only creates what is missing. Step 7 should make this automatic.
 
 ### Then, smaller and still open
 

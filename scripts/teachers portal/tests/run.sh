@@ -21,5 +21,6 @@ run migration.test.js migrate_scheduling.gs
 run switch.test.js
 run generate.test.js
 run api.test.js
+run events.test.js
 rm -rf "$T"
 exit $fail

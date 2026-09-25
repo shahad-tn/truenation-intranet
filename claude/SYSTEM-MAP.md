@@ -77,6 +77,10 @@ description; a mislabelled Web app deployment fails with an opaque storage NOT_F
 record: the service account's delegation now includes `calendar`, which clears the Calendar
 blocker in `migration-checklist.md` Phase 4.
 
+**2026-09-25 - Step 2b written, NOT YET DEPLOYED.** `create_events.gs`: admin-only
+`setCalendarIds`, `createEventsPreview`, `createEventsApply` (resumable), `createEventsVerify`.
+First use of `CalendarApp` in this project, so the editor asks for the calendar scope once.
+
 **2026-09-16 - Step 1a written, NOT YET DEPLOYED.** Columns are now found by header name
 (`cols_`, `MODE_COLS`, `TAB_COLS`); a missing or duplicated header stops the action with a
 clear message. `reopenCompletedCycle` is now admin-only (it had no check). New admin-only
@@ -161,7 +165,8 @@ Env vars that must stay: `GOOGLE_OAUTH_CLIENT_ID` / `GOOGLE_OAUTH_CLIENT_SECRET`
 SA scopes granted today: `spreadsheets`, `spreadsheets.readonly`, `admin.directory.user`,
 `admin.directory.user.readonly`, `admin.directory.group.readonly`,
 `admin.directory.group.member.readonly`, `gmail.send`, `drive`.
-**No Calendar scope** — required before any calendar work.
+`calendar` added 2026-09-21. The Teacher Portal's own calendar writes (step 2b) run as the
+signed-in admin through Apps Script auto-scoping, not through this service account.
 
 ---
 
@@ -174,6 +179,10 @@ SA scopes granted today: `spreadsheets`, `spreadsheets.readonly`, `admin.directo
 | Announcements | `1-Ugl-ZpTBnnldGAECev3ZWyui3PDHU0sD57yjcmwPms` | `items`, `blocks`, `services`, `audit` |
 | ID documents | `SECURE_ID_FOLDER_ID` | **UNSET** — uploads land in root Drive, domain-shared. Highest open security item. |
 | Profile photos / Drive | `1oXTjNqtgenlOgA8t1t_y2365aDaEJsRG` | `DRIVE_FOLDER_ID` in directory `Code.gs` |
+| Teachers calendar | `c_9b209f6c75a63b3a2311e226d3de7024544530431629089617b2cfba8823fe72@group.calendar.google.com` | Every class. `config` key `cal_id_teachers` |
+| Readers calendar | `c_30f8f2961f68629061c5152bbb1982a8d1e1c735c0c376592a52872b417a8a87@group.calendar.google.com` | Classes with a reader. `cal_id_readers` |
+| Graphics calendar | `c_fdd7b951d94adf843ba87f81f9da54613ca4e2e260a126efaf3c9dae7c6afe2b@group.calendar.google.com` | Every class but Q&A. `cal_id_graphics` |
+| Public Classes calendar | `c_85c7267c2722d696fbf37ffba64d4c5f40156e85002a88affa960ba56f71018a@group.calendar.google.com` | World-readable. Class and time only. `cal_id_public`. Created 2026-09-25 |
 | TNIC Headquarters calendar | `c_96a70c742b0dc21dd4b8fbe39d971107cb22a9ffa22c1cc6d679f55649f140c0@group.calendar.google.com` | Feast days + a monthly event titled `TN Monthly Alms Due` |
 
 Staff data and the Teacher Portal are **separate spreadsheets** — any cross-reference is a
